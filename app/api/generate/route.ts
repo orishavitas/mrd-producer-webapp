@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchWeb } from '@/skills/web_search';
+import { searchWeb, SearchResult } from '@/skills/web_search';
 import { generateMRD, MRDInput } from '@/skills/mrd_generator';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { productConcept, targetMarket, additionalDetails } = body;
+    const { productConcept, targetMarket, additionalDetails, clarifications } = body;
 
     if (!productConcept || !targetMarket) {
       return NextResponse.json(
@@ -14,25 +14,48 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Perform web search for market research
-    const searchQuery = `${productConcept} ${targetMarket} market analysis`;
-    const researchFindings = await searchWeb(searchQuery);
+    console.log('[API] Generating MRD for:', productConcept);
 
-    // Generate the MRD
+    // Perform multiple targeted searches for better research coverage
+    const searchQueries = [
+      `${productConcept} market size trends 2024 2025`,
+      `${productConcept} ${targetMarket} competitors analysis`,
+      `${targetMarket} user needs pain points problems`,
+    ];
+
+    // Run searches in parallel
+    const searchPromises = searchQueries.map((query) =>
+      searchWeb(query, { maxResults: 3 })
+    );
+
+    const searchResults = await Promise.all(searchPromises);
+    const researchFindings: SearchResult[] = searchResults.flat();
+
+    console.log(`[API] Gathered ${researchFindings.length} research findings`);
+
+    // Generate the MRD (uses AI if available, otherwise template)
     const mrdInput: MRDInput = {
       productConcept,
       targetMarket,
       additionalDetails,
       researchFindings,
+      clarifications,
     };
 
-    const mrd = generateMRD(mrdInput);
+    const mrd = await generateMRD(mrdInput);
 
-    return NextResponse.json({ mrd });
+    // Return MRD with sources
+    return NextResponse.json({
+      mrd,
+      sources: researchFindings.map((r) => ({
+        title: r.title,
+        url: r.url,
+      })),
+    });
   } catch (error) {
-    console.error('Error generating MRD:', error);
+    console.error('[API] Error generating MRD:', error);
     return NextResponse.json(
-      { error: 'Failed to generate MRD' },
+      { error: 'Failed to generate MRD. Please try again.' },
       { status: 500 }
     );
   }
