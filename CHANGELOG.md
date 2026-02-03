@@ -5,6 +5,31 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.3.0] - 2026-02-03
+
+### Added
+- Document download functionality (Word, PDF, HTML formats)
+- Professional document styling following MRD template specs
+- `/api/download` endpoint for document conversion
+- Download buttons in UI (Word, Print/PDF, HTML)
+- Research sources display in UI
+- Gemini Google Search grounding for real-time web research
+- 12-section MRD structure following Compulocks template
+
+### Changed
+- Migrated from `@google/generative-ai` to `@google/genai` SDK
+- Replaced Google Custom Search API with Gemini Search grounding
+- Updated default model to `gemini-2.5-flash`
+- MRD generator now follows exact 12-section template structure
+- Only `GOOGLE_API_KEY` required (removed `GOOGLE_SEARCH_ENGINE_ID` dependency)
+
+### Document Features
+- US Letter size (8.5" x 11") with 1" margins
+- Arial font with proper heading hierarchy (20pt/16pt/13pt/11pt)
+- Bullet lists, horizontal rules between sections
+- Headers with document title, footers with page numbers
+- Print-ready HTML styling for PDF export
+
 ## [0.2.0] - 2026-02-03
 
 ### Added
