@@ -2,7 +2,7 @@
  * MRD Generator Skill
  *
  * Generates Market Requirements Documents using AI (Gemini)
- * with fallback to template-based generation.
+ * following the Compulocks MRD template structure.
  */
 
 import { generateText, isGeminiAvailable } from '@/lib/gemini';
@@ -28,27 +28,130 @@ export interface MRDInput {
   clarifications?: { question: string; answer: string }[];
 }
 
-const MRD_SYSTEM_PROMPT = `You are an expert product strategist and market analyst with deep experience in creating comprehensive Market Requirements Documents (MRDs).
+/**
+ * System prompt instructing AI to follow the MRD template exactly.
+ */
+const MRD_SYSTEM_PROMPT = `You are an expert product strategist creating Market Requirements Documents (MRDs) for Compulocks.
 
-Your task is to synthesize the provided information into a professional, actionable MRD that will guide product development and go-to-market strategy.
+You MUST follow this EXACT structure with all 12 sections. Use Markdown formatting.
 
-Guidelines:
-- Be specific and data-driven, citing sources from the research findings when possible
-- Use professional business language appropriate for stakeholder presentations
-- Structure the document with clear, scannable sections
-- Include actionable recommendations with clear rationale
-- Identify risks and propose mitigations
-- Be thorough but concise - every sentence should add value
-- Format output in clean Markdown`;
+# Market Requirements Document (MRD)
+
+---
+
+## Product Name
+[Product name derived from concept]
+
+---
+
+## 1. Purpose & Vision
+Write prose with **bold emphasis** on key features. Describe:
+- Portfolio context (how this fits in product line)
+- Primary feature/benefit
+- Target applications
+- Design references and technical features
+
+---
+
+## 2. Problem Statement
+Describe the market gap and list challenges as bullets:
+* Challenge 1
+* Challenge 2
+* Challenge 3
+
+---
+
+## 3. Target Market & Use Cases
+
+### Primary Markets
+* Market 1
+* Market 2
+* Market 3
+
+### Core Use Cases
+* Use case 1
+* Use case 2
+* Use case 3
+
+---
+
+## 4. Target Users
+* User persona 1
+* User persona 2
+* User persona 3
+
+---
+
+## 5. Product Description
+Prose describing form factor with **bold specs** for measurements, standards, and technical details.
+
+---
+
+## 6. Key Requirements
+
+### 6.1 Functional Requirements
+* Requirement 1
+* Requirement 2
+
+### 6.2 Technical Requirements
+* **Spec:** Detail
+* **Spec:** Detail
+
+### 6.3 Compliance Requirements
+* Standard/compliance item
+* Standard/compliance item
+
+---
+
+## 7. Design & Aesthetics
+* Design requirement 1
+* Design requirement 2
+* Material/finish requirements
+
+---
+
+## 8. Target Price
+* **Target price is $[amount]**
+
+---
+
+## 9. Risks and Thoughts
+Prose analysis of risks, market considerations, competitive threats. Use "quoted terms" for industry terminology.
+
+---
+
+## 10. Competition to review
+* [Competitor Product](URL) (brief note)
+* [Competitor Product](URL)
+
+---
+
+## 11. Additional Considerations (Summary)
+* **Label:** Description
+* **Label:** Description
+
+---
+
+## 12. Success Criteria
+* Measurable success metric 1
+* Measurable success metric 2
+* Measurable success metric 3
+
+---
+
+IMPORTANT FORMATTING RULES:
+- Use --- horizontal rules after EVERY section
+- Use **bold** for key specs, prices, labels
+- Bullet lists use * not -
+- Include blank line after each bullet for spacing
+- Links format: [Display Text](URL)
+- Be specific with measurements, include units
+- Section numbers must be sequential 1-12`;
 
 /**
  * Generates a Market Requirements Document using AI or template.
- *
- * @param input - The collected data including user inputs and research findings.
- * @returns A promise that resolves to the generated MRD in Markdown format.
  */
 export async function generateMRD(input: MRDInput): Promise<string> {
-  // Try AI generation if available
   if (isGeminiAvailable()) {
     try {
       console.log('[MRDGenerator] Using Gemini AI for generation');
@@ -69,74 +172,60 @@ export async function generateMRD(input: MRDInput): Promise<string> {
 async function generateAIMRD(input: MRDInput): Promise<string> {
   const { productConcept, targetMarket, additionalDetails, researchFindings, researchSummary, clarifications } = input;
 
-  let prompt = `Create a comprehensive Market Requirements Document (MRD) for the following product:
+  let prompt = `Generate a complete MRD following the EXACT 12-section structure in the system prompt.
 
-## Product Concept
+## Input Information
+
+**Product Concept:**
 ${productConcept}
 
-## Target Market
+**Target Market:**
 ${targetMarket}
 `;
 
   if (additionalDetails) {
     prompt += `
-## Additional Context
+**Additional Details:**
 ${additionalDetails}
 `;
   }
 
-  // Include the AI-generated research summary if available
   if (researchSummary) {
     prompt += `
-## Market Research Summary
+**Market Research Summary:**
 ${researchSummary}
 `;
   }
 
-  // Also include individual sources for citation
   if (researchFindings.length > 0) {
     prompt += `
-## Research Sources
-The following sources were used for market research:
-
+**Research Sources (use these for Competition section and citations):**
 `;
     researchFindings.forEach((r, i) => {
-      prompt += `${i + 1}. **${r.title}**
-   URL: ${r.url}
-${r.snippet ? `   Summary: ${r.snippet}\n` : ''}
-`;
+      prompt += `${i + 1}. ${r.title} - ${r.url}${r.snippet ? ` - ${r.snippet}` : ''}\n`;
     });
   }
 
   if (clarifications && clarifications.length > 0) {
     prompt += `
-## Clarifications Provided
+**Clarifications Provided:**
 `;
     clarifications.forEach((c) => {
-      prompt += `- **Q:** ${c.question}
-  **A:** ${c.answer}
-`;
+      prompt += `Q: ${c.question}\nA: ${c.answer}\n\n`;
     });
   }
 
   prompt += `
-## Required MRD Structure
-Generate a complete MRD in Markdown format with these sections:
-
-1. **Executive Summary** - Brief overview with Go/No-Go recommendation
-2. **Market Problem & Opportunity** - Problem statement, target audience, TAM/SAM/SOM estimates if possible
-3. **Competitive Landscape** - Direct and indirect competitors, differentiation opportunities
-4. **Key Requirements** - Functional and non-functional requirements, prioritized
-5. **Product Strategy & Positioning** - Value proposition, positioning statement
-6. **Go-to-Market Recommendations** - Launch strategy, channels, pricing considerations
-7. **Risks and Mitigations** - Key risks identified and mitigation strategies
-8. **Success Metrics** - KPIs to measure success
-9. **Conclusion** - Summary and next steps
-
-Use the research findings to support your analysis. Be specific, actionable, and professional.`;
+## Instructions
+1. Generate ALL 12 sections in order
+2. Use the research findings to populate Competition section with real URLs
+3. Be specific with requirements - include measurements, standards, specs
+4. Estimate target price based on market research if not provided
+5. Make success criteria measurable and specific
+6. Follow exact Markdown formatting from system prompt`;
 
   const mrd = await generateText(prompt, MRD_SYSTEM_PROMPT, {
-    maxTokens: 4096,
+    maxTokens: 8192,
     temperature: 0.7,
   });
 
@@ -149,93 +238,162 @@ Use the research findings to support your analysis. Be specific, actionable, and
 function generateTemplateMRD(input: MRDInput): string {
   const { productConcept, targetMarket, additionalDetails, researchFindings, clarifications } = input;
 
-  const date = new Date().toLocaleDateString();
+  // Extract a product name from concept (first sentence or first 50 chars)
+  const productName = productConcept.split(/[.!?]/)[0].slice(0, 50).trim() || 'New Product';
 
   let mrd = `# Market Requirements Document (MRD)
 
-**Date:** ${date}
-**Product Concept:** ${productConcept}
-**Target Market:** ${targetMarket}
+---
+
+## Product Name
+${productName}
 
 ---
 
-## 1. Executive Summary
+## 1. Purpose & Vision
 
-${productConcept} aims to address the needs of ${targetMarket}. This document outlines the market opportunity, competitive landscape, and key requirements for success.
+The purpose of this product is to address the needs of the **${targetMarket}** market. ${productConcept}
 
-## 2. Market Problem & Opportunity
-
-**Target Audience:** ${targetMarket}
-
-### Problem Statement
-Users in the ${targetMarket} space face challenges that ${productConcept} aims to solve.
-
-`;
-
-  if (additionalDetails) {
-    mrd += `### Additional Context
-${additionalDetails}
-
-`;
-  }
-
-  mrd += `## 3. Competitive Landscape
-
-Based on preliminary research, the following competitors and trends are relevant:
-
-`;
-
-  if (researchFindings && researchFindings.length > 0) {
-    researchFindings.forEach((result) => {
-      mrd += `- **[${result.title}](${result.url})**: ${result.snippet}\n`;
-    });
-  } else {
-    mrd += `*No specific research findings provided at this stage.*\n`;
-  }
-
-  mrd += `
-## 4. Key Requirements
-`;
-
-  if (clarifications && clarifications.length > 0) {
-    mrd += `### Clarifications & Specifics
-`;
-    clarifications.forEach((item) => {
-      mrd += `- **Q:** ${item.question}\n  **A:** ${item.answer}\n`;
-    });
-  }
-
-  mrd += `
-### Functional Requirements
-- [ ] Core feature implementation matching the product concept
-- [ ] User interface optimized for ${targetMarket}
-- [ ] Integration with necessary platforms (as identified in research)
-
-### Non-Functional Requirements
-- **Performance:** Fast load times and responsive interactions
-- **Security:** Data protection and privacy compliance
-- **Scalability:** Architecture to support growth in ${targetMarket}
-
-## 5. Go-to-Market Strategy
-
-- **Positioning:** Position as a leading solution for ${targetMarket}
-- **Channels:** Leverage channels identified in research
-
-## 6. Risks and Mitigations
-
-| Risk | Impact | Mitigation |
-|------|--------|------------|
-| Market competition | High | Differentiate on key features |
-| Technology changes | Medium | Build flexible architecture |
-| User adoption | High | Focus on UX and onboarding |
-
-## 7. Conclusion
-
-${productConcept} has strong potential to capture market share in the ${targetMarket} sector by addressing key user pain points and offering a superior user experience.
+${additionalDetails ? `Additional context: ${additionalDetails}` : ''}
 
 ---
 
-*Note: This document was generated using a template. For AI-powered analysis, configure the GOOGLE_API_KEY environment variable.*
+## 2. Problem Statement
+
+Users in the ${targetMarket} space face several challenges:
+
+* Limited options for solutions that meet their specific needs
+
+* Existing products may not fully address market requirements
+
+* Gap in the market for innovative approaches
+
+---
+
+## 3. Target Market & Use Cases
+
+### Primary Markets
+
+* ${targetMarket}
+
+* Adjacent market segments
+
+* Enterprise customers
+
+### Core Use Cases
+
+* Primary use case based on product concept
+
+* Secondary applications
+
+* Extended use scenarios
+
+---
+
+## 4. Target Users
+
+* Decision makers in ${targetMarket}
+
+* End users who interact with the product daily
+
+* IT/Operations staff responsible for deployment
+
+---
+
+## 5. Product Description
+
+${productConcept}
+
+Key specifications to be determined based on market research and requirements gathering.
+
+---
+
+## 6. Key Requirements
+
+### 6.1 Functional Requirements
+
+* Core functionality matching the product concept
+
+* User interface optimized for target market
+
+* Integration capabilities with existing systems
+
+### 6.2 Technical Requirements
+
+* **Performance:** Meet industry standards for responsiveness
+
+* **Compatibility:** Support major platforms and standards
+
+* **Durability:** Meet requirements for intended use environment
+
+### 6.3 Compliance Requirements
+
+* Industry-specific compliance requirements
+
+* Safety and regulatory standards
+
+* Data protection and privacy compliance
+
+---
+
+## 7. Design & Aesthetics
+
+* Professional appearance suitable for ${targetMarket}
+
+* Ergonomic design for ease of use
+
+* Quality materials and finish
+
+---
+
+## 8. Target Price
+
+* **Target price to be determined** based on competitive analysis and cost modeling
+
+---
+
+## 9. Risks and Thoughts
+
+Market competition presents a significant consideration. The ${targetMarket} space has existing players, and differentiation will be key to success. Technology evolution and changing user expectations should be monitored throughout development.
+
+${clarifications && clarifications.length > 0 ? `
+Additional considerations from clarifications:
+${clarifications.map(c => `- ${c.question}: ${c.answer}`).join('\n')}
+` : ''}
+
+---
+
+## 10. Competition to review
+
+${researchFindings && researchFindings.length > 0
+  ? researchFindings.map(r => `* [${r.title}](${r.url})${r.snippet ? ` - ${r.snippet}` : ''}`).join('\n\n')
+  : '* Competitive analysis to be conducted'}
+
+---
+
+## 11. Additional Considerations (Summary)
+
+* **Market Timing:** Evaluate optimal launch window
+
+* **Resource Requirements:** Assess development and production needs
+
+* **Go-to-Market:** Plan distribution and marketing strategy
+
+---
+
+## 12. Success Criteria
+
+* Achieve target market share within first year
+
+* Meet customer satisfaction benchmarks
+
+* Achieve profitability targets
+
+* Positive market reception and reviews
+
+---
+
+*Note: This document was generated using a template. For AI-powered analysis with real market research, configure the GOOGLE_API_KEY environment variable.*
 `;
 
   return mrd;

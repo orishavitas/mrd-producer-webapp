@@ -33,9 +33,9 @@ describe('mrd_generator', () => {
         expect(mrd).toContain('# Market Requirements Document (MRD)');
         expect(mrd).toContain('AI Task Manager');
         expect(mrd).toContain('Small business owners');
-        expect(mrd).toContain('## 1. Executive Summary');
-        expect(mrd).toContain('## 2. Market Problem & Opportunity');
-        expect(mrd).toContain('## 3. Competitive Landscape');
+        expect(mrd).toContain('## 1. Purpose & Vision');
+        expect(mrd).toContain('## 2. Problem Statement');
+        expect(mrd).toContain('## 3. Target Market & Use Cases');
       });
 
       it('should include additional details when provided', async () => {
@@ -47,10 +47,9 @@ describe('mrd_generator', () => {
         const mrd = await generateMRD(input);
 
         expect(mrd).toContain('Must integrate with Slack');
-        expect(mrd).toContain('### Additional Context');
       });
 
-      it('should include research findings', async () => {
+      it('should include research findings in Competition section', async () => {
         const input: MRDInput = {
           ...basicInput,
           researchFindings: [
@@ -66,7 +65,7 @@ describe('mrd_generator', () => {
 
         expect(mrd).toContain('Market Research Report');
         expect(mrd).toContain('https://example.com/report');
-        expect(mrd).toContain('The market is growing rapidly');
+        expect(mrd).toContain('## 10. Competition to review');
       });
 
       it('should include clarifications when provided', async () => {
@@ -82,45 +81,46 @@ describe('mrd_generator', () => {
 
         expect(mrd).toContain('Target price?');
         expect(mrd).toContain('$20/month');
-        expect(mrd).toContain('Launch date?');
-        expect(mrd).toContain('Q2 2025');
       });
 
       it('should handle empty research findings gracefully', async () => {
         const mrd = await generateMRD(basicInput);
 
-        expect(mrd).toContain('No specific research findings provided');
+        expect(mrd).toContain('Competitive analysis to be conducted');
       });
 
-      it('should include all required sections', async () => {
+      it('should include all 12 required sections', async () => {
         const mrd = await generateMRD(basicInput);
 
-        expect(mrd).toContain('## 1. Executive Summary');
-        expect(mrd).toContain('## 2. Market Problem & Opportunity');
-        expect(mrd).toContain('## 3. Competitive Landscape');
-        expect(mrd).toContain('## 4. Key Requirements');
-        expect(mrd).toContain('## 5. Go-to-Market Strategy');
-        expect(mrd).toContain('## 6. Risks and Mitigations');
-        expect(mrd).toContain('## 7. Conclusion');
+        expect(mrd).toContain('## Product Name');
+        expect(mrd).toContain('## 1. Purpose & Vision');
+        expect(mrd).toContain('## 2. Problem Statement');
+        expect(mrd).toContain('## 3. Target Market & Use Cases');
+        expect(mrd).toContain('## 4. Target Users');
+        expect(mrd).toContain('## 5. Product Description');
+        expect(mrd).toContain('## 6. Key Requirements');
+        expect(mrd).toContain('## 7. Design & Aesthetics');
+        expect(mrd).toContain('## 8. Target Price');
+        expect(mrd).toContain('## 9. Risks and Thoughts');
+        expect(mrd).toContain('## 10. Competition to review');
+        expect(mrd).toContain('## 11. Additional Considerations (Summary)');
+        expect(mrd).toContain('## 12. Success Criteria');
       });
 
-      it('should include functional and non-functional requirements', async () => {
+      it('should include requirements subsections', async () => {
         const mrd = await generateMRD(basicInput);
 
-        expect(mrd).toContain('### Functional Requirements');
-        expect(mrd).toContain('### Non-Functional Requirements');
-        expect(mrd).toContain('Performance');
-        expect(mrd).toContain('Security');
-        expect(mrd).toContain('Scalability');
+        expect(mrd).toContain('### 6.1 Functional Requirements');
+        expect(mrd).toContain('### 6.2 Technical Requirements');
+        expect(mrd).toContain('### 6.3 Compliance Requirements');
       });
 
-      it('should include risk table', async () => {
+      it('should include horizontal rules between sections', async () => {
         const mrd = await generateMRD(basicInput);
 
-        expect(mrd).toContain('| Risk | Impact | Mitigation |');
-        expect(mrd).toContain('Market competition');
-        expect(mrd).toContain('Technology changes');
-        expect(mrd).toContain('User adoption');
+        // Count horizontal rules (should have multiple)
+        const hrCount = (mrd.match(/---/g) || []).length;
+        expect(hrCount).toBeGreaterThanOrEqual(12);
       });
 
       it('should include template disclaimer', async () => {
@@ -152,10 +152,10 @@ describe('mrd_generator', () => {
         await generateMRD(basicInput);
 
         expect(mockGenerateText).toHaveBeenCalledWith(
-          expect.stringContaining('## Product Concept'),
+          expect.stringContaining('**Product Concept:**'),
           expect.any(String),
           expect.objectContaining({
-            maxTokens: 4096,
+            maxTokens: 8192,
             temperature: 0.7,
           })
         );
@@ -178,7 +178,7 @@ describe('mrd_generator', () => {
         await generateMRD(input);
 
         expect(mockGenerateText).toHaveBeenCalledWith(
-          expect.stringContaining('## Research Sources'),
+          expect.stringContaining('**Research Sources'),
           expect.any(String),
           expect.any(Object)
         );
