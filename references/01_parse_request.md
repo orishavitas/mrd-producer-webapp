@@ -1,6 +1,6 @@
 # 01_parse_request.md
 
-> **Chain Position:** 1 of 5  
+> **Chain Position:** 1 of 4  
 > **Input:** Raw request text  
 > **Output:** `request.json` schema  
 > **Human Reference:** PRD.md §4.1, DESIGN_GUIDE.md §2.1

@@ -1,6 +1,6 @@
 # 02_gap_analysis.md
 
-> **Chain Position:** 2 of 5  
+> **Chain Position:** 2 of 4  
 > **Input:** `request.json` from 01_parse_request  
 > **Output:** Gap assessment with question recommendations  
 > **Depends On:** 01_parse_request.md  

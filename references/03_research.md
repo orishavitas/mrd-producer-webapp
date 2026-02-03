@@ -1,6 +1,6 @@
-# 04_research.md
+# 03_research.md
 
-> **Chain Position:** 4 of 5  
+> **Chain Position:** 3 of 4  
 > **Input:** `parsed_data.json` (merged request data)  
 > **Output:** Competitive research findings  
 > **Depends On:** 02_gap_analysis.md (decision = "proceed") OR clarification complete  

@@ -1,11 +1,19 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { searchWeb, SearchResult } from '@/skills/web_search';
 import { generateMRD, MRDInput } from '@/skills/mrd_generator';
+import { sanitizeMRDInput } from '@/lib/sanitize';
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
-    const { productConcept, targetMarket, additionalDetails, clarifications } = body;
+
+    // Sanitize user inputs to prevent prompt injection
+    const {
+      productConcept,
+      targetMarket,
+      additionalDetails,
+      clarifications,
+    } = sanitizeMRDInput(body);
 
     if (!productConcept || !targetMarket) {
       return NextResponse.json(
@@ -14,7 +22,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('[API] Generating MRD for:', productConcept);
+    console.log('[API] Generating MRD for:', productConcept.slice(0, 50));
 
     // Perform multiple targeted searches for better research coverage
     const searchQueries = [
