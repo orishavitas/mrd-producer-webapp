@@ -70,7 +70,7 @@ export async function generateText(
     : prompt;
 
   const response = await client.models.generateContent({
-    model: options.model || 'gemini-2.0-flash',
+    model: options.model || 'gemini-1.5-flash',
     contents: fullPrompt,
     config: {
       maxOutputTokens: options.maxTokens || 4096,
@@ -110,7 +110,7 @@ export async function generateWithSearch(
   console.log('[Gemini] Generating with Google Search grounding...');
 
   const response = await client.models.generateContent({
-    model: options.model || 'gemini-2.0-flash',
+    model: options.model || 'gemini-1.5-flash',
     contents: fullPrompt,
     config: {
       maxOutputTokens: options.maxTokens || 8192,

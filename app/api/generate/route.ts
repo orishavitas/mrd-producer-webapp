@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { searchWeb, SearchResult } from '@/skills/web_search';
-import { generateMRD, MRDInput } from '@/skills/mrd_generator';
+import { conductResearch, isGeminiAvailable } from '@/lib/gemini';
+import { generateMRD, MRDInput, ResearchSource } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
 
 export async function POST(request: NextRequest) {
@@ -24,22 +24,33 @@ export async function POST(request: NextRequest) {
 
     console.log('[API] Generating MRD for:', productConcept.slice(0, 50));
 
-    // Perform multiple targeted searches for better research coverage
-    const searchQueries = [
-      `${productConcept} market size trends 2024 2025`,
-      `${productConcept} ${targetMarket} competitors analysis`,
-      `${targetMarket} user needs pain points problems`,
-    ];
+    let researchFindings: ResearchSource[] = [];
+    let researchSummary: string | undefined;
 
-    // Run searches in parallel
-    const searchPromises = searchQueries.map((query) =>
-      searchWeb(query, { maxResults: 3 })
-    );
+    // Use Gemini with Google Search grounding for research
+    if (isGeminiAvailable()) {
+      try {
+        console.log('[API] Conducting research with Gemini Search grounding');
+        const researchTopic = `${productConcept} for ${targetMarket}`;
+        const researchContext = additionalDetails || undefined;
 
-    const searchResults = await Promise.all(searchPromises);
-    const researchFindings: SearchResult[] = searchResults.flat();
+        const research = await conductResearch(researchTopic, researchContext);
 
-    console.log(`[API] Gathered ${researchFindings.length} research findings`);
+        researchSummary = research.text;
+        researchFindings = research.sources.map((s) => ({
+          title: s.title,
+          url: s.url,
+          snippet: s.snippet,
+        }));
+
+        console.log(`[API] Research complete: ${researchFindings.length} sources`);
+      } catch (error) {
+        console.error('[API] Research failed:', error);
+        // Continue without research - MRD will be generated with available info
+      }
+    } else {
+      console.log('[API] Gemini not available, skipping research');
+    }
 
     // Generate the MRD (uses AI if available, otherwise template)
     const mrdInput: MRDInput = {
@@ -47,6 +58,7 @@ export async function POST(request: NextRequest) {
       targetMarket,
       additionalDetails,
       researchFindings,
+      researchSummary,
       clarifications,
     };
 
