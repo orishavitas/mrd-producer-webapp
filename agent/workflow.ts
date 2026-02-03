@@ -17,11 +17,12 @@ import {
   ResearchData,
   MRDOutput,
   ClarificationAnswers,
+  SearchResultData,
   createInitialState,
   generateRequestId,
 } from '@/lib/schemas';
 import { analyzeGaps, mergeClarificationAnswers } from '@/skills/gap_analyzer';
-import { searchWeb, SearchResult } from '@/skills/web_search';
+import { conductResearch, isGeminiAvailable, GroundedSource } from '@/lib/gemini';
 import { generateMRD } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
 
@@ -278,6 +279,7 @@ function executeClarify(
 
 /**
  * Stage 4: Research
+ * Uses Gemini with Google Search grounding to conduct market research.
  */
 async function executeResearch(state: WorkflowState): Promise<WorkflowResponse> {
   if (!state.requestData) {
@@ -286,46 +288,73 @@ async function executeResearch(state: WorkflowState): Promise<WorkflowResponse> 
     return { state, needsClarification: false, error: state.error };
   }
 
-  const { productConcept, extractedData } = state.requestData;
+  const { productConcept, extractedData, rawInput } = state.requestData;
   const { targetMarkets } = extractedData;
 
-  // Build targeted search queries
-  const searchQueries = [
-    `${productConcept.name} market size trends 2024 2025`,
-    `${productConcept.name} ${targetMarkets.join(' ')} competitors analysis`,
-    `${targetMarkets.join(' ')} user needs pain points`,
-  ];
+  // Build research topic and context
+  const researchTopic = `${productConcept.name} for ${targetMarkets.join(', ')} market`;
+  const researchContext = `Product concept: ${rawInput.productConcept}\nTarget market: ${rawInput.targetMarket}${rawInput.additionalDetails ? `\nAdditional details: ${rawInput.additionalDetails}` : ''}`;
 
-  // Execute searches in parallel
-  const searchPromises = searchQueries.map((query) =>
-    searchWeb(query, { maxResults: 3 })
-  );
-  const searchResults = await Promise.all(searchPromises);
-  const allResults: SearchResult[] = searchResults.flat();
+  console.log(`[Workflow] Conducting research on: ${researchTopic}`);
+
+  let allSearchResults: SearchResultData[] = [];
+  let searchQueries: string[] = [];
+  let researchSummary = '';
+
+  // Use Gemini with Google Search grounding if available
+  if (isGeminiAvailable()) {
+    try {
+      console.log('[Workflow] Using Gemini with Google Search grounding');
+      const research = await conductResearch(researchTopic, researchContext);
+
+      researchSummary = research.text;
+      searchQueries = research.searchQueries;
+
+      // Convert grounded sources to search results
+      allSearchResults = research.sources.map((source: GroundedSource) => ({
+        title: source.title,
+        url: source.url,
+        snippet: source.snippet || '',
+        query: 'Gemini Search Grounding',
+      }));
+
+      console.log(`[Workflow] Gemini research complete: ${allSearchResults.length} sources, ${searchQueries.length} queries`);
+    } catch (error) {
+      console.error('[Workflow] Gemini research failed:', error);
+      // Fall back to mock data
+      allSearchResults = getMockResearchResults(productConcept.name, targetMarkets);
+      searchQueries = ['fallback'];
+    }
+  } else {
+    console.log('[Workflow] Gemini not available, using mock research data');
+    allSearchResults = getMockResearchResults(productConcept.name, targetMarkets);
+    searchQueries = ['mock'];
+  }
 
   // Build research data
   const researchData: ResearchData = {
     researchId: `RES-${state.requestId}`,
     conductedAt: new Date().toISOString(),
-    competitorsSearched: ['Generic Search'],
+    searchResults: allSearchResults,
+    searchQueries: searchQueries,
+    competitorsSearched: ['Google Search (via Gemini)'],
     productsFound: [],
     marketAnalysis: {
       priceRangeObserved: null,
-      pricePositioningRecommendation: 'Research market pricing for positioning',
+      pricePositioningRecommendation: 'See research summary for pricing insights',
       marketGaps: [],
       differentiationOpportunities: [],
       competitiveThreats: [],
-      marketTrends: allResults.map((r) => r.snippet).slice(0, 3),
+      marketTrends: researchSummary ? [researchSummary] : allSearchResults.map((r) => r.snippet).filter(Boolean).slice(0, 5),
     },
-    limitations: [
-      'Research based on web search results',
-      'Pricing data may not reflect actual market rates',
-    ],
+    limitations: isGeminiAvailable()
+      ? ['Research based on Gemini AI with Google Search grounding']
+      : ['Research based on mock data - configure GOOGLE_API_KEY for real research'],
     researchQuality: {
-      productsFoundCount: allResults.length,
-      meetsMinimum: allResults.length >= 3,
-      confidenceScore: allResults.length >= 3 ? 70 : 50,
-      gapsInResearch: [],
+      productsFoundCount: allSearchResults.length,
+      meetsMinimum: allSearchResults.length >= 1,
+      confidenceScore: allSearchResults.length >= 3 ? 80 : (allSearchResults.length >= 1 ? 60 : 30),
+      gapsInResearch: allSearchResults.length === 0 ? ['No search results found'] : [],
     },
   };
 
@@ -333,6 +362,20 @@ async function executeResearch(state: WorkflowState): Promise<WorkflowResponse> 
   state.stage = WorkflowStage.GENERATE_MRD;
 
   return { state, needsClarification: false };
+}
+
+/**
+ * Returns mock research results when Gemini is not available.
+ */
+function getMockResearchResults(productName: string, markets: string[]): SearchResultData[] {
+  return [
+    {
+      title: `Market Analysis: ${productName}`,
+      url: 'https://example.com/mock-market-analysis',
+      snippet: `Mock market research for ${productName} targeting ${markets.join(', ')}. Configure GOOGLE_API_KEY for real research.`,
+      query: 'mock',
+    },
+  ];
 }
 
 /**
@@ -345,34 +388,46 @@ async function executeGenerateMRD(state: WorkflowState): Promise<WorkflowRespons
     return { state, needsClarification: false, error: state.error };
   }
 
-  const { rawInput, extractedData } = state.requestData;
+  const { rawInput } = state.requestData;
 
-  // Build search results for generator
-  const searchResults: SearchResult[] = state.researchData.marketAnalysis.marketTrends.map(
-    (trend, i) => ({
-      title: `Market Insight ${i + 1}`,
-      url: 'https://research.example.com',
-      snippet: trend,
-    })
-  );
+  // Use actual search results from research phase
+  const researchFindings = state.researchData.searchResults.map((r) => ({
+    title: r.title,
+    url: r.url,
+    snippet: r.snippet,
+  }));
+
+  // Get research summary (first market trend contains the full summary from Gemini)
+  const researchSummary = state.researchData.marketAnalysis.marketTrends[0] || '';
+
+  console.log(`[Workflow] Generating MRD with ${researchFindings.length} sources`);
 
   // Generate MRD
   const mrd = await generateMRD({
     productConcept: rawInput.productConcept,
     targetMarket: rawInput.targetMarket,
     additionalDetails: rawInput.additionalDetails || undefined,
-    researchFindings: searchResults,
+    researchFindings,
+    researchSummary,
     clarifications: state.clarificationHistory.flatMap((ch) => ch.answers),
   });
 
-  // Build MRD output
+  // Build sources from actual search results (deduplicate by URL)
+  const uniqueSources = new Map<string, { title: string; url: string }>();
+  state.researchData.searchResults.forEach((r) => {
+    if (!uniqueSources.has(r.url)) {
+      uniqueSources.set(r.url, { title: r.title, url: r.url });
+    }
+  });
+
+  // Build MRD output with real sources
   const mrdOutput: MRDOutput = {
     requestId: state.requestId,
     generatedAt: new Date().toISOString(),
     content: mrd,
     format: 'markdown',
     sectionConfidence: [],
-    sources: searchResults.map((r) => ({ title: r.title, url: r.url })),
+    sources: Array.from(uniqueSources.values()),
     limitations: state.gapAssessment?.proceedNotes?.gapsToFlag || [],
     assumptions: state.gapAssessment?.proceedNotes?.assumptionsToMake || [],
   };

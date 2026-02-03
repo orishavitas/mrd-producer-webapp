@@ -178,7 +178,7 @@ describe('mrd_generator', () => {
         await generateMRD(input);
 
         expect(mockGenerateText).toHaveBeenCalledWith(
-          expect.stringContaining('## Research Findings'),
+          expect.stringContaining('## Research Sources'),
           expect.any(String),
           expect.any(Object)
         );

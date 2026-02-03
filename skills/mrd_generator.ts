@@ -1,12 +1,20 @@
 /**
  * MRD Generator Skill
  *
- * Generates Market Requirements Documents using AI (Gemini Pro)
+ * Generates Market Requirements Documents using AI (Gemini)
  * with fallback to template-based generation.
  */
 
-import { SearchResult } from './web_search';
 import { generateText, isGeminiAvailable } from '@/lib/gemini';
+
+/**
+ * Research source reference.
+ */
+export interface ResearchSource {
+  title: string;
+  url: string;
+  snippet?: string;
+}
 
 /**
  * Input data required to generate an MRD.
@@ -15,7 +23,8 @@ export interface MRDInput {
   productConcept: string;
   targetMarket: string;
   additionalDetails?: string;
-  researchFindings: SearchResult[];
+  researchFindings: ResearchSource[];
+  researchSummary?: string;
   clarifications?: { question: string; answer: string }[];
 }
 
@@ -58,7 +67,7 @@ export async function generateMRD(input: MRDInput): Promise<string> {
  * Generates an MRD using Gemini AI.
  */
 async function generateAIMRD(input: MRDInput): Promise<string> {
-  const { productConcept, targetMarket, additionalDetails, researchFindings, clarifications } = input;
+  const { productConcept, targetMarket, additionalDetails, researchFindings, researchSummary, clarifications } = input;
 
   let prompt = `Create a comprehensive Market Requirements Document (MRD) for the following product:
 
@@ -76,17 +85,25 @@ ${additionalDetails}
 `;
   }
 
+  // Include the AI-generated research summary if available
+  if (researchSummary) {
+    prompt += `
+## Market Research Summary
+${researchSummary}
+`;
+  }
+
+  // Also include individual sources for citation
   if (researchFindings.length > 0) {
     prompt += `
-## Research Findings
-The following market research has been gathered:
+## Research Sources
+The following sources were used for market research:
 
 `;
     researchFindings.forEach((r, i) => {
       prompt += `${i + 1}. **${r.title}**
-   Source: ${r.url}
-   Summary: ${r.snippet}
-
+   URL: ${r.url}
+${r.snippet ? `   Summary: ${r.snippet}\n` : ''}
 `;
     });
   }

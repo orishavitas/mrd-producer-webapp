@@ -270,11 +270,23 @@ export interface MarketAnalysis {
 }
 
 /**
+ * Raw search result from web search.
+ */
+export interface SearchResultData {
+  title: string;
+  url: string;
+  snippet: string;
+  query: string;
+}
+
+/**
  * Research data (output of Stage 3).
  */
 export interface ResearchData {
   researchId: string;
   conductedAt: string;
+  searchResults: SearchResultData[];
+  searchQueries: string[];
   competitorsSearched: string[];
   productsFound: CompetitorProduct[];
   marketAnalysis: MarketAnalysis;

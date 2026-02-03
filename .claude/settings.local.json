@@ -13,7 +13,17 @@
       "Bash(git rm:*)",
       "Bash(git add:*)",
       "Bash(npm install)",
-      "Bash(npm test:*)"
+      "Bash(npm test:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd multi-stage MRD pipeline with input sanitization and tests\n\n- Rename refrances/ to references/, fix duplicates and chain positions\n- Add input sanitization (lib/sanitize.ts) to prevent prompt injection\n- Implement multi-stage workflow with gap analysis and clarification\n- Add new /api/workflow endpoint for stateful MRD generation\n- Set up Jest testing with 65 tests covering sanitization, search,\n  MRD generation, and gap analysis\n\nPipeline stages: Parse → Gap Analysis → Clarify (max 2 rounds) →\nResearch → Generate MRD\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)",
+      "Bash(npm run build:*)",
+      "Bash(cat:*)",
+      "WebSearch",
+      "WebFetch(domain:ai.google.dev)",
+      "Bash(npm uninstall:*)",
+      "Bash(npm install:*)",
+      "Bash(vercel env:*)"
     ]
   }
 }
