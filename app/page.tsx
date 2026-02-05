@@ -120,24 +120,21 @@ export default function Home() {
   }, [result, formData.productConcept]);
 
   return (
-    <main className="container" style={{ paddingTop: '2rem', paddingBottom: '2rem' }}>
-      <div className="flex flex-col gap-4" style={{ maxWidth: '800px', margin: '0 auto' }}>
-        <header style={{ textAlign: 'center', marginBottom: '2rem' }}>
+    <main className="page">
+      <div className="container page-shell">
+        <header className="page-hero">
+          <p className="eyebrow">AI-assisted MRDs</p>
           <h1>MRD Producer</h1>
-          <p style={{ color: '#64748b' }}>
-            Generate comprehensive Market Requirements Documents with AI
+          <p className="subtitle">
+            Generate comprehensive Market Requirements Documents with focused inputs
+            and actionable research.
           </p>
         </header>
 
-        <div className="card">
+        <div className="card form-card">
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
-            <div>
-              <label
-                htmlFor="productConcept"
-                style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}
-              >
-                Product Concept *
-              </label>
+            <div className="field">
+              <label htmlFor="productConcept">Product Concept *</label>
               <input
                 type="text"
                 id="productConcept"
@@ -150,13 +147,8 @@ export default function Home() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="targetMarket"
-                style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}
-              >
-                Target Market *
-              </label>
+            <div className="field">
+              <label htmlFor="targetMarket">Target Market *</label>
               <input
                 type="text"
                 id="targetMarket"
@@ -169,13 +161,8 @@ export default function Home() {
               />
             </div>
 
-            <div>
-              <label
-                htmlFor="additionalDetails"
-                style={{ display: 'block', marginBottom: '0.5rem', fontWeight: 500 }}
-              >
-                Additional Details
-              </label>
+            <div className="field">
+              <label htmlFor="additionalDetails">Additional Details</label>
               <textarea
                 id="additionalDetails"
                 name="additionalDetails"
@@ -187,75 +174,60 @@ export default function Home() {
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isLoading || !formData.productConcept || !formData.targetMarket}
-              style={{ marginTop: '1rem' }}
-            >
-              {isLoading ? (
-                <span className="flex items-center justify-center gap-4">
-                  <span className="spinner" />
-                  <span>Generating MRD...</span>
-                </span>
-              ) : (
-                'Generate MRD'
-              )}
-            </button>
+            <div className="actions">
+              <button
+                type="submit"
+                className="btn-primary"
+                disabled={isLoading || !formData.productConcept || !formData.targetMarket}
+              >
+                {isLoading ? (
+                  <span className="flex items-center justify-center gap-4">
+                    <span className="spinner" />
+                    <span>Generating MRD...</span>
+                  </span>
+                ) : (
+                  'Generate MRD'
+                )}
+              </button>
+              <span style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
+                Typical turnaround: under 1 minute.
+              </span>
+            </div>
           </form>
         </div>
 
         {error && (
-          <div
-            className="card"
-            style={{
-              backgroundColor: '#fef2f2',
-              borderColor: '#fecaca',
-              color: '#991b1b'
-            }}
-            role="alert"
-          >
+          <div className="card alert" role="alert">
             <strong>Error:</strong> {error}
           </div>
         )}
 
         {result && (
-          <div className="card">
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem', flexWrap: 'wrap', gap: '0.5rem' }}>
+          <div className="card result-card">
+            <div className="result-header">
               <h2 style={{ margin: 0 }}>Generated MRD</h2>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+              <div className="result-actions">
                 <button
                   type="button"
+                  className="btn-primary"
                   onClick={() => downloadDocument('docx')}
                   disabled={isDownloading !== null}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
-                    backgroundColor: '#2563eb',
-                  }}
                 >
                   {isDownloading === 'docx' ? 'Downloading...' : 'Download Word'}
                 </button>
                 <button
                   type="button"
+                  className="btn-ghost"
                   onClick={() => downloadDocument('pdf')}
                   disabled={isDownloading !== null}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
-                    backgroundColor: '#dc2626',
-                  }}
                 >
                   {isDownloading === 'pdf' ? 'Preparing...' : 'Print/PDF'}
                 </button>
                 <button
                   type="button"
+                  className="btn-ghost"
                   onClick={() => downloadDocument('html')}
                   disabled={isDownloading !== null}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    fontSize: '0.875rem',
-                    backgroundColor: '#059669',
-                  }}
                 >
                   {isDownloading === 'html' ? 'Downloading...' : 'Download HTML'}
                 </button>
@@ -263,12 +235,12 @@ export default function Home() {
             </div>
 
             {sources.length > 0 && (
-              <div style={{ marginBottom: '1rem', padding: '0.75rem', backgroundColor: '#f0f9ff', borderRadius: '0.375rem' }}>
-                <strong style={{ fontSize: '0.875rem' }}>Research Sources:</strong>
+              <div className="sources">
+                <strong>Research Sources:</strong>
                 <ul style={{ margin: '0.5rem 0 0 0', paddingLeft: '1.25rem', fontSize: '0.875rem' }}>
                   {sources.map((source, i) => (
                     <li key={i}>
-                      <a href={source.url} target="_blank" rel="noopener noreferrer" style={{ color: '#1d4ed8' }}>
+                      <a href={source.url} target="_blank" rel="noopener noreferrer">
                         {source.title}
                       </a>
                     </li>
@@ -277,21 +249,7 @@ export default function Home() {
               </div>
             )}
 
-            <div
-              style={{
-                whiteSpace: 'pre-wrap',
-                wordWrap: 'break-word',
-                fontFamily: 'ui-sans-serif, system-ui, sans-serif',
-                fontSize: '0.9375rem',
-                lineHeight: '1.6',
-                maxHeight: '600px',
-                overflowY: 'auto',
-                padding: '1rem',
-                backgroundColor: '#fafafa',
-                borderRadius: '0.375rem',
-                border: '1px solid #e5e7eb',
-              }}
-            >
+            <div className="result-body">
               {result}
             </div>
           </div>
