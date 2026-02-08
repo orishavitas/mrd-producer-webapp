@@ -1,0 +1,237 @@
+/* Research Preview Component */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  padding: var(--space-6);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  max-height: 600px;
+  overflow-y: auto;
+}
+
+.title {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+  margin: 0;
+}
+
+/* Loading state */
+.loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-8) var(--space-4);
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: var(--radius-full);
+  animation: spin 0.8s linear infinite;
+}
+
+.loadingText {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin: 0;
+  text-align: center;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Quality indicator */
+.quality {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  background-color: var(--surface-alt);
+  border-radius: var(--radius-sm);
+}
+
+.qualityLabel {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.qualityBar {
+  flex: 1;
+  height: 8px;
+  background-color: var(--border);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.qualityFill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--warning), var(--success));
+  border-radius: var(--radius-full);
+  transition: width 0.3s ease;
+}
+
+.qualityValue {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--foreground);
+  white-space: nowrap;
+}
+
+/* Section */
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding: var(--space-3);
+  border-left: 3px solid var(--success);
+  background-color: var(--surface-alt);
+  border-radius: var(--radius-sm);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  color: var(--foreground);
+  margin: 0;
+}
+
+.statusIcon {
+  color: var(--success);
+  font-size: var(--text-lg);
+}
+
+.sectionContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text);
+}
+
+.stat {
+  margin: 0;
+  line-height: var(--leading-relaxed);
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.listTitle {
+  margin: 0;
+  font-weight: var(--font-medium);
+  color: var(--text-muted);
+}
+
+.list ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  list-style-type: disc;
+}
+
+.list li {
+  margin: var(--space-1) 0;
+  line-height: var(--leading-relaxed);
+}
+
+/* Sources */
+.sources {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--border);
+}
+
+.sourcesToggle {
+  align-self: flex-start;
+  padding: var(--space-2) var(--space-3);
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.sourcesToggle:hover {
+  background-color: var(--surface-alt);
+  border-color: var(--accent);
+  color: var(--foreground);
+}
+
+.sourcesList {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.sourcesList li {
+  font-size: var(--text-sm);
+}
+
+.sourcesList a {
+  color: var(--accent);
+  text-decoration: none;
+  line-height: var(--leading-relaxed);
+  word-break: break-word;
+}
+
+.sourcesList a:hover {
+  text-decoration: underline;
+}
+
+/* Gaps warning */
+.gaps {
+  padding: var(--space-3);
+  background-color: var(--warning-soft);
+  border: 1px solid var(--warning);
+  border-radius: var(--radius-sm);
+}
+
+.gapsTitle {
+  margin: 0 0 var(--space-2) 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--warning);
+}
+
+.gaps ul {
+  margin: 0;
+  padding-left: var(--space-5);
+  list-style-type: disc;
+}
+
+.gaps li {
+  margin: var(--space-1) 0;
+  font-size: var(--text-sm);
+  color: var(--text);
+  line-height: var(--leading-relaxed);
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+  .qualityFill {
+    background: linear-gradient(90deg, var(--warning), var(--success));
+  }
+}

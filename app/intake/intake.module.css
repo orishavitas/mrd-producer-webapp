@@ -147,6 +147,30 @@
 }
 
 /* ========================================
+   Review content (two-column layout)
+   ======================================== */
+.reviewContent {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-6);
+  width: 100%;
+  max-width: 1400px;
+  align-items: start;
+}
+
+.reviewBriefSection {
+  display: flex;
+  flex-direction: column;
+}
+
+.reviewResearchSection {
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: var(--space-4);
+}
+
+/* ========================================
    Review actions (go back + check gaps)
    ======================================== */
 .reviewActions {
@@ -155,7 +179,7 @@
   align-items: center;
   justify-content: center;
   width: 100%;
-  max-width: 720px;
+  max-width: 1400px;
 }
 
 /* ========================================
@@ -292,5 +316,14 @@
 
   .reviewActions > button {
     width: 100%;
+  }
+
+  .reviewContent {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .reviewResearchSection {
+    position: static;
   }
 }

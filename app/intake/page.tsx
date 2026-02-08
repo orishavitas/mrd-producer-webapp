@@ -15,6 +15,7 @@ import ProgressSidebar from './components/progress-sidebar';
 import MobileProgress from './components/mobile-progress';
 import GapPanel from './components/gap-panel';
 import ResearchBrief from './components/research-brief';
+import ResearchPreviewComponent from './components/research-preview';
 
 export default function IntakePage() {
   return (
@@ -382,10 +383,13 @@ function ReviewPhase() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Generate brief on mount if not already available
+  // Generate brief and trigger research on mount
   useEffect(() => {
     if (!state.researchBrief) {
       generateBrief();
+    }
+    if (!state.researchPreview) {
+      generateResearchPreview();
     }
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -427,6 +431,39 @@ function ReviewPhase() {
       setError(err instanceof Error ? err.message : 'Something went wrong');
     } finally {
       setIsLoading(false);
+    }
+  }
+
+  async function generateResearchPreview() {
+    dispatch({ type: 'SET_RESEARCH_LOADING', isLoading: true });
+    try {
+      const response = await fetch('/api/intake/research-preview', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ allTopicsData: buildAllTopicsData() }),
+      });
+
+      if (!response.ok) {
+        // Non-blocking failure - just don't show research preview
+        console.warn('Research preview failed, continuing without it');
+        dispatch({ type: 'SET_RESEARCH_LOADING', isLoading: false });
+        return;
+      }
+
+      const result = await response.json();
+      dispatch({
+        type: 'SET_RESEARCH_PREVIEW',
+        data: {
+          isLoading: false,
+          data: result.research,
+          sources: result.sources || [],
+          quality: result.quality || null,
+        },
+      });
+    } catch (err) {
+      // Non-blocking failure
+      console.warn('Research preview error:', err);
+      dispatch({ type: 'SET_RESEARCH_LOADING', isLoading: false });
     }
   }
 
@@ -515,11 +552,21 @@ function ReviewPhase() {
           </div>
         ) : state.researchBrief ? (
           <>
-            <ResearchBrief
-              briefContent={state.researchBrief}
-              onRevisionRequest={handleRevision}
-              isRevising={isRevising}
-            />
+            <div className={styles.reviewContent}>
+              <div className={styles.reviewBriefSection}>
+                <ResearchBrief
+                  briefContent={state.researchBrief}
+                  onRevisionRequest={handleRevision}
+                  isRevising={isRevising}
+                />
+              </div>
+
+              {state.researchPreview && (
+                <div className={styles.reviewResearchSection}>
+                  <ResearchPreviewComponent preview={state.researchPreview} />
+                </div>
+              )}
+            </div>
 
             <div className={styles.reviewActions}>
               <button

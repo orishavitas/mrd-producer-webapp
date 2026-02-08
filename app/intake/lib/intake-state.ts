@@ -31,12 +31,27 @@ export interface Source {
   url: string;
 }
 
+export interface ResearchPreview {
+  isLoading: boolean;
+  data: {
+    competitive: any | null;
+    trends: any | null;
+    pricing: any | null;
+  } | null;
+  sources: Source[];
+  quality: {
+    confidence: number;
+    gaps: string[];
+  } | null;
+}
+
 export interface IntakeState {
   phase: IntakePhase;
   topics: TopicData[];
   activeTopicIndex: number;
   overallReadiness: number;
   researchBrief: string | null;
+  researchPreview: ResearchPreview | null;
   gaps: Gap[];
   mrdResult: string | null;
   sources: Source[];
@@ -57,7 +72,10 @@ export type IntakeAction =
   | { type: 'DISMISS_GAP'; gapTitle: string }
   | { type: 'APPROVE_TOPIC'; topicIndex: number; score: number }
   | { type: 'ROLLBACK_TO_TOPIC'; topicIndex: number }
-  | { type: 'SET_UPDATING_TOPICS'; isUpdating: boolean };
+  | { type: 'SET_UPDATING_TOPICS'; isUpdating: boolean }
+  | { type: 'SET_RESEARCH_LOADING'; isLoading: boolean }
+  | { type: 'SET_RESEARCH_PREVIEW'; data: ResearchPreview }
+  | { type: 'CLEAR_RESEARCH_PREVIEW' };
 
 // --- Helpers ---
 
@@ -170,12 +188,30 @@ export function intakeReducer(state: IntakeState, action: IntakeAction): IntakeS
         activeTopicIndex: action.topicIndex,
         phase: 'topics' as IntakePhase,
         researchBrief: null,
+        researchPreview: null,
         overallReadiness: calculateOverallReadiness(topics),
       };
     }
 
     case 'SET_UPDATING_TOPICS':
       return { ...state, isUpdatingTopics: action.isUpdating };
+
+    case 'SET_RESEARCH_LOADING':
+      return {
+        ...state,
+        researchPreview: {
+          isLoading: action.isLoading,
+          data: state.researchPreview?.data || null,
+          sources: state.researchPreview?.sources || [],
+          quality: state.researchPreview?.quality || null,
+        },
+      };
+
+    case 'SET_RESEARCH_PREVIEW':
+      return { ...state, researchPreview: action.data };
+
+    case 'CLEAR_RESEARCH_PREVIEW':
+      return { ...state, researchPreview: null };
 
     default:
       return state;
@@ -201,6 +237,7 @@ export function createInitialState(): IntakeState {
     activeTopicIndex: 0,
     overallReadiness: 0,
     researchBrief: null,
+    researchPreview: null,
     gaps: [],
     mrdResult: null,
     sources: [],
