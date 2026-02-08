@@ -1,19 +1,127 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { conductResearch, isGeminiAvailable } from '@/lib/gemini';
 import { generateMRD, MRDInput, ResearchSource } from '@/skills/mrd_generator';
-import { sanitizeMRDInput } from '@/lib/sanitize';
+import { sanitizeMRDInput, sanitizeObject, sanitizeInput } from '@/lib/sanitize';
+import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
+
+/**
+ * Build a comprehensive product description from structured intake data.
+ * Combines all topic data into productConcept, targetMarket, and additionalDetails.
+ */
+function buildFromIntakeData(
+  intakeData: Record<string, { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }>,
+  brief?: string
+): { productConcept: string; targetMarket: string; additionalDetails: string } {
+  // Extract productConcept from problem-vision topic
+  const problemVision = intakeData['problem-vision'];
+  const productDef = intakeData['product-definition'];
+  let productConcept = '';
+
+  if (problemVision) {
+    const problem = problemVision.structuredData?.problemDescription || '';
+    const vision = problemVision.structuredData?.visionStatement || '';
+    const productType = problemVision.structuredData?.productType || '';
+    productConcept = [productType, problem, vision]
+      .filter((s) => typeof s === 'string' && s.trim())
+      .join(' - ');
+  }
+  if (!productConcept && productDef) {
+    productConcept = (productDef.structuredData?.productDescription as string) || '';
+  }
+  if (!productConcept) {
+    productConcept = 'Product concept from intake';
+  }
+
+  // Extract targetMarket from market-users topic
+  const marketUsers = intakeData['market-users'];
+  let targetMarket = '';
+
+  if (marketUsers) {
+    const segments = marketUsers.structuredData?.marketSegment;
+    const geography = marketUsers.structuredData?.geography;
+    const companySize = marketUsers.structuredData?.companySize;
+    const parts: string[] = [];
+    if (segments) parts.push(Array.isArray(segments) ? segments.join(', ') : segments);
+    if (companySize && typeof companySize === 'string') parts.push(companySize);
+    if (geography) parts.push(Array.isArray(geography) ? geography.join(', ') : geography);
+    if (marketUsers.structuredData?.idealCustomer && typeof marketUsers.structuredData.idealCustomer === 'string') {
+      parts.push(marketUsers.structuredData.idealCustomer);
+    }
+    targetMarket = parts.join(' | ');
+  }
+  if (!targetMarket) {
+    targetMarket = 'General market';
+  }
+
+  // Build additionalDetails from ALL intake data
+  const detailParts: string[] = [];
+
+  for (const topicDef of TOPIC_DEFINITIONS) {
+    const data = intakeData[topicDef.id];
+    if (!data) continue;
+
+    const entries: string[] = [];
+    for (const [key, value] of Object.entries(data.structuredData || {})) {
+      if (!value) continue;
+      const displayValue = Array.isArray(value) ? value.join(', ') : value;
+      if (!displayValue.trim()) continue;
+      const field = topicDef.fields.find((f) => f.id === key);
+      entries.push(`${field?.label || key}: ${displayValue}`);
+    }
+    for (const [key, value] of Object.entries(data.freetext || {})) {
+      if (!value || !value.trim()) continue;
+      const field = topicDef.fields.find((f) => f.id === key);
+      entries.push(`${field?.label || key}: ${value}`);
+    }
+
+    if (entries.length > 0) {
+      detailParts.push(`[${topicDef.name}]\n${entries.join('\n')}`);
+    }
+  }
+
+  // Append the brief if available
+  if (brief) {
+    detailParts.push(`[Research Brief]\n${brief}`);
+  }
+
+  const additionalDetails = detailParts.join('\n\n');
+
+  return { productConcept, targetMarket, additionalDetails };
+}
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json();
 
-    // Sanitize user inputs to prevent prompt injection
-    const {
-      productConcept,
-      targetMarket,
-      additionalDetails,
-      clarifications,
-    } = sanitizeMRDInput(body);
+    let productConcept: string;
+    let targetMarket: string;
+    let additionalDetails: string | undefined;
+    let clarifications: { question: string; answer: string }[] | undefined;
+
+    // Check if this is from the new intake flow or the legacy format
+    if (body.intakeData) {
+      console.log('[API] Processing intake flow payload');
+
+      // Sanitize the structured intake data
+      const sanitizedIntake = sanitizeObject({ intakeData: body.intakeData });
+      const intakeData = sanitizedIntake.intakeData as Record<
+        string,
+        { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }
+      >;
+      const brief = body.brief ? sanitizeInput(body.brief, { maxLength: 20000, allowMarkdown: true }) : undefined;
+
+      const extracted = buildFromIntakeData(intakeData, brief);
+      productConcept = extracted.productConcept;
+      targetMarket = extracted.targetMarket;
+      additionalDetails = extracted.additionalDetails;
+    } else {
+      // Legacy format - sanitize as before
+      const sanitized = sanitizeMRDInput(body);
+      productConcept = sanitized.productConcept;
+      targetMarket = sanitized.targetMarket;
+      additionalDetails = sanitized.additionalDetails;
+      clarifications = sanitized.clarifications;
+    }
 
     if (!productConcept || !targetMarket) {
       return NextResponse.json(
