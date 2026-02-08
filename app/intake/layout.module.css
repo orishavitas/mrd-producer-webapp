@@ -1,0 +1,53 @@
+/* Shared intake layout styles */
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-4) var(--space-6);
+  border-bottom: 1px solid var(--border);
+  background-color: var(--surface);
+}
+
+.headerLink {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.headerLink:hover {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.headerArrow {
+  font-size: var(--text-base);
+}
+
+.headerTitle {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+  margin: 0;
+}
+
+.content {
+  flex: 1;
+}
+
+@media screen and (max-width: 768px) {
+  .header {
+    padding: var(--space-3) var(--space-4);
+  }
+}
