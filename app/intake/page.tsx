@@ -6,7 +6,7 @@ import styles from './intake.module.css';
 
 import { IntakeProvider, useIntake } from './lib/intake-context';
 import { getTopicDefinition } from './lib/topic-definitions';
-import type { TopicData } from './lib/intake-state';
+import type { TopicData, TopicStatus } from './lib/intake-state';
 
 import KickstartPanel from './components/kickstart-panel';
 import TopicCard from './components/topic-card';
@@ -71,33 +71,19 @@ function KickstartPhase() {
 
       const result = await response.json();
 
-      // Update all topics with parsed data
-      const updatedTopics = state.topics.map((topic) => {
+      // Update all topics with parsed data — all start as upcoming, topic[0] is active
+      const updatedTopics = state.topics.map((topic, i) => {
         const parsed = result.topics?.[topic.id];
-        if (!parsed) return topic;
         return {
           ...topic,
-          structuredData: parsed.structuredData || {},
-          freetext: parsed.freetext || {},
-          completeness: parsed.completeness || 0,
+          structuredData: parsed?.structuredData || {},
+          freetext: parsed?.freetext || {},
+          completeness: parsed?.completeness || 0,
+          status: i === 0 ? 'active' as TopicStatus : 'upcoming' as TopicStatus,
         };
       });
       dispatch({ type: 'SET_ALL_TOPICS', topics: updatedTopics });
-
-      // Navigate to the topic with lowest coverage
-      const lowestTopicId = result.lowestTopic || state.topics[0].id;
-      const lowestIndex = state.topics.findIndex((t) => t.id === lowestTopicId);
-      const targetIndex = lowestIndex >= 0 ? lowestIndex : 0;
-
-      // Mark the target topic as active, others before it as completed
-      const topicsWithStatus = updatedTopics.map((topic, i) => ({
-        ...topic,
-        status: i < targetIndex ? 'completed' as const
-          : i === targetIndex ? 'active' as const
-          : 'upcoming' as const,
-      }));
-      dispatch({ type: 'SET_ALL_TOPICS', topics: topicsWithStatus });
-      dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: targetIndex });
+      dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: 0 });
       dispatch({ type: 'SET_PHASE', phase: 'topics' });
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong');
@@ -144,7 +130,7 @@ function KickstartPhase() {
 // --- Phase: Topics ---
 
 function TopicsPhase() {
-  const { state, dispatch, updateTopicField, goToTopic } = useIntake();
+  const { state, dispatch, updateTopicField } = useIntake();
   const [isEvaluating, setIsEvaluating] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -191,13 +177,16 @@ function TopicsPhase() {
     return parts.join(' | ').slice(0, 200) || 'Completed';
   }
 
-  async function handleTopicSubmit(topicId: string) {
+  async function handleApproveTopic(topicId: string) {
     const topic = state.topics.find((t) => t.id === topicId);
     if (!topic) return;
+    const currentIndex = state.topics.findIndex((t) => t.id === topicId);
 
     setIsEvaluating(true);
     setError(null);
 
+    // 1. Evaluate (non-blocking on failure — use fallback score 50)
+    let score = 50;
     try {
       const allTopicsState = state.topics.map((t) => ({
         id: t.id,
@@ -217,84 +206,83 @@ function TopicsPhase() {
         }),
       });
 
-      if (!response.ok) {
-        const data = await response.json().catch(() => ({}));
-        throw new Error(data.error || 'Failed to evaluate topic');
+      if (response.ok) {
+        const result = await response.json();
+        score = result.topicScore || 50;
       }
-
-      const result = await response.json();
-
-      // Update the current topic as completed with score
-      dispatch({
-        type: 'UPDATE_TOPIC',
-        topicId,
-        data: {
-          status: 'completed',
-          completeness: result.topicScore || 50,
-        },
-      });
-
-      // Determine the next topic
-      const nextTopicId = result.nextTopicId;
-      const nextIndex = state.topics.findIndex((t) => t.id === nextTopicId);
-
-      // Check if all topics are completed (or we're at the end)
-      const currentIndex = state.topics.findIndex((t) => t.id === topicId);
-      const isLast = currentIndex === state.topics.length - 1;
-      const allDoneExceptCurrent = state.topics.every(
-        (t) => t.id === topicId || t.status === 'completed'
-      );
-
-      if (isLast || allDoneExceptCurrent) {
-        // All topics done -> review phase
-        dispatch({ type: 'SET_PHASE', phase: 'review' });
-      } else if (nextIndex >= 0 && state.topics[nextIndex].status !== 'completed') {
-        // Go to the suggested next topic
-        dispatch({
-          type: 'UPDATE_TOPIC',
-          topicId: nextTopicId,
-          data: { status: 'active' },
-        });
-        dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: nextIndex });
-      } else {
-        // Fallback: find next non-completed topic
-        const fallbackIndex = state.topics.findIndex(
-          (t, i) => i > currentIndex && t.status !== 'completed'
-        );
-        if (fallbackIndex >= 0) {
-          dispatch({
-            type: 'UPDATE_TOPIC',
-            topicId: state.topics[fallbackIndex].id,
-            data: { status: 'active' },
-          });
-          dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: fallbackIndex });
-        } else {
-          dispatch({ type: 'SET_PHASE', phase: 'review' });
-        }
-      }
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'Something went wrong');
-      // Still advance as a fallback so user isn't stuck
-      dispatch({
-        type: 'UPDATE_TOPIC',
-        topicId,
-        data: { status: 'completed', completeness: 30 },
-      });
-      const currentIndex = state.topics.findIndex((t) => t.id === topicId);
-      const nextIndex = currentIndex + 1;
-      if (nextIndex < state.topics.length) {
-        dispatch({
-          type: 'UPDATE_TOPIC',
-          topicId: state.topics[nextIndex].id,
-          data: { status: 'active' },
-        });
-        dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: nextIndex });
-      } else {
-        dispatch({ type: 'SET_PHASE', phase: 'review' });
-      }
-    } finally {
-      setIsEvaluating(false);
+    } catch {
+      // Evaluation failed — proceed with fallback score
     }
+
+    // 2. Approve: mark done, activate next (or go to review)
+    dispatch({ type: 'APPROVE_TOPIC', topicIndex: currentIndex, score });
+
+    const isLast = currentIndex === state.topics.length - 1;
+
+    // 3. If not last topic, pre-fill subsequent topics via AI
+    if (!isLast) {
+      dispatch({ type: 'SET_UPDATING_TOPICS', isUpdating: true });
+      try {
+        // Build approved topics data
+        const approvedTopics: Record<string, { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }> = {};
+        for (let i = 0; i <= currentIndex; i++) {
+          const t = state.topics[i];
+          approvedTopics[t.id] = {
+            structuredData: i === currentIndex ? topic.structuredData : t.structuredData,
+            freetext: i === currentIndex ? topic.freetext : t.freetext,
+          };
+        }
+        const remainingTopicIds = state.topics.slice(currentIndex + 1).map((t) => t.id);
+
+        const response = await fetch('/api/intake/update-subsequent', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ approvedTopics, remainingTopicIds }),
+        });
+
+        if (response.ok) {
+          const result = await response.json();
+          const updates = result.topicUpdates;
+          if (updates) {
+            for (const [tid, data] of Object.entries(updates) as [string, { structuredData: Record<string, string | string[]>; freetext: Record<string, string>; completeness: number }][]) {
+              dispatch({
+                type: 'UPDATE_TOPIC',
+                topicId: tid,
+                data: {
+                  structuredData: data.structuredData || {},
+                  freetext: data.freetext || {},
+                  completeness: data.completeness || 0,
+                },
+              });
+            }
+          }
+        }
+      } catch {
+        // Pre-fill failed — user fills manually, no error shown
+      } finally {
+        dispatch({ type: 'SET_UPDATING_TOPICS', isUpdating: false });
+      }
+    }
+
+    setIsEvaluating(false);
+  }
+
+  function handleTopicClick(topicId: string) {
+    const topic = state.topics.find((t) => t.id === topicId);
+    if (!topic || topic.status !== 'completed') return;
+    if (state.isUpdatingTopics) return;
+
+    // If topics after the clicked one are completed, confirm rollback
+    const clickedIndex = state.topics.findIndex((t) => t.id === topicId);
+    const hasCompletedAfter = state.topics.some(
+      (t, i) => i > clickedIndex && t.status === 'completed'
+    );
+    if (hasCompletedAfter) {
+      const ok = confirm('Rolling back will clear all topics after this one. Continue?');
+      if (!ok) return;
+    }
+
+    dispatch({ type: 'ROLLBACK_TO_TOPIC', topicIndex: clickedIndex });
   }
 
   function handleGenerate() {
@@ -305,17 +293,13 @@ function TopicsPhase() {
     dispatch({ type: 'SET_PHASE', phase: 'gaps' });
   }
 
-  function handleTopicClick(topicId: string) {
-    goToTopic(topicId);
-  }
-
   return (
     <div className={styles.wrapper}>
       {/* Desktop sidebar */}
       <ProgressSidebar
         topics={topicProgressData}
         overallReadiness={state.overallReadiness}
-        onTopicClick={handleTopicClick}
+        onTopicClick={state.isUpdatingTopics ? undefined : handleTopicClick}
         onGenerate={handleGenerate}
         onSkipToGenerate={handleSkipToGenerate}
       />
@@ -343,12 +327,20 @@ function TopicsPhase() {
           </div>
         )}
 
+        {state.isUpdatingTopics && (
+          <div className={styles.evaluatingBanner}>
+            <span className={styles.spinnerInline} aria-hidden="true" />
+            Updating topics...
+          </div>
+        )}
+
         <div className={styles.topicStack}>
           {state.topics.map((topic) => {
             const definition = getTopicDefinition(topic.id);
             if (!definition) return null;
 
             const isActive = topic.id === activeTopic?.id;
+            const isEditable = isActive && !state.isUpdatingTopics;
             const isCompleted = topic.status === 'completed';
             return (
               <TopicCard
@@ -359,10 +351,11 @@ function TopicsPhase() {
                 status={topic.status}
                 completeness={topic.completeness}
                 summary={isCompleted ? buildTopicSummary(topic) : undefined}
-                onSubmit={isActive ? () => handleTopicSubmit(topic.id) : undefined}
+                submitLabel="Approve & Continue"
+                onSubmit={isEditable ? () => handleApproveTopic(topic.id) : undefined}
                 onExpand={isCompleted ? () => handleTopicClick(topic.id) : undefined}
               >
-                {isActive &&
+                {isEditable &&
                   definition.fields.map((field) => (
                     <TopicFieldRenderer
                       key={field.id}
@@ -494,7 +487,9 @@ function ReviewPhase() {
   }
 
   function handleGoBack() {
-    dispatch({ type: 'SET_PHASE', phase: 'topics' });
+    // Rollback to last topic instead of just changing phase
+    const lastIndex = state.topics.length - 1;
+    dispatch({ type: 'ROLLBACK_TO_TOPIC', topicIndex: lastIndex });
   }
 
   return (
@@ -571,7 +566,7 @@ function ReviewPhase() {
 // --- Phase: Gaps ---
 
 function GapsPhase() {
-  const { state, dispatch, goToTopic } = useIntake();
+  const { state, dispatch, rollbackToTopic } = useIntake();
 
   const gapData = state.gaps.map((g) => ({
     severity: (g.severity === 'green' ? 'yellow' : g.severity) as 'red' | 'yellow',
@@ -582,15 +577,15 @@ function GapsPhase() {
   }));
 
   function handleFillGap(topicId: string) {
-    goToTopic(topicId);
+    rollbackToTopic(topicId);
   }
 
-  function handleAcceptGap(topicId: string) {
-    dispatch({ type: 'DISMISS_GAP', topicId });
+  function handleAcceptGap(gapTitle: string) {
+    dispatch({ type: 'DISMISS_GAP', gapTitle });
   }
 
   function handleGoBack() {
-    dispatch({ type: 'SET_PHASE', phase: 'topics' });
+    dispatch({ type: 'SET_PHASE', phase: 'review' });
   }
 
   function handleGenerateAnyway() {
@@ -662,9 +657,12 @@ function GeneratingPhase() {
           JSON.stringify({
             mrd: result.mrd,
             sources: result.sources || [],
-            productName: state.topics
-              .find((t) => t.id === 'product-concept')
-              ?.structuredData?.productName || 'MRD',
+            productName: (state.topics
+              .find((t) => t.id === 'problem-vision')
+              ?.freetext?.visionStatement as string) ||
+              (state.topics
+              .find((t) => t.id === 'product-definition')
+              ?.freetext?.productDescription as string) || 'MRD',
           })
         );
       } catch {

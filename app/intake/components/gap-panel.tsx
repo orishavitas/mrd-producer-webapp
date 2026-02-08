@@ -14,7 +14,7 @@ interface GapPanelProps {
   gaps: Gap[];
   overallReadiness: number;
   onFillGap: (topicId: string) => void;
-  onAcceptGap: (topicId: string) => void;
+  onAcceptGap: (gapTitle: string) => void;
   onGoBack: () => void;
   onGenerateAnyway: () => void;
 }
@@ -83,7 +83,7 @@ export default function GapPanel({
                   <button
                     type="button"
                     className={styles.acceptButton}
-                    onClick={() => onAcceptGap(gap.topicId)}
+                    onClick={() => onAcceptGap(gap.title)}
                   >
                     {gap.canAIFill ? 'Let AI estimate' : "OK, that's fine"}
                   </button>

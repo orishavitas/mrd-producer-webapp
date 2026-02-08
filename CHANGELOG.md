@@ -5,6 +5,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.4.0] - 2026-02-08
+
+### Added
+- **Progressive Intake Journey**: AI-driven guided intake flow replacing single-form approach
+  - 6 topic categories (Problem & Vision, Market & Users, Product Definition, Design & Experience, Business & Pricing, Competitive Landscape)
+  - Kickstart options: describe product freeform, upload document (coming soon), import from link (coming soon)
+  - Adaptive AI evaluation between topics with smart defaults
+  - Research readiness scoring with weighted topic completeness
+  - Gap analysis with red/yellow severity levels before MRD generation
+  - Research brief review with natural language revision
+- **Design Token System**: Exportable design tokens following DTCG Community Group spec
+  - `styles/tokens/tokens.json` - Canonical definitions (Figma/Style Dictionary compatible)
+  - CSS custom properties for colors, typography, spacing, radii, shadows, transitions
+  - Component-level token compositions (card, button, input, chip, progress bar, alert)
+  - Light and dark mode via `prefers-color-scheme`
+- **New Routes**: Landing page (`/`), guided intake (`/intake`), results (`/intake/results`)
+- **8 Reusable UI Components**: ChipSelect, TopicCard, ProgressSidebar, MobileProgress, GapPanel, KickstartPanel, TopicFieldRenderer, ResearchBrief
+- **5 New API Endpoints**: `/api/intake/evaluate`, `/api/intake/parse-kickstart`, `/api/intake/generate-brief`, `/api/intake/revise-brief`, `/api/intake/analyze-gaps`
+- **Intake State Management**: React Context + useReducer with 6 topic definitions (35+ field configurations)
+- Legacy MRD generator preserved at `/legacy`
+
+### Changed
+- Landing page redesigned with "Start new MRD" CTA
+- `/api/generate` extended to accept enriched intake data alongside legacy format
+- `globals.css` migrated from inline variables to design token imports
+
 ## [0.3.0] - 2026-02-03
 
 ### Added

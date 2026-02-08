@@ -81,49 +81,79 @@ function BriefRenderer({ content }: { content: string }) {
   const elements: React.ReactNode[] = [];
   let key = 0;
 
-  for (const line of lines) {
-    const trimmed = line.trimEnd();
+  let i = 0;
+  while (i < lines.length) {
+    const trimmed = lines[i].trimEnd();
 
     // Headings
     if (trimmed.startsWith('### ')) {
       elements.push(
         <h4 key={key++} className={styles.heading3}>
-          {trimmed.slice(4)}
+          <InlineText text={trimmed.slice(4)} />
         </h4>
       );
+      i++;
     } else if (trimmed.startsWith('## ')) {
       elements.push(
         <h3 key={key++} className={styles.heading2}>
-          {trimmed.slice(3)}
+          <InlineText text={trimmed.slice(3)} />
         </h3>
       );
+      i++;
     } else if (trimmed.startsWith('# ')) {
       elements.push(
         <h2 key={key++} className={styles.heading1}>
-          {trimmed.slice(2)}
+          <InlineText text={trimmed.slice(2)} />
         </h2>
       );
+      i++;
     }
-    // Bullet list items
+    // Horizontal rule
+    else if (/^(-{3,}|\*{3,}|_{3,})$/.test(trimmed)) {
+      elements.push(<hr key={key++} className={styles.hr} />);
+      i++;
+    }
+    // Bullet list - collect consecutive items into <ul>
     else if (trimmed.startsWith('- ') || trimmed.startsWith('* ')) {
-      elements.push(
-        <li key={key++} className={styles.listItem}>
-          <InlineText text={trimmed.slice(2)} />
-        </li>
-      );
+      const items: React.ReactNode[] = [];
+      while (i < lines.length) {
+        const t = lines[i].trimEnd();
+        if (t.startsWith('- ') || t.startsWith('* ')) {
+          items.push(
+            <li key={key++} className={styles.listItem}>
+              <InlineText text={t.slice(2)} />
+            </li>
+          );
+          i++;
+        } else {
+          break;
+        }
+      }
+      elements.push(<ul key={key++} className={styles.list}>{items}</ul>);
     }
-    // Numbered list items
+    // Numbered list - collect consecutive items into <ol>
     else if (/^\d+\.\s/.test(trimmed)) {
-      const text = trimmed.replace(/^\d+\.\s/, '');
-      elements.push(
-        <li key={key++} className={styles.listItem}>
-          <InlineText text={text} />
-        </li>
-      );
+      const items: React.ReactNode[] = [];
+      while (i < lines.length) {
+        const t = lines[i].trimEnd();
+        if (/^\d+\.\s/.test(t)) {
+          const text = t.replace(/^\d+\.\s/, '');
+          items.push(
+            <li key={key++} className={styles.listItem}>
+              <InlineText text={text} />
+            </li>
+          );
+          i++;
+        } else {
+          break;
+        }
+      }
+      elements.push(<ol key={key++} className={styles.list}>{items}</ol>);
     }
     // Empty line
     else if (trimmed === '') {
       elements.push(<div key={key++} className={styles.spacer} />);
+      i++;
     }
     // Regular paragraph
     else {
@@ -132,15 +162,17 @@ function BriefRenderer({ content }: { content: string }) {
           <InlineText text={trimmed} />
         </p>
       );
+      i++;
     }
   }
 
   return <div className={styles.briefBody}>{elements}</div>;
 }
 
-/** Renders inline bold markers (**text**) */
+/** Renders inline bold (**text**) and italic (*text* / _text_) markers */
 function InlineText({ text }: { text: string }) {
-  const parts = text.split(/(\*\*[^*]+\*\*)/g);
+  // Match bold (**text**) first, then italic (*text* or _text_)
+  const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|_[^_]+_)/g);
   return (
     <>
       {parts.map((part, i) => {
@@ -149,6 +181,13 @@ function InlineText({ text }: { text: string }) {
             <strong key={i} className={styles.bold}>
               {part.slice(2, -2)}
             </strong>
+          );
+        }
+        if ((part.startsWith('*') && part.endsWith('*')) || (part.startsWith('_') && part.endsWith('_'))) {
+          return (
+            <em key={i} className={styles.italic}>
+              {part.slice(1, -1)}
+            </em>
           );
         }
         return <span key={i}>{part}</span>;

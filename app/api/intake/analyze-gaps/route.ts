@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGeminiProvider } from '@/lib/providers/gemini-provider';
+import { getProviderChain } from '@/lib/providers/provider-chain';
 import { sanitizeObject, sanitizeInput } from '@/lib/sanitize';
 import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
 
@@ -124,9 +124,9 @@ Also provide an overall readiness score 0-100 for MRD generation.`;
     const systemPrompt =
       'You are analyzing a product research brief for gaps before MRD generation. Identify missing information that would significantly impact the quality of the MRD. Classify each gap as: \'red\' (only user can provide), \'yellow\' (AI can estimate from research), or \'green\' (AI is confident). Only return red and yellow gaps.';
 
-    const gemini = getGeminiProvider();
+    const chain = getProviderChain();
 
-    const result = await gemini.generateStructured<{
+    const result = await chain.generateStructured<{
       gaps: {
         severity: 'red' | 'yellow';
         topicId: string;

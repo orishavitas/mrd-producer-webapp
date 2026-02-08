@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGeminiProvider } from '@/lib/providers/gemini-provider';
+import { getProviderChain } from '@/lib/providers/provider-chain';
 import { sanitizeObject } from '@/lib/sanitize';
 import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
 
@@ -82,9 +82,9 @@ Also assess overall readiness as a score from 0-100 based on how complete the in
     const systemPrompt =
       'You are a product research analyst. Generate a structured research brief for an MRD based on the collected intake data. Organize by the 12 MRD sections. Be concise but thorough. Use markdown formatting.';
 
-    const gemini = getGeminiProvider();
+    const chain = getProviderChain();
 
-    const response = await gemini.generateText(prompt, systemPrompt, {
+    const response = await chain.generateText(prompt, systemPrompt, {
       maxTokens: 4096,
     });
 

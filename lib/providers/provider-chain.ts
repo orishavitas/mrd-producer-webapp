@@ -163,6 +163,36 @@ export class ProviderChain {
   }
 
   /**
+   * Generate structured JSON output with automatic fallback.
+   * Falls back to text generation + JSON parsing if structured output is not supported.
+   */
+  async generateStructured<T>(
+    prompt: string,
+    schema: object,
+    systemPrompt?: string,
+    options?: GenerationOptions
+  ): Promise<T & { providerUsed: string }> {
+    const { result, providerUsed } = await this.executeWithFallback(
+      async (provider) => {
+        if (provider.capabilities.structuredOutput && provider.generateStructured) {
+          return provider.generateStructured<T>(prompt, schema, systemPrompt, options);
+        }
+        // Fall back to text generation + JSON parsing
+        console.log(
+          `[ProviderChain] Provider ${provider.name} does not support structured output, using text generation`
+        );
+        const response = await provider.generateText(
+          prompt + '\n\nRespond with valid JSON only.',
+          systemPrompt,
+          { ...options, responseFormat: 'json' }
+        );
+        return JSON.parse(response.text) as T;
+      }
+    );
+    return { ...result, providerUsed } as T & { providerUsed: string };
+  }
+
+  /**
    * Generate text with search grounding and automatic fallback.
    * Falls back to regular text generation if search grounding is not supported.
    */

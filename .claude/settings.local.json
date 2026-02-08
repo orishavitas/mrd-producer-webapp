@@ -27,7 +27,11 @@
       "Bash(npx tsc:*)",
       "Bash(npx jest --no-coverage)",
       "Bash(npm run lint)",
-      "Bash(npx jest:*)"
+      "Bash(npx jest:*)",
+      "Bash(git restore:*)",
+      "Bash(git log:*)",
+      "Bash(curl:*)",
+      "Bash(npm run dev:*)"
     ]
   }
 }

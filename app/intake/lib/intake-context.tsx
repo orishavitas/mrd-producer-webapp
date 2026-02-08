@@ -34,8 +34,7 @@ interface IntakeContextValue {
   getTopicById: (id: string) => TopicData | undefined;
   getTopicDefinition: (id: string) => TopicDefinition | undefined;
   updateTopicField: (topicId: string, fieldId: string, value: string | string[]) => void;
-  submitTopic: (topicId: string) => void;
-  goToTopic: (topicId: string) => void;
+  rollbackToTopic: (topicId: string) => void;
 }
 
 const IntakeContext = createContext<IntakeContextValue | null>(null);
@@ -111,49 +110,13 @@ export function IntakeProvider({ children }: IntakeProviderProps) {
     [state.topics]
   );
 
-  const submitTopic = useCallback(
+  const rollbackToTopic = useCallback(
     (topicId: string) => {
       const topicIndex = state.topics.findIndex((t) => t.id === topicId);
       if (topicIndex === -1) return;
-
-      // Mark current topic as completed
-      dispatch({
-        type: 'UPDATE_TOPIC',
-        topicId,
-        data: { status: 'completed' },
-      });
-
-      // Advance to next topic if there is one
-      const nextIndex = topicIndex + 1;
-      if (nextIndex < state.topics.length) {
-        // Activate the next topic
-        dispatch({
-          type: 'UPDATE_TOPIC',
-          topicId: state.topics[nextIndex].id,
-          data: { status: 'active' },
-        });
-        dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: nextIndex });
-      } else {
-        // All topics done - move to review phase
-        dispatch({ type: 'SET_PHASE', phase: 'review' });
-      }
-    },
-    [state.topics]
-  );
-
-  const goToTopic = useCallback(
-    (topicId: string) => {
-      const topicIndex = state.topics.findIndex((t) => t.id === topicId);
-      if (topicIndex === -1) return;
-
-      // Set the target topic as active
-      dispatch({
-        type: 'UPDATE_TOPIC',
-        topicId,
-        data: { status: 'active' },
-      });
-      dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex });
-      dispatch({ type: 'SET_PHASE', phase: 'topics' });
+      // Only allow rollback to completed topics
+      if (state.topics[topicIndex].status !== 'completed') return;
+      dispatch({ type: 'ROLLBACK_TO_TOPIC', topicIndex });
     },
     [state.topics]
   );
@@ -167,8 +130,7 @@ export function IntakeProvider({ children }: IntakeProviderProps) {
       getTopicById: getTopicByIdFn,
       getTopicDefinition: getTopicDefinitionFn,
       updateTopicField,
-      submitTopic,
-      goToTopic,
+      rollbackToTopic,
     }),
     [
       state,
@@ -178,8 +140,7 @@ export function IntakeProvider({ children }: IntakeProviderProps) {
       getTopicByIdFn,
       getTopicDefinitionFn,
       updateTopicField,
-      submitTopic,
-      goToTopic,
+      rollbackToTopic,
     ]
   );
 

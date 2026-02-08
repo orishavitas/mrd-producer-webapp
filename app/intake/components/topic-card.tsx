@@ -10,6 +10,7 @@ interface TopicCardProps {
   status: 'active' | 'completed' | 'upcoming';
   completeness: number;
   summary?: string;
+  submitLabel?: string;
   onSubmit?: () => void;
   onExpand?: () => void;
   children?: React.ReactNode;
@@ -22,6 +23,7 @@ export default function TopicCard({
   status,
   completeness,
   summary,
+  submitLabel = 'Next',
   onSubmit,
   onExpand,
   children,
@@ -123,7 +125,7 @@ export default function TopicCard({
                 className={styles.submitButton}
                 onClick={onSubmit}
               >
-                Next
+                {submitLabel}
               </button>
             </div>
           )}

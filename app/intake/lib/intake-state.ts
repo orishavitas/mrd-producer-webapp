@@ -40,6 +40,7 @@ export interface IntakeState {
   gaps: Gap[];
   mrdResult: string | null;
   sources: Source[];
+  isUpdatingTopics: boolean;
 }
 
 // --- Actions ---
@@ -53,7 +54,10 @@ export type IntakeAction =
   | { type: 'SET_BRIEF'; brief: string }
   | { type: 'SET_GAPS'; gaps: Gap[] }
   | { type: 'SET_RESULT'; mrd: string; sources: Source[] }
-  | { type: 'DISMISS_GAP'; topicId: string };
+  | { type: 'DISMISS_GAP'; gapTitle: string }
+  | { type: 'APPROVE_TOPIC'; topicIndex: number; score: number }
+  | { type: 'ROLLBACK_TO_TOPIC'; topicIndex: number }
+  | { type: 'SET_UPDATING_TOPICS'; isUpdating: boolean };
 
 // --- Helpers ---
 
@@ -122,8 +126,56 @@ export function intakeReducer(state: IntakeState, action: IntakeAction): IntakeS
     case 'DISMISS_GAP':
       return {
         ...state,
-        gaps: state.gaps.filter((g) => g.topicId !== action.topicId),
+        gaps: state.gaps.filter((g) => g.title !== action.gapTitle),
       };
+
+    case 'APPROVE_TOPIC': {
+      const topics = state.topics.map((topic, i) => {
+        if (i === action.topicIndex) {
+          return { ...topic, status: 'completed' as TopicStatus, completeness: action.score };
+        }
+        if (i === action.topicIndex + 1) {
+          return { ...topic, status: 'active' as TopicStatus };
+        }
+        return topic;
+      });
+      const isLast = action.topicIndex === state.topics.length - 1;
+      return {
+        ...state,
+        topics,
+        activeTopicIndex: isLast ? state.activeTopicIndex : action.topicIndex + 1,
+        phase: isLast ? 'review' as IntakePhase : state.phase,
+        overallReadiness: calculateOverallReadiness(topics),
+      };
+    }
+
+    case 'ROLLBACK_TO_TOPIC': {
+      const topics = state.topics.map((topic, i) => {
+        if (i < action.topicIndex) return topic;
+        if (i === action.topicIndex) {
+          return { ...topic, status: 'active' as TopicStatus };
+        }
+        // Reset topics after rollback point
+        return {
+          ...topic,
+          status: 'upcoming' as TopicStatus,
+          completeness: 0,
+          structuredData: {},
+          freetext: {},
+        };
+      });
+      return {
+        ...state,
+        topics,
+        activeTopicIndex: action.topicIndex,
+        phase: 'topics' as IntakePhase,
+        researchBrief: null,
+        overallReadiness: calculateOverallReadiness(topics),
+      };
+    }
+
+    case 'SET_UPDATING_TOPICS':
+      return { ...state, isUpdatingTopics: action.isUpdating };
 
     default:
       return state;
@@ -152,5 +204,6 @@ export function createInitialState(): IntakeState {
     gaps: [],
     mrdResult: null,
     sources: [],
+    isUpdatingTopics: false,
   };
 }

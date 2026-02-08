@@ -63,26 +63,31 @@
   line-height: var(--leading-relaxed);
 }
 
+.list {
+  margin: var(--space-1) 0 var(--space-2) 0;
+  padding-left: var(--space-6);
+}
+
 .listItem {
   font-size: var(--text-sm);
   color: var(--text-secondary);
   margin: 0 0 var(--space-1) 0;
-  padding-left: var(--space-4);
   line-height: var(--leading-relaxed);
-  list-style: none;
-  position: relative;
 }
 
-.listItem::before {
-  content: '\2022';
-  position: absolute;
-  left: var(--space-1);
-  color: var(--text-muted);
+.hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: var(--space-3) 0;
 }
 
 .bold {
   font-weight: var(--font-semibold);
   color: var(--foreground);
+}
+
+.italic {
+  font-style: italic;
 }
 
 .spacer {

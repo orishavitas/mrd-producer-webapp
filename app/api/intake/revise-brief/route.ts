@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGeminiProvider } from '@/lib/providers/gemini-provider';
+import { getProviderChain } from '@/lib/providers/provider-chain';
 import { sanitizeInput } from '@/lib/sanitize';
 
 /**
@@ -56,9 +56,9 @@ CHANGES_END`;
     const systemPrompt =
       'You are revising a product research brief. Apply the requested changes while preserving the overall structure and any unmodified content. Return the complete updated brief in markdown.';
 
-    const gemini = getGeminiProvider();
+    const chain = getProviderChain();
 
-    const response = await gemini.generateText(prompt, systemPrompt, {
+    const response = await chain.generateText(prompt, systemPrompt, {
       maxTokens: 4096,
     });
 

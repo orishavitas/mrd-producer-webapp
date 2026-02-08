@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGeminiProvider } from '@/lib/providers/gemini-provider';
+import { getProviderChain } from '@/lib/providers/provider-chain';
 import { sanitizeObject } from '@/lib/sanitize';
 import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
 
@@ -70,9 +70,9 @@ Calculate overall readiness across all topics.`;
     const systemPrompt =
       'You are evaluating the completeness of a product research intake form for MRD generation. Score the provided topic data 0-100 based on depth, specificity, and usefulness for market research. Suggest which topic should be next.';
 
-    const gemini = getGeminiProvider();
+    const chain = getProviderChain();
 
-    const result = await gemini.generateStructured<{
+    const result = await chain.generateStructured<{
       topicScore: number;
       nextTopicId: string;
       suggestions: Record<string, string[]>;

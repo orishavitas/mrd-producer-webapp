@@ -149,6 +149,7 @@ export class GeminiProvider implements AIProvider {
 
   /**
    * Generate structured JSON output.
+   * Uses Gemini's responseMimeType for reliable JSON, with prompt-based schema guidance.
    */
   async generateStructured<T>(
     prompt: string,
@@ -156,31 +157,32 @@ export class GeminiProvider implements AIProvider {
     systemPrompt?: string,
     options: GenerationOptions = {}
   ): Promise<T> {
-    const structuredPrompt = `${prompt}
+    const client = this.getClient();
+
+    const structuredPrompt = `${systemPrompt ? systemPrompt + '\n\n---\n\n' : ''}${prompt}
 
 Respond with valid JSON matching this schema:
 ${JSON.stringify(schema, null, 2)}
 
-Return ONLY the JSON object, no markdown or explanation.`;
+Return ONLY the JSON object.`;
 
-    const response = await this.generateText(structuredPrompt, systemPrompt, {
-      ...options,
-      responseFormat: 'json',
+    const response = await client.models.generateContent({
+      model: options.model || DEFAULT_MODEL,
+      contents: structuredPrompt,
+      config: {
+        maxOutputTokens: options.maxTokens || 8192,
+        temperature: options.temperature || 0.7,
+        responseMimeType: 'application/json',
+      },
     });
 
+    const text = response.text;
+    if (!text) {
+      throw new Error('No text response received from Gemini');
+    }
+
     try {
-      // Extract JSON from response (handle markdown code blocks)
-      let jsonText = response.text.trim();
-      if (jsonText.startsWith('```json')) {
-        jsonText = jsonText.slice(7);
-      }
-      if (jsonText.startsWith('```')) {
-        jsonText = jsonText.slice(3);
-      }
-      if (jsonText.endsWith('```')) {
-        jsonText = jsonText.slice(0, -3);
-      }
-      return JSON.parse(jsonText.trim()) as T;
+      return JSON.parse(text.trim()) as T;
     } catch (error) {
       throw new Error(
         `Failed to parse structured response: ${error instanceof Error ? error.message : 'Unknown error'}`

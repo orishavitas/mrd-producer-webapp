@@ -52,6 +52,7 @@ export default function ProgressSidebar({
               className={`${styles.topicItem} ${styles[`topicItem--${topic.status}`]}`}
               role={isClickable ? 'button' : undefined}
               tabIndex={isClickable ? 0 : undefined}
+              aria-label={isClickable ? `Roll back to ${topic.name}` : undefined}
               onClick={() => handleTopicClick(topic)}
               onKeyDown={(e) => handleTopicKeyDown(e, topic)}
             >

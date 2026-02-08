@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getGeminiProvider } from '@/lib/providers/gemini-provider';
+import { getProviderChain } from '@/lib/providers/provider-chain';
 import { sanitizeInput } from '@/lib/sanitize';
 import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
 
@@ -99,9 +99,9 @@ Also determine overallReadiness (0-100) and identify the lowestTopic (the topic 
     const systemPrompt =
       'You are parsing a product description to extract structured information for a Market Requirements Document. Map the content to these categories: problem-vision, market-users, product-definition, design-experience, business-pricing, competitive-landscape. For each, extract relevant structured data and rate completeness 0-100.';
 
-    const gemini = getGeminiProvider();
+    const chain = getProviderChain();
 
-    const result = await gemini.generateStructured<{
+    const result = await chain.generateStructured<{
       topics: Record<string, {
         structuredData: Record<string, string | string[]>;
         freetext: Record<string, string>;
@@ -109,7 +109,7 @@ Also determine overallReadiness (0-100) and identify the lowestTopic (the topic 
       }>;
       overallReadiness: number;
       lowestTopic: string;
-    }>(prompt, schema, systemPrompt, { maxTokens: 2048 });
+    }>(prompt, schema, systemPrompt, { maxTokens: 8192 });
 
     console.log('[API/intake/parse-kickstart] Parsed. Overall readiness:', result.overallReadiness, 'Lowest:', result.lowestTopic);
 

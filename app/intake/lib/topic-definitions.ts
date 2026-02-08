@@ -132,7 +132,7 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
     description: 'What is the product? What does it do? Key specs and features?',
     fields: [
       {
-        type: 'select',
+        type: 'chips',
         id: 'productCategory',
         label: 'Product category',
         options: ['Kiosk/Display', 'IoT Device', 'Mobile App', 'Web Platform', 'Physical Accessory', 'Security Solution'],

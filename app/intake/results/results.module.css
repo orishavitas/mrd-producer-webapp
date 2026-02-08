@@ -151,106 +151,18 @@
 }
 
 /* ========================================
-   Buttons
+   Buttons (composed from shared module)
    ======================================== */
 .primaryButton {
-  background-color: var(--btn-primary-bg);
-  color: var(--btn-primary-color);
-  border: 1px solid var(--btn-primary-border);
-  border-radius: var(--btn-primary-radius);
-  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
-  font-size: var(--btn-primary-font-size);
-  font-weight: var(--btn-primary-font-weight);
-  font-family: inherit;
-  line-height: var(--btn-primary-line-height);
-  cursor: pointer;
-  transition: var(--btn-primary-transition);
-}
-
-.primaryButton:hover:not(:disabled) {
-  background-color: var(--btn-primary-hover-bg);
-  border-color: var(--btn-primary-hover-border);
-}
-
-.primaryButton:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.primaryButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.primaryButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  composes: primaryButton from '../shared.module.css';
 }
 
 .secondaryButton {
-  background-color: transparent;
-  color: var(--text-secondary);
-  border: 1px solid var(--border);
-  border-radius: var(--btn-primary-radius);
-  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
-  font-size: var(--btn-primary-font-size);
-  font-weight: var(--font-medium);
-  font-family: inherit;
-  line-height: var(--btn-primary-line-height);
-  cursor: pointer;
-  transition:
-    background-color var(--duration-normal) var(--ease-out),
-    color var(--duration-normal) var(--ease-out),
-    border-color var(--duration-normal) var(--ease-out);
-}
-
-.secondaryButton:hover:not(:disabled) {
-  background-color: var(--surface);
-  border-color: var(--accent);
-  color: var(--accent);
-}
-
-.secondaryButton:active:not(:disabled) {
-  transform: scale(0.98);
-}
-
-.secondaryButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
-.secondaryButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  composes: secondaryButton from '../shared.module.css';
 }
 
 .ghostButton {
-  background-color: transparent;
-  color: var(--text-muted);
-  border: 1px solid transparent;
-  border-radius: var(--btn-primary-radius);
-  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
-  font-size: var(--btn-primary-font-size);
-  font-weight: var(--font-medium);
-  font-family: inherit;
-  line-height: var(--btn-primary-line-height);
-  cursor: pointer;
-  transition:
-    color var(--duration-normal) var(--ease-out),
-    border-color var(--duration-normal) var(--ease-out);
-}
-
-.ghostButton:hover {
-  color: var(--accent);
-  border-color: var(--border);
-}
-
-.ghostButton:active {
-  transform: scale(0.98);
-}
-
-.ghostButton:focus-visible {
-  outline: 2px solid var(--accent);
-  outline-offset: 2px;
+  composes: ghostButton from '../shared.module.css';
 }
 
 /* ========================================
@@ -258,7 +170,7 @@
    ======================================== */
 .sourcesPanel {
   padding: var(--space-4);
-  background-color: rgba(15, 118, 110, 0.08);
+  background-color: var(--sources-bg);
   border-radius: var(--radius);
 }
 
@@ -303,22 +215,9 @@
   max-height: 70vh;
   overflow-y: auto;
   padding: var(--space-5);
-  background-color: rgba(255, 255, 255, 0.7);
+  background-color: var(--mrd-body-bg);
   border-radius: var(--radius);
   border: 1px solid var(--border);
-}
-
-/* ========================================
-   Dark mode overrides
-   ======================================== */
-@media (prefers-color-scheme: dark) {
-  .sourcesPanel {
-    background-color: rgba(52, 211, 153, 0.12);
-  }
-
-  .mrdBody {
-    background-color: rgba(20, 24, 28, 0.85);
-  }
 }
 
 /* ========================================
