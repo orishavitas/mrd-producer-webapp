@@ -653,6 +653,24 @@ function GeneratingPhase() {
       }
 
       const result = await response.json();
+
+      // Persist result to sessionStorage so the /intake/results page can read it
+      // (results page is a sibling route without access to IntakeProvider context)
+      try {
+        sessionStorage.setItem(
+          'mrd-result',
+          JSON.stringify({
+            mrd: result.mrd,
+            sources: result.sources || [],
+            productName: state.topics
+              .find((t) => t.id === 'product-concept')
+              ?.structuredData?.productName || 'MRD',
+          })
+        );
+      } catch {
+        // sessionStorage may be unavailable; results page will handle gracefully
+      }
+
       dispatch({
         type: 'SET_RESULT',
         mrd: result.mrd,

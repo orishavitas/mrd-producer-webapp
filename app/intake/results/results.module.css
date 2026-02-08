@@ -1,6 +1,9 @@
 /* Intake results page styles */
 
-.container {
+/* ========================================
+   Empty state (no MRD data)
+   ======================================== */
+.emptyContainer {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -10,7 +13,7 @@
   text-align: center;
 }
 
-.card {
+.emptyCard {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,21 +27,21 @@
   width: 100%;
 }
 
-.title {
+.emptyTitle {
   font-size: var(--text-xl);
   font-weight: var(--font-semibold);
   color: var(--foreground);
   margin: 0;
 }
 
-.text {
+.emptyText {
   font-size: var(--text-base);
   color: var(--text-muted);
   margin: 0;
   line-height: var(--leading-relaxed);
 }
 
-.link {
+.emptyLink {
   display: inline-flex;
   align-items: center;
   gap: var(--space-2);
@@ -55,18 +58,309 @@
     color var(--duration-normal) var(--ease-out);
 }
 
-.link:hover {
+.emptyLink:hover {
   border-color: var(--btn-ghost-hover-border);
   color: var(--btn-ghost-hover-color);
   text-decoration: none;
 }
 
+/* ========================================
+   Results container
+   ======================================== */
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  max-width: 960px;
+  margin: 0 auto;
+  padding: var(--space-8);
+  width: 100%;
+}
+
+/* ========================================
+   Header area
+   ======================================== */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.headerLeft {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.title {
+  font-size: var(--text-2xl);
+  font-weight: var(--font-bold);
+  color: var(--foreground);
+  margin: 0;
+  line-height: var(--leading-tight);
+}
+
+.subtitle {
+  font-size: var(--text-base);
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ========================================
+   Error banner
+   ======================================== */
+.errorBanner {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--error-soft);
+  color: var(--error);
+  border: 1px solid var(--error);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  line-height: var(--leading-normal);
+}
+
+/* ========================================
+   Action bar (downloads + navigation)
+   ======================================== */
+.actionBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
+  padding: var(--space-4);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+}
+
+.downloadGroup {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.navGroup {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+.primaryButton {
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-color);
+  border: 1px solid var(--btn-primary-border);
+  border-radius: var(--btn-primary-radius);
+  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+  font-size: var(--btn-primary-font-size);
+  font-weight: var(--btn-primary-font-weight);
+  font-family: inherit;
+  line-height: var(--btn-primary-line-height);
+  cursor: pointer;
+  transition: var(--btn-primary-transition);
+}
+
+.primaryButton:hover:not(:disabled) {
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+.primaryButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.primaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.primaryButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.secondaryButton {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--btn-primary-radius);
+  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+  font-size: var(--btn-primary-font-size);
+  font-weight: var(--font-medium);
+  font-family: inherit;
+  line-height: var(--btn-primary-line-height);
+  cursor: pointer;
+  transition:
+    background-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.secondaryButton:hover:not(:disabled) {
+  background-color: var(--surface);
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.secondaryButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.secondaryButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.secondaryButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.ghostButton {
+  background-color: transparent;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--btn-primary-radius);
+  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+  font-size: var(--btn-primary-font-size);
+  font-weight: var(--font-medium);
+  font-family: inherit;
+  line-height: var(--btn-primary-line-height);
+  cursor: pointer;
+  transition:
+    color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out);
+}
+
+.ghostButton:hover {
+  color: var(--accent);
+  border-color: var(--border);
+}
+
+.ghostButton:active {
+  transform: scale(0.98);
+}
+
+.ghostButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Sources panel
+   ======================================== */
+.sourcesPanel {
+  padding: var(--space-4);
+  background-color: rgba(15, 118, 110, 0.08);
+  border-radius: var(--radius);
+}
+
+.sourcesHeading {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+}
+
+.sourcesList {
+  margin: var(--space-2) 0 0 0;
+  padding-left: var(--space-5);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  list-style: disc;
+}
+
+.sourcesList li {
+  margin-bottom: var(--space-1);
+}
+
+.sourceLink {
+  color: var(--accent);
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.sourceLink:hover {
+  text-decoration: underline;
+  color: var(--accent-strong);
+}
+
+/* ========================================
+   MRD body
+   ======================================== */
+.mrdBody {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  line-height: 1.7;
+  max-height: 70vh;
+  overflow-y: auto;
+  padding: var(--space-5);
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+
+/* ========================================
+   Dark mode overrides
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  .sourcesPanel {
+    background-color: rgba(52, 211, 153, 0.12);
+  }
+
+  .mrdBody {
+    background-color: rgba(20, 24, 28, 0.85);
+  }
+}
+
+/* ========================================
+   Responsive: mobile
+   ======================================== */
 @media screen and (max-width: 768px) {
   .container {
+    padding: var(--space-6) var(--space-4);
+  }
+
+  .emptyContainer {
     padding: var(--space-6) var(--space-3);
   }
 
-  .card {
+  .emptyCard {
     padding: var(--space-6);
+  }
+
+  .actionBar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .downloadGroup {
+    flex-direction: column;
+  }
+
+  .downloadGroup > button {
+    width: 100%;
+  }
+
+  .navGroup {
+    flex-direction: column;
+  }
+
+  .navGroup > button {
+    width: 100%;
+  }
+
+  .mrdBody {
+    max-height: 60vh;
+    padding: var(--space-4);
+    font-size: var(--text-xs);
   }
 }
