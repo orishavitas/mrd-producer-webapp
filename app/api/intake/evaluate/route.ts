@@ -24,6 +24,7 @@ export async function POST(request: NextRequest) {
 
     // Sanitize all user-provided inputs
     const sanitized = sanitizeObject({ structuredData, freetext });
+    const sanitizedTopicsState = sanitizeObject({ allTopicsState }).allTopicsState;
 
     console.log('[API/intake/evaluate] Evaluating topic:', topicId);
 
@@ -44,7 +45,7 @@ Freetext data provided:
 ${JSON.stringify(sanitized.freetext, null, 2)}
 
 Current status of all topics:
-${JSON.stringify(allTopicsState, null, 2)}
+${JSON.stringify(sanitizedTopicsState, null, 2)}
 
 Score this topic 0-100 based on depth, specificity, and usefulness for market research.
 Suggest which topic should be worked on next (choose from the incomplete ones).
