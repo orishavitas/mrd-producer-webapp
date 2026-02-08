@@ -1,0 +1,256 @@
+# MRD Producer - Default Agent Configuration
+#
+# This file defines the default configuration for the multi-agent system.
+# Custom configurations can override these settings.
+
+version: "1.0"
+
+# =============================================================================
+# PROVIDER CONFIGURATION
+# =============================================================================
+# Configure AI providers and their priority order.
+# First available provider in priority list is used by default.
+
+providers:
+  # Provider priority order (first = highest priority)
+  priority:
+    - gemini    # Google Gemini (primary - has search grounding)
+    - claude    # Anthropic Claude (fallback)
+    - openai    # OpenAI GPT-4 (fallback)
+
+  # Provider-specific settings
+  gemini:
+    model: "gemini-2.5-flash"
+    temperature: 0.7
+    maxTokens: 8192
+    # Gemini supports Google Search grounding
+    searchGrounding: true
+
+  claude:
+    model: "claude-3-sonnet-20240229"
+    temperature: 0.7
+    maxTokens: 8192
+    # Claude does not have built-in search
+    searchGrounding: false
+
+  openai:
+    model: "gpt-4-turbo-preview"
+    temperature: 0.7
+    maxTokens: 8192
+    # OpenAI does not have built-in search
+    searchGrounding: false
+
+# =============================================================================
+# DEFAULT AGENT SETTINGS
+# =============================================================================
+# These settings apply to all agents unless overridden.
+
+defaults:
+  maxRetries: 3
+  timeoutMs: 60000
+  enableFallback: true
+
+# =============================================================================
+# AGENT DEFINITIONS
+# =============================================================================
+# Define agents and their specific configurations.
+
+agents:
+  # ---------------------------------------------------------------------------
+  # ORCHESTRATORS
+  # ---------------------------------------------------------------------------
+
+  - id: mrd-orchestrator
+    type: orchestrator
+    description: "Main MRD generation workflow coordinator"
+    config:
+      enableQualityReview: true
+      parallelResearch: true
+      maxClarificationRounds: 2
+
+  - id: research-orchestrator
+    type: orchestrator
+    description: "Coordinates parallel research agents"
+    config:
+      parallelExecution: true
+      maxConcurrency: 3
+      failFast: false
+
+  - id: generation-orchestrator
+    type: orchestrator
+    description: "Coordinates MRD section generation"
+    config:
+      parallelGeneration: false  # Sequential by default
+      enableEnsemble: false      # Disabled by default
+
+  # ---------------------------------------------------------------------------
+  # CORE AGENTS
+  # ---------------------------------------------------------------------------
+
+  - id: parser-agent
+    type: parser
+    description: "Extracts structured data from user input"
+    config:
+      preferredProvider: gemini
+
+  - id: gap-analyzer-agent
+    type: gap-analyzer
+    description: "Identifies information gaps and generates questions"
+    config:
+      maxQuestionsPerRound: 5
+      gapPriority:
+        - target_markets
+        - use_cases
+        - target_price
+        - technical_requirements
+        - volume_expectation
+        - timeline
+
+  - id: mrd-generator-agent
+    type: generator
+    description: "Generates the final MRD document"
+    config:
+      templateVersion: "1.0"
+      sectionCount: 12
+
+  # ---------------------------------------------------------------------------
+  # RESEARCH AGENTS
+  # ---------------------------------------------------------------------------
+
+  - id: competitor-researcher
+    type: researcher
+    description: "Researches competitive products and positioning"
+    config:
+      focusAreas:
+        - pricing
+        - features
+        - market_position
+        - strengths_weaknesses
+      requireSearchGrounding: true
+      minCompetitors: 3
+
+  - id: trend-researcher
+    type: researcher
+    description: "Researches market trends and technology"
+    config:
+      focusAreas:
+        - market_trends
+        - technology_evolution
+        - regulatory_changes
+        - consumer_behavior
+      requireSearchGrounding: true
+
+  - id: pricing-researcher
+    type: researcher
+    description: "Researches pricing models and cost structures"
+    config:
+      focusAreas:
+        - pricing_models
+        - cost_structures
+        - margin_analysis
+        - competitive_pricing
+      requireSearchGrounding: true
+
+  # ---------------------------------------------------------------------------
+  # SECTION GENERATORS (for parallel section generation)
+  # ---------------------------------------------------------------------------
+
+  - id: market-section-generator
+    type: section-generator
+    description: "Generates market-related MRD sections (1-4)"
+    config:
+      sections: [1, 2, 3, 4]
+      sectionNames:
+        - "Purpose & Vision"
+        - "Problem Statement"
+        - "Target Market & Use Cases"
+        - "Target Users"
+
+  - id: technical-section-generator
+    type: section-generator
+    description: "Generates technical MRD sections (5-7)"
+    config:
+      sections: [5, 6, 7]
+      sectionNames:
+        - "Product Description"
+        - "Key Requirements"
+        - "Design & Aesthetics"
+
+  - id: strategy-section-generator
+    type: section-generator
+    description: "Generates strategy MRD sections (8-12)"
+    config:
+      sections: [8, 9, 10, 11, 12]
+      sectionNames:
+        - "Target Price"
+        - "Risks and Thoughts"
+        - "Competition to review"
+        - "Additional Considerations"
+        - "Success Criteria"
+
+  # ---------------------------------------------------------------------------
+  # REVIEWERS
+  # ---------------------------------------------------------------------------
+
+  - id: quality-reviewer
+    type: reviewer
+    description: "Validates MRD quality before delivery"
+    config:
+      minQualityScore: 0.7
+      checkSections: true
+      checkSources: true
+      checkSpecificity: true
+
+  - id: ensemble-reviewer
+    type: reviewer
+    description: "Merges and validates multiple MRD generations"
+    config:
+      votingStrategy: "best-of"  # Options: best-of, merge, consensus
+      maxGenerations: 3
+
+# =============================================================================
+# EXECUTION PATTERNS
+# =============================================================================
+# Configure how agents are executed.
+
+patterns:
+  # Research execution pattern
+  research:
+    type: parallel
+    maxConcurrency: 3
+    failFast: false
+    timeout: 120000  # 2 minutes
+
+  # Generation execution pattern
+  generation:
+    type: sequential
+    enableEnsemble: false
+    timeout: 180000  # 3 minutes
+
+  # Fallback behavior
+  fallback:
+    enabled: true
+    maxAttempts: 3
+    retryDelayMs: 1000
+    exponentialBackoff: false
+
+# =============================================================================
+# FEATURE FLAGS
+# =============================================================================
+# Enable/disable experimental features.
+
+features:
+  # Use new multi-agent system (vs legacy workflow.ts)
+  useMultiAgent: false  # Disabled by default for backward compatibility
+
+  # Enable parallel research
+  parallelResearch: true
+
+  # Enable section specialists
+  sectionSpecialists: false
+
+  # Enable ensemble voting
+  ensembleVoting: false
+
+  # Enable quality review step
+  qualityReview: true

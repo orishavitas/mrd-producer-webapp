@@ -12,11 +12,13 @@
     "test:coverage": "jest --coverage"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.32.1",
     "@google/genai": "^1.39.0",
     "@react-pdf/renderer": "^4.3.2",
     "core-js": "^3.36.0",
     "docx": "^9.5.1",
     "next": "^14.2.0",
+    "openai": "^4.76.1",
     "react": "^18.3.0",
     "react-dom": "^18.3.0"
   },

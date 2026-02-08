@@ -23,7 +23,11 @@
       "WebFetch(domain:ai.google.dev)",
       "Bash(npm uninstall:*)",
       "Bash(npm install:*)",
-      "Bash(vercel env:*)"
+      "Bash(vercel env:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx jest --no-coverage)",
+      "Bash(npm run lint)",
+      "Bash(npx jest:*)"
     ]
   }
 }

@@ -25,6 +25,8 @@ import { analyzeGaps, mergeClarificationAnswers } from '@/skills/gap_analyzer';
 import { conductResearch, isGeminiAvailable, GroundedSource } from '@/lib/gemini';
 import { generateMRD } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
+import { MRDOrchestrator, OrchestratorInput, OrchestratorOutput } from '@/agent/orchestrators/mrd-orchestrator';
+import { createExecutionContext } from '@/agent/core/execution-context';
 
 /**
  * Workflow response containing current state and any data for the client.
@@ -59,6 +61,16 @@ export interface WorkflowInput {
  * @returns Workflow response with current state and relevant data.
  */
 export async function executeWorkflow(input: WorkflowInput): Promise<WorkflowResponse> {
+  // ---------------------------------------------------------------------------
+  // Feature flag: USE_MULTI_AGENT=true routes to the new orchestrator-based
+  // pipeline.  The legacy path below remains untouched for backward
+  // compatibility.
+  // ---------------------------------------------------------------------------
+  if (process.env.USE_MULTI_AGENT === 'true') {
+    console.log('[Workflow] USE_MULTI_AGENT enabled -- routing to MRD Orchestrator');
+    return executeMultiAgentWorkflow(input);
+  }
+
   let state: WorkflowState;
 
   // Initialize or continue from existing state
@@ -455,6 +467,67 @@ function buildFinalResponse(state: WorkflowState): WorkflowResponse {
     needsClarification: false,
     mrd: state.mrdOutput?.content,
     sources: state.mrdOutput?.sources,
+  };
+}
+
+// ---------------------------------------------------------------------------
+// Multi-agent entry point
+// ---------------------------------------------------------------------------
+
+/**
+ * Executes the MRD generation workflow via the new multi-agent orchestrator.
+ *
+ * Translates WorkflowInput into OrchestratorInput, runs the orchestrator,
+ * and maps OrchestratorOutput back to WorkflowResponse so callers see an
+ * identical shape regardless of which code path was taken.
+ */
+async function executeMultiAgentWorkflow(input: WorkflowInput): Promise<WorkflowResponse> {
+  const orchestrator = new MRDOrchestrator();
+
+  // Build the execution context (provider chain, logging, shared state)
+  const context = createExecutionContext({
+    config: {
+      maxRetries: 3,
+      timeoutMs: 180000, // 3 minutes -- research + generation can be slow
+      enableFallback: true,
+      preferredProvider: 'gemini',
+    },
+  });
+
+  // Map WorkflowInput to OrchestratorInput
+  const orchestratorInput: OrchestratorInput = {
+    productConcept: input.productConcept,
+    targetMarket: input.targetMarket,
+    additionalDetails: input.additionalDetails,
+    clarificationAnswers: input.clarificationAnswers,
+    existingState: input.existingState,
+  };
+
+  const result = await orchestrator.execute(orchestratorInput, context);
+
+  // AgentResult wraps the OrchestratorOutput; unwrap and map to WorkflowResponse
+  if (!result.success || !result.data) {
+    // Build a minimal error state so the response shape is consistent
+    const errorState: WorkflowState = input.existingState
+      ? { ...input.existingState, stage: WorkflowStage.ERROR, error: result.error || 'Orchestrator failed', updatedAt: new Date().toISOString() }
+      : { ...createInitialState(), stage: WorkflowStage.ERROR, error: result.error || 'Orchestrator failed' };
+
+    return {
+      state: errorState,
+      needsClarification: false,
+      error: result.error || 'Multi-agent orchestrator failed',
+    };
+  }
+
+  const output: OrchestratorOutput = result.data;
+
+  return {
+    state: output.state,
+    needsClarification: output.needsClarification,
+    questions: output.questions,
+    mrd: output.mrd,
+    sources: output.sources,
+    error: output.error,
   };
 }
 
