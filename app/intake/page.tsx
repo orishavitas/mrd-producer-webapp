@@ -1,73 +1,730 @@
 'use client';
 
+import { useState, useEffect, useCallback } from 'react';
+import { useRouter } from 'next/navigation';
 import styles from './intake.module.css';
-import { TOPICS } from './lib/topics';
+
+import { IntakeProvider, useIntake } from './lib/intake-context';
+import { getTopicDefinition } from './lib/topic-definitions';
+import type { TopicData } from './lib/intake-state';
+
+import KickstartPanel from './components/kickstart-panel';
+import TopicCard from './components/topic-card';
+import TopicFieldRenderer from './components/topic-field-renderer';
+import ProgressSidebar from './components/progress-sidebar';
+import MobileProgress from './components/mobile-progress';
+import GapPanel from './components/gap-panel';
+import ResearchBrief from './components/research-brief';
 
 export default function IntakePage() {
   return (
+    <IntakeProvider>
+      <IntakeFlow />
+    </IntakeProvider>
+  );
+}
+
+// --- Main flow orchestrator ---
+
+function IntakeFlow() {
+  const { state } = useIntake();
+
+  switch (state.phase) {
+    case 'kickstart':
+      return <KickstartPhase />;
+    case 'topics':
+      return <TopicsPhase />;
+    case 'review':
+      return <ReviewPhase />;
+    case 'gaps':
+      return <GapsPhase />;
+    case 'generating':
+      return <GeneratingPhase />;
+    case 'results':
+      return <ResultsRedirect />;
+    default:
+      return <KickstartPhase />;
+  }
+}
+
+// --- Phase: Kickstart ---
+
+function KickstartPhase() {
+  const { state, dispatch } = useIntake();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  async function handleDescribe(text: string) {
+    setIsProcessing(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/intake/parse-kickstart', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ description: text }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to parse description');
+      }
+
+      const result = await response.json();
+
+      // Update all topics with parsed data
+      const updatedTopics = state.topics.map((topic) => {
+        const parsed = result.topics?.[topic.id];
+        if (!parsed) return topic;
+        return {
+          ...topic,
+          structuredData: parsed.structuredData || {},
+          freetext: parsed.freetext || {},
+          completeness: parsed.completeness || 0,
+        };
+      });
+      dispatch({ type: 'SET_ALL_TOPICS', topics: updatedTopics });
+
+      // Navigate to the topic with lowest coverage
+      const lowestTopicId = result.lowestTopic || state.topics[0].id;
+      const lowestIndex = state.topics.findIndex((t) => t.id === lowestTopicId);
+      const targetIndex = lowestIndex >= 0 ? lowestIndex : 0;
+
+      // Mark the target topic as active, others before it as completed
+      const topicsWithStatus = updatedTopics.map((topic, i) => ({
+        ...topic,
+        status: i < targetIndex ? 'completed' as const
+          : i === targetIndex ? 'active' as const
+          : 'upcoming' as const,
+      }));
+      dispatch({ type: 'SET_ALL_TOPICS', topics: topicsWithStatus });
+      dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: targetIndex });
+      dispatch({ type: 'SET_PHASE', phase: 'topics' });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsProcessing(false);
+    }
+  }
+
+  function handleStartFromScratch() {
+    // Set first topic as active and go to topics phase
+    dispatch({
+      type: 'UPDATE_TOPIC',
+      topicId: state.topics[0].id,
+      data: { status: 'active' },
+    });
+    dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: 0 });
+    dispatch({ type: 'SET_PHASE', phase: 'topics' });
+  }
+
+  return (
+    <div className={styles.wrapper}>
+      <main className={styles.mainCentered}>
+        <div className={styles.phaseHeader}>
+          <h2 className={styles.phaseTitle}>Start Your MRD</h2>
+          <p className={styles.phaseDescription}>
+            Choose how you would like to begin building your Market Requirements Document.
+          </p>
+        </div>
+        {error && (
+          <div className={styles.errorBanner} role="alert">
+            {error}
+          </div>
+        )}
+        <KickstartPanel
+          onDescribe={handleDescribe}
+          onStartFromScratch={handleStartFromScratch}
+          isProcessing={isProcessing}
+        />
+      </main>
+    </div>
+  );
+}
+
+// --- Phase: Topics ---
+
+function TopicsPhase() {
+  const { state, dispatch, updateTopicField, goToTopic } = useIntake();
+  const [isEvaluating, setIsEvaluating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const activeTopic = state.topics[state.activeTopicIndex] ?? null;
+
+  const topicProgressData = state.topics.map((t) => ({
+    id: t.id,
+    name: t.name,
+    status: t.status,
+    completeness: t.completeness,
+  }));
+
+  // Get the field value for the active topic
+  const getFieldValue = useCallback(
+    (topicId: string, fieldId: string): string | string[] => {
+      const topic = state.topics.find((t) => t.id === topicId);
+      if (!topic) return '';
+      const topicDef = getTopicDefinition(topicId);
+      if (!topicDef) return '';
+      const field = topicDef.fields.find((f) => f.id === fieldId);
+      if (!field) return '';
+
+      if (field.type === 'freetext') {
+        return topic.freetext[fieldId] || '';
+      }
+      return topic.structuredData[fieldId] || (
+        field.type === 'chips' || field.type === 'multi-select' ? [] : ''
+      );
+    },
+    [state.topics]
+  );
+
+  // Build a summary string for a completed topic
+  function buildTopicSummary(topic: TopicData): string {
+    const parts: string[] = [];
+    for (const [, value] of Object.entries(topic.structuredData)) {
+      if (!value) continue;
+      const display = Array.isArray(value) ? value.join(', ') : value;
+      if (display.trim()) parts.push(display);
+    }
+    for (const [, value] of Object.entries(topic.freetext)) {
+      if (value && value.trim()) parts.push(value.trim());
+    }
+    return parts.join(' | ').slice(0, 200) || 'Completed';
+  }
+
+  async function handleTopicSubmit(topicId: string) {
+    const topic = state.topics.find((t) => t.id === topicId);
+    if (!topic) return;
+
+    setIsEvaluating(true);
+    setError(null);
+
+    try {
+      const allTopicsState = state.topics.map((t) => ({
+        id: t.id,
+        name: t.name,
+        status: t.status,
+        completeness: t.completeness,
+      }));
+
+      const response = await fetch('/api/intake/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          topicId,
+          structuredData: topic.structuredData,
+          freetext: topic.freetext,
+          allTopicsState,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to evaluate topic');
+      }
+
+      const result = await response.json();
+
+      // Update the current topic as completed with score
+      dispatch({
+        type: 'UPDATE_TOPIC',
+        topicId,
+        data: {
+          status: 'completed',
+          completeness: result.topicScore || 50,
+        },
+      });
+
+      // Determine the next topic
+      const nextTopicId = result.nextTopicId;
+      const nextIndex = state.topics.findIndex((t) => t.id === nextTopicId);
+
+      // Check if all topics are completed (or we're at the end)
+      const currentIndex = state.topics.findIndex((t) => t.id === topicId);
+      const isLast = currentIndex === state.topics.length - 1;
+      const allDoneExceptCurrent = state.topics.every(
+        (t) => t.id === topicId || t.status === 'completed'
+      );
+
+      if (isLast || allDoneExceptCurrent) {
+        // All topics done -> review phase
+        dispatch({ type: 'SET_PHASE', phase: 'review' });
+      } else if (nextIndex >= 0 && state.topics[nextIndex].status !== 'completed') {
+        // Go to the suggested next topic
+        dispatch({
+          type: 'UPDATE_TOPIC',
+          topicId: nextTopicId,
+          data: { status: 'active' },
+        });
+        dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: nextIndex });
+      } else {
+        // Fallback: find next non-completed topic
+        const fallbackIndex = state.topics.findIndex(
+          (t, i) => i > currentIndex && t.status !== 'completed'
+        );
+        if (fallbackIndex >= 0) {
+          dispatch({
+            type: 'UPDATE_TOPIC',
+            topicId: state.topics[fallbackIndex].id,
+            data: { status: 'active' },
+          });
+          dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: fallbackIndex });
+        } else {
+          dispatch({ type: 'SET_PHASE', phase: 'review' });
+        }
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+      // Still advance as a fallback so user isn't stuck
+      dispatch({
+        type: 'UPDATE_TOPIC',
+        topicId,
+        data: { status: 'completed', completeness: 30 },
+      });
+      const currentIndex = state.topics.findIndex((t) => t.id === topicId);
+      const nextIndex = currentIndex + 1;
+      if (nextIndex < state.topics.length) {
+        dispatch({
+          type: 'UPDATE_TOPIC',
+          topicId: state.topics[nextIndex].id,
+          data: { status: 'active' },
+        });
+        dispatch({ type: 'SET_ACTIVE_TOPIC', topicIndex: nextIndex });
+      } else {
+        dispatch({ type: 'SET_PHASE', phase: 'review' });
+      }
+    } finally {
+      setIsEvaluating(false);
+    }
+  }
+
+  function handleGenerate() {
+    dispatch({ type: 'SET_PHASE', phase: 'review' });
+  }
+
+  function handleSkipToGenerate() {
+    dispatch({ type: 'SET_PHASE', phase: 'gaps' });
+  }
+
+  function handleTopicClick(topicId: string) {
+    goToTopic(topicId);
+  }
+
+  return (
     <div className={styles.wrapper}>
       {/* Desktop sidebar */}
-      <aside className={styles.sidebar}>
-        <h2 className={styles.sidebarTitle}>Topics</h2>
-        <ul className={styles.topicList}>
-          {TOPICS.map((topic) => (
-            <li key={topic.id} className={styles.topicItem}>
-              <span className={styles.topicCircle} aria-hidden="true" />
-              {topic.name}
-            </li>
-          ))}
-        </ul>
-        <div className={styles.readinessSection}>
-          <div className={styles.readinessLabel}>
-            <span>Readiness</span>
-            <span>0%</span>
-          </div>
-          <div
-            className={styles.readinessBar}
-            role="progressbar"
-            aria-valuenow={0}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label="MRD readiness"
-          >
-            <div className={styles.readinessFill} />
-          </div>
-        </div>
-      </aside>
+      <ProgressSidebar
+        topics={topicProgressData}
+        overallReadiness={state.overallReadiness}
+        onTopicClick={handleTopicClick}
+        onGenerate={handleGenerate}
+        onSkipToGenerate={handleSkipToGenerate}
+      />
 
-      {/* Mobile progress bar */}
-      <div className={styles.mobileProgress}>
-        <div className={styles.mobileTopicRow}>
-          {TOPICS.map((topic) => (
-            <span key={topic.id} className={styles.mobileTopicPill}>
-              <span className={styles.mobileCircle} aria-hidden="true" />
-              {topic.name}
-            </span>
-          ))}
-        </div>
-        <div className={styles.mobileReadiness}>
-          <span className={styles.mobileReadinessLabel}>Readiness 0%</span>
-          <div
-            className={styles.mobileReadinessBar}
-            role="progressbar"
-            aria-valuenow={0}
-            aria-valuemin={0}
-            aria-valuemax={100}
-            aria-label="MRD readiness"
-          >
-            <div className={styles.mobileReadinessFill} />
-          </div>
-        </div>
+      {/* Mobile progress */}
+      <div className={styles.mobileProgressWrapper}>
+        <MobileProgress
+          topics={topicProgressData}
+          overallReadiness={state.overallReadiness}
+        />
       </div>
 
       {/* Main content */}
       <main className={styles.main}>
-        <div className={styles.placeholder}>
-          <h2 className={styles.placeholderTitle}>Intake flow coming soon</h2>
-          <p className={styles.placeholderText}>
-            This is where the progressive intake experience will guide you
-            through building your MRD step by step.
+        {error && (
+          <div className={styles.errorBanner} role="alert">
+            {error}
+          </div>
+        )}
+
+        {isEvaluating && (
+          <div className={styles.evaluatingBanner}>
+            <span className={styles.spinnerInline} aria-hidden="true" />
+            Evaluating...
+          </div>
+        )}
+
+        <div className={styles.topicStack}>
+          {state.topics.map((topic) => {
+            const definition = getTopicDefinition(topic.id);
+            if (!definition) return null;
+
+            const isActive = topic.id === activeTopic?.id;
+            const isCompleted = topic.status === 'completed';
+            return (
+              <TopicCard
+                key={topic.id}
+                title={definition.name}
+                description={definition.description}
+                topicId={topic.id}
+                status={topic.status}
+                completeness={topic.completeness}
+                summary={isCompleted ? buildTopicSummary(topic) : undefined}
+                onSubmit={isActive ? () => handleTopicSubmit(topic.id) : undefined}
+                onExpand={isCompleted ? () => handleTopicClick(topic.id) : undefined}
+              >
+                {isActive &&
+                  definition.fields.map((field) => (
+                    <TopicFieldRenderer
+                      key={field.id}
+                      field={field}
+                      value={getFieldValue(topic.id, field.id)}
+                      onChange={(value) => updateTopicField(topic.id, field.id, value)}
+                    />
+                  ))}
+              </TopicCard>
+            );
+          })}
+        </div>
+      </main>
+    </div>
+  );
+}
+
+// --- Phase: Review ---
+
+function ReviewPhase() {
+  const { state, dispatch } = useIntake();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isRevising, setIsRevising] = useState(false);
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  // Generate brief on mount if not already available
+  useEffect(() => {
+    if (!state.researchBrief) {
+      generateBrief();
+    }
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  function buildAllTopicsData(): Record<
+    string,
+    { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }
+  > {
+    const result: Record<
+      string,
+      { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }
+    > = {};
+    for (const topic of state.topics) {
+      result[topic.id] = {
+        structuredData: topic.structuredData,
+        freetext: topic.freetext,
+      };
+    }
+    return result;
+  }
+
+  async function generateBrief() {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/intake/generate-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ allTopicsData: buildAllTopicsData() }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to generate brief');
+      }
+
+      const result = await response.json();
+      dispatch({ type: 'SET_BRIEF', brief: result.brief });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  async function handleRevision(revision: string) {
+    if (!state.researchBrief) return;
+    setIsRevising(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/intake/revise-brief', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          currentBrief: state.researchBrief,
+          revision,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to revise brief');
+      }
+
+      const result = await response.json();
+      dispatch({ type: 'SET_BRIEF', brief: result.brief });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsRevising(false);
+    }
+  }
+
+  async function handleCheckGaps() {
+    setIsAnalyzing(true);
+    setError(null);
+    try {
+      const response = await fetch('/api/intake/analyze-gaps', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          allTopicsData: buildAllTopicsData(),
+          brief: state.researchBrief || '',
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to analyze gaps');
+      }
+
+      const result = await response.json();
+      dispatch({ type: 'SET_GAPS', gaps: result.gaps || [] });
+      dispatch({ type: 'SET_PHASE', phase: 'gaps' });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    } finally {
+      setIsAnalyzing(false);
+    }
+  }
+
+  function handleGoBack() {
+    dispatch({ type: 'SET_PHASE', phase: 'topics' });
+  }
+
+  return (
+    <div className={styles.wrapper}>
+      <main className={styles.mainCentered}>
+        <div className={styles.phaseHeader}>
+          <h2 className={styles.phaseTitle}>Review Research Brief</h2>
+          <p className={styles.phaseDescription}>
+            Review the AI-generated research brief based on your intake data. Request changes or proceed to gap analysis.
           </p>
+        </div>
+
+        {error && (
+          <div className={styles.errorBanner} role="alert">
+            {error}
+          </div>
+        )}
+
+        {isLoading ? (
+          <div className={styles.loadingContainer}>
+            <div className={styles.loadingSpinner} aria-hidden="true" />
+            <p className={styles.loadingText}>Generating research brief...</p>
+          </div>
+        ) : state.researchBrief ? (
+          <>
+            <ResearchBrief
+              briefContent={state.researchBrief}
+              onRevisionRequest={handleRevision}
+              isRevising={isRevising}
+            />
+
+            <div className={styles.reviewActions}>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={handleGoBack}
+              >
+                Go back
+              </button>
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={handleCheckGaps}
+                disabled={isAnalyzing}
+              >
+                {isAnalyzing ? (
+                  <span className={styles.spinnerButtonWrapper}>
+                    <span className={styles.spinnerSmall} aria-hidden="true" />
+                    Analyzing...
+                  </span>
+                ) : (
+                  'Check for gaps'
+                )}
+              </button>
+            </div>
+          </>
+        ) : (
+          <div className={styles.loadingContainer}>
+            <p className={styles.loadingText}>No brief available. Try going back and filling in some topics first.</p>
+            <button
+              type="button"
+              className={styles.secondaryButton}
+              onClick={handleGoBack}
+            >
+              Go back
+            </button>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+// --- Phase: Gaps ---
+
+function GapsPhase() {
+  const { state, dispatch, goToTopic } = useIntake();
+
+  const gapData = state.gaps.map((g) => ({
+    severity: (g.severity === 'green' ? 'yellow' : g.severity) as 'red' | 'yellow',
+    topicId: g.topicId,
+    title: g.title,
+    explanation: g.explanation,
+    canAIFill: g.canAIFill,
+  }));
+
+  function handleFillGap(topicId: string) {
+    goToTopic(topicId);
+  }
+
+  function handleAcceptGap(topicId: string) {
+    dispatch({ type: 'DISMISS_GAP', topicId });
+  }
+
+  function handleGoBack() {
+    dispatch({ type: 'SET_PHASE', phase: 'topics' });
+  }
+
+  function handleGenerateAnyway() {
+    dispatch({ type: 'SET_PHASE', phase: 'generating' });
+  }
+
+  return (
+    <div className={styles.wrapper}>
+      <main className={styles.mainCentered}>
+        <GapPanel
+          gaps={gapData}
+          overallReadiness={state.overallReadiness}
+          onFillGap={handleFillGap}
+          onAcceptGap={handleAcceptGap}
+          onGoBack={handleGoBack}
+          onGenerateAnyway={handleGenerateAnyway}
+        />
+      </main>
+    </div>
+  );
+}
+
+// --- Phase: Generating ---
+
+function GeneratingPhase() {
+  const { state, dispatch } = useIntake();
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    generateMRD();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  async function generateMRD() {
+    setError(null);
+    try {
+      // Build the intake data payload
+      const intakeData: Record<
+        string,
+        { structuredData: Record<string, string | string[]>; freetext: Record<string, string> }
+      > = {};
+      for (const topic of state.topics) {
+        intakeData[topic.id] = {
+          structuredData: topic.structuredData,
+          freetext: topic.freetext,
+        };
+      }
+
+      const response = await fetch('/api/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          intakeData,
+          brief: state.researchBrief || undefined,
+        }),
+      });
+
+      if (!response.ok) {
+        const data = await response.json().catch(() => ({}));
+        throw new Error(data.error || 'Failed to generate MRD');
+      }
+
+      const result = await response.json();
+      dispatch({
+        type: 'SET_RESULT',
+        mrd: result.mrd,
+        sources: result.sources || [],
+      });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong');
+    }
+  }
+
+  return (
+    <div className={styles.wrapper}>
+      <main className={styles.mainCentered}>
+        {error ? (
+          <div className={styles.generatingContainer}>
+            <div className={styles.errorBanner} role="alert">
+              {error}
+            </div>
+            <div className={styles.reviewActions}>
+              <button
+                type="button"
+                className={styles.secondaryButton}
+                onClick={() => dispatch({ type: 'SET_PHASE', phase: 'gaps' })}
+              >
+                Go back
+              </button>
+              <button
+                type="button"
+                className={styles.primaryButton}
+                onClick={() => {
+                  setError(null);
+                  generateMRD();
+                }}
+              >
+                Try again
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.generatingContainer}>
+            <div className={styles.generatingAnimation}>
+              <div className={styles.generatingPulse} />
+              <div className={styles.generatingPulse} />
+              <div className={styles.generatingPulse} />
+            </div>
+            <h2 className={styles.generatingTitle}>Generating Your MRD</h2>
+            <p className={styles.generatingText}>
+              Conducting web research and building your Market Requirements Document.
+              This may take a minute or two...
+            </p>
+          </div>
+        )}
+      </main>
+    </div>
+  );
+}
+
+// --- Phase: Results (redirect) ---
+
+function ResultsRedirect() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push('/intake/results');
+  }, [router]);
+
+  return (
+    <div className={styles.wrapper}>
+      <main className={styles.mainCentered}>
+        <div className={styles.loadingContainer}>
+          <div className={styles.loadingSpinner} aria-hidden="true" />
+          <p className={styles.loadingText}>Redirecting to results...</p>
         </div>
       </main>
     </div>

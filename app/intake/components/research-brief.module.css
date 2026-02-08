@@ -1,0 +1,204 @@
+/* ResearchBrief - formatted brief display with revision input */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  width: 100%;
+}
+
+/* ========================================
+   Brief content area
+   ======================================== */
+.briefContent {
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--space-6);
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.briefBody {
+  display: flex;
+  flex-direction: column;
+}
+
+/* ========================================
+   Markdown-like headings
+   ======================================== */
+.heading1 {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--foreground);
+  margin: var(--space-4) 0 var(--space-2) 0;
+  line-height: var(--leading-tight);
+}
+
+.heading2 {
+  font-size: var(--text-lg);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+  margin: var(--space-3) 0 var(--space-1) 0;
+  line-height: var(--leading-tight);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: var(--space-1);
+}
+
+.heading3 {
+  font-size: var(--text-base);
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+  margin: var(--space-2) 0 var(--space-1) 0;
+  line-height: var(--leading-tight);
+}
+
+/* ========================================
+   Paragraphs and lists
+   ======================================== */
+.paragraph {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-1) 0;
+  line-height: var(--leading-relaxed);
+}
+
+.listItem {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0 0 var(--space-1) 0;
+  padding-left: var(--space-4);
+  line-height: var(--leading-relaxed);
+  list-style: none;
+  position: relative;
+}
+
+.listItem::before {
+  content: '\2022';
+  position: absolute;
+  left: var(--space-1);
+  color: var(--text-muted);
+}
+
+.bold {
+  font-weight: var(--font-semibold);
+  color: var(--foreground);
+}
+
+.spacer {
+  height: var(--space-2);
+}
+
+/* ========================================
+   Revision bar
+   ======================================== */
+.revisionBar {
+  display: flex;
+  gap: var(--space-2);
+  align-items: center;
+}
+
+.revisionInput {
+  flex: 1;
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  font-size: var(--input-font-size);
+  font-family: inherit;
+  line-height: var(--input-line-height);
+  color: var(--input-color);
+  background-color: var(--input-bg);
+  transition: var(--input-transition);
+}
+
+.revisionInput:focus {
+  outline: none;
+  border-color: var(--input-focus-border);
+  box-shadow: var(--input-focus-ring);
+}
+
+.revisionInput::placeholder {
+  color: var(--text-muted);
+}
+
+.revisionInput:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.revisionButton {
+  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-color);
+  border: 1px solid var(--btn-primary-border);
+  border-radius: var(--btn-primary-radius);
+  font-size: var(--btn-primary-font-size);
+  font-weight: var(--btn-primary-font-weight);
+  font-family: inherit;
+  line-height: var(--btn-primary-line-height);
+  cursor: pointer;
+  transition: var(--btn-primary-transition);
+  white-space: nowrap;
+}
+
+.revisionButton:hover:not(:disabled) {
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+.revisionButton:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.revisionButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.revisionButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Loading spinner
+   ======================================== */
+.spinnerWrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.spinner {
+  display: inline-block;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--btn-primary-color);
+  border-right-color: transparent;
+  border-radius: var(--radius-full);
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   Responsive
+   ======================================== */
+@media screen and (max-width: 600px) {
+  .revisionBar {
+    flex-direction: column;
+  }
+
+  .revisionButton {
+    width: 100%;
+  }
+
+  .briefContent {
+    padding: var(--space-4);
+    max-height: 50vh;
+  }
+}
