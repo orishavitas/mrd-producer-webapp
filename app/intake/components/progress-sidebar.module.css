@@ -1,0 +1,231 @@
+/* ProgressSidebar - desktop left sidebar showing topic progress */
+
+.sidebar {
+  width: 280px;
+  min-width: 280px;
+  padding: var(--space-6);
+  border-right: 1px solid var(--border);
+  background-color: var(--surface);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+.sidebarTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ========================================
+   Topic List
+   ======================================== */
+.topicList {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 0;
+  margin: 0;
+}
+
+.topicItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  font-size: var(--text-sm);
+  color: var(--foreground);
+  line-height: var(--leading-normal);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) 0;
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+/* Active topic highlight */
+.topicItem--active {
+  color: var(--accent);
+  font-weight: var(--font-medium);
+}
+
+/* Completed topic: clickable */
+.topicItem--completed {
+  cursor: pointer;
+}
+
+.topicItem--completed:hover {
+  color: var(--accent);
+}
+
+.topicItem--completed:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Upcoming topic: muted */
+.topicItem--upcoming {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ========================================
+   Status Icons
+   ======================================== */
+.statusIcon {
+  width: 20px;
+  height: 20px;
+  min-width: 20px;
+  border-radius: var(--radius-full);
+  border: 2px solid var(--border);
+  background-color: transparent;
+  position: relative;
+  flex-shrink: 0;
+  transition:
+    border-color var(--duration-normal) var(--ease-out),
+    background-color var(--duration-normal) var(--ease-out);
+}
+
+/* Active: half-filled circle */
+.statusIcon--active {
+  border-color: var(--accent);
+  background: linear-gradient(to top, var(--accent) 50%, transparent 50%);
+}
+
+/* Completed: fully filled circle */
+.statusIcon--completed {
+  border-color: var(--success);
+  background-color: var(--success);
+}
+
+/* Upcoming: empty circle (default styling) */
+.statusIcon--upcoming {
+  border-color: var(--border);
+}
+
+/* ========================================
+   Topic completeness bar
+   ======================================== */
+.topicName {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topicBar {
+  width: 40px;
+  height: 4px;
+  background-color: var(--progress-bg);
+  border-radius: var(--progress-radius);
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.topicBarFill {
+  height: 100%;
+  background-color: var(--progress-fill);
+  border-radius: var(--progress-radius);
+  transition: var(--progress-transition);
+}
+
+/* ========================================
+   Readiness Section (bottom)
+   ======================================== */
+.readinessSection {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.readinessLabel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: var(--text-xs);
+  font-weight: var(--font-medium);
+  color: var(--text-muted);
+}
+
+.readinessBar {
+  width: 100%;
+  height: var(--progress-height);
+  background-color: var(--progress-bg);
+  border-radius: var(--progress-radius);
+  overflow: hidden;
+}
+
+.readinessFill {
+  height: 100%;
+  background-color: var(--progress-fill);
+  border-radius: var(--progress-radius);
+  transition: var(--progress-transition);
+}
+
+/* ========================================
+   Generate Button
+   ======================================== */
+.generateButton {
+  width: 100%;
+  background-color: var(--btn-primary-bg);
+  color: var(--btn-primary-color);
+  border: 1px solid var(--btn-primary-border);
+  border-radius: var(--btn-primary-radius);
+  padding: var(--btn-primary-padding-y) var(--btn-primary-padding-x);
+  font-size: var(--btn-primary-font-size);
+  font-weight: var(--btn-primary-font-weight);
+  font-family: inherit;
+  line-height: var(--btn-primary-line-height);
+  cursor: pointer;
+  transition: var(--btn-primary-transition);
+  text-align: center;
+}
+
+.generateButton:hover {
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
+}
+
+.generateButton:active {
+  transform: scale(0.98);
+}
+
+.generateButton:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ========================================
+   Skip link
+   ======================================== */
+.skipLink {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: var(--text-xs);
+  font-family: inherit;
+  color: var(--text-muted);
+  cursor: pointer;
+  text-align: center;
+  text-decoration: underline;
+  transition: color var(--duration-normal) var(--ease-out);
+}
+
+.skipLink:hover {
+  color: var(--accent);
+}
+
+.skipLink:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Hide sidebar on mobile */
+@media screen and (max-width: 1023px) {
+  .sidebar {
+    display: none;
+  }
+}
