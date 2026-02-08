@@ -39,7 +39,7 @@ export async function POST(request: NextRequest) {
       .filter(Boolean)
       .join('\n\n');
 
-    const prompt = `You are pre-filling an MRD intake form. The user has already approved these topics:
+    const prompt = `You are pre-filling an MRD intake form for stands and enclosures products. The user has already approved these topics:
 
 ${JSON.stringify(sanitized.approvedTopics, null, 2)}
 

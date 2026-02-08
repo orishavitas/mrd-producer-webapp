@@ -6,7 +6,7 @@ import { TOPIC_DEFINITIONS } from '@/app/intake/lib/topic-definitions';
 /**
  * POST /api/intake/parse-kickstart
  *
- * Parses a freeform product description and maps it to the 6 intake topics.
+ * Parses a freeform product description and maps it to the 4 intake topics.
  * Called when the user submits the "Describe your product" kickstart text.
  */
 export async function POST(request: NextRequest) {
@@ -97,7 +97,7 @@ Also determine overallReadiness (0-100) and identify the lowestTopic (the topic 
     };
 
     const systemPrompt =
-      'You are parsing a product description to extract structured information for a Market Requirements Document. Map the content to these categories: problem-vision, market-users, product-definition, design-experience, business-pricing, competitive-landscape. For each, extract relevant structured data and rate completeness 0-100.';
+      'You are parsing a product description to extract structured information for a Market Requirements Document for stands and enclosures. Map the content to these categories: problem-market, product-spec, business-pricing, differentiation. For each, extract relevant structured data and rate completeness 0-100.';
 
     const chain = getProviderChain();
 

@@ -19,33 +19,21 @@ export interface TopicDefinition {
   fields: FieldDefinition[];
 }
 
-// --- Topic Definitions ---
+// --- Topic Definitions (4-topic structure for stands/enclosures) ---
 
 export const TOPIC_DEFINITIONS: TopicDefinition[] = [
-  // 1. Problem & Vision
+  // 1. Problem & Market
   {
-    id: 'problem-vision',
-    name: 'Problem & Vision',
-    weight: 0.20,
-    description: "What problem exists in the market? Why does it matter? What's the product vision?",
+    id: 'problem-market',
+    name: 'Problem & Market',
+    weight: 0.35,
+    description: 'What problem exists in the market? Who are your target customers and where will they use this product?',
     fields: [
       {
         type: 'chips',
         id: 'problemCategories',
         label: 'Problem categories',
         options: ['Efficiency', 'Cost reduction', 'Safety', 'User experience', 'Compliance', 'Market gap'],
-      },
-      {
-        type: 'select',
-        id: 'productType',
-        label: 'Product type',
-        options: ['Physical product', 'Software', 'SaaS platform', 'Hardware + Software', 'Service'],
-      },
-      {
-        type: 'multi-select',
-        id: 'industryVerticals',
-        label: 'Industry verticals',
-        options: ['Technology', 'Healthcare', 'Retail', 'Hospitality', 'Education', 'Manufacturing', 'Finance', 'Government'],
       },
       {
         type: 'text',
@@ -55,39 +43,17 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
         required: true,
       },
       {
-        type: 'text',
-        id: 'visionStatement',
-        label: 'Vision statement',
-        placeholder: "What's your vision for this product?",
-      },
-      {
         type: 'freetext',
         id: 'additionalContext',
         label: 'Additional context',
-        placeholder: 'Anything else about the problem or vision?',
+        placeholder: 'Anything else about the problem or market need?',
         rows: 3,
       },
-    ],
-  },
-
-  // 2. Market & Users
-  {
-    id: 'market-users',
-    name: 'Market & Users',
-    weight: 0.20,
-    description: 'Who buys this? Who uses it? Where? What verticals?',
-    fields: [
       {
         type: 'chips',
         id: 'marketSegment',
         label: 'Market segment',
         options: ['B2B', 'B2C', 'B2B2C', 'B2G'],
-      },
-      {
-        type: 'select',
-        id: 'companySize',
-        label: 'Target company size',
-        options: ['Startup', 'SMB', 'Mid-market', 'Enterprise', 'All sizes'],
       },
       {
         type: 'multi-select',
@@ -104,45 +70,32 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
       },
       {
         type: 'text',
-        id: 'idealCustomer',
-        label: 'Ideal customer',
-        placeholder: 'Describe your ideal customer',
-      },
-      {
-        type: 'text',
         id: 'mainUseCases',
         label: 'Main use cases',
-        placeholder: 'What are the main use cases?',
-      },
-      {
-        type: 'freetext',
-        id: 'additionalContext',
-        label: 'Additional context',
-        placeholder: 'Anything else about your market or users?',
-        rows: 3,
+        placeholder: 'What are the primary use cases for this product?',
       },
     ],
   },
 
-  // 3. Product Definition
+  // 2. Product Specification
   {
-    id: 'product-definition',
-    name: 'Product Definition',
-    weight: 0.20,
-    description: 'What is the product? What does it do? Key specs and features?',
+    id: 'product-spec',
+    name: 'Product Specification',
+    weight: 0.30,
+    description: 'Define the physical product: form, materials, features, and technical requirements.',
     fields: [
       {
         type: 'chips',
         id: 'productCategory',
         label: 'Product category',
-        options: ['Kiosk/Display', 'IoT Device', 'Mobile App', 'Web Platform', 'Physical Accessory', 'Security Solution'],
+        options: ['Kiosk/Display', 'Tablet Mount', 'Floor Stand', 'Wall Mount', 'Desk Mount', 'Enclosure'],
         allowCustom: true,
       },
       {
         type: 'chips',
         id: 'formFactor',
         label: 'Form factor',
-        options: ['Desktop', 'Floor-standing', 'Wall-mounted', 'Handheld', 'Wearable', 'Cloud-based'],
+        options: ['Desktop', 'Floor-standing', 'Wall-mounted', 'Countertop', 'Mobile/Wheeled'],
       },
       {
         type: 'chips',
@@ -150,48 +103,14 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
         label: 'Key features',
         options: [],
         allowCustom: true,
-      },
-      {
-        type: 'multi-select',
-        id: 'platforms',
-        label: 'Platforms',
-        options: ['iOS', 'Android', 'Windows', 'macOS', 'Linux', 'Web', 'Embedded'],
-      },
-      {
-        type: 'text',
-        id: 'productDescription',
-        label: 'Product description',
-        placeholder: 'Describe the product in your own words',
-        required: true,
+        placeholder: 'Add key product features (e.g., "Cable management", "Adjustable height")',
       },
       {
         type: 'text',
         id: 'mustHaveFeatures',
         label: 'Must-have features',
-        placeholder: 'What are the must-have features?',
-      },
-      {
-        type: 'freetext',
-        id: 'technicalConstraints',
-        label: 'Technical constraints',
-        placeholder: 'Any technical requirements or constraints?',
-        rows: 3,
-      },
-    ],
-  },
-
-  // 4. Design & Experience
-  {
-    id: 'design-experience',
-    name: 'Design & Experience',
-    weight: 0.10,
-    description: 'Look, feel, form factor, design references.',
-    fields: [
-      {
-        type: 'chips',
-        id: 'designStyle',
-        label: 'Design style',
-        options: ['Minimal', 'Industrial', 'Premium', 'Rugged', 'Consumer-friendly', 'Professional'],
+        placeholder: 'What features are absolutely required?',
+        required: true,
       },
       {
         type: 'chips',
@@ -207,39 +126,33 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
         options: ['Black', 'White', 'Silver', 'Custom branded'],
       },
       {
+        type: 'freetext',
+        id: 'technicalConstraints',
+        label: 'Technical constraints',
+        placeholder: 'Any technical requirements, weight limits, mounting specs, or environmental considerations?',
+        rows: 3,
+      },
+      {
         type: 'text',
         id: 'designReferences',
         label: 'Design references',
-        placeholder: 'Any design references or inspirations?',
-      },
-      {
-        type: 'freetext',
-        id: 'additionalContext',
-        label: 'Additional context',
-        placeholder: 'Anything else about design?',
-        rows: 3,
+        placeholder: 'Any design inspirations or reference products?',
       },
     ],
   },
 
-  // 5. Business & Pricing
+  // 3. Business & Pricing
   {
     id: 'business-pricing',
     name: 'Business & Pricing',
-    weight: 0.15,
-    description: 'Price positioning, business model, risks, go-to-market concerns.',
+    weight: 0.20,
+    description: 'Price positioning, margin expectations, business risks, and go-to-market strategy.',
     fields: [
       {
         type: 'select',
         id: 'priceRange',
         label: 'Price range',
         options: ['Under $100', '$100-$500', '$500-$1,000', '$1,000-$5,000', '$5,000+', 'Not sure yet'],
-      },
-      {
-        type: 'chips',
-        id: 'businessModel',
-        label: 'Business model',
-        options: ['One-time purchase', 'Subscription', 'Freemium', 'Licensing', 'Pay-per-use'],
       },
       {
         type: 'select',
@@ -257,49 +170,54 @@ export const TOPIC_DEFINITIONS: TopicDefinition[] = [
         type: 'text',
         id: 'goToMarket',
         label: 'Go-to-market',
-        placeholder: 'Any go-to-market considerations?',
+        placeholder: 'Distribution channels, sales strategy, or go-to-market considerations?',
       },
       {
         type: 'freetext',
         id: 'additionalContext',
         label: 'Additional context',
-        placeholder: 'Anything else about the business side?',
+        placeholder: 'Anything else about pricing, margins, or business strategy?',
         rows: 3,
       },
     ],
   },
 
-  // 6. Competitive Landscape
+  // 4. Differentiation
   {
-    id: 'competitive-landscape',
-    name: 'Competitive Landscape',
+    id: 'differentiation',
+    name: 'Differentiation',
     weight: 0.15,
-    description: 'Known competitors, differentiation, success metrics.',
+    description: 'Known competitors and what makes your product different.',
     fields: [
       {
-        type: 'dynamic-list',
-        id: 'competitors',
+        type: 'multi-select',
+        id: 'knownCompetitors',
         label: 'Known competitors',
+        options: [
+          'Peerless-AV',
+          'Chief Manufacturing',
+          'Ergotron',
+          'Premier Mounts',
+          'OmniMount',
+          'Bouncepad',
+          'CTA Digital',
+          'RAM Mounts',
+          'Heckler Design',
+          'BOSSTAB',
+        ],
+      },
+      {
+        type: 'dynamic-list',
+        id: 'customCompetitors',
+        label: 'Other competitors',
+        placeholder: 'Add competitor names not in the list above',
       },
       {
         type: 'chips',
         id: 'differentiators',
         label: 'Differentiators',
-        options: ['Price', 'Quality', 'Innovation', 'Service', 'Integration', 'Design'],
+        options: ['Price', 'Quality', 'Innovation', 'Customization', 'Lead time', 'Service', 'Design', 'Durability'],
         allowCustom: true,
-      },
-      {
-        type: 'text',
-        id: 'successMetrics',
-        label: 'Success metrics',
-        placeholder: 'How will you measure success for this product?',
-      },
-      {
-        type: 'freetext',
-        id: 'additionalContext',
-        label: 'Additional context',
-        placeholder: 'Anything else about competition or success criteria?',
-        rows: 3,
       },
     ],
   },
