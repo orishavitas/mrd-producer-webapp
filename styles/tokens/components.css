@@ -122,23 +122,3 @@
   --alert-success-color: var(--success);
 }
 
-/* Override alert colors for light mode specifics (backward compat) */
-:root {
-  --alert-error-bg-compat: #fff4f4;
-  --alert-error-border-compat: #f4a5a5;
-  --alert-error-color-compat: #7a1a1a;
-}
-
-[data-theme="dark"] {
-  --alert-error-bg-compat: rgba(122, 45, 45, 0.25);
-  --alert-error-border-compat: #7a2d2d;
-  --alert-error-color-compat: #f3c2c2;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --alert-error-bg-compat: rgba(122, 45, 45, 0.25);
-    --alert-error-border-compat: #7a2d2d;
-    --alert-error-color-compat: #f3c2c2;
-  }
-}

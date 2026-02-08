@@ -45,6 +45,17 @@
 }
 
 /* ========================================
+   Component-Specific Font Sizes
+   Off-scale sizes for specific UI elements.
+   ======================================== */
+:root {
+  --text-mobile-h1: 1.875rem;  /* 30px - responsive h1 on small screens */
+  --text-eyebrow: 0.8rem;      /* 12.8px - eyebrow / overline label */
+  --text-field-label: 0.95rem;  /* 15.2px - form field labels */
+  --text-body-sm: 0.9rem;       /* 14.4px - compact body text */
+}
+
+/* ========================================
    Font Scale Utility Classes
    ======================================== */
 .text-xs {

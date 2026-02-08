@@ -272,7 +272,7 @@ pre {
     padding-right: var(--space-3);
   }
 
-h1 { font-size: 1.875rem; }
+h1 { font-size: var(--text-mobile-h1); }
 h2 { font-size: var(--text-2xl); }
 h3 { font-size: var(--text-xl); }
 }
@@ -297,7 +297,7 @@ h3 { font-size: var(--text-xl); }
 }
 
 .eyebrow {
-  font-size: 0.8rem;
+  font-size: var(--text-eyebrow);
   font-weight: var(--font-semibold);
   text-transform: uppercase;
   letter-spacing: 0.22em;
@@ -324,7 +324,7 @@ h3 { font-size: var(--text-xl); }
 
 .field label {
   font-weight: var(--font-semibold);
-  font-size: 0.95rem;
+  font-size: var(--text-field-label);
 }
 
 .actions {
@@ -384,14 +384,14 @@ h3 { font-size: var(--text-xl); }
 }
 
 .sources strong {
-  font-size: 0.9rem;
+  font-size: var(--text-body-sm);
 }
 
 .result-body {
   white-space: pre-wrap;
   word-wrap: break-word;
   font-family: var(--font-mono);
-  font-size: 0.9rem;
+  font-size: var(--text-body-sm);
   line-height: 1.7;
   max-height: 600px;
   overflow-y: auto;
@@ -402,9 +402,9 @@ h3 { font-size: var(--text-xl); }
 }
 
 .alert {
-  border-color: var(--alert-error-border-compat);
-  background-color: var(--alert-error-bg-compat);
-  color: var(--alert-error-color-compat);
+  border-color: var(--alert-error-border);
+  background-color: var(--alert-error-bg);
+  color: var(--alert-error-color);
 }
 
 @media (prefers-color-scheme: dark) {
