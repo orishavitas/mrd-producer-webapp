@@ -1,0 +1,144 @@
+/*
+ * Component-Level Token Compositions
+ * Pre-composed token sets for common UI components.
+ * These use the primitive and semantic tokens from tokens.css.
+ */
+
+/* ========================================
+   Card
+   ======================================== */
+:root {
+  --card-bg: var(--surface);
+  --card-border: var(--border);
+  --card-radius: var(--radius);
+  --card-padding: var(--space-6);
+  --card-shadow: var(--shadow);
+}
+
+/* ========================================
+   Button - Primary
+   ======================================== */
+:root {
+  --btn-primary-bg: var(--accent);
+  --btn-primary-border: var(--accent);
+  --btn-primary-color: var(--color-white);
+  --btn-primary-hover-bg: var(--accent-strong);
+  --btn-primary-hover-border: var(--accent-strong);
+  --btn-primary-radius: var(--radius);
+  --btn-primary-padding-y: var(--space-3);
+  --btn-primary-padding-x: var(--space-6);
+  --btn-primary-font-size: var(--text-base);
+  --btn-primary-font-weight: var(--font-medium);
+  --btn-primary-line-height: var(--leading-tight);
+  --btn-primary-transition: background-color var(--duration-normal) var(--ease-out),
+    border-color var(--duration-normal) var(--ease-out),
+    transform 100ms var(--ease-out);
+}
+
+/* ========================================
+   Button - Ghost
+   ======================================== */
+:root {
+  --btn-ghost-bg: transparent;
+  --btn-ghost-border: var(--border);
+  --btn-ghost-color: var(--foreground);
+  --btn-ghost-hover-border: var(--accent);
+  --btn-ghost-hover-color: var(--accent);
+  --btn-ghost-radius: var(--radius);
+  --btn-ghost-padding-y: var(--space-3);
+  --btn-ghost-padding-x: var(--space-6);
+  --btn-ghost-font-size: var(--text-base);
+  --btn-ghost-font-weight: var(--font-medium);
+  --btn-ghost-line-height: var(--leading-tight);
+  --btn-ghost-transition: border-color var(--duration-normal) var(--ease-out),
+    color var(--duration-normal) var(--ease-out),
+    transform 100ms var(--ease-out);
+}
+
+/* ========================================
+   Input / Textarea
+   ======================================== */
+:root {
+  --input-bg: var(--surface);
+  --input-border: var(--border);
+  --input-color: var(--foreground);
+  --input-radius: var(--radius);
+  --input-padding-y: var(--space-3);
+  --input-padding-x: var(--space-4);
+  --input-font-size: var(--text-base);
+  --input-line-height: var(--leading-normal);
+  --input-focus-border: var(--accent);
+  --input-focus-ring: 0 0 0 3px var(--accent-soft);
+  --input-transition: border-color var(--duration-normal) var(--ease-out),
+    box-shadow var(--duration-normal) var(--ease-out);
+}
+
+/* ========================================
+   Chip / Tag
+   ======================================== */
+:root {
+  --chip-bg: var(--accent-soft);
+  --chip-color: var(--accent);
+  --chip-border: transparent;
+  --chip-radius: var(--radius-full);
+  --chip-padding-y: var(--space-1);
+  --chip-padding-x: var(--space-3);
+  --chip-font-size: var(--text-sm);
+  --chip-font-weight: var(--font-medium);
+}
+
+/* ========================================
+   Progress Bar
+   ======================================== */
+:root {
+  --progress-bg: var(--border);
+  --progress-fill: var(--accent);
+  --progress-height: 6px;
+  --progress-radius: var(--radius-full);
+  --progress-transition: width var(--duration-slow) var(--ease-in-out);
+}
+
+/* ========================================
+   Alert
+   ======================================== */
+:root {
+  --alert-radius: var(--radius);
+  --alert-padding: var(--space-4);
+  --alert-font-size: var(--text-sm);
+
+  /* Alert - Error (default) */
+  --alert-error-bg: var(--error-soft);
+  --alert-error-border: var(--error);
+  --alert-error-color: var(--error);
+
+  /* Alert - Warning */
+  --alert-warning-bg: var(--warning-soft);
+  --alert-warning-border: var(--warning);
+  --alert-warning-color: var(--warning);
+
+  /* Alert - Success */
+  --alert-success-bg: var(--success-soft);
+  --alert-success-border: var(--success);
+  --alert-success-color: var(--success);
+}
+
+/* Override alert colors for light mode specifics (backward compat) */
+:root {
+  --alert-error-bg-compat: #fff4f4;
+  --alert-error-border-compat: #f4a5a5;
+  --alert-error-color-compat: #7a1a1a;
+}
+
+[data-theme="dark"] {
+  --alert-error-bg-compat: rgba(122, 45, 45, 0.25);
+  --alert-error-border-compat: #7a2d2d;
+  --alert-error-color-compat: #f3c2c2;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --alert-error-bg-compat: rgba(122, 45, 45, 0.25);
+    --alert-error-border-compat: #7a2d2d;
+    --alert-error-color-compat: #f3c2c2;
+  }
+}

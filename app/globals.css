@@ -4,6 +4,13 @@
  * Autoprefixer handles vendor prefixes automatically
  */
 
+/* ========================================
+   Design Token Imports
+   ======================================== */
+@import '../styles/tokens/tokens.css';
+@import '../styles/tokens/typography.css';
+@import '../styles/tokens/components.css';
+
 /* CSS Reset - normalize across browsers */
 *,
 *::before,
@@ -11,37 +18,6 @@
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-}
-
-/* Root variables with fallbacks for older browsers */
-:root {
-  --background: #f6f5f1;
-  --foreground: #14171a;
-  --muted: #5c646a;
-  --surface: #ffffff;
-  --border: #d7d9dd;
-  --accent: #0f766e;
-  --accent-strong: #0b5f59;
-  --accent-soft: rgba(15, 118, 110, 0.12);
-  --radius: 10px;
-  --shadow: 0 14px 30px rgba(20, 23, 26, 0.08);
-  --font-sans: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0b0f12;
-    --foreground: #f3f4f6;
-    --muted: #9aa3ab;
-    --surface: #14181c;
-    --border: #2a2f36;
-    --accent: #34d399;
-    --accent-strong: #10b981;
-    --accent-soft: rgba(52, 211, 153, 0.16);
-    --shadow: 0 16px 32px rgba(0, 0, 0, 0.35);
-  }
 }
 
 /* Base styles */
@@ -55,7 +31,7 @@ body {
   font-family: var(--font-sans);
   background-color: var(--background);
   color: var(--foreground);
-  line-height: 1.6;
+  line-height: var(--leading-relaxed);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   min-height: 100%;
@@ -77,8 +53,8 @@ body {
 a {
   color: var(--accent);
   text-decoration: none;
-  -webkit-transition: color 0.2s ease;
-  transition: color 0.2s ease;
+  -webkit-transition: color var(--duration-normal) ease;
+  transition: color var(--duration-normal) ease;
 }
 
 a:hover {
@@ -90,10 +66,10 @@ a:hover {
 button,
 .button {
   display: inline-block;
-  padding: 0.75rem 1.5rem;
-  font-size: 1rem;
-  font-weight: 500;
-  line-height: 1.25;
+  padding: var(--space-3) var(--space-6);
+  font-size: var(--text-base);
+  font-weight: var(--font-medium);
+  line-height: var(--leading-tight);
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
@@ -106,8 +82,8 @@ button,
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  -webkit-transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
-  transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.1s ease;
+  -webkit-transition: background-color var(--duration-normal) ease, border-color var(--duration-normal) ease, transform 100ms ease;
+  transition: background-color var(--duration-normal) ease, border-color var(--duration-normal) ease, transform 100ms ease;
 }
 
 button:hover,
@@ -132,28 +108,28 @@ input,
 textarea,
 select {
   font-family: inherit;
-  font-size: 1rem;
-  line-height: 1.5;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  background-color: var(--surface);
-  color: var(--foreground);
+  font-size: var(--text-base);
+  line-height: var(--leading-normal);
+  padding: var(--input-padding-y) var(--input-padding-x);
+  border: 1px solid var(--input-border);
+  border-radius: var(--input-radius);
+  background-color: var(--input-bg);
+  color: var(--input-color);
   width: 100%;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
-  -webkit-transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  -webkit-transition: var(--input-transition);
+  transition: var(--input-transition);
 }
 
 input:focus,
 textarea:focus,
 select:focus {
   outline: none;
-  border-color: var(--accent);
-  -webkit-box-shadow: 0 0 0 3px var(--accent-soft);
-  box-shadow: 0 0 0 3px var(--accent-soft);
+  border-color: var(--input-focus-border);
+  -webkit-box-shadow: var(--input-focus-ring);
+  box-shadow: var(--input-focus-ring);
 }
 
 /* Flexbox with fallbacks */
@@ -194,17 +170,17 @@ select:focus {
 }
 
 .gap-4 {
-  gap: 1rem;
+  gap: var(--space-4);
 }
 
 /* For browsers that don't support gap in flexbox */
 @supports not (gap: 1rem) {
   .gap-4 > * + * {
-    margin-left: 1rem;
+    margin-left: var(--space-4);
   }
   .flex-col.gap-4 > * + * {
     margin-left: 0;
-    margin-top: 1rem;
+    margin-top: var(--space-4);
   }
 }
 
@@ -214,47 +190,46 @@ select:focus {
   max-width: 1120px;
   margin-left: auto;
   margin-right: auto;
-  padding-left: 1rem;
-  padding-right: 1rem;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
 }
 
 /* Card component */
 .card {
-  background-color: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  -webkit-box-shadow: var(--shadow);
-  box-shadow: var(--shadow);
+  background-color: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  padding: var(--card-padding);
+  -webkit-box-shadow: var(--card-shadow);
+  box-shadow: var(--card-shadow);
 }
 
 /* Typography */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 600;
-  line-height: 1.25;
-  margin-bottom: 0.5rem;
+  font-weight: var(--font-semibold);
+  line-height: var(--leading-tight);
+  margin-bottom: var(--space-2);
 }
 
-h1 { font-size: 2.5rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.5rem; }
-h4 { font-size: 1.25rem; }
+h1 { font-size: var(--text-4xl); }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-2xl); }
+h4 { font-size: var(--text-xl); }
 
 p {
-  margin-bottom: 1rem;
+  margin-bottom: var(--space-4);
 }
 
 /* Code blocks */
 code,
 pre {
   font-family: var(--font-mono);
-  font-family: 'SF Mono', 'Consolas', 'Liberation Mono', Menlo, monospace;
-  font-size: 0.875rem;
+  font-size: var(--text-sm);
 }
 
 pre {
   background-color: var(--muted);
-  padding: 1rem;
+  padding: var(--space-4);
   border-radius: var(--radius);
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
@@ -263,8 +238,8 @@ pre {
 /* Loading spinner - pure CSS, no JS needed */
 .spinner {
   display: inline-block;
-  width: 1.5rem;
-  height: 1.5rem;
+  width: var(--space-6);
+  height: var(--space-6);
   border: 2px solid var(--muted);
   border-top-color: var(--accent);
   border-radius: 50%;
@@ -293,18 +268,18 @@ pre {
   }
 
   .container {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
+    padding-left: var(--space-3);
+    padding-right: var(--space-3);
   }
 
 h1 { font-size: 1.875rem; }
-h2 { font-size: 1.5rem; }
-h3 { font-size: 1.25rem; }
+h2 { font-size: var(--text-2xl); }
+h3 { font-size: var(--text-xl); }
 }
 
 /* Page layout */
 .page {
-  padding: 3rem 0 4rem;
+  padding: var(--space-12) 0 var(--space-16);
 }
 
 .page-shell {
@@ -312,80 +287,80 @@ h3 { font-size: 1.25rem; }
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: var(--space-8);
 }
 
 .page-hero {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .eyebrow {
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   text-transform: uppercase;
   letter-spacing: 0.22em;
-  color: var(--muted);
+  color: var(--text-muted);
 }
 
 .subtitle {
   margin: 0;
-  color: var(--muted);
+  color: var(--text-muted);
   max-width: 60ch;
 }
 
 .form-card {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--space-5);
 }
 
 .field {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: var(--space-2);
 }
 
 .field label {
-  font-weight: 600;
+  font-weight: var(--font-semibold);
   font-size: 0.95rem;
 }
 
 .actions {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
+  gap: var(--space-3);
   flex-wrap: wrap;
-  margin-top: 0.5rem;
+  margin-top: var(--space-2);
 }
 
 .btn-primary {
-  background-color: var(--accent);
-  border-color: var(--accent);
-  color: #ffffff;
+  background-color: var(--btn-primary-bg);
+  border-color: var(--btn-primary-border);
+  color: var(--btn-primary-color);
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-strong);
-  border-color: var(--accent-strong);
+  background-color: var(--btn-primary-hover-bg);
+  border-color: var(--btn-primary-hover-border);
 }
 
 .btn-ghost {
-  background-color: transparent;
-  border-color: var(--border);
-  color: var(--foreground);
+  background-color: var(--btn-ghost-bg);
+  border-color: var(--btn-ghost-border);
+  color: var(--btn-ghost-color);
 }
 
 .btn-ghost:hover {
-  border-color: var(--accent);
-  color: var(--accent);
+  border-color: var(--btn-ghost-hover-border);
+  color: var(--btn-ghost-hover-color);
 }
 
 .result-card {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap: var(--space-5);
 }
 
 .result-header {
@@ -393,17 +368,17 @@ h3 { font-size: 1.25rem; }
   justify-content: space-between;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.75rem;
+  gap: var(--space-3);
 }
 
 .result-actions {
   display: flex;
-  gap: 0.5rem;
+  gap: var(--space-2);
   flex-wrap: wrap;
 }
 
 .sources {
-  padding: 0.75rem 1rem;
+  padding: var(--space-3) var(--space-4);
   background-color: rgba(15, 118, 110, 0.08);
   border-radius: var(--radius);
 }
@@ -420,16 +395,16 @@ h3 { font-size: 1.25rem; }
   line-height: 1.7;
   max-height: 600px;
   overflow-y: auto;
-  padding: 1rem;
+  padding: var(--space-4);
   background-color: rgba(255, 255, 255, 0.7);
   border-radius: var(--radius);
   border: 1px solid var(--border);
 }
 
 .alert {
-  border-color: #f4a5a5;
-  background-color: #fff4f4;
-  color: #7a1a1a;
+  border-color: var(--alert-error-border-compat);
+  background-color: var(--alert-error-bg-compat);
+  color: var(--alert-error-color-compat);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -440,21 +415,15 @@ h3 { font-size: 1.25rem; }
   .result-body {
     background-color: rgba(20, 24, 28, 0.85);
   }
-
-  .alert {
-    border-color: #7a2d2d;
-    background-color: rgba(122, 45, 45, 0.25);
-    color: #f3c2c2;
-  }
 }
 
 @media screen and (max-width: 768px) {
   .page {
-    padding: 2rem 0 3rem;
+    padding: var(--space-8) 0 var(--space-12);
   }
 
   .page-shell {
-    gap: 1.5rem;
+    gap: var(--space-6);
   }
 
   .result-header {
@@ -465,8 +434,8 @@ h3 { font-size: 1.25rem; }
 /* Print styles */
 @media print {
   body {
-    background-color: #ffffff;
-    color: #000000;
+    background-color: var(--color-white);
+    color: var(--color-black);
   }
 
   .no-print {
