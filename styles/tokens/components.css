@@ -85,6 +85,8 @@
   --chip-padding-x: var(--space-3);
   --chip-font-size: var(--text-sm);
   --chip-font-weight: var(--font-medium);
+  --chip-remove-bg: rgba(255, 255, 255, 0.3);
+  --chip-remove-hover-bg: rgba(255, 255, 255, 0.5);
 }
 
 /* ========================================

@@ -83,7 +83,7 @@
   margin: 0;
   border: none;
   border-radius: var(--radius-full);
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: var(--chip-remove-bg);
   color: inherit;
   font-size: var(--text-xs);
   line-height: 1;
@@ -92,7 +92,7 @@
 }
 
 .chipRemove:hover {
-  background-color: rgba(255, 255, 255, 0.5);
+  background-color: var(--chip-remove-hover-bg);
 }
 
 .chipRemove:focus-visible {
