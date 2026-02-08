@@ -1,15 +1,7 @@
 'use client';
 
 import styles from './intake.module.css';
-
-const TOPICS = [
-  'Problem & Vision',
-  'Market & Users',
-  'Product Definition',
-  'Design & Experience',
-  'Business & Pricing',
-  'Competitive Landscape',
-] as const;
+import { TOPICS } from './lib/topics';
 
 export default function IntakePage() {
   return (
@@ -19,9 +11,9 @@ export default function IntakePage() {
         <h2 className={styles.sidebarTitle}>Topics</h2>
         <ul className={styles.topicList}>
           {TOPICS.map((topic) => (
-            <li key={topic} className={styles.topicItem}>
+            <li key={topic.id} className={styles.topicItem}>
               <span className={styles.topicCircle} aria-hidden="true" />
-              {topic}
+              {topic.name}
             </li>
           ))}
         </ul>
@@ -47,9 +39,9 @@ export default function IntakePage() {
       <div className={styles.mobileProgress}>
         <div className={styles.mobileTopicRow}>
           {TOPICS.map((topic) => (
-            <span key={topic} className={styles.mobileTopicPill}>
+            <span key={topic.id} className={styles.mobileTopicPill}>
               <span className={styles.mobileCircle} aria-hidden="true" />
-              {topic}
+              {topic.name}
             </span>
           ))}
         </div>

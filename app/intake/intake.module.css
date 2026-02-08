@@ -2,7 +2,7 @@
 
 .wrapper {
   display: flex;
-  min-height: calc(100vh - 65px); /* subtract header height */
+  min-height: calc(100vh - var(--header-height));
 }
 
 /* ========================================

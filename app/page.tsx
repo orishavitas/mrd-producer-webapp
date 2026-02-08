@@ -17,6 +17,9 @@ export default function Home() {
             &rarr;
           </span>
         </Link>
+        <Link href="/legacy" className={styles.legacyLink}>
+          Use classic generator
+        </Link>
       </div>
     </main>
   );

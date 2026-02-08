@@ -1,6 +1,7 @@
 /* Shared intake layout styles */
 
 .layout {
+  --header-height: 65px;
   display: flex;
   flex-direction: column;
   min-height: 100vh;
