@@ -1,0 +1,51 @@
+/**
+ * Field Status Badge Styles
+ *
+ * Displays field completion status with color-coded indicators.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+/* ============================================================================
+   Badge
+   ============================================================================ */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Spacing */
+  padding: var(--status-badge-padding-y) var(--status-badge-padding-x);
+
+  /* Typography */
+  font-size: var(--status-badge-font-size);
+  font-weight: var(--status-badge-font-weight);
+  line-height: 1;
+
+  /* Appearance */
+  border-radius: var(--status-badge-radius);
+
+  /* Default: Incomplete state */
+  background-color: var(--status-badge-incomplete-bg);
+  color: var(--status-badge-incomplete-color);
+
+  /* Transitions */
+  transition: background-color var(--duration-normal) var(--ease-out),
+              color var(--duration-normal) var(--ease-out);
+}
+
+/* Complete state */
+.badge[data-complete] {
+  background-color: var(--status-badge-complete-bg);
+  color: var(--status-badge-complete-color);
+}
+
+/* ============================================================================
+   Reduced Motion Support
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .badge {
+    transition: none;
+  }
+}
