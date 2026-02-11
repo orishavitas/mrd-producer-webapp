@@ -4,7 +4,13 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MRD Producer is a Next.js web application that generates Market Requirements Documents (MRDs) using AI. It accepts product concepts, conducts web research via Gemini's Google Search grounding, and produces structured 12-section MRDs following the Compulocks template format.
+MRD Producer is a Next.js web application with three complementary features:
+
+1. **Main MRD Producer** (`/`) - Generates full 12-section Market Requirements Documents with AI-powered competitive research via Gemini's Google Search grounding. For new product concepts needing market validation.
+
+2. **Progressive Intake** (`/intake`) - 4-topic structured intake flow for stand/enclosure products. Guides users through sequential topic approval with live research preview. (feature/progressive-intake branch)
+
+3. **Brief Helper** (`/brief-helper`) - Quick 6-field capture tool for products past the research phase. Uses AI to extract structured data, detect gaps, and generate simplified briefs. (feature/brief-helper branch - IN PROGRESS)
 
 ## Commands
 
@@ -25,9 +31,14 @@ The codebase follows a **multi-agent architecture** with provider abstraction:
 
 ```
 app/                    # Next.js App Router - UI and API endpoints
+├── /                   # Main MRD Producer (full research + 12-section MRD)
+├── intake/             # Progressive 4-topic intake flow
+├── brief-helper/       # Quick 6-field simplified brief (IN PROGRESS)
 ├── api/
 │   ├── generate/       # Main MRD generation endpoint
 │   ├── download/       # Document export (DOCX, HTML, PDF)
+│   ├── intake/         # Intake flow endpoints
+│   ├── brief/          # Brief Helper endpoints (IN PROGRESS)
 │   └── workflow/       # Multi-stage stateful pipeline
 
 agent/                  # Multi-agent orchestration system
@@ -49,13 +60,21 @@ agent/                  # Multi-agent orchestration system
 │   │   ├── market-section-generator.ts    # Sections 1-4
 │   │   ├── technical-section-generator.ts # Sections 5-7
 │   │   └── strategy-section-generator.ts  # Sections 8-12
-│   └── reviewers/      # Quality and ensemble reviewers (Phase 5)
-│       ├── quality-reviewer.ts   # MRD quality validation
-│       └── ensemble-reviewer.ts  # Multi-generation merger
+│   ├── reviewers/      # Quality and ensemble reviewers (Phase 5)
+│   │   ├── quality-reviewer.ts   # MRD quality validation
+│   │   └── ensemble-reviewer.ts  # Multi-generation merger
+│   └── brief/          # Brief Helper agents (IN PROGRESS - feature/brief-helper)
+│       ├── types.ts    # Brief Helper types
+│       ├── text-extraction-agent.ts  # Extract structured data from free text
+│       ├── gap-detection-agent.ts    # Identify missing information
+│       ├── expansion-agent.ts        # AI-powered text expansion
+│       ├── brief-generator-agent.ts  # Generate simplified briefs
+│       └── knowledge-base-agent.ts   # Learn patterns over time
 ├── orchestrators/      # Coordination agents
 │   ├── mrd-orchestrator.ts        # Main workflow orchestrator
 │   ├── research-orchestrator.ts   # Parallel research coordinator
-│   └── generation-orchestrator.ts # Section generation coordinator
+│   ├── generation-orchestrator.ts # Section generation coordinator
+│   └── brief-orchestrator.ts      # Brief Helper orchestrator (IN PROGRESS)
 ├── patterns/           # Reusable execution patterns
 │   ├── parallel-executor.ts  # Parallel agent execution
 │   └── ensemble-merger.ts    # Ensemble merging strategies
@@ -362,6 +381,46 @@ const { result, providerUsed } = await chain.executeWithFallback(
 console.log('Used provider:', providerUsed);
 console.log('Result:', result.text);
 ```
+
+## Current Development
+
+### Brief Helper (feature/brief-helper - IN PROGRESS)
+
+**Purpose:** Quick 6-field capture tool for products past the research phase.
+
+**Status:** Phase 1 Task 1 complete (project setup, design tokens)
+
+**Implementation Plan:** `docs/plans/2026-02-11-simplified-brief-helper-implementation-plan.md`
+
+**Key Documents:**
+- PRD: `docs/plans/2026-02-11-simplified-brief-helper-PRD.md`
+- Design System: `docs/plans/2026-02-11-simplified-brief-helper-design-system.md`
+- Executive Brief: `docs/plans/2026-02-11-simplified-brief-helper-brief.md`
+
+**6 Fields:**
+1. What - Product description
+2. Who - Target users/customers
+3. Where - Use environment
+4. MOQ - Minimum order quantity
+5. Must-Have Features - Non-negotiable requirements
+6. Nice-to-Have Features - Optional enhancements
+
+**Design Tokens:** `styles/tokens/brief-helper.css` (311 lines, 8 component token sets, light/dark mode)
+
+**Workflow:**
+- User types → 2-3 sec pause → AI extracts structured bullet points
+- Gap detection suggests missing info (e.g., "tablet stand" → placement, sizes, VESA)
+- AI expansion chat for refinement
+- Generate simplified brief (Markdown/HTML)
+
+**Storage Strategy:**
+- Redis: Hot cache for active sessions
+- SQLite: Persistent knowledge base (learns patterns)
+- Google Drive: Completed briefs (OAuth integration)
+
+**Next Tasks:** State management (Task 2), SmartTextBox component (Task 3), page layout (Task 4)
+
+---
 
 ## Documentation
 
