@@ -159,6 +159,12 @@ export function useDebounce<T>(value: T, callback: (value: T) => void, delay: nu
 export function usePauseDetection(value: string, onPause: () => void, delay: number = 2500) {
   const previousValue = useRef(value);
   const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const onPauseRef = useRef(onPause);
+
+  // Update ref when callback changes (doesn't trigger effect)
+  useEffect(() => {
+    onPauseRef.current = onPause;
+  }, [onPause]);
 
   useEffect(() => {
     // Only trigger if value actually changed
@@ -178,9 +184,9 @@ export function usePauseDetection(value: string, onPause: () => void, delay: num
       return;
     }
 
-    // Set new timeout
+    // Set new timeout - use ref instead of direct callback
     timeoutRef.current = setTimeout(() => {
-      onPause();
+      onPauseRef.current();
     }, delay);
 
     // Cleanup
@@ -189,5 +195,5 @@ export function usePauseDetection(value: string, onPause: () => void, delay: num
         clearTimeout(timeoutRef.current);
       }
     };
-  }, [value, onPause, delay]);
+  }, [value, delay]);
 }
