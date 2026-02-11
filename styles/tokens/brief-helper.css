@@ -1,0 +1,310 @@
+/*
+ * Brief Helper Component Tokens
+ * Extends base MRD Producer design tokens for Brief Helper interface.
+ * Based on design system: docs/plans/2026-02-11-simplified-brief-helper-design-system.md
+ */
+
+/* ========================================
+   Semantic Colors - AI Processing States
+   ======================================== */
+:root {
+  --ai-processing: rgba(15, 118, 110, 0.06);
+  --ai-processing-border: rgba(15, 118, 110, 0.24);
+  --ai-badge: #0f766e;
+  --ai-badge-bg: rgba(15, 118, 110, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --ai-processing: rgba(52, 211, 153, 0.08);
+    --ai-processing-border: rgba(52, 211, 153, 0.28);
+    --ai-badge: #34d399;
+    --ai-badge-bg: rgba(52, 211, 153, 0.16);
+  }
+}
+
+/* ========================================
+   Semantic Colors - Field States
+   ======================================== */
+:root {
+  --field-complete: #16a34a;
+  --field-complete-bg: rgba(22, 163, 74, 0.12);
+  --field-incomplete: #94a3b8;
+  --field-incomplete-bg: rgba(148, 163, 184, 0.08);
+  --gap-detected: #d97706;
+  --gap-detected-bg: rgba(217, 119, 6, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --field-complete: #4ade80;
+    --field-complete-bg: rgba(74, 222, 128, 0.16);
+    --field-incomplete: #64748b;
+    --field-incomplete-bg: rgba(100, 116, 139, 0.12);
+    --gap-detected: #fbbf24;
+    --gap-detected-bg: rgba(251, 191, 36, 0.16);
+  }
+}
+
+/* ========================================
+   Brief Field Container
+   ======================================== */
+:root {
+  --brief-field-gap: var(--space-8);
+  --brief-field-label-size: var(--text-sm);
+  --brief-field-label-weight: var(--font-semibold);
+  --brief-field-label-color: var(--text-secondary);
+  --brief-field-counter-size: var(--text-xs);
+  --brief-field-counter-color: var(--text-muted);
+}
+
+/* ========================================
+   Smart Text Box
+   ======================================== */
+:root {
+  --text-box-bg: var(--surface);
+  --text-box-border: var(--border);
+  --text-box-border-active: var(--accent);
+  --text-box-border-error: var(--error);
+  --text-box-radius: var(--radius);
+  --text-box-padding-y: var(--space-4);
+  --text-box-padding-x: var(--space-4);
+  --text-box-min-height: 120px;
+  --text-box-font-size: var(--text-base);
+  --text-box-line-height: var(--leading-relaxed);
+  --text-box-ai-bg: var(--ai-processing);
+  --text-box-ai-border: var(--ai-processing-border);
+  --text-box-focus-ring: 0 0 0 3px var(--accent-soft);
+  --text-box-transition: border-color var(--duration-normal) var(--ease-out),
+                         background-color var(--duration-normal) var(--ease-out),
+                         box-shadow var(--duration-normal) var(--ease-out);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text-box-ai-bg: rgba(52, 211, 153, 0.08);
+    --text-box-ai-border: rgba(52, 211, 153, 0.28);
+  }
+}
+
+/* ========================================
+   Gap Suggestion Box
+   ======================================== */
+:root {
+  --gap-box-bg: var(--gap-detected-bg);
+  --gap-box-border: var(--gap-detected);
+  --gap-box-color: var(--text-primary);
+  --gap-box-icon-color: var(--gap-detected);
+  --gap-box-radius: var(--radius);
+  --gap-box-padding-y: var(--space-3);
+  --gap-box-padding-x: var(--space-4);
+  --gap-box-gap: var(--space-2);
+  --gap-box-shadow: var(--shadow-sm);
+}
+
+/* ========================================
+   AI Expansion Panel
+   ======================================== */
+:root {
+  --ai-panel-bg: var(--surface);
+  --ai-panel-border: var(--border);
+  --ai-panel-radius: var(--radius);
+  --ai-panel-padding: var(--space-6);
+  --ai-panel-gap: var(--space-4);
+  --ai-panel-shadow: var(--shadow-md);
+
+  /* Message Bubbles */
+  --ai-message-bg: var(--ai-badge-bg);
+  --ai-message-color: var(--text-primary);
+  --user-message-bg: var(--accent-soft);
+  --user-message-color: var(--text-primary);
+
+  --message-radius: var(--radius);
+  --message-padding-y: var(--space-3);
+  --message-padding-x: var(--space-4);
+  --message-font-size: var(--text-sm);
+  --message-line-height: var(--leading-relaxed);
+}
+
+/* ========================================
+   Field Status Badge
+   ======================================== */
+:root {
+  --status-badge-complete-bg: var(--field-complete-bg);
+  --status-badge-complete-color: var(--field-complete);
+  --status-badge-incomplete-bg: var(--field-incomplete-bg);
+  --status-badge-incomplete-color: var(--field-incomplete);
+  --status-badge-radius: var(--radius-full);
+  --status-badge-padding-y: var(--space-1);
+  --status-badge-padding-x: var(--space-3);
+  --status-badge-font-size: var(--text-xs);
+  --status-badge-font-weight: var(--font-semibold);
+}
+
+/* ========================================
+   Progress Indicator
+   ======================================== */
+:root {
+  --progress-height: 8px;
+  --progress-label-size: var(--text-sm);
+  --progress-label-weight: var(--font-medium);
+  --progress-label-color: var(--text-secondary);
+}
+
+/* ========================================
+   Generate Brief Button
+   ======================================== */
+:root {
+  --btn-generate-bg: var(--accent);
+  --btn-generate-hover-bg: var(--accent-strong);
+  --btn-generate-color: var(--color-white);
+  --btn-generate-radius: var(--radius);
+  --btn-generate-padding-y: var(--space-4);
+  --btn-generate-padding-x: var(--space-8);
+  --btn-generate-font-size: var(--text-lg);
+  --btn-generate-font-weight: var(--font-semibold);
+  --btn-generate-shadow: var(--shadow-md);
+  --btn-generate-shadow-hover: var(--shadow-lg);
+  --btn-generate-transition: all var(--duration-normal) var(--ease-out);
+}
+
+/* ========================================
+   Brief Preview Panel
+   ======================================== */
+:root {
+  --brief-preview-bg: var(--surface);
+  --brief-preview-border: var(--border);
+  --brief-preview-radius: var(--radius-lg);
+  --brief-preview-padding: var(--space-8);
+  --brief-preview-shadow: var(--shadow-lg);
+  --brief-preview-header-bg: var(--background);
+  --brief-preview-header-padding: var(--space-6);
+
+  /* Section Headers */
+  --brief-section-color: var(--accent);
+  --brief-section-size: var(--text-lg);
+  --brief-section-weight: var(--font-bold);
+
+  /* Content */
+  --brief-content-size: var(--text-base);
+  --brief-content-line-height: var(--leading-relaxed);
+  --brief-content-color: var(--text-primary);
+}
+
+/* ========================================
+   Component-Specific Spacing
+   ======================================== */
+:root {
+  /* Field Container */
+  --field-container-gap: var(--space-8);
+  --field-internal-gap: var(--space-3);
+
+  /* Text Box */
+  --text-box-padding-y: var(--space-4);
+  --text-box-padding-x: var(--space-4);
+  --text-box-min-height: 120px;
+
+  /* Gap Suggestion Box */
+  --gap-suggestion-padding-y: var(--space-3);
+  --gap-suggestion-padding-x: var(--space-4);
+  --gap-suggestion-gap: var(--space-2);
+
+  /* AI Expansion Panel */
+  --ai-panel-padding: var(--space-6);
+  --ai-panel-gap: var(--space-4);
+}
+
+/* ========================================
+   Component-Specific Typography
+   ======================================== */
+:root {
+  /* Field Labels */
+  --field-label-size: var(--text-sm);
+  --field-label-weight: var(--font-semibold);
+  --field-label-color: var(--text-secondary);
+  --field-label-spacing: var(--space-2);
+
+  /* Field Counter */
+  --field-counter-size: var(--text-xs);
+  --field-counter-weight: var(--font-regular);
+  --field-counter-color: var(--text-muted);
+
+  /* AI Suggestion Text */
+  --ai-suggestion-size: var(--text-sm);
+  --ai-suggestion-weight: var(--font-regular);
+  --ai-suggestion-line-height: var(--leading-relaxed);
+
+  /* Brief Title */
+  --brief-title-size: var(--text-2xl);
+  --brief-title-weight: var(--font-bold);
+  --brief-title-line-height: var(--leading-tight);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+/* AI Processing Pulse */
+@keyframes ai-processing {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* Gap Suggestion Slide-In */
+@keyframes slide-in-down {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Slide-In from Bottom (for panels) */
+@keyframes slide-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fade In */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   Reduced Motion Support
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  @keyframes ai-processing {
+    0%, 100% {
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes slide-in-down,
+  @keyframes slide-in-up {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

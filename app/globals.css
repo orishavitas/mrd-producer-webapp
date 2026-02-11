@@ -4,6 +4,11 @@
  * Autoprefixer handles vendor prefixes automatically
  */
 
+/* ========================================
+   Design Token Imports
+   ======================================== */
+@import '../styles/tokens/brief-helper.css';
+
 /* CSS Reset - normalize across browsers */
 *,
 *::before,
