@@ -33,6 +33,8 @@ export interface SmartTextBoxProps {
   placeholder?: string;
   /** Accessible label */
   'aria-label': string;
+  /** HTML id for label association */
+  id?: string;
 }
 
 // ============================================================================
@@ -48,6 +50,7 @@ export default function SmartTextBox({
   isComplete,
   placeholder,
   'aria-label': ariaLabel,
+  id,
 }: SmartTextBoxProps) {
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
@@ -85,6 +88,7 @@ export default function SmartTextBox({
   return (
     <div className={styles.container}>
       <textarea
+        id={id}
         ref={textareaRef}
         className={styles.textarea}
         value={value}
