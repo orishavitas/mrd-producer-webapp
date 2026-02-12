@@ -15,6 +15,7 @@ import { useBrief } from '../lib/brief-context';
 import SmartTextBox from './SmartTextBox';
 import FieldStatusBadge from './FieldStatusBadge';
 import GapSuggestion, { Gap } from './GapSuggestion';
+import AIExpansionPanel from './AIExpansionPanel';
 import styles from './BriefField.module.css';
 
 // ============================================================================
@@ -38,6 +39,7 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
   const fieldState = state.fields[fieldType];
   const [detectedGaps, setDetectedGaps] = useState<Gap[]>([]);
   const [isDetectingGaps, setIsDetectingGaps] = useState(false);
+  const [showAIPanel, setShowAIPanel] = useState(false);
 
   // Handle text change
   const handleTextChange = (value: string) => {
@@ -183,10 +185,48 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
     });
   };
 
-  // Handle AI expansion (TODO: Task 7)
+  // Handle AI expansion
   const handleAIExpand = () => {
     console.log(`AI expansion requested for ${fieldType}`);
-    // TODO (Task 7): Open AI expansion panel
+    setShowAIPanel(true);
+  };
+
+  // Handle accepting AI suggestions
+  const handleAcceptSuggestions = (bullets: string[]) => {
+    // Merge with existing bullets (avoid duplicates)
+    const existingSet = new Set(fieldState.bulletPoints.map((b) => b.toLowerCase()));
+    const newBullets = bullets.filter(
+      (b) => !existingSet.has(b.toLowerCase())
+    );
+
+    const mergedBullets = [...fieldState.bulletPoints, ...newBullets];
+
+    // Update state
+    dispatch({
+      type: 'SET_BULLET_POINTS',
+      payload: {
+        fieldType,
+        bulletPoints: mergedBullets,
+      },
+    });
+
+    // Mark field as complete if it has content
+    if (mergedBullets.length > 0) {
+      dispatch({
+        type: 'MARK_COMPLETE',
+        payload: {
+          fieldType,
+          isComplete: true,
+        },
+      });
+    }
+
+    console.log(`Accepted ${newBullets.length} new bullet points for ${fieldType}`);
+  };
+
+  // Handle closing AI panel
+  const handleCloseAIPanel = () => {
+    setShowAIPanel(false);
   };
 
   return (
@@ -243,8 +283,16 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         />
       )}
 
-      {/* AI expansion panel slot (Task 7) */}
-      {/* TODO (Task 7): Render AI expansion panel when active */}
+      {/* AI expansion panel */}
+      {showAIPanel && (
+        <AIExpansionPanel
+          fieldType={fieldType}
+          currentBullets={fieldState.bulletPoints}
+          gaps={detectedGaps}
+          onAcceptSuggestions={handleAcceptSuggestions}
+          onClose={handleCloseAIPanel}
+        />
+      )}
     </div>
   );
 }
