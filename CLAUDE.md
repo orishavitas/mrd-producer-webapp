@@ -384,21 +384,37 @@ console.log('Result:', result.text);
 
 ## Current Development
 
-### Brief Helper (feature/brief-helper - IN PROGRESS)
+### Brief Helper V2 (feature/brief-helper - READY FOR IMPLEMENTATION)
 
-**Purpose:** Quick 6-field capture tool for products past the research phase.
+**Purpose:** Quick 6-field capture tool with AI-powered initial description seeding and split-screen interface.
 
-**Status:** Phase 1 Tasks 1-7 complete (Feb 12, 2026) - Core intelligence complete!
+**Status:** Phase 1 complete (Tasks 1-7), V2 design approved (Feb 12, 2026)
 
-**Implementation Plan:** `docs/plans/2026-02-11-simplified-brief-helper-implementation-plan.md`
+**Phase 1 Complete (Tasks 1-7):**
+- ✅ Text Extraction Agent - AI extracts bullets from free text
+- ✅ Gap Detection Agent - Pattern-based gap identification
+- ✅ AI Expansion Agent - Conversational refinement
+- ✅ SmartTextBox component with pause detection
+- ✅ GapSuggestion UI with dismissal
+- ✅ AIExpansionPanel chat interface
 
-**Key Documents:**
+**V2 Enhancements (Ready to Implement):**
+- **Start Page** - Character-graded description input (50/100/150+ thresholds)
+- **Batch Extraction** - Single AI call populates all 6 fields
+- **Split Screen** - Input fields (left) + AI Suggestions/Preview toggle (right)
+- **Collapsible Fields** - "Done" button creates summary cards
+- **Live Preview** - Formatted document view
+- **Model Switch** - Gemini 2.5 Pro primary, GPT-4o-mini fallback (remove Claude)
+
+**V2 Documentation:**
+- Design: `docs/plans/2026-02-12-brief-helper-v2-design.md`
+- Implementation Plan: `docs/plans/2026-02-12-brief-helper-v2-implementation-plan.md`
+- Execution Plan: `docs/plans/2026-02-12-brief-helper-v2-execution.md`
+
+**Phase 1 Documents:**
 - PRD: `docs/plans/2026-02-11-simplified-brief-helper-PRD.md`
 - Design System: `docs/plans/2026-02-11-simplified-brief-helper-design-system.md`
-- Executive Brief: `docs/plans/2026-02-11-simplified-brief-helper-brief.md`
-- Task 5 Completion: `docs/plans/brief-helper-task-5-completion.md`
-- Task 6 Completion: `docs/plans/brief-helper-task-6-completion.md`
-- Task 7 Completion: `docs/plans/brief-helper-task-7-completion.md`
+- Task Completions: `docs/plans/brief-helper-task-5-completion.md`, `task-6`, `task-7`
 
 **6 Fields:**
 1. What - Product description
@@ -443,21 +459,28 @@ console.log('Result:', result.text);
 - Suggestion parsing with bullet point extraction
 - "Accept Changes" merges bullets with deduplication
 
-**Workflow:**
+**Phase 1 Workflow (Current):**
 - User types → 2.5 sec pause → AI extracts structured bullet points
 - Bullet points appear below textarea
 - Gap detection runs automatically → Amber warning panel with suggestions
 - User clicks "AI Expand" → Chat overlay opens
 - Multi-turn conversation with AI → Suggestions provided
 - User accepts → Bullets merged → Field marked complete
-- Generate simplified brief (Task 8-9)
 
-**Storage Strategy:**
+**V2 Workflow (Planned):**
+1. Start page: Enter description (character grading shows 50/100/150+ thresholds)
+2. Batch extraction: Single AI call populates all 6 fields with loading progress
+3. Split screen: Input fields (left) + AI Suggestions/Preview toggle (right)
+4. Edit fields: Refine with AI expansion, mark "Done" to collapse
+5. Toggle preview: See formatted document with completed fields only
+6. Generate brief: Export to DOCX/PDF (future Task 8-9)
+
+**Storage Strategy (Future):**
 - Redis: Hot cache for active sessions
 - SQLite: Persistent knowledge base (learns patterns)
 - Google Drive: Completed briefs (OAuth integration)
 
-**Next Tasks:** Brief Generator Agent (Task 8+) - Output generation
+**Next Steps:** Execute V2 implementation plan (62 tasks, 17 hours estimated)
 
 ---
 
