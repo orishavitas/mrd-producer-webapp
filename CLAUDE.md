@@ -388,7 +388,7 @@ console.log('Result:', result.text);
 
 **Purpose:** Quick 6-field capture tool for products past the research phase.
 
-**Status:** Phase 1 Tasks 1-6 complete (Feb 12, 2026)
+**Status:** Phase 1 Tasks 1-7 complete (Feb 12, 2026) - Core intelligence complete!
 
 **Implementation Plan:** `docs/plans/2026-02-11-simplified-brief-helper-implementation-plan.md`
 
@@ -398,6 +398,7 @@ console.log('Result:', result.text);
 - Executive Brief: `docs/plans/2026-02-11-simplified-brief-helper-brief.md`
 - Task 5 Completion: `docs/plans/brief-helper-task-5-completion.md`
 - Task 6 Completion: `docs/plans/brief-helper-task-6-completion.md`
+- Task 7 Completion: `docs/plans/brief-helper-task-7-completion.md`
 
 **6 Fields:**
 1. What - Product description
@@ -414,6 +415,7 @@ console.log('Result:', result.text);
 - ✅ Task 4: BriefField container + page layout
 - ✅ Task 5: Text extraction agent + API endpoint (805 lines)
 - ✅ Task 6: Gap detection agent + GapSuggestion UI (1,271 lines)
+- ✅ Task 7: AI expansion agent + AIExpansionPanel (1,433 lines)
 
 **Text Extraction Agent:**
 - `agent/agents/brief/text-extraction-agent.ts` - AI-powered extraction with field-aware strategies
@@ -432,12 +434,22 @@ console.log('Result:', result.text);
 - Priority system (high/medium/low) with color-coded badges
 - Completeness scoring with gap penalties
 
+**AI Expansion Agent:**
+- `agent/agents/brief/expansion-agent.ts` - Conversational AI for field refinement
+- `app/api/brief/expand/route.ts` - POST endpoint with conversation history
+- `app/brief-helper/components/AIExpansionPanel.tsx` - Chat-like UI overlay
+- Field-specific AI contexts for all 6 fields
+- Multi-turn conversation support (up to 20 messages)
+- Suggestion parsing with bullet point extraction
+- "Accept Changes" merges bullets with deduplication
+
 **Workflow:**
 - User types → 2.5 sec pause → AI extracts structured bullet points
 - Bullet points appear below textarea
 - Gap detection runs automatically → Amber warning panel with suggestions
-- User can dismiss gaps or click "AI Expand" (Task 7)
-- AI expansion chat for refinement (Task 7)
+- User clicks "AI Expand" → Chat overlay opens
+- Multi-turn conversation with AI → Suggestions provided
+- User accepts → Bullets merged → Field marked complete
 - Generate simplified brief (Task 8-9)
 
 **Storage Strategy:**
@@ -445,7 +457,7 @@ console.log('Result:', result.text);
 - SQLite: Persistent knowledge base (learns patterns)
 - Google Drive: Completed briefs (OAuth integration)
 
-**Next Tasks:** AI Expansion Agent + Panel (Task 7)
+**Next Tasks:** Brief Generator Agent (Task 8+) - Output generation
 
 ---
 
