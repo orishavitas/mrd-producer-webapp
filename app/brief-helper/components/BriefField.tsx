@@ -8,12 +8,13 @@
  * and slots for gap detection and AI expansion panels.
  */
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { BriefField as BriefFieldType } from '../lib/brief-state';
 import { getFieldDefinition } from '../lib/field-definitions';
 import { useBrief } from '../lib/brief-context';
 import SmartTextBox from './SmartTextBox';
 import FieldStatusBadge from './FieldStatusBadge';
+import GapSuggestion, { Gap } from './GapSuggestion';
 import styles from './BriefField.module.css';
 
 // ============================================================================
@@ -35,6 +36,8 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
   const { state, dispatch } = useBrief();
   const fieldDefinition = getFieldDefinition(fieldType);
   const fieldState = state.fields[fieldType];
+  const [detectedGaps, setDetectedGaps] = useState<Gap[]>([]);
+  const [isDetectingGaps, setIsDetectingGaps] = useState(false);
 
   // Handle text change
   const handleTextChange = (value: string) => {
@@ -97,6 +100,11 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         bulletCount: data.bulletPoints?.length || 0,
         confidence: data.confidence,
       });
+
+      // Trigger gap detection after successful extraction
+      if (data.bulletPoints && data.bulletPoints.length > 0) {
+        detectGaps(data.bulletPoints, data.entities || []);
+      }
     } catch (error) {
       console.error(`Extraction error for ${fieldType}:`, error);
       // TODO (Task 6): Show user-friendly error message
@@ -110,6 +118,75 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         },
       });
     }
+  };
+
+  // Detect gaps after extraction
+  const detectGaps = async (
+    bulletPoints: string[],
+    entities: Array<{ type: string; value: string; confidence: number; span?: string }>
+  ) => {
+    setIsDetectingGaps(true);
+
+    try {
+      const response = await fetch('/api/brief/gaps', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fieldType,
+          bulletPoints,
+          entities,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.details || 'Gap detection failed');
+      }
+
+      // Update local state with detected gaps
+      setDetectedGaps(data.gaps || []);
+
+      // Update context state with gaps
+      dispatch({
+        type: 'SET_GAPS',
+        payload: {
+          fieldType,
+          gaps: data.gaps || [],
+        },
+      });
+
+      console.log(`Gap detection complete for ${fieldType}:`, {
+        gapCount: data.gaps?.length || 0,
+        completeness: data.completeness,
+      });
+    } catch (error) {
+      console.error(`Gap detection error for ${fieldType}:`, error);
+    } finally {
+      setIsDetectingGaps(false);
+    }
+  };
+
+  // Handle gap dismissal
+  const handleDismissGap = (gapId: string) => {
+    setDetectedGaps((prev) => prev.filter((gap) => gap.id !== gapId));
+
+    // Also update context state
+    dispatch({
+      type: 'SET_GAPS',
+      payload: {
+        fieldType,
+        gaps: detectedGaps.filter((gap) => gap.id !== gapId),
+      },
+    });
+  };
+
+  // Handle AI expansion (TODO: Task 7)
+  const handleAIExpand = () => {
+    console.log(`AI expansion requested for ${fieldType}`);
+    // TODO (Task 7): Open AI expansion panel
   };
 
   return (
@@ -156,12 +233,14 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         </div>
       )}
 
-      {/* Gap detection panel slot (Task 6) */}
-      {fieldState.gaps.length > 0 && (
-        <div className={styles.gapSlot}>
-          {/* TODO (Task 6): Render gap detection panel */}
-          <div className={styles.placeholder}>Gap detection panel coming soon...</div>
-        </div>
+      {/* Gap detection panel */}
+      {detectedGaps.length > 0 && (
+        <GapSuggestion
+          gaps={detectedGaps}
+          onDismissGap={handleDismissGap}
+          onAIExpand={handleAIExpand}
+          canExpand={true}
+        />
       )}
 
       {/* AI expansion panel slot (Task 7) */}

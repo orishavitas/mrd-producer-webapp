@@ -1,0 +1,226 @@
+/**
+ * Gap Suggestion Styles
+ *
+ * Warning-styled panel for displaying detected information gaps.
+ */
+
+.container {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--gap-detected-bg);
+  border: 2px solid var(--gap-detected);
+  animation: slide-in-down var(--duration-normal) var(--ease-out);
+}
+
+/* Header */
+.header {
+  margin-bottom: 16px;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.icon {
+  color: var(--gap-detected);
+  flex-shrink: 0;
+}
+
+.title {
+  margin: 0;
+  font-size: var(--text-base);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.subtitle {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.priorityBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.priorityBadge[data-priority='high'] {
+  background: rgba(239, 68, 68, 0.1);
+  color: #dc2626;
+}
+
+.priorityBadge[data-priority='medium'] {
+  background: rgba(245, 158, 11, 0.1);
+  color: #d97706;
+}
+
+.priorityBadge[data-priority='low'] {
+  background: rgba(59, 130, 246, 0.1);
+  color: #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  .priorityBadge[data-priority='high'] {
+    background: rgba(239, 68, 68, 0.2);
+    color: #fca5a5;
+  }
+
+  .priorityBadge[data-priority='medium'] {
+    background: rgba(245, 158, 11, 0.2);
+    color: #fcd34d;
+  }
+
+  .priorityBadge[data-priority='low'] {
+    background: rgba(59, 130, 246, 0.2);
+    color: #93c5fd;
+  }
+}
+
+/* Gap List */
+.gapList {
+  margin: 0 0 16px 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.gapItem {
+  display: flex;
+  gap: 12px;
+  padding: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-primary);
+  border: 1px solid var(--border-default);
+  position: relative;
+}
+
+.gapItem[data-priority='high'] {
+  border-left: 3px solid #dc2626;
+}
+
+.gapItem[data-priority='medium'] {
+  border-left: 3px solid #d97706;
+}
+
+.gapItem[data-priority='low'] {
+  border-left: 3px solid #2563eb;
+}
+
+.gapContent {
+  flex: 1;
+}
+
+.gapQuestion {
+  margin: 0 0 6px 0;
+  font-size: var(--text-sm);
+  font-weight: 500;
+  color: var(--text-primary);
+  line-height: var(--leading-relaxed);
+}
+
+.gapExample {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+}
+
+.exampleLabel {
+  font-weight: 500;
+  color: var(--text-secondary);
+}
+
+/* Dismiss Button */
+.dismissButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.dismissButton:hover {
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+.dismissButton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* Actions */
+.actions {
+  display: flex;
+  gap: 8px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border-default);
+}
+
+.actionButton {
+  padding: 8px 16px;
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  background: var(--surface-primary);
+  color: var(--text-primary);
+  font-size: var(--text-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.actionButton:hover {
+  background: var(--surface-secondary);
+  border-color: var(--border-hover);
+}
+
+.actionButton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+.primaryAction {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.primaryAction:hover {
+  background: var(--primary-hover);
+  border-color: var(--primary-hover);
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .container {
+    animation: none;
+  }
+
+  .actionButton,
+  .dismissButton {
+    transition: none;
+  }
+}

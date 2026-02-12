@@ -26,10 +26,11 @@ export type BriefField =
  */
 export interface Gap {
   id: string;
-  type: string;
+  category: string;
   description: string;
-  suggestedQuestions: string[];
   priority: 'high' | 'medium' | 'low';
+  suggestedQuestion: string;
+  exampleAnswer?: string;
 }
 
 /**
