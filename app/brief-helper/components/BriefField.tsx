@@ -48,9 +48,68 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
   };
 
   // Handle pause (user stopped typing)
-  const handlePause = () => {
+  const handlePause = async () => {
     console.log(`User paused typing in field: ${fieldType}`);
-    // TODO (Task 5): Call text extraction agent API
+
+    // Skip if text is empty or AI is already processing
+    if (!fieldState.rawText.trim() || fieldState.isAIProcessing) {
+      return;
+    }
+
+    // Set AI processing state
+    dispatch({
+      type: 'SET_AI_PROCESSING',
+      payload: {
+        fieldType,
+        isProcessing: true,
+      },
+    });
+
+    try {
+      // Call text extraction API
+      const response = await fetch('/api/brief/extract', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fieldType,
+          freeText: fieldState.rawText,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok || !data.success) {
+        throw new Error(data.details || 'Extraction failed');
+      }
+
+      // Update state with extracted bullet points
+      dispatch({
+        type: 'SET_BULLET_POINTS',
+        payload: {
+          fieldType,
+          bulletPoints: data.bulletPoints || [],
+        },
+      });
+
+      console.log(`Extraction complete for ${fieldType}:`, {
+        bulletCount: data.bulletPoints?.length || 0,
+        confidence: data.confidence,
+      });
+    } catch (error) {
+      console.error(`Extraction error for ${fieldType}:`, error);
+      // TODO (Task 6): Show user-friendly error message
+    } finally {
+      // Clear AI processing state
+      dispatch({
+        type: 'SET_AI_PROCESSING',
+        payload: {
+          fieldType,
+          isProcessing: false,
+        },
+      });
+    }
   };
 
   return (
@@ -72,6 +131,7 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
 
       {/* Smart text box */}
       <SmartTextBox
+        id={`field-${fieldType}`}
         fieldType={fieldType}
         value={fieldState.rawText}
         onChange={handleTextChange}
@@ -81,6 +141,20 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         placeholder={fieldDefinition.placeholder}
         aria-label={fieldDefinition.label}
       />
+
+      {/* Extracted bullet points */}
+      {fieldState.bulletPoints.length > 0 && (
+        <div className={styles.bulletPoints}>
+          <h4 className={styles.bulletPointsTitle}>AI Extracted Points:</h4>
+          <ul className={styles.bulletPointsList}>
+            {fieldState.bulletPoints.map((point, index) => (
+              <li key={index} className={styles.bulletPoint}>
+                {point}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
 
       {/* Gap detection panel slot (Task 6) */}
       {fieldState.gaps.length > 0 && (

@@ -36,6 +36,44 @@
   margin: 0;
 }
 
+/* Extracted bullet points */
+.bulletPoints {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-default);
+  animation: slide-in-down var(--duration-normal) var(--ease-out);
+}
+
+.bulletPointsTitle {
+  margin: 0 0 12px 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bulletPointsList {
+  margin: 0;
+  padding-left: 24px;
+  list-style: disc;
+}
+
+.bulletPoint {
+  margin: 8px 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+}
+
+.bulletPoint:first-child {
+  margin-top: 0;
+}
+
+.bulletPoint:last-child {
+  margin-bottom: 0;
+}
+
 /* Gap detection panel slot */
 .gapSlot {
   animation: slide-in-down var(--duration-normal) var(--ease-out);
@@ -54,6 +92,7 @@
 
 /* Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
+  .bulletPoints,
   .gapSlot {
     animation: none;
   }
