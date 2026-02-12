@@ -388,7 +388,7 @@ console.log('Result:', result.text);
 
 **Purpose:** Quick 6-field capture tool for products past the research phase.
 
-**Status:** Phase 1 Tasks 1-5 complete (Feb 12, 2026)
+**Status:** Phase 1 Tasks 1-6 complete (Feb 12, 2026)
 
 **Implementation Plan:** `docs/plans/2026-02-11-simplified-brief-helper-implementation-plan.md`
 
@@ -397,6 +397,7 @@ console.log('Result:', result.text);
 - Design System: `docs/plans/2026-02-11-simplified-brief-helper-design-system.md`
 - Executive Brief: `docs/plans/2026-02-11-simplified-brief-helper-brief.md`
 - Task 5 Completion: `docs/plans/brief-helper-task-5-completion.md`
+- Task 6 Completion: `docs/plans/brief-helper-task-6-completion.md`
 
 **6 Fields:**
 1. What - Product description
@@ -412,6 +413,7 @@ console.log('Result:', result.text);
 - ✅ Task 3: SmartTextBox + FieldStatusBadge components
 - ✅ Task 4: BriefField container + page layout
 - ✅ Task 5: Text extraction agent + API endpoint (805 lines)
+- ✅ Task 6: Gap detection agent + GapSuggestion UI (1,271 lines)
 
 **Text Extraction Agent:**
 - `agent/agents/brief/text-extraction-agent.ts` - AI-powered extraction with field-aware strategies
@@ -421,11 +423,21 @@ console.log('Result:', result.text);
 - Confidence scoring (bullet count + entity count + entity confidence)
 - Integrated with BriefField component via `handlePause()`
 
+**Gap Detection Agent:**
+- `agent/agents/brief/gap-detection-agent.ts` - Pattern-based gap detection (no AI)
+- `app/api/brief/gaps/route.ts` - POST endpoint for gap detection
+- `app/brief-helper/components/GapSuggestion.tsx` - Warning-styled UI component
+- 4 product patterns (tablet stand, display mount, enclosure, kiosk)
+- 6 field-specific patterns for universal checks
+- Priority system (high/medium/low) with color-coded badges
+- Completeness scoring with gap penalties
+
 **Workflow:**
 - User types → 2.5 sec pause → AI extracts structured bullet points
 - Bullet points appear below textarea
-- Gap detection (Task 6) will suggest missing info
-- AI expansion chat (Task 7) for refinement
+- Gap detection runs automatically → Amber warning panel with suggestions
+- User can dismiss gaps or click "AI Expand" (Task 7)
+- AI expansion chat for refinement (Task 7)
 - Generate simplified brief (Task 8-9)
 
 **Storage Strategy:**
@@ -433,7 +445,7 @@ console.log('Result:', result.text);
 - SQLite: Persistent knowledge base (learns patterns)
 - Google Drive: Completed briefs (OAuth integration)
 
-**Next Tasks:** Gap Detection Agent (Task 6), AI Expansion UI (Task 7)
+**Next Tasks:** AI Expansion Agent + Panel (Task 7)
 
 ---
 
