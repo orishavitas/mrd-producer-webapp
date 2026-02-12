@@ -1,28 +1,51 @@
+'use client';
+
 /**
  * Brief Helper Page
  *
- * Simplified interface for creating product briefs with AI assistance.
- * Phase 1: Shell page for development setup.
+ * Main page for creating product briefs with AI assistance.
+ * Displays 6 fields with progress tracking and state persistence.
  */
 
-export default function BriefHelperPage() {
-  return (
-    <div className="page">
-      <div className="container">
-        <div className="page-shell">
-          <div className="page-hero">
-            <span className="eyebrow">AI-Assisted</span>
-            <h1>Brief Helper</h1>
-            <p className="subtitle">
-              Create simplified product briefs with intelligent assistance.
-            </p>
-          </div>
+import React from 'react';
+import { BriefProvider } from './lib/brief-context';
+import { getFieldsInOrder } from './lib/field-definitions';
+import BriefField from './components/BriefField';
+import ProgressIndicator from './components/ProgressIndicator';
+import styles from './page.module.css';
 
-          <div className="card">
-            <p>Brief Helper interface coming soon...</p>
-          </div>
+// ============================================================================
+// Component
+// ============================================================================
+
+export default function BriefHelperPage() {
+  const fields = getFieldsInOrder();
+
+  return (
+    <BriefProvider>
+      <div className={styles.page}>
+        <div className={styles.container}>
+          {/* Page header */}
+          <header className={styles.header}>
+            <div className={styles.eyebrow}>AI-Assisted</div>
+            <h1 className={styles.title}>Brief Helper</h1>
+            <p className={styles.subtitle}>
+              Quick product detail capture with intelligent assistance. Fill in the 6 fields below
+              to create a simplified product brief.
+            </p>
+          </header>
+
+          {/* Progress indicator */}
+          <ProgressIndicator />
+
+          {/* Brief form */}
+          <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+            {fields.map((field, index) => (
+              <BriefField key={field.id} fieldType={field.id} order={index + 1} />
+            ))}
+          </form>
         </div>
       </div>
-    </div>
+    </BriefProvider>
   );
 }
