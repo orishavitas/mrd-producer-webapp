@@ -388,7 +388,7 @@ console.log('Result:', result.text);
 
 **Purpose:** Quick 6-field capture tool for products past the research phase.
 
-**Status:** Phase 1 Tasks 1-2 complete (project setup, design tokens, state management)
+**Status:** Phase 1 Tasks 1-5 complete (Feb 12, 2026)
 
 **Implementation Plan:** `docs/plans/2026-02-11-simplified-brief-helper-implementation-plan.md`
 
@@ -396,6 +396,7 @@ console.log('Result:', result.text);
 - PRD: `docs/plans/2026-02-11-simplified-brief-helper-PRD.md`
 - Design System: `docs/plans/2026-02-11-simplified-brief-helper-design-system.md`
 - Executive Brief: `docs/plans/2026-02-11-simplified-brief-helper-brief.md`
+- Task 5 Completion: `docs/plans/brief-helper-task-5-completion.md`
 
 **6 Fields:**
 1. What - Product description
@@ -405,25 +406,34 @@ console.log('Result:', result.text);
 5. Must-Have Features - Non-negotiable requirements
 6. Nice-to-Have Features - Optional enhancements
 
-**Design Tokens:** `styles/tokens/brief-helper.css` (311 lines, 8 component token sets, light/dark mode)
+**Completed Components:**
+- ✅ Task 1: Project setup + design tokens (311 lines CSS)
+- ✅ Task 2: State management (3 files, 423 lines)
+- ✅ Task 3: SmartTextBox + FieldStatusBadge components
+- ✅ Task 4: BriefField container + page layout
+- ✅ Task 5: Text extraction agent + API endpoint (805 lines)
 
-**State Management:**
-- `app/brief-helper/lib/brief-state.ts` - Reducer with 6 actions, completion tracking
-- `app/brief-helper/lib/brief-context.tsx` - React Context + sessionStorage persistence + debounce hooks
-- `app/brief-helper/lib/field-definitions.ts` - Labels, placeholders, help text for 6 fields
+**Text Extraction Agent:**
+- `agent/agents/brief/text-extraction-agent.ts` - AI-powered extraction with field-aware strategies
+- `agent/agents/brief/types.ts` - Type definitions for all brief agents
+- `app/api/brief/extract/route.ts` - POST endpoint with sanitization
+- Field-specific prompts for targeted entity extraction
+- Confidence scoring (bullet count + entity count + entity confidence)
+- Integrated with BriefField component via `handlePause()`
 
 **Workflow:**
-- User types → 2-3 sec pause → AI extracts structured bullet points
-- Gap detection suggests missing info (e.g., "tablet stand" → placement, sizes, VESA)
-- AI expansion chat for refinement
-- Generate simplified brief (Markdown/HTML)
+- User types → 2.5 sec pause → AI extracts structured bullet points
+- Bullet points appear below textarea
+- Gap detection (Task 6) will suggest missing info
+- AI expansion chat (Task 7) for refinement
+- Generate simplified brief (Task 8-9)
 
 **Storage Strategy:**
 - Redis: Hot cache for active sessions
 - SQLite: Persistent knowledge base (learns patterns)
 - Google Drive: Completed briefs (OAuth integration)
 
-**Next Tasks:** SmartTextBox component (Task 3), page layout (Task 4), extraction agent (Task 5)
+**Next Tasks:** Gap Detection Agent (Task 6), AI Expansion UI (Task 7)
 
 ---
 
