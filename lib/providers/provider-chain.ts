@@ -13,14 +13,13 @@ import {
   GenerationResponse,
 } from './types';
 import { GeminiProvider } from './gemini-provider';
-import { AnthropicProvider } from './anthropic-provider';
 import { OpenAIProvider } from './openai-provider';
 
 /**
  * Default provider chain configuration.
  */
 const DEFAULT_CONFIG: ProviderChainConfig = {
-  priority: ['gemini', 'claude', 'openai'],
+  priority: ['gemini', 'openai'],
   maxAttempts: 3,
   retryDelayMs: 1000,
 };
@@ -272,11 +271,8 @@ export function createDefaultProviderChain(
   // Priority 0: Gemini (primary - has search grounding)
   chain.register(new GeminiProvider(), 0);
 
-  // Priority 1: Claude (fallback)
-  chain.register(new AnthropicProvider(), 1);
-
-  // Priority 2: OpenAI (fallback)
-  chain.register(new OpenAIProvider(), 2);
+  // Priority 1: OpenAI (fallback)
+  chain.register(new OpenAIProvider(), 1);
 
   return chain;
 }
