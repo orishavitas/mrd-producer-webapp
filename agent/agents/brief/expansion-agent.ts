@@ -38,6 +38,8 @@ export interface ExpansionInput {
     role: 'user' | 'assistant';
     content: string;
   }>;
+  /** Original product description from start page (V2) - provides context for suggestions */
+  initialDescription?: string;
 }
 
 export interface ExpansionOutput {
@@ -149,7 +151,7 @@ export class ExpansionAgent extends BaseAgent<ExpansionInput, ExpansionOutput> {
     input: ExpansionInput,
     context: ExecutionContext
   ): Promise<ExpansionOutput> {
-    const { fieldType, currentBullets, gaps, userMessage, conversationHistory } =
+    const { fieldType, currentBullets, gaps, userMessage, conversationHistory, initialDescription } =
       input;
     const provider = context.getProvider();
 
@@ -169,7 +171,8 @@ export class ExpansionAgent extends BaseAgent<ExpansionInput, ExpansionOutput> {
       currentBullets,
       gaps,
       userMessage,
-      conversationHistory
+      conversationHistory,
+      initialDescription
     );
 
     // Call AI provider
@@ -228,9 +231,15 @@ Response Format:
     currentBullets: string[],
     gaps: ExpansionInput['gaps'],
     userMessage: string | undefined,
-    conversationHistory: ExpansionInput['conversationHistory']
+    conversationHistory: ExpansionInput['conversationHistory'],
+    initialDescription?: string
   ): string {
     let prompt = `Field: ${fieldType.toUpperCase()}\n\n`;
+
+    // Original product description (if provided)
+    if (initialDescription && initialDescription.trim().length > 0) {
+      prompt += `Original product description:\n"""${initialDescription}"""\n\n`;
+    }
 
     // Current content
     if (currentBullets.length > 0) {
