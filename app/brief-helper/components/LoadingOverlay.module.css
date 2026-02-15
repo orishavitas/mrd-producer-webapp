@@ -1,0 +1,320 @@
+/* Loading Overlay Component Styles */
+
+/* ========================================
+   Overlay & Backdrop
+   ======================================== */
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+}
+
+.backdrop {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: var(--loading-overlay-backdrop);
+  backdrop-filter: blur(4px);
+}
+
+/* Fade Animations */
+.fadeIn {
+  animation: fade-in 200ms var(--ease-out) forwards;
+}
+
+.fadeOut {
+  animation: fade-out 300ms var(--ease-out) forwards;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+/* ========================================
+   Modal
+   ======================================== */
+
+.modal {
+  position: relative;
+  max-width: 500px;
+  width: 100%;
+  background: var(--loading-overlay-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-2xl);
+  padding: var(--space-8);
+  animation: slide-in-up 300ms var(--ease-out) forwards;
+}
+
+@keyframes slide-in-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* ========================================
+   Header
+   ======================================== */
+
+.header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.title {
+  font-size: var(--text-xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2);
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   Progress List
+   ======================================== */
+
+.progressList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--loading-checklist-gap);
+  margin-bottom: var(--space-6);
+}
+
+.progressItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* ========================================
+   Status Icons
+   ======================================== */
+
+.icon {
+  flex-shrink: 0;
+  width: var(--loading-checklist-icon-size);
+  height: var(--loading-checklist-icon-size);
+}
+
+.iconDone {
+  color: var(--loading-checklist-complete-color);
+  animation: check-in 300ms var(--ease-out) forwards;
+}
+
+.iconProcessing {
+  color: var(--loading-checklist-active-color);
+}
+
+.iconPending {
+  color: var(--loading-checklist-pending-color);
+  opacity: 0.5;
+}
+
+/* Checkmark Animation */
+@keyframes check-in {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Spinner Animation */
+.spinner {
+  width: var(--loading-spinner-size);
+  height: var(--loading-spinner-size);
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ========================================
+   Field Labels
+   ======================================== */
+
+.label {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  transition: color var(--duration-fast) var(--ease-out);
+}
+
+.labelDone {
+  color: var(--loading-checklist-complete-color);
+}
+
+.labelProcessing {
+  color: var(--loading-checklist-active-color);
+  font-weight: var(--font-semibold);
+}
+
+.labelPending {
+  color: var(--loading-checklist-pending-color);
+}
+
+/* ========================================
+   Current Processing Field
+   ======================================== */
+
+.currentField {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  background: var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+.currentFieldDot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.currentFieldText {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--accent);
+}
+
+/* Pulse Animations */
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes pulse-dot {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.6;
+  }
+}
+
+/* ========================================
+   Mobile Responsive (<768px)
+   ======================================== */
+
+@media (max-width: 767px) {
+  .modal {
+    padding: var(--space-6);
+  }
+
+  .header {
+    margin-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-lg);
+  }
+
+  .subtitle {
+    font-size: var(--text-xs);
+  }
+
+  .progressItem {
+    padding: var(--space-2);
+  }
+
+  .label {
+    font-size: var(--text-xs);
+  }
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+/* Prevent interaction with underlying content */
+.overlay {
+  pointer-events: auto;
+}
+
+/* Focus trap (modal is already aria-modal) */
+.modal:focus {
+  outline: none;
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .fadeIn,
+  .fadeOut,
+  .modal,
+  .iconDone,
+  .spinner,
+  .currentField,
+  .currentFieldDot {
+    animation: none;
+  }
+
+  .progressItem {
+    transition: none;
+  }
+
+  .label {
+    transition: none;
+  }
+}
