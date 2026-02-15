@@ -27,7 +27,22 @@
       "Bash(npx tsc:*)",
       "Bash(npx jest --no-coverage)",
       "Bash(npm run lint)",
-      "Bash(npx jest:*)"
+      "Bash(npx jest:*)",
+      "Bash(git checkout:*)",
+      "Bash(npm run dev:*)",
+      "Bash(timeout:*)",
+      "Bash(ping:*)",
+      "Bash(npx stylelint:*)",
+      "Bash(test:*)",
+      "Bash(curl:*)",
+      "Bash(lsof:*)",
+      "Bash(netstat:*)",
+      "Bash(findstr:*)",
+      "Bash(dir:*)",
+      "Bash(node -c:*)",
+      "Bash(node -e:*)",
+      "Bash(ls:*)",
+      "Bash(xargs:*)"
     ]
   }
 }
