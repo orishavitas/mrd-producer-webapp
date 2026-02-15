@@ -1,0 +1,292 @@
+/* Suggestions View Component Styles */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* ========================================
+   Active Field Suggestions - Top 60%
+   ======================================== */
+
+.activeSection {
+  flex: 0 0 60%;
+  display: flex;
+  flex-direction: column;
+  border-bottom: 1px solid var(--border);
+  overflow-y: auto;
+  padding: var(--space-6);
+}
+
+.sectionTitle {
+  font-size: var(--text-lg);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-4);
+}
+
+.suggestions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+}
+
+/* Tips Box */
+.tipsBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.subsectionTitle {
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  color: var(--text-secondary);
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.tipsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tip {
+  padding: var(--space-3);
+  background: var(--ai-badge-bg);
+  border-left: 3px solid var(--ai-badge);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+}
+
+/* Examples Box */
+.examplesBox {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.examplesList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.example {
+  display: flex;
+  gap: var(--space-3);
+  padding: var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.quoteIcon {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  color: var(--accent-soft);
+  opacity: 0.6;
+}
+
+.exampleText {
+  margin: 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+/* Empty State */
+.emptyState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-12);
+  text-align: center;
+  min-height: 200px;
+}
+
+.emptyIcon {
+  width: 48px;
+  height: 48px;
+  color: var(--text-muted);
+  margin-bottom: var(--space-4);
+}
+
+.emptyText {
+  margin: 0;
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  max-width: 300px;
+}
+
+/* ========================================
+   Fields with Gaps - Bottom 40%
+   ======================================== */
+
+.gapsSection {
+  flex: 0 0 40%;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: var(--space-6);
+  background: var(--background);
+}
+
+.gapsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.gapItem {
+  margin: 0;
+}
+
+.gapButton {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--space-3) var(--space-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  text-align: left;
+}
+
+.gapButton:hover {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  transform: translateX(2px);
+}
+
+.gapButton.active {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.gapInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.gapLabel {
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--text-primary);
+}
+
+.gapCount {
+  font-size: var(--text-xs);
+  color: var(--gap-detected);
+  font-weight: var(--font-semibold);
+}
+
+.chevronIcon {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: var(--text-muted);
+  transition: transform var(--duration-fast) var(--ease-out);
+}
+
+.gapButton:hover .chevronIcon,
+.gapButton.active .chevronIcon {
+  color: var(--accent);
+  transform: translateX(2px);
+}
+
+/* All Clear State */
+.allClearState {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-8);
+  text-align: center;
+  background: var(--field-complete-bg);
+  border: 1px solid var(--field-complete);
+  border-radius: var(--radius);
+}
+
+.checkIcon {
+  width: 32px;
+  height: 32px;
+  color: var(--field-complete);
+  margin-bottom: var(--space-2);
+}
+
+.allClearText {
+  margin: 0;
+  font-size: var(--text-sm);
+  font-weight: var(--font-medium);
+  color: var(--field-complete);
+}
+
+/* ========================================
+   Mobile Responsive (<768px)
+   ======================================== */
+
+@media (max-width: 767px) {
+  .activeSection,
+  .gapsSection {
+    padding: var(--space-4);
+  }
+
+  .suggestions {
+    gap: var(--space-4);
+  }
+
+  .example {
+    padding: var(--space-3);
+  }
+
+  .emptyState {
+    padding: var(--space-8);
+  }
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+.gapButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .gapButton,
+  .chevronIcon {
+    transition: none;
+  }
+
+  .gapButton:hover {
+    transform: none;
+  }
+
+  .gapButton:hover .chevronIcon,
+  .gapButton.active .chevronIcon {
+    transform: none;
+  }
+}
