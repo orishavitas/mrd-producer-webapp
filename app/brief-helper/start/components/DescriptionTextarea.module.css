@@ -1,0 +1,74 @@
+/**
+ * Description Textarea Styles
+ *
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.textarea {
+  width: 100%;
+  min-height: 200px;
+  padding: var(--spacing-4);
+  border: 2px solid var(--border-base);
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-family: inherit;
+  color: var(--text-primary);
+  background: var(--bg-secondary);
+  resize: none;
+  transition: border-color 0.15s ease;
+  line-height: 1.6;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--bg-action-primary);
+}
+
+.textarea::placeholder {
+  color: var(--text-tertiary);
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.charCount {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+.warning {
+  color: var(--text-warning);
+  font-weight: var(--font-weight-medium);
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .textarea {
+    border-color: var(--border-base);
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  .textarea:focus {
+    border-color: var(--bg-action-primary);
+  }
+
+  .textarea::placeholder {
+    color: var(--text-tertiary);
+  }
+}

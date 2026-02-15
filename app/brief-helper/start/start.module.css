@@ -1,0 +1,170 @@
+/**
+ * Brief Helper Start Page Styles
+ *
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  min-height: 100vh;
+  padding: var(--spacing-6);
+  background: var(--bg-primary);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.content {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-6);
+}
+
+/* Header */
+
+.header {
+  text-align: center;
+}
+
+.title {
+  font-size: var(--font-size-2xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--spacing-3) 0;
+}
+
+.subtitle {
+  font-size: var(--font-size-base);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Input Area */
+
+.inputArea {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* Error Message */
+
+.error {
+  padding: var(--spacing-3);
+  background: var(--bg-error-subtle);
+  border: 1px solid var(--border-error);
+  border-radius: var(--radius-base);
+  color: var(--text-error);
+  font-size: var(--font-size-sm);
+}
+
+/* Actions */
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.continueButton {
+  padding: var(--spacing-3) var(--spacing-6);
+  background: var(--bg-action-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.continueButton:hover:not(:disabled) {
+  background: var(--bg-action-primary-hover);
+}
+
+.continueButton:disabled {
+  background: var(--bg-disabled);
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
+
+.buttonHint {
+  font-size: var(--font-size-xs);
+  opacity: 0.8;
+}
+
+.hint {
+  font-size: var(--font-size-sm);
+  color: var(--text-tertiary);
+  margin: 0;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-4);
+  }
+
+  .content {
+    gap: var(--spacing-4);
+  }
+
+  .title {
+    font-size: var(--font-size-xl);
+  }
+
+  .subtitle {
+    font-size: var(--font-size-sm);
+  }
+
+  .continueButton {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .buttonHint {
+    display: none;
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: var(--bg-primary);
+  }
+
+  .title {
+    color: var(--text-primary);
+  }
+
+  .subtitle {
+    color: var(--text-secondary);
+  }
+
+  .error {
+    background: var(--bg-error-subtle);
+    border-color: var(--border-error);
+    color: var(--text-error);
+  }
+
+  .continueButton:not(:disabled) {
+    background: var(--bg-action-primary);
+  }
+
+  .continueButton:hover:not(:disabled) {
+    background: var(--bg-action-primary-hover);
+  }
+
+  .continueButton:disabled {
+    background: var(--bg-disabled);
+    color: var(--text-disabled);
+  }
+}

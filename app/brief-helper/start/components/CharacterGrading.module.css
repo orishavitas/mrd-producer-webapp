@@ -1,0 +1,169 @@
+/**
+ * Character Grading Styles
+ *
+ * Color-coded progress bar with quality zones.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+  padding: var(--spacing-4);
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-base);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.gradeLabel {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  padding: var(--spacing-1) var(--spacing-2);
+  border-radius: var(--radius-sm);
+}
+
+.gradeLabel.too-short {
+  background: var(--bg-warning-subtle);
+  color: var(--text-warning);
+}
+
+.gradeLabel.good {
+  background: var(--bg-info-subtle);
+  color: var(--text-info);
+}
+
+.gradeLabel.great {
+  background: var(--bg-success-subtle);
+  color: var(--text-success);
+}
+
+.gradeLabel.excellent {
+  background: var(--bg-success);
+  color: white;
+}
+
+/* Progress Bar */
+
+.progressBar {
+  position: relative;
+  width: 100%;
+  height: 12px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  transition: width 0.3s ease, background-color 0.3s ease;
+  border-radius: var(--radius-sm);
+}
+
+.progressFill.too-short {
+  background: linear-gradient(90deg, var(--bg-warning), var(--bg-warning-subtle));
+}
+
+.progressFill.good {
+  background: linear-gradient(90deg, var(--bg-info), var(--bg-info-subtle));
+}
+
+.progressFill.great {
+  background: linear-gradient(90deg, var(--bg-success), var(--bg-success-subtle));
+}
+
+.progressFill.excellent {
+  background: linear-gradient(90deg, var(--bg-success), var(--progress-bar-excellent));
+}
+
+/* Threshold Markers */
+
+.marker {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--text-tertiary);
+  opacity: 0.4;
+}
+
+/* Legend */
+
+.legend {
+  display: flex;
+  gap: var(--spacing-3);
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-1);
+}
+
+.legendDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.legendDot.too-short {
+  background: var(--bg-warning);
+}
+
+.legendDot.good {
+  background: var(--bg-info);
+}
+
+.legendDot.great {
+  background: var(--bg-success);
+}
+
+.legendDot.excellent {
+  background: var(--progress-bar-excellent);
+}
+
+.legendText {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+  .legend {
+    gap: var(--spacing-2);
+  }
+
+  .legendText {
+    font-size: 10px;
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: var(--bg-secondary);
+    border-color: var(--border-base);
+  }
+
+  .progressBar {
+    background: var(--bg-tertiary);
+  }
+
+  .marker {
+    background: var(--text-tertiary);
+  }
+}
