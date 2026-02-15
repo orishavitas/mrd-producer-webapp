@@ -43,6 +43,8 @@ export interface FieldState {
   bulletPoints: string[];
   /** Detected information gaps */
   gaps: Gap[];
+  /** Gap IDs that have been visually hidden (V2) */
+  hiddenGaps: string[];
   /** Whether AI is currently processing this field */
   isAIProcessing: boolean;
   /** Whether the field is considered complete */
@@ -63,6 +65,16 @@ export interface BriefState {
   fields: {
     [K in BriefField]: FieldState;
   };
+  /** Initial product description from start page (V2) */
+  initialDescription: string;
+  /** Currently focused/active field (V2) */
+  activeFieldId: BriefField | null;
+  /** Right panel mode: suggestions or document preview (V2) */
+  previewMode: 'suggestions' | 'document';
+  /** Fields currently being batch extracted (V2) */
+  processingFields: BriefField[];
+  /** Fields marked as "Done" and collapsed (V2) */
+  collapsedFields: BriefField[];
 }
 
 // ============================================================================
@@ -110,6 +122,60 @@ export type BriefAction =
       payload: {
         fieldType: BriefField;
       };
+    }
+  | {
+      type: 'SET_INITIAL_DESCRIPTION';
+      payload: {
+        description: string;
+      };
+    }
+  | {
+      type: 'SET_ACTIVE_FIELD';
+      payload: {
+        fieldId: BriefField | null;
+      };
+    }
+  | {
+      type: 'SET_PREVIEW_MODE';
+      payload: {
+        mode: 'suggestions' | 'document';
+      };
+    }
+  | {
+      type: 'SET_PROCESSING_FIELDS';
+      payload: {
+        fields: BriefField[];
+      };
+    }
+  | {
+      type: 'COLLAPSE_FIELD';
+      payload: {
+        fieldType: BriefField;
+      };
+    }
+  | {
+      type: 'EXPAND_FIELD';
+      payload: {
+        fieldType: BriefField;
+      };
+    }
+  | {
+      type: 'HIDE_GAP';
+      payload: {
+        fieldType: BriefField;
+        gapId: string;
+      };
+    }
+  | {
+      type: 'BATCH_POPULATE_FIELDS';
+      payload: {
+        fields: {
+          [K in BriefField]?: {
+            bulletPoints: string[];
+            gaps: Gap[];
+          };
+        };
+      };
     };
 
 // ============================================================================
@@ -120,6 +186,7 @@ const createEmptyFieldState = (): FieldState => ({
   rawText: '',
   bulletPoints: [],
   gaps: [],
+  hiddenGaps: [],
   isAIProcessing: false,
   isComplete: false,
 });
@@ -136,6 +203,11 @@ export const createInitialState = (): BriefState => ({
     'must-have': createEmptyFieldState(),
     'nice-to-have': createEmptyFieldState(),
   },
+  initialDescription: '',
+  activeFieldId: null,
+  previewMode: 'suggestions',
+  processingFields: [],
+  collapsedFields: [],
 });
 
 // ============================================================================
@@ -224,6 +296,98 @@ export function briefReducer(state: BriefState, action: BriefAction): BriefState
           ...updatedState.fields,
           [fieldType]: createEmptyFieldState(),
         },
+      };
+    }
+
+    case 'SET_INITIAL_DESCRIPTION': {
+      const { description } = action.payload;
+      return {
+        ...updatedState,
+        initialDescription: description,
+      };
+    }
+
+    case 'SET_ACTIVE_FIELD': {
+      const { fieldId } = action.payload;
+      return {
+        ...updatedState,
+        activeFieldId: fieldId,
+      };
+    }
+
+    case 'SET_PREVIEW_MODE': {
+      const { mode } = action.payload;
+      return {
+        ...updatedState,
+        previewMode: mode,
+      };
+    }
+
+    case 'SET_PROCESSING_FIELDS': {
+      const { fields } = action.payload;
+      return {
+        ...updatedState,
+        processingFields: fields,
+      };
+    }
+
+    case 'COLLAPSE_FIELD': {
+      const { fieldType } = action.payload;
+      const isAlreadyCollapsed = updatedState.collapsedFields.includes(fieldType);
+      return {
+        ...updatedState,
+        collapsedFields: isAlreadyCollapsed
+          ? updatedState.collapsedFields
+          : [...updatedState.collapsedFields, fieldType],
+      };
+    }
+
+    case 'EXPAND_FIELD': {
+      const { fieldType } = action.payload;
+      return {
+        ...updatedState,
+        collapsedFields: updatedState.collapsedFields.filter((f) => f !== fieldType),
+      };
+    }
+
+    case 'HIDE_GAP': {
+      const { fieldType, gapId } = action.payload;
+      const fieldState = updatedState.fields[fieldType];
+      const isAlreadyHidden = fieldState.hiddenGaps.includes(gapId);
+
+      return {
+        ...updatedState,
+        fields: {
+          ...updatedState.fields,
+          [fieldType]: {
+            ...fieldState,
+            hiddenGaps: isAlreadyHidden
+              ? fieldState.hiddenGaps
+              : [...fieldState.hiddenGaps, gapId],
+          },
+        },
+      };
+    }
+
+    case 'BATCH_POPULATE_FIELDS': {
+      const { fields } = action.payload;
+      const updatedFields = { ...updatedState.fields };
+
+      Object.entries(fields).forEach(([fieldType, data]) => {
+        if (data) {
+          updatedFields[fieldType as BriefField] = {
+            ...updatedFields[fieldType as BriefField],
+            bulletPoints: data.bulletPoints,
+            gaps: data.gaps,
+            isAIProcessing: false,
+          };
+        }
+      });
+
+      return {
+        ...updatedState,
+        fields: updatedFields,
+        processingFields: [],
       };
     }
 
