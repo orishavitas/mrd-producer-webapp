@@ -185,6 +185,17 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
     });
   };
 
+  // Handle gap hiding
+  const handleHideGap = (gapId: string) => {
+    dispatch({
+      type: 'HIDE_GAP',
+      payload: {
+        fieldType,
+        gapId,
+      },
+    });
+  };
+
   // Handle AI expansion
   const handleAIExpand = () => {
     console.log(`AI expansion requested for ${fieldType}`);
@@ -309,7 +320,10 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
       {detectedGaps.length > 0 && (
         <GapSuggestion
           gaps={detectedGaps}
+          fieldId={fieldType}
+          hiddenGapIds={fieldState.hiddenGaps}
           onDismissGap={handleDismissGap}
+          onHideGap={handleHideGap}
           onAIExpand={handleAIExpand}
           canExpand={true}
         />
