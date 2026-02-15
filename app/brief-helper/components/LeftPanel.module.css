@@ -1,0 +1,129 @@
+/**
+ * Left Panel Styles
+ *
+ * Container for all field components with progress indicator.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+/* Header */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3);
+  padding-bottom: var(--spacing-3);
+  border-bottom: 1px solid var(--border-base);
+}
+
+.backButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: transparent;
+  border: 1px solid var(--border-base);
+  border-radius: var(--radius-base);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+  align-self: flex-start;
+}
+
+.backButton:hover {
+  background: var(--bg-secondary);
+  color: var(--text-primary);
+}
+
+.backIcon {
+  width: 16px;
+  height: 16px;
+}
+
+.progress {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.progressText {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-secondary);
+}
+
+.progressBar {
+  width: 100%;
+  height: 8px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.progressFill {
+  height: 100%;
+  background: var(--bg-success);
+  transition: width 0.3s ease;
+}
+
+/* Fields */
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-4);
+}
+
+.fieldWrapper {
+  scroll-margin-top: var(--spacing-6);
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+  .container {
+    gap: var(--spacing-3);
+  }
+
+  .header {
+    gap: var(--spacing-2);
+    padding-bottom: var(--spacing-2);
+  }
+
+  .fields {
+    gap: var(--spacing-3);
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .header {
+    border-bottom-color: var(--border-base);
+  }
+
+  .backButton {
+    border-color: var(--border-base);
+    color: var(--text-secondary);
+  }
+
+  .backButton:hover {
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+  }
+
+  .progressBar {
+    background: var(--bg-tertiary);
+  }
+
+  .progressFill {
+    background: var(--bg-success);
+  }
+}

@@ -59,6 +59,34 @@
 }
 
 /* ========================================
+   Split Layout (V2)
+   ======================================== */
+:root {
+  --split-layout-gap: 32px;
+}
+
+/* ========================================
+   Collapsed Field Card (V2)
+   ======================================== */
+:root {
+  --collapsed-field-height-desktop: 80px;
+  --collapsed-field-height-mobile: 60px;
+}
+
+/* ========================================
+   Progress Bar (V2)
+   ======================================== */
+:root {
+  --progress-bar-excellent: #059669;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --progress-bar-excellent: #10b981;
+  }
+}
+
+/* ========================================
    Smart Text Box
    ======================================== */
 :root {

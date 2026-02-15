@@ -1,0 +1,98 @@
+/**
+ * Right Panel Toggle Styles
+ *
+ * Segmented control for switching between suggestions and preview.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  display: flex;
+  gap: var(--spacing-2);
+  padding: var(--spacing-1);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-base);
+  border: 1px solid var(--border-base);
+}
+
+.tab {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2);
+  padding: var(--spacing-2) var(--spacing-3);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.tab:hover:not(.active) {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+}
+
+.tab.active {
+  background: var(--bg-action-primary);
+  color: white;
+}
+
+.tab:focus {
+  outline: 2px solid var(--bg-action-primary);
+  outline-offset: 2px;
+}
+
+.icon {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+  .tab {
+    font-size: var(--font-size-xs);
+    padding: var(--spacing-2);
+  }
+
+  .tab span {
+    display: none;
+  }
+
+  .icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: var(--bg-secondary);
+    border-color: var(--border-base);
+  }
+
+  .tab {
+    color: var(--text-secondary);
+  }
+
+  .tab:hover:not(.active) {
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+  }
+
+  .tab.active {
+    background: var(--bg-action-primary);
+    color: white;
+  }
+
+  .tab:focus {
+    outline-color: var(--bg-action-primary);
+  }
+}

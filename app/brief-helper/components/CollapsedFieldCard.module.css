@@ -1,0 +1,189 @@
+/**
+ * Collapsed Field Card Styles
+ *
+ * Compact card for completed fields.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.card {
+  padding: var(--spacing-3);
+  background: var(--bg-secondary);
+  border: 2px solid var(--border-success);
+  border-radius: var(--radius-base);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  max-height: var(--collapsed-field-height-desktop);
+  overflow: hidden;
+}
+
+.card:hover {
+  background: var(--bg-tertiary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.card:focus {
+  outline: 2px solid var(--bg-action-primary);
+  outline-offset: 2px;
+}
+
+/* Header */
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-2);
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.checkmark {
+  width: 20px;
+  height: 20px;
+  color: var(--text-success);
+  flex-shrink: 0;
+}
+
+.title {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+}
+
+.gapBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 var(--spacing-1);
+  background: var(--bg-warning-subtle);
+  color: var(--text-warning);
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-bold);
+}
+
+.editButton {
+  padding: var(--spacing-1) var(--spacing-3);
+  background: var(--bg-action-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  cursor: pointer;
+  transition: background-color 0.15s ease;
+}
+
+.editButton:hover {
+  background: var(--bg-action-primary-hover);
+}
+
+/* Preview */
+
+.preview {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-1);
+}
+
+.bullet {
+  font-size: var(--font-size-sm);
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.more {
+  font-size: var(--font-size-xs);
+  color: var(--text-tertiary);
+  font-style: italic;
+  margin: 0;
+}
+
+/* Mobile Responsive */
+
+@media (max-width: 768px) {
+  .card {
+    max-height: var(--collapsed-field-height-mobile);
+    padding: var(--spacing-2);
+  }
+
+  .header {
+    margin-bottom: var(--spacing-1);
+  }
+
+  .title {
+    font-size: var(--font-size-sm);
+  }
+
+  .checkmark {
+    width: 16px;
+    height: 16px;
+  }
+
+  .bullet {
+    font-size: var(--font-size-xs);
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .card {
+    background: var(--bg-secondary);
+    border-color: var(--border-success);
+  }
+
+  .card:hover {
+    background: var(--bg-tertiary);
+  }
+
+  .card:focus {
+    outline-color: var(--bg-action-primary);
+  }
+
+  .title {
+    color: var(--text-primary);
+  }
+
+  .checkmark {
+    color: var(--text-success);
+  }
+
+  .gapBadge {
+    background: var(--bg-warning-subtle);
+    color: var(--text-warning);
+  }
+
+  .editButton {
+    background: var(--bg-action-primary);
+  }
+
+  .editButton:hover {
+    background: var(--bg-action-primary-hover);
+  }
+
+  .bullet {
+    color: var(--text-secondary);
+  }
+
+  .more {
+    color: var(--text-tertiary);
+  }
+}
