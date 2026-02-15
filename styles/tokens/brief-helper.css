@@ -289,6 +289,193 @@
 }
 
 /* ========================================
+   V2: Split Layout Tokens
+   ======================================== */
+:root {
+  /* Desktop split layout (50/50) */
+  --split-left-width: 50%;
+  --split-right-width: 50%;
+  --split-gap: var(--space-6);
+
+  /* Mobile stacked layout */
+  --split-mobile-breakpoint: 768px;
+
+  /* Panel transitions */
+  --split-transition: width var(--duration-normal) var(--ease-out);
+}
+
+/* ========================================
+   V2: Progress Bar Tokens (Character Grading)
+   ======================================== */
+:root {
+  /* Character count thresholds */
+  --progress-warning: #d97706;       /* 0-49 chars - Amber */
+  --progress-warning-bg: rgba(217, 119, 6, 0.12);
+
+  --progress-info: #3b82f6;          /* 50-99 chars - Blue */
+  --progress-info-bg: rgba(59, 130, 246, 0.12);
+
+  --progress-success: #16a34a;       /* 100-149 chars - Green */
+  --progress-success-bg: rgba(22, 163, 74, 0.12);
+
+  --progress-excellent: #059669;     /* 150+ chars - Bright Green */
+  --progress-excellent-bg: rgba(5, 150, 105, 0.12);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --progress-warning: #fbbf24;
+    --progress-warning-bg: rgba(251, 191, 36, 0.16);
+
+    --progress-info: #60a5fa;
+    --progress-info-bg: rgba(96, 165, 250, 0.16);
+
+    --progress-success: #4ade80;
+    --progress-success-bg: rgba(74, 222, 128, 0.16);
+
+    --progress-excellent: #10b981;
+    --progress-excellent-bg: rgba(16, 185, 129, 0.16);
+  }
+}
+
+/* ========================================
+   V2: Collapsed Field Tokens
+   ======================================== */
+:root {
+  /* Collapsed card dimensions */
+  --collapsed-field-height: 80px;
+  --collapsed-field-height-mobile: 60px;
+  --collapsed-field-padding-y: var(--space-3);
+  --collapsed-field-padding-x: var(--space-4);
+  --collapsed-field-gap: var(--space-2);
+
+  /* Collapsed card styling */
+  --collapsed-field-bg: var(--surface);
+  --collapsed-field-border: var(--border);
+  --collapsed-field-radius: var(--radius);
+  --collapsed-field-shadow: var(--shadow-sm);
+
+  /* Checkmark icon */
+  --collapsed-checkmark-color: var(--field-complete);
+  --collapsed-checkmark-bg: var(--field-complete-bg);
+  --collapsed-checkmark-size: 20px;
+
+  /* Edit button */
+  --collapsed-edit-color: var(--accent);
+  --collapsed-edit-hover: var(--accent-strong);
+
+  /* Gap badge on collapsed card */
+  --collapsed-gap-badge-bg: var(--gap-detected-bg);
+  --collapsed-gap-badge-color: var(--gap-detected);
+  --collapsed-gap-badge-size: var(--text-xs);
+}
+
+/* ========================================
+   V2: Right Panel Toggle Tokens
+   ======================================== */
+:root {
+  /* Toggle button group */
+  --panel-toggle-bg: var(--background);
+  --panel-toggle-border: var(--border);
+  --panel-toggle-radius: var(--radius);
+  --panel-toggle-padding: var(--space-1);
+  --panel-toggle-gap: var(--space-1);
+
+  /* Toggle button states */
+  --toggle-btn-inactive-bg: transparent;
+  --toggle-btn-inactive-color: var(--text-secondary);
+  --toggle-btn-active-bg: var(--surface);
+  --toggle-btn-active-color: var(--accent);
+  --toggle-btn-active-shadow: var(--shadow-sm);
+
+  /* Toggle transition */
+  --toggle-transition: all var(--duration-fast) var(--ease-out);
+}
+
+/* ========================================
+   V2: Loading Overlay Tokens
+   ======================================== */
+:root {
+  /* Overlay backdrop */
+  --loading-overlay-bg: rgba(255, 255, 255, 0.95);
+  --loading-overlay-backdrop: rgba(0, 0, 0, 0.3);
+
+  /* Progress checklist */
+  --loading-checklist-gap: var(--space-3);
+  --loading-checklist-icon-size: 20px;
+  --loading-checklist-pending-color: var(--text-muted);
+  --loading-checklist-active-color: var(--accent);
+  --loading-checklist-complete-color: var(--field-complete);
+
+  /* Spinner */
+  --loading-spinner-color: var(--accent);
+  --loading-spinner-size: 24px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --loading-overlay-bg: rgba(17, 24, 39, 0.95);
+    --loading-overlay-backdrop: rgba(0, 0, 0, 0.6);
+  }
+}
+
+/* ========================================
+   V2: Start Page Tokens
+   ======================================== */
+:root {
+  /* Description textarea */
+  --start-textarea-min-height: 200px;
+  --start-textarea-max-height: 400px;
+  --start-textarea-padding-y: var(--space-6);
+  --start-textarea-padding-x: var(--space-6);
+  --start-textarea-font-size: var(--text-lg);
+  --start-textarea-line-height: var(--leading-relaxed);
+
+  /* Character counter */
+  --start-counter-size: var(--text-sm);
+  --start-counter-weight: var(--font-medium);
+
+  /* Continue button */
+  --start-continue-bg: var(--accent);
+  --start-continue-hover-bg: var(--accent-strong);
+  --start-continue-disabled-bg: var(--field-incomplete-bg);
+  --start-continue-disabled-color: var(--text-muted);
+
+  /* Future feature buttons (disabled) */
+  --start-future-btn-bg: var(--background);
+  --start-future-btn-border: var(--border);
+  --start-future-btn-color: var(--text-muted);
+  --start-future-btn-opacity: 0.5;
+}
+
+/* ========================================
+   V2: Document Preview Tokens
+   ======================================== */
+:root {
+  /* Preview container */
+  --preview-container-bg: var(--surface);
+  --preview-container-padding: var(--space-8);
+  --preview-container-max-width: 800px;
+
+  /* Preview header */
+  --preview-header-bg: var(--background);
+  --preview-header-padding: var(--space-6);
+  --preview-header-border: var(--border);
+
+  /* Field sections in preview */
+  --preview-section-gap: var(--space-6);
+  --preview-section-title-size: var(--text-lg);
+  --preview-section-title-weight: var(--font-bold);
+  --preview-section-title-color: var(--accent);
+
+  /* Bullet points in preview */
+  --preview-bullet-color: var(--text-primary);
+  --preview-bullet-size: var(--text-base);
+  --preview-bullet-line-height: var(--leading-relaxed);
+  --preview-bullet-spacing: var(--space-2);
+}
+
+/* ========================================
    Reduced Motion Support
    ======================================== */
 @media (prefers-reduced-motion: reduce) {
