@@ -62,7 +62,19 @@ export default function CollapsedFieldCard({ fieldId, label }: CollapsedFieldCar
   const hasMore = fieldState.bulletPoints.length > maxBulletsToShow;
 
   return (
-    <div className={styles.card} onClick={handleExpand} role="button" tabIndex={0} onKeyDown={(e) => e.key === 'Enter' && handleExpand()}>
+    <div
+      className={styles.card}
+      onClick={handleExpand}
+      role="button"
+      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          handleExpand();
+        }
+      }}
+      aria-label={`${label} field - ${fieldState.bulletPoints.length} bullet${fieldState.bulletPoints.length === 1 ? '' : 's'}${visibleGaps.length > 0 ? `, ${visibleGaps.length} gap${visibleGaps.length === 1 ? '' : 's'} detected` : ''} - Click to expand`}
+    >
       <div className={styles.header}>
         <div className={styles.titleRow}>
           <svg className={styles.checkmark} viewBox="0 0 24 24" fill="none" stroke="currentColor">

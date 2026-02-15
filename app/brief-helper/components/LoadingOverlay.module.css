@@ -259,7 +259,12 @@
    ======================================== */
 
 @media (max-width: 767px) {
+  .overlay {
+    padding: var(--space-3);
+  }
+
   .modal {
+    max-width: 90%;
     padding: var(--space-6);
   }
 
