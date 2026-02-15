@@ -9,7 +9,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { BriefField as BriefFieldType } from '../lib/brief-state';
+import { BriefField as BriefFieldType, BriefField as FieldId } from '../lib/brief-state';
 import { getFieldDefinition } from '../lib/field-definitions';
 import { useBrief } from '../lib/brief-context';
 import SmartTextBox from './SmartTextBox';
@@ -229,6 +229,38 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
     setShowAIPanel(false);
   };
 
+  // Handle marking field as done and collapsing
+  const handleDone = () => {
+    // Mark field as complete
+    dispatch({
+      type: 'MARK_COMPLETE',
+      payload: {
+        fieldType,
+        isComplete: true,
+      },
+    });
+
+    // Collapse field
+    dispatch({
+      type: 'COLLAPSE_FIELD',
+      payload: { fieldType },
+    });
+
+    // Find next incomplete field and focus it
+    const allFields: FieldId[] = ['what', 'who', 'where', 'moq', 'must-have', 'nice-to-have'];
+    const currentIndex = allFields.indexOf(fieldType);
+    const nextIncompleteField = allFields
+      .slice(currentIndex + 1)
+      .find((f) => !state.fields[f].isComplete);
+
+    if (nextIncompleteField) {
+      dispatch({
+        type: 'SET_ACTIVE_FIELD',
+        payload: { fieldId: nextIncompleteField },
+      });
+    }
+  };
+
   return (
     <div className={styles.container}>
       {/* Field header with label and badge */}
@@ -292,6 +324,15 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
           onAcceptSuggestions={handleAcceptSuggestions}
           onClose={handleCloseAIPanel}
         />
+      )}
+
+      {/* Done button - only show if field has content */}
+      {fieldState.bulletPoints.length > 0 && !fieldState.isComplete && (
+        <div className={styles.doneButtonContainer}>
+          <button className={styles.doneButton} onClick={handleDone} type="button">
+            Mark as Done
+          </button>
+        </div>
       )}
     </div>
   );
