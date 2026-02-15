@@ -36,10 +36,11 @@ interface BriefContextValue {
 const BriefContext = createContext<BriefContextValue | undefined>(undefined);
 
 // ============================================================================
-// Storage Key
+// Storage Keys
 // ============================================================================
 
-const STORAGE_KEY = 'brief-helper-state';
+const STATE_STORAGE_KEY = 'brief-helper-state';
+const DESCRIPTION_STORAGE_KEY = 'brief-helper-description';
 
 // ============================================================================
 // Provider Component
@@ -52,35 +53,79 @@ export function BriefProvider({ children }: { children: React.ReactNode }) {
       return createInitialState();
     }
 
+    let initialState = createInitialState();
+
+    // Load state from sessionStorage
     try {
-      const stored = sessionStorage.getItem(STORAGE_KEY);
+      const stored = sessionStorage.getItem(STATE_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored) as BriefState;
         // Validate that the stored state has the expected structure
         if (parsed.sessionId && parsed.fields) {
-          return parsed;
+          initialState = parsed;
         }
       }
     } catch (error) {
       console.error('Failed to load brief state from sessionStorage:', error);
     }
 
-    return createInitialState();
+    // Load description from sessionStorage
+    try {
+      const description = sessionStorage.getItem(DESCRIPTION_STORAGE_KEY);
+      if (description && description.trim()) {
+        initialState.initialDescription = description;
+      }
+    } catch (error) {
+      console.error('Failed to load description from sessionStorage:', error);
+    }
+
+    return initialState;
   });
 
   // Store pause callbacks for each field
   const pauseCallbacks = useRef<Map<BriefField, () => void>>(new Map());
 
+  // Debounced description write ref
+  const descriptionTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
   // Save state to sessionStorage whenever it changes
   useEffect(() => {
     if (typeof window !== 'undefined') {
       try {
-        sessionStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+        sessionStorage.setItem(STATE_STORAGE_KEY, JSON.stringify(state));
       } catch (error) {
         console.error('Failed to save brief state to sessionStorage:', error);
       }
     }
   }, [state]);
+
+  // Save description to sessionStorage (debounced 500ms)
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return;
+    }
+
+    // Clear existing timeout
+    if (descriptionTimeoutRef.current) {
+      clearTimeout(descriptionTimeoutRef.current);
+    }
+
+    // Set new timeout
+    descriptionTimeoutRef.current = setTimeout(() => {
+      try {
+        sessionStorage.setItem(DESCRIPTION_STORAGE_KEY, state.initialDescription);
+      } catch (error) {
+        console.error('Failed to save description to sessionStorage:', error);
+      }
+    }, 500);
+
+    // Cleanup
+    return () => {
+      if (descriptionTimeoutRef.current) {
+        clearTimeout(descriptionTimeoutRef.current);
+      }
+    };
+  }, [state.initialDescription]);
 
   // Register pause callback for a field
   const registerPauseCallback = (fieldType: BriefField, callback: () => void) => {
