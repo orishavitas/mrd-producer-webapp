@@ -95,6 +95,35 @@ export interface GapDetectionOutput {
 }
 
 // ============================================================================
+// Batch Extraction Agent (V2)
+// ============================================================================
+
+/**
+ * Input for batch extraction agent
+ */
+export interface BatchExtractionInput {
+  /** Initial product description from start page */
+  description: string;
+}
+
+/**
+ * Output from batch extraction agent
+ */
+export interface BatchExtractionOutput {
+  /** Extracted data for all 6 fields */
+  fields: {
+    [K in BriefField]: {
+      /** Structured bullet points */
+      bullets: string[];
+      /** Extracted entities */
+      entities: ExtractedEntity[];
+      /** Confidence score (0-1) */
+      confidence: number;
+    };
+  };
+}
+
+// ============================================================================
 // Brief Generation Agent
 // ============================================================================
 
