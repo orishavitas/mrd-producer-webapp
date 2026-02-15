@@ -8,6 +8,10 @@
  * - Clean bullet points
  * - Product entities (specs, materials, standards, dimensions)
  * - Confidence scores
+ *
+ * V2 Compatibility: Agent is model-agnostic via BaseAgent.
+ * Configured to use Gemini 2.5 Pro by default (Phase 1).
+ * Includes JSON cleaning logic for markdown wrapper stripping (lines 193-204).
  */
 
 import { BaseAgent } from '@/agent/core/base-agent';
@@ -185,10 +189,25 @@ export class TextExtractionAgent extends BaseAgent<
       responseFormat: 'json',
     });
 
-    // Parse JSON response
+    // Parse JSON response (strip markdown code blocks if present)
     let parsed: any;
     try {
-      parsed = JSON.parse(response.text);
+      // Remove markdown code blocks (```json ... ```)
+      let cleanedText = response.text.trim();
+      if (cleanedText.startsWith('```')) {
+        // Find the first newline after ``` (skips ```json or ```JSON)
+        const firstNewline = cleanedText.indexOf('\n');
+        if (firstNewline > 0) {
+          cleanedText = cleanedText.substring(firstNewline + 1);
+        }
+        // Remove trailing ```
+        if (cleanedText.endsWith('```')) {
+          cleanedText = cleanedText.substring(0, cleanedText.lastIndexOf('```'));
+        }
+        cleanedText = cleanedText.trim();
+      }
+
+      parsed = JSON.parse(cleanedText);
     } catch (error) {
       context.log('error', `[${this.id}] Failed to parse JSON response`, {
         error,
