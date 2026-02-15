@@ -15,26 +15,18 @@ providers:
   # Provider priority order (first = highest priority)
   priority:
     - gemini    # Google Gemini (primary - has search grounding)
-    - claude    # Anthropic Claude (fallback)
-    - openai    # OpenAI GPT-4 (fallback)
+    - openai    # OpenAI GPT-4o-mini (fallback)
 
   # Provider-specific settings
   gemini:
-    model: "gemini-2.5-flash"
+    model: "gemini-2.5-pro"
     temperature: 0.7
     maxTokens: 8192
     # Gemini supports Google Search grounding
     searchGrounding: true
 
-  claude:
-    model: "claude-3-sonnet-20240229"
-    temperature: 0.7
-    maxTokens: 8192
-    # Claude does not have built-in search
-    searchGrounding: false
-
   openai:
-    model: "gpt-4-turbo-preview"
+    model: "gpt-4o-mini"
     temperature: 0.7
     maxTokens: 8192
     # OpenAI does not have built-in search
