@@ -122,12 +122,20 @@
   flex: 1;
 }
 
+.questionRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
 .gapQuestion {
-  margin: 0 0 6px 0;
+  margin: 0;
   font-size: var(--text-sm);
   font-weight: 500;
   color: var(--text-primary);
   line-height: var(--leading-relaxed);
+  flex: 1;
 }
 
 .gapExample {
@@ -140,6 +148,65 @@
 .exampleLabel {
   font-weight: 500;
   color: var(--text-secondary);
+}
+
+/* Hidden Gap State */
+.hiddenGap {
+  opacity: 0.5;
+  transition: opacity var(--duration-fast) var(--ease-out);
+}
+
+.hiddenBadge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(107, 114, 128, 0.1);
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+@media (prefers-color-scheme: dark) {
+  .hiddenBadge {
+    background: rgba(156, 163, 175, 0.2);
+    color: var(--text-muted);
+  }
+}
+
+/* Button Group */
+.buttonGroup {
+  display: flex;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+/* Hide Button */
+.hideButton {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.hideButton:hover {
+  background: var(--surface-secondary);
+  color: var(--text-primary);
+}
+
+.hideButton:focus-visible {
+  outline: 2px solid var(--focus-ring);
+  outline-offset: 2px;
 }
 
 /* Dismiss Button */
@@ -220,7 +287,9 @@
   }
 
   .actionButton,
-  .dismissButton {
+  .dismissButton,
+  .hideButton,
+  .hiddenGap {
     transition: none;
   }
 }
