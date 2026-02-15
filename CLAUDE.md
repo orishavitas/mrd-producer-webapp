@@ -384,11 +384,11 @@ console.log('Result:', result.text);
 
 ## Current Development
 
-### Brief Helper V2 (feature/brief-helper - READY FOR IMPLEMENTATION)
+### Brief Helper V2 (feature/brief-helper - PHASES 7-9 & 13 COMPLETE)
 
-**Purpose:** Quick 6-field capture tool with AI-powered initial description seeding and split-screen interface.
+**Purpose:** Quick 6-field capture tool with AI-powered batch extraction and split-screen interface.
 
-**Status:** Phase 1 complete (Tasks 1-7), V2 design approved (Feb 12, 2026)
+**Status:** Phases 1, 7-9, 13 complete (Feb 15, 2026). Phases 10-12 (UI components) pending.
 
 **Phase 1 Complete (Tasks 1-7):**
 - ✅ Text Extraction Agent - AI extracts bullets from free text
@@ -398,7 +398,21 @@ console.log('Result:', result.text);
 - ✅ GapSuggestion UI with dismissal
 - ✅ AIExpansionPanel chat interface
 
-**V2 Enhancements (Ready to Implement):**
+**Phase 7-9 Complete:**
+- ✅ Batch Extraction Agent - Single AI call for all 6 fields
+- ✅ Batch Extract API endpoint - `/api/brief/batch-extract`
+- ✅ Model update - Gemini 2.5 Pro (primary), GPT-4o-mini (fallback)
+- ✅ State updates - BATCH_POPULATE_FIELDS, SET_PROCESSING_FIELDS, COLLAPSE_FIELD, EXPAND_FIELD
+- ✅ Helper functions - `getCompletionProgress()`, `isAllFieldsComplete()`
+
+**Phase 13 Complete:**
+- ✅ BatchExtractionAgent tests - 10 tests (unit + validation)
+- ✅ Component tests - SuggestionsView, DocumentPreview, LoadingOverlay, CollapsedFieldCard
+- ✅ Integration tests - batch-extract API endpoint
+- ✅ Jest configuration - Multi-project setup (node + jsdom)
+- ✅ Test dependencies - @testing-library/react, identity-obj-proxy installed
+
+**V2 Enhancements (Phases 10-12 Pending):**
 - **Start Page** - Character-graded description input (50/100/150+ thresholds)
 - **Batch Extraction** - Single AI call populates all 6 fields
 - **Split Screen** - Input fields (left) + AI Suggestions/Preview toggle (right)
