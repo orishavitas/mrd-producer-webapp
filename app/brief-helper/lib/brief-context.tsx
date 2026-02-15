@@ -111,6 +111,11 @@ export function useBrief() {
   return context;
 }
 
+/**
+ * Alias for useBrief (for consistency with other context hooks)
+ */
+export const useBriefContext = useBrief;
+
 // ============================================================================
 // Debounce Hook
 // ============================================================================

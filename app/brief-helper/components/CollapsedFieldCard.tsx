@@ -37,7 +37,7 @@ export default function CollapsedFieldCard({ fieldId, label }: CollapsedFieldCar
   const fieldState = state.fields[fieldId];
 
   const visibleGaps = fieldState.gaps.filter(
-    (gap) => !fieldState.hiddenGaps.includes(gap.id)
+    (gap: { id: string }) => !fieldState.hiddenGaps.includes(gap.id)
   );
 
   const handleExpand = () => {
@@ -84,7 +84,7 @@ export default function CollapsedFieldCard({ fieldId, label }: CollapsedFieldCar
       </div>
 
       <div className={styles.preview}>
-        {displayBullets.map((bullet, index) => (
+        {displayBullets.map((bullet: string, index: number) => (
           <p key={index} className={styles.bullet}>
             • {bullet.length > 80 ? `${bullet.substring(0, 80)}...` : bullet}
           </p>

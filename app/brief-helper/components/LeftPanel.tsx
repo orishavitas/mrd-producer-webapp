@@ -43,13 +43,15 @@ export default function LeftPanel() {
     router.push('/brief-helper/start');
   };
 
-  const fields: Array<{ id: BriefField; label: string }> = [
-    { id: 'what', label: 'What - Product Description' },
-    { id: 'who', label: 'Who - Target Users/Customers' },
-    { id: 'where', label: 'Where - Use Environment' },
-    { id: 'moq', label: 'MOQ - Minimum Order Quantity' },
-    { id: 'must-have', label: 'Must-Have Features' },
-    { id: 'nice-to-have', label: 'Nice-to-Have Features' },
+  type BriefFieldType = 'what' | 'who' | 'where' | 'moq' | 'must-have' | 'nice-to-have';
+
+  const fields: Array<{ id: BriefFieldType; label: string; order: number }> = [
+    { id: 'what', label: 'What - Product Description', order: 1 },
+    { id: 'who', label: 'Who - Target Users/Customers', order: 2 },
+    { id: 'where', label: 'Where - Use Environment', order: 3 },
+    { id: 'moq', label: 'MOQ - Minimum Order Quantity', order: 4 },
+    { id: 'must-have', label: 'Must-Have Features', order: 5 },
+    { id: 'nice-to-have', label: 'Nice-to-Have Features', order: 6 },
   ];
 
   return (
@@ -91,7 +93,7 @@ export default function LeftPanel() {
               {isCollapsed ? (
                 <CollapsedFieldCard fieldId={field.id} label={field.label} />
               ) : (
-                <BriefField fieldId={field.id} label={field.label} />
+                <BriefField fieldType={field.id} order={field.order} />
               )}
             </div>
           );
