@@ -20,6 +20,11 @@ import {
 const DEFAULT_MODEL = 'gemini-2.5-pro';
 
 /**
+ * Fallback model to use when quota is exceeded.
+ */
+const FALLBACK_MODEL = 'gemini-2.5-flash';
+
+/**
  * Gemini provider implementation.
  */
 export class GeminiProvider implements AIProvider {
@@ -71,27 +76,67 @@ export class GeminiProvider implements AIProvider {
       ? `${systemPrompt}\n\n---\n\n${prompt}`
       : prompt;
 
-    const response = await client.models.generateContent({
-      model: options.model || DEFAULT_MODEL,
-      contents: fullPrompt,
-      config: {
-        maxOutputTokens: options.maxTokens || 4096,
-        temperature: options.temperature || 0.7,
-      },
-    });
+    const modelToUse = options.model || DEFAULT_MODEL;
 
-    const text = response.text;
-    if (!text) {
-      throw new Error('No text response received from Gemini');
+    try {
+      const response = await client.models.generateContent({
+        model: modelToUse,
+        contents: fullPrompt,
+        config: {
+          maxOutputTokens: options.maxTokens || 4096,
+          temperature: options.temperature || 0.7,
+        },
+      });
+
+      const text = response.text;
+      if (!text) {
+        throw new Error('No text response received from Gemini');
+      }
+
+      return {
+        text,
+        metadata: {
+          model: modelToUse,
+          provider: this.name,
+        },
+      };
+    } catch (error: any) {
+      // Check for quota exceeded error
+      const isQuotaError = error?.message?.includes('RESOURCE_EXHAUSTED') ||
+                          error?.message?.includes('quota') ||
+                          error?.message?.includes('429');
+
+      // If quota error and we haven't tried fallback yet, retry with Flash
+      if (isQuotaError && modelToUse !== FALLBACK_MODEL) {
+        console.log(`[GeminiProvider] Quota exceeded for ${modelToUse}, retrying with ${FALLBACK_MODEL}`);
+
+        const fallbackResponse = await client.models.generateContent({
+          model: FALLBACK_MODEL,
+          contents: fullPrompt,
+          config: {
+            maxOutputTokens: options.maxTokens || 4096,
+            temperature: options.temperature || 0.7,
+          },
+        });
+
+        const text = fallbackResponse.text;
+        if (!text) {
+          throw new Error('No text response received from Gemini');
+        }
+
+        return {
+          text,
+          metadata: {
+            model: FALLBACK_MODEL,
+            provider: this.name,
+            fallback: true,
+          },
+        };
+      }
+
+      // Re-throw if not a quota error or already using fallback
+      throw error;
     }
-
-    return {
-      text,
-      metadata: {
-        model: options.model || DEFAULT_MODEL,
-        provider: this.name,
-      },
-    };
   }
 
   /**
