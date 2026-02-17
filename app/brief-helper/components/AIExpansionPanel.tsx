@@ -370,7 +370,7 @@ export default function AIExpansionPanel({
               onClick={handleAccept}
               type="button"
             >
-              Accept Changes
+              Accept and close
             </button>
           </div>
         )}

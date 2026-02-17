@@ -41,6 +41,8 @@ export interface FieldState {
   rawText: string;
   /** AI-extracted structured bullet points */
   bulletPoints: string[];
+  /** Per-bullet include in export (same length as bulletPoints; undefined = all true) */
+  includedBullets?: boolean[];
   /** Detected information gaps */
   gaps: Gap[];
   /** Gap IDs that have been visually hidden (V2) */
@@ -176,6 +178,13 @@ export type BriefAction =
           };
         };
       };
+    }
+  | {
+      type: 'TOGGLE_BULLET_INCLUDED';
+      payload: {
+        fieldType: BriefField;
+        index: number;
+      };
     };
 
 // ============================================================================
@@ -241,6 +250,7 @@ export function briefReducer(state: BriefState, action: BriefAction): BriefState
           [fieldType]: {
             ...updatedState.fields[fieldType],
             bulletPoints,
+            includedBullets: bulletPoints.map(() => true),
           },
         },
       };
@@ -375,9 +385,11 @@ export function briefReducer(state: BriefState, action: BriefAction): BriefState
 
       Object.entries(fields).forEach(([fieldType, data]) => {
         if (data) {
+          const bullets = data.bulletPoints;
           updatedFields[fieldType as BriefField] = {
             ...updatedFields[fieldType as BriefField],
-            bulletPoints: data.bulletPoints,
+            bulletPoints: bullets,
+            includedBullets: bullets.map(() => true),
             gaps: data.gaps,
             isAIProcessing: false,
           };
@@ -388,6 +400,24 @@ export function briefReducer(state: BriefState, action: BriefAction): BriefState
         ...updatedState,
         fields: updatedFields,
         processingFields: [],
+      };
+    }
+
+    case 'TOGGLE_BULLET_INCLUDED': {
+      const { fieldType, index } = action.payload;
+      const field = updatedState.fields[fieldType];
+      const included = field.includedBullets ?? field.bulletPoints.map(() => true);
+      const next = [...included];
+      if (index >= 0 && index < next.length) next[index] = !next[index];
+      return {
+        ...updatedState,
+        fields: {
+          ...updatedState.fields,
+          [fieldType]: {
+            ...field,
+            includedBullets: next,
+          },
+        },
       };
     }
 

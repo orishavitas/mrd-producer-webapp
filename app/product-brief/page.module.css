@@ -1,0 +1,123 @@
+/* app/product-brief/page.module.css */
+
+.editorContainer {
+  display: flex;
+  height: 100vh;
+  background: #f3f4f6;
+}
+
+.leftPanel {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.5rem;
+  background: white;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.backButton {
+  padding: 0.5rem 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #667eea;
+  background: white;
+  border: 2px solid #667eea;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.backButton:hover {
+  background: #667eea;
+  color: white;
+}
+
+.progress {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #6b7280;
+}
+
+.exportButton {
+  padding: 0.5rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: white;
+  background: #10b981;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.exportButton:hover:not(:disabled) {
+  background: #059669;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.exportButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #9ca3af;
+}
+
+.fieldsContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.5rem;
+}
+
+.rightPanel {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  background: white;
+}
+
+.panelToggle {
+  display: flex;
+  border-bottom: 2px solid #e5e7eb;
+  background: #f9fafb;
+}
+
+.tab,
+.activeTab {
+  flex: 1;
+  padding: 1rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: #6b7280;
+}
+
+.activeTab {
+  background: white;
+  color: #667eea;
+  border-bottom: 3px solid #667eea;
+}
+
+.tab:hover {
+  background: #f3f4f6;
+}
+
+@media (max-width: 1024px) {
+  .editorContainer {
+    flex-direction: column;
+  }
+
+  .rightPanel {
+    width: 100%;
+    height: 50%;
+  }
+}

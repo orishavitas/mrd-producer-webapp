@@ -1,0 +1,113 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  min-height: 280px;
+}
+
+.placeholder {
+  padding: var(--spacing-4, 1rem);
+  color: var(--text-secondary, #555);
+  text-align: center;
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-3, 0.75rem);
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-3, 0.75rem);
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #555);
+}
+
+.userBubble,
+.assistantBubble {
+  padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+  border-radius: 8px;
+  max-width: 95%;
+}
+
+.userBubble {
+  align-self: flex-end;
+  background: var(--accent);
+  color: var(--mrd-on-accent-color);
+}
+
+.assistantBubble {
+  align-self: flex-start;
+  background: var(--bg-secondary, #f5f5f5);
+  border: 1px solid var(--border-default, #e5e5e5);
+}
+
+.role {
+  font-size: 0.75rem;
+  font-weight: 600;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.content {
+  margin: 0;
+  font-size: 0.9rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.suggestion {
+  margin-top: var(--spacing-2, 0.5rem);
+}
+
+.acceptButton {
+  padding: 4px 10px;
+  font-size: 0.8rem;
+  background: var(--accent);
+  color: var(--mrd-on-accent-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.acceptButton:hover {
+  filter: brightness(1.05);
+}
+
+.form {
+  display: flex;
+  gap: var(--spacing-2, 0.5rem);
+  padding: var(--spacing-2, 0.5rem);
+  border-top: 1px solid var(--border-default, #e5e5e5);
+}
+
+.input {
+  flex: 1;
+  padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+  border: 1px solid var(--border-default, #ccc);
+  border-radius: 6px;
+  font-size: 0.95rem;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--accent-primary, #2E5AAC);
+}
+
+.sendButton {
+  padding: var(--spacing-2, 0.5rem) var(--spacing-4, 1rem);
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--mrd-on-accent-color);
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.sendButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

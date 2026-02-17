@@ -302,16 +302,43 @@ export default function BriefField({ fieldType, order }: BriefFieldProps) {
         aria-label={fieldDefinition.label}
       />
 
-      {/* Extracted bullet points */}
+      {/* Extracted bullet points: frame with checkbox + content + edit */}
       {fieldState.bulletPoints.length > 0 && (
         <div className={styles.bulletPoints}>
           <h4 className={styles.bulletPointsTitle}>AI Extracted Points:</h4>
-          <ul className={styles.bulletPointsList}>
-            {fieldState.bulletPoints.map((point, index) => (
-              <li key={index} className={styles.bulletPoint}>
-                {point}
-              </li>
-            ))}
+          <ul className={styles.bulletPointsList} role="list">
+            {fieldState.bulletPoints.map((point, index) => {
+              const included =
+                fieldState.includedBullets?.[index] ??
+                true;
+              return (
+                <li key={index} className={styles.bulletRow}>
+                  <label className={styles.bulletRowLabel}>
+                    <input
+                      type="checkbox"
+                      checked={included}
+                      onChange={() =>
+                        dispatch({
+                          type: 'TOGGLE_BULLET_INCLUDED',
+                          payload: { fieldType, index },
+                        })
+                      }
+                      aria-label={`Include in export: ${point.slice(0, 40)}…`}
+                      className={styles.bulletCheckbox}
+                    />
+                    <span className={styles.bulletPointText}>{point}</span>
+                  </label>
+                  <button
+                    type="button"
+                    className={styles.bulletEditButton}
+                    onClick={handleAIExpand}
+                    aria-label={`Edit ${fieldDefinition.label}`}
+                  >
+                    Edit
+                  </button>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}

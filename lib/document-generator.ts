@@ -237,21 +237,24 @@ function parseInlineFormatting(text: string): TextRun[] {
 
 /**
  * Creates a styled DOCX document from markdown content.
+ * @param documentTitle - When provided, used as the main document title (e.g. "Product Brief"). Otherwise "Market Requirements Document (MRD)".
  */
 export async function generateDocx(
   markdown: string,
-  productName?: string
+  productName?: string,
+  documentTitle?: string
 ): Promise<Buffer> {
   const sections = parseMarkdown(markdown);
   const docChildren: Paragraph[] = [];
 
   // Add document title
-  const title = productName || 'Market Requirements Document';
+  const titleText =
+    documentTitle || 'Market Requirements Document (MRD)';
   docChildren.push(
     new Paragraph({
       children: [
         new TextRun({
-          text: 'Market Requirements Document (MRD)',
+          text: titleText,
           font: STYLE_CONFIG.fonts.primary,
           size: STYLE_CONFIG.sizes.title,
           bold: true,
@@ -270,7 +273,11 @@ export async function generateDocx(
   // Process each section
   for (const section of sections) {
     // Skip the main title if already added
-    if (section.level === 'h1' && section.title.includes('Market Requirements Document')) {
+    if (
+      section.level === 'h1' &&
+      (section.title.includes('Market Requirements Document') ||
+        section.title === titleText)
+    ) {
       continue;
     }
 
@@ -478,7 +485,7 @@ export async function generateDocx(
               new Paragraph({
                 children: [
                   new TextRun({
-                    text: title,
+                    text: titleText,
                     font: STYLE_CONFIG.fonts.primary,
                     size: 18,
                     color: '666666',

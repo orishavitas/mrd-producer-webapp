@@ -1,0 +1,103 @@
+.container {
+  min-height: 100vh;
+  padding: var(--spacing-4, 1rem);
+  background: var(--bg-primary, #fff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  max-width: 640px;
+  width: 100%;
+}
+
+.header {
+  margin-bottom: var(--spacing-6, 1.5rem);
+}
+
+.title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 var(--spacing-2, 0.5rem);
+  color: var(--text-primary, #111);
+}
+
+.subtitle {
+  margin: 0;
+  color: var(--text-secondary, #555);
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.inputArea {
+  margin-bottom: var(--spacing-4, 1rem);
+}
+
+.textarea {
+  width: 100%;
+  padding: var(--spacing-3, 0.75rem);
+  border: 1px solid var(--border-default, #ccc);
+  border-radius: 8px;
+  font-size: 1rem;
+  line-height: 1.5;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: var(--mrd-input-focus-ring);
+}
+
+.grading {
+  margin-top: var(--spacing-2, 0.5rem);
+  font-size: 0.875rem;
+  color: var(--text-secondary, #555);
+}
+
+.ok { color: var(--text-success, #0a0); }
+.low { color: var(--text-warning, #b45309); }
+.good { margin-left: 0.5rem; color: var(--text-success, #0a0); }
+
+.error {
+  margin-top: var(--spacing-2, 0.5rem);
+  padding: var(--spacing-2, 0.5rem);
+  background: var(--bg-error, #fef2f2);
+  color: var(--text-error, #b91c1c);
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2, 0.5rem);
+}
+
+.primaryButton {
+  padding: var(--spacing-3, 0.75rem) var(--spacing-6, 1.5rem);
+  font-size: 1rem;
+  font-weight: 600;
+  background: var(--accent);
+  color: var(--mrd-on-accent-color);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.primaryButton:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.primaryButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--text-secondary, #555);
+}

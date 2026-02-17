@@ -504,6 +504,35 @@
 }
 
 /* ========================================
+   MRD Chat Generator Tokens
+   ======================================== */
+:root {
+  /* Section preview - incomplete (amber) */
+  --mrd-section-incomplete-bg: rgba(245, 158, 11, 0.12);
+  --mrd-section-incomplete-border: rgba(245, 158, 11, 0.4);
+
+  /* Section preview - active focus ring */
+  --mrd-section-active-ring: 0 0 0 2px var(--accent-soft);
+
+  /* Sidebar active section */
+  --mrd-sidebar-active-bg: var(--accent-soft);
+  --mrd-sidebar-active-color: var(--accent);
+
+  /* Chat / button text on accent background */
+  --mrd-on-accent-color: var(--color-white);
+
+  /* Focus ring for inputs */
+  --mrd-input-focus-ring: 0 0 0 2px var(--accent-soft);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --mrd-section-incomplete-bg: rgba(245, 158, 11, 0.1);
+    --mrd-section-incomplete-border: rgba(245, 158, 11, 0.3);
+  }
+}
+
+/* ========================================
    Reduced Motion Support
    ======================================== */
 @media (prefers-reduced-motion: reduce) {

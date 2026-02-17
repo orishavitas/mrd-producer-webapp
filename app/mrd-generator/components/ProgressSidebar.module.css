@@ -1,0 +1,82 @@
+.wrapper {
+  border-top: 1px solid var(--border-default, #e5e5e5);
+  padding: var(--spacing-2, 0.5rem);
+  min-height: 120px;
+  max-height: 40vh;
+  overflow-y: auto;
+  background: var(--bg-secondary, #fafafa);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2, 0.5rem) 0;
+  margin-bottom: var(--spacing-1, 0.25rem);
+}
+
+.progressLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--text-secondary, #555);
+}
+
+.progressCount {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-primary, #111);
+}
+
+.list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  margin: 0;
+  padding: 0;
+}
+
+.sectionButton {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2, 0.5rem);
+  width: 100%;
+  padding: var(--spacing-2, 0.5rem) var(--spacing-2, 0.5rem);
+  border: none;
+  border-radius: 6px;
+  background: transparent;
+  cursor: pointer;
+  font-size: 0.85rem;
+  text-align: left;
+  color: var(--text-primary, #111);
+}
+
+.sectionButton:hover {
+  background: var(--bg-hover, rgba(0,0,0,0.05));
+}
+
+.sectionButton.active {
+  background: var(--mrd-sidebar-active-bg);
+  color: var(--mrd-sidebar-active-color);
+}
+
+.statusIcon {
+  flex-shrink: 0;
+  width: 1.25rem;
+  text-align: center;
+  font-size: 0.9rem;
+}
+
+.sectionButton.done .statusIcon { color: var(--text-success, #0a0); }
+.sectionButton.gaps .statusIcon { color: var(--text-warning, #b45309); }
+.sectionButton.empty .statusIcon { color: var(--text-secondary, #999); }
+
+.sectionLabel {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

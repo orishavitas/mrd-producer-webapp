@@ -14,17 +14,37 @@ const config = {
   projects: [
     {
       displayName: 'node',
+      preset: 'ts-jest',
       testEnvironment: 'node',
       testMatch: ['**/__tests__/**/*.test.ts'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+      },
+      transform: {
+        '^.+\\.ts$': ['ts-jest', {
+          tsconfig: {
+            esModuleInterop: true,
+            target: 'ES2017',
+          },
+        }],
+      },
     },
     {
       displayName: 'jsdom',
+      preset: 'ts-jest',
       testEnvironment: 'jsdom',
       testMatch: ['**/__tests__/**/*.test.tsx'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+      },
+      setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
       transform: {
         '^.+\\.tsx?$': ['ts-jest', {
           tsconfig: {
-            jsx: 'react',
+            jsx: 'react-jsx',
+            esModuleInterop: true,
+            target: 'ES2017',
           },
         }],
       },

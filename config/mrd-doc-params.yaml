@@ -1,0 +1,250 @@
+# MRD Document Parameters
+# Edit section prompts, gap rules, and enabled flags. Changes apply without code changes.
+# Section ids map to MRD template: references/mrd-template-reference.md
+
+sections:
+  - id: purpose_vision
+    number: 1
+    title: "Purpose & Vision"
+    enabled: true
+    required: true
+    min_length: 200
+    markdown_heading: "## 1. Purpose & Vision"
+    extraction_prompt: |
+      Extract the product's purpose and strategic vision.
+      Focus on: portfolio positioning, primary features, applications,
+      design philosophy, compatibility.
+      Format as 2-3 paragraphs with **bold** for key features.
+    chat_context: |
+      You are helping refine the Purpose & Vision section.
+      State what the product is, why it exists, and how it fits
+      into the portfolio. Use bold for defining features.
+    gap_detection:
+      - category: "Strategic Context"
+        check: "mentions portfolio or product line"
+        priority: "medium"
+        question: "How does this fit into your product portfolio?"
+
+  - id: problem_statement
+    number: 2
+    title: "Problem Statement"
+    enabled: true
+    required: true
+    min_length: 150
+    markdown_heading: "## 2. Problem Statement"
+    extraction_prompt: |
+      Extract the problem this product solves. Include market gap,
+      pain points, and why now. Use prose with optional bullet challenges.
+      Format as 1-2 paragraphs; bullets for specific challenges if present.
+    chat_context: |
+      You are helping refine the Problem Statement.
+      Clarify the market gap, user pain points, and timing.
+    gap_detection:
+      - category: "Market Gap"
+        check: "identifies clear problem or pain"
+        priority: "high"
+        question: "What specific problem does this product solve?"
+
+  - id: target_market
+    number: 3
+    title: "Target Market & Use Cases"
+    enabled: true
+    required: true
+    min_length: 100
+    markdown_heading: "## 3. Target Market & Use Cases"
+    subsections:
+      - id: primary_markets
+        title: "Primary Markets"
+        enabled: true
+        markdown_heading: "### Primary Markets"
+      - id: core_use_cases
+        title: "Core Use Cases"
+        enabled: true
+        markdown_heading: "### Core Use Cases"
+    extraction_prompt: |
+      Extract target markets and use cases. Output two subsections:
+      ### Primary Markets - bullet list of market segments
+      ### Core Use Cases - bullet list of use cases
+    chat_context: |
+      You are helping refine Target Market & Use Cases.
+      Provide Primary Markets and Core Use Cases as bullet lists.
+    gap_detection:
+      - category: "Markets"
+        check: "lists at least one market segment"
+        priority: "medium"
+        question: "Which markets are you targeting?"
+
+  - id: target_users
+    number: 4
+    title: "Target Users"
+    enabled: true
+    required: true
+    min_length: 80
+    markdown_heading: "## 4. Target Users"
+    extraction_prompt: |
+      Extract target users and personas. Bullet list of user types,
+      roles, industries, or segments.
+    chat_context: |
+      You are helping refine Target Users. Use clear bullet points.
+    gap_detection:
+      - category: "Users"
+        check: "identifies user types or personas"
+        priority: "medium"
+        question: "Who are the primary users?"
+
+  - id: product_description
+    number: 5
+    title: "Product Description"
+    enabled: true
+    required: true
+    min_length: 150
+    markdown_heading: "## 5. Product Description"
+    extraction_prompt: |
+      Extract product description. Prose with **bold** for key specs,
+      dimensions, materials, features. 2-3 paragraphs.
+    chat_context: |
+      You are helping refine the Product Description. Bold key specs.
+    gap_detection:
+      - category: "Specs"
+        check: "includes physical or technical details"
+        priority: "medium"
+        question: "What are the key product specifications?"
+
+  - id: key_requirements
+    number: 6
+    title: "Key Requirements"
+    enabled: true
+    required: true
+    min_length: 150
+    markdown_heading: "## 6. Key Requirements"
+    subsections:
+      - id: functional_requirements
+        title: "6.1 Functional Requirements"
+        enabled: true
+        markdown_heading: "### 6.1 Functional Requirements"
+      - id: category_requirements_2
+        title: "6.2 Category Requirements"
+        enabled: true
+        markdown_heading: "### 6.2 Category Requirements"
+      - id: category_requirements_3
+        title: "6.3 Category Requirements"
+        enabled: true
+        markdown_heading: "### 6.3 Category Requirements"
+    extraction_prompt: |
+      Extract key requirements in three subsections:
+      ### 6.1 Functional Requirements - bullet list
+      ### 6.2 [Category] Requirements - e.g. Height/ADA or Mounting (infer from product)
+      ### 6.3 [Category] Requirements - e.g. Stability or Security (infer from product)
+      Use bullets; nested bullets where appropriate.
+    chat_context: |
+      You are helping refine Key Requirements. Use 6.1, 6.2, 6.3 subsections.
+    gap_detection:
+      - category: "Requirements"
+        check: "lists functional or technical requirements"
+        priority: "high"
+        question: "What are the must-have requirements?"
+
+  - id: design_aesthetics
+    number: 7
+    title: "Design & Aesthetics"
+    enabled: true
+    required: false
+    min_length: 50
+    markdown_heading: "## 7. Design & Aesthetics"
+    extraction_prompt: |
+      Extract design and aesthetics. Bullet list of design principles,
+      look-and-feel, materials, finish.
+    chat_context: |
+      You are helping refine Design & Aesthetics. Use bullet points.
+    gap_detection:
+      - category: "Design"
+        check: "mentions design or aesthetics"
+        priority: "low"
+        question: "Any design or aesthetic requirements?"
+
+  - id: target_price
+    number: 8
+    title: "Target Price"
+    enabled: true
+    required: false
+    min_length: 10
+    markdown_heading: "## 8. Target Price"
+    extraction_prompt: |
+      Extract target price. Single bold statement, e.g. * **Target price is $299**
+      Or range. One line.
+    chat_context: |
+      You are helping refine Target Price. One bold statement.
+    gap_detection:
+      - category: "Price"
+        check: "mentions price or cost"
+        priority: "medium"
+        question: "What is the target price point?"
+
+  - id: risks_thoughts
+    number: 9
+    title: "Risks and Thoughts"
+    enabled: true
+    required: false
+    min_length: 80
+    markdown_heading: "## 9. Risks and Thoughts"
+    extraction_prompt: |
+      Extract risks and considerations. Prose analysis; use "Vs." for contrasts,
+      quotes for terms. 1-2 paragraphs.
+    chat_context: |
+      You are helping refine Risks and Thoughts. Analytical prose.
+    gap_detection:
+      - category: "Risks"
+        check: "identifies risks or considerations"
+        priority: "low"
+        question: "Any risks or open questions?"
+
+  - id: competition
+    number: 10
+    title: "Competition to review"
+    enabled: true
+    required: false
+    min_length: 20
+    markdown_heading: "## 10. Competition to review"
+    extraction_prompt: |
+      Extract competitors to review. Link list format: * [Name](URL) or * [Name](URL) (description)
+    chat_context: |
+      You are helping refine Competition. Use markdown links.
+    gap_detection:
+      - category: "Competition"
+        check: "mentions competitors or links"
+        priority: "low"
+        question: "Which competitors should we review?"
+
+  - id: additional_considerations
+    number: 11
+    title: "Additional Considerations (Summary)"
+    enabled: true
+    required: false
+    min_length: 50
+    markdown_heading: "## 11. Additional Considerations (Summary)"
+    extraction_prompt: |
+      Extract additional considerations. Bullet list with **bold** labels, e.g. * **Label:** Description
+    chat_context: |
+      You are helping refine Additional Considerations. Bold labels per bullet.
+    gap_detection:
+      - category: "Considerations"
+        check: "lists any additional items"
+        priority: "low"
+        question: "Any other considerations?"
+
+  - id: success_criteria
+    number: 12
+    title: "Success Criteria"
+    enabled: true
+    required: true
+    min_length: 80
+    markdown_heading: "## 12. Success Criteria"
+    extraction_prompt: |
+      Extract success criteria. Bullet list of measurable outcomes.
+    chat_context: |
+      You are helping refine Success Criteria. Clear, measurable bullets.
+    gap_detection:
+      - category: "Success"
+        check: "defines measurable criteria"
+        priority: "medium"
+        question: "How will success be measured?"

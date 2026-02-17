@@ -1,0 +1,81 @@
+/* app/product-brief/components/GapChip.module.css */
+
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid;
+  background: white;
+  margin-bottom: 0.5rem;
+  transition: all 0.2s;
+}
+
+.chip:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.priorityHigh {
+  border-color: #ef4444;
+  background: #fef2f2;
+}
+
+.priorityMedium {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.priorityLow {
+  border-color: #6b7280;
+  background: #f9fafb;
+}
+
+.icon {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.text {
+  flex: 1;
+  font-size: 0.95rem;
+  color: #374151;
+  line-height: 1.5;
+}
+
+.addButton,
+.dismissButton {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.25rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.addButton {
+  background: #10b981;
+  color: white;
+}
+
+.addButton:hover {
+  background: #059669;
+  transform: scale(1.1);
+}
+
+.dismissButton {
+  background: #e5e7eb;
+  color: #6b7280;
+}
+
+.dismissButton:hover {
+  background: #d1d5db;
+  transform: scale(1.1);
+}
