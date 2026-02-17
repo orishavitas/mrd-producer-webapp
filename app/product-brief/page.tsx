@@ -133,6 +133,33 @@ function ProductBriefContent() {
     });
   };
 
+  const handleExport = async () => {
+    try {
+      const response = await fetch('/api/product-brief/export', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state),
+      });
+
+      if (response.ok) {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `product-brief-${Date.now()}.docx`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      } else {
+        alert('Failed to export document');
+      }
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Failed to export document');
+    }
+  };
+
   if (view === 'start') {
     return <StartPage onGenerate={handleGenerate} />;
   }
@@ -154,6 +181,13 @@ function ProductBriefContent() {
           <div className={styles.progress}>
             {state.completionStatus.required}/6 required complete
           </div>
+          <button
+            className={styles.exportButton}
+            onClick={handleExport}
+            disabled={state.completionStatus.required < 6}
+          >
+            📥 Export DOCX
+          </button>
         </div>
 
         <div className={styles.fieldsContainer}>
