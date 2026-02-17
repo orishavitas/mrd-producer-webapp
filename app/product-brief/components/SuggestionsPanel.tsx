@@ -25,6 +25,8 @@ interface SuggestionsPanelProps {
   hiddenGaps: string[];
   onAddGap: (gapText: string) => void;
   onDismissGap: (gapId: string) => void;
+  onResearchCompetitors?: () => void;
+  isResearching?: boolean;
 }
 
 export default function SuggestionsPanel({
@@ -33,6 +35,8 @@ export default function SuggestionsPanel({
   hiddenGaps,
   onAddGap,
   onDismissGap,
+  onResearchCompetitors,
+  isResearching = false,
 }: SuggestionsPanelProps) {
   const visibleGaps = gaps.filter((g) => !hiddenGaps.includes(g.id));
 
@@ -55,6 +59,31 @@ export default function SuggestionsPanel({
       </div>
 
       <div className={styles.content}>
+        {activeFieldId === 'competition' && onResearchCompetitors && (
+          <div className={styles.researchSection}>
+            <button
+              className={styles.researchButton}
+              onClick={onResearchCompetitors}
+              disabled={isResearching}
+            >
+              {isResearching ? (
+                <>
+                  <span className={styles.spinner}>⏳</span>
+                  Researching competitors...
+                </>
+              ) : (
+                <>
+                  <span>🔍</span>
+                  Research Competitors with AI
+                </>
+              )}
+            </button>
+            <p className={styles.researchHint}>
+              Uses Google Search to find 3-5 direct competitors based on your product info
+            </p>
+          </div>
+        )}
+
         {visibleGaps.length === 0 ? (
           <div className={styles.noGaps}>
             <span className={styles.checkmark}>✓</span>

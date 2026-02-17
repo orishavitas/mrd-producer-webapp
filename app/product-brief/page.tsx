@@ -17,6 +17,7 @@ function ProductBriefContent() {
   const { state, dispatch } = useBrief();
   const [view, setView] = useState<'start' | 'loading' | 'editor'>('start');
   const [rightPanel, setRightPanel] = useState<'suggestions' | 'preview'>('suggestions');
+  const [isResearching, setIsResearching] = useState(false);
 
   const handleGenerate = async (concept: string) => {
     setView('loading');
@@ -131,6 +132,54 @@ function ProductBriefContent() {
       type: 'SET_ACTIVE_FIELD',
       payload: { fieldId },
     });
+  };
+
+  const handleResearchCompetitors = async () => {
+    setIsResearching(true);
+
+    try {
+      const response = await fetch('/api/product-brief/research-competition', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          productDescription: state.fields.product_description.content,
+          targetIndustry: state.fields.target_industry.content,
+          whereUsed: state.fields.where_used.content,
+          whoUses: state.fields.who_uses.content,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.competitors && data.competitors.length > 0) {
+        // Format competitors as bullet points
+        const competitorBullets = data.competitors
+          .map((c: any) => {
+            const features = c.keyFeatures.slice(0, 3).join(', ');
+            const price = c.pricePoint ? ` (${c.pricePoint})` : '';
+            return `• ${c.company} - ${c.productName}${price}: ${features}`;
+          })
+          .join('\n');
+
+        // Update competition field
+        dispatch({
+          type: 'SET_FIELD_CONTENT',
+          payload: { fieldId: 'competition', content: competitorBullets },
+        });
+
+        // Show sources in console for user
+        if (data.sources && data.sources.length > 0) {
+          console.log('Competitor research sources:', data.sources);
+        }
+      } else {
+        alert('No competitors found. Try adding more detail to your product fields.');
+      }
+    } catch (error) {
+      console.error('Competition research error:', error);
+      alert('Failed to research competitors. Please try again.');
+    } finally {
+      setIsResearching(false);
+    }
   };
 
   const handleExport = async () => {
@@ -250,6 +299,8 @@ function ProductBriefContent() {
             onDismissGap={(gapId) =>
               state.activeField && handleDismissGap(state.activeField, gapId)
             }
+            onResearchCompetitors={handleResearchCompetitors}
+            isResearching={isResearching}
           />
         ) : (
           <DocumentPreview state={state} />
