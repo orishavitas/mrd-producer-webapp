@@ -3,7 +3,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { BatchExtractAgent } from '@/agent/agents/product-brief/batch-extract-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
-import { loadAgentConfig } from '@/agent/core/config-loader';
 
 export async function POST(request: NextRequest) {
   try {
@@ -29,11 +28,9 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Load config and create context
-    const config = await loadAgentConfig();
+    // Create execution context
     const context = createExecutionContext({
       requestId: `batch-extract-${Date.now()}`,
-      config,
     });
 
     // Execute agent
