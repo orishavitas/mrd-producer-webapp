@@ -176,7 +176,13 @@ If all checks pass, return empty array.`;
       }
 
       const rawJson = JSON.parse(text);
-      parsed = FailedChecksSchema.parse(rawJson);
+
+      // Handle both array and object responses
+      if (Array.isArray(rawJson)) {
+        parsed = { failed_checks: rawJson };
+      } else {
+        parsed = FailedChecksSchema.parse(rawJson);
+      }
     } catch (error) {
       context.log('error', `[${this.id}] Failed to parse semantic check results`, { error });
       return [];

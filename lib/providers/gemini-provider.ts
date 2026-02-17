@@ -62,7 +62,20 @@ export class GeminiProvider implements AIProvider {
   }
 
   /**
-   * Generate text using Gemini.
+   * Helper to extract retry delay from error message.
+   */
+  private extractRetryDelay(error: any): number | null {
+    const message = error?.message || '';
+    const match = message.match(/retry in ([\d.]+)s/i);
+    if (match && match[1]) {
+      const seconds = parseFloat(match[1]);
+      return Math.ceil(seconds * 1000); // Convert to ms and round up
+    }
+    return null;
+  }
+
+  /**
+   * Generate text using Gemini with retry logic for rate limits.
    */
   async generateText(
     prompt: string,
@@ -77,41 +90,12 @@ export class GeminiProvider implements AIProvider {
       : prompt;
 
     const modelToUse = options.model || DEFAULT_MODEL;
+    const maxRetries = 2;
 
-    try {
-      const response = await client.models.generateContent({
-        model: modelToUse,
-        contents: fullPrompt,
-        config: {
-          maxOutputTokens: options.maxTokens || 4096,
-          temperature: options.temperature || 0.7,
-        },
-      });
-
-      const text = response.text;
-      if (!text) {
-        throw new Error('No text response received from Gemini');
-      }
-
-      return {
-        text,
-        metadata: {
+    for (let attempt = 0; attempt <= maxRetries; attempt++) {
+      try {
+        const response = await client.models.generateContent({
           model: modelToUse,
-          provider: this.name,
-        },
-      };
-    } catch (error: any) {
-      // Check for quota exceeded error
-      const isQuotaError = error?.message?.includes('RESOURCE_EXHAUSTED') ||
-                          error?.message?.includes('quota') ||
-                          error?.message?.includes('429');
-
-      // If quota error and we haven't tried fallback yet, retry with Flash
-      if (isQuotaError && modelToUse !== FALLBACK_MODEL) {
-        console.log(`[GeminiProvider] Quota exceeded for ${modelToUse}, retrying with ${FALLBACK_MODEL}`);
-
-        const fallbackResponse = await client.models.generateContent({
-          model: FALLBACK_MODEL,
           contents: fullPrompt,
           config: {
             maxOutputTokens: options.maxTokens || 4096,
@@ -119,7 +103,7 @@ export class GeminiProvider implements AIProvider {
           },
         });
 
-        const text = fallbackResponse.text;
+        const text = response.text;
         if (!text) {
           throw new Error('No text response received from Gemini');
         }
@@ -127,16 +111,73 @@ export class GeminiProvider implements AIProvider {
         return {
           text,
           metadata: {
-            model: FALLBACK_MODEL,
+            model: modelToUse,
             provider: this.name,
-            fallback: true,
+            retries: attempt,
           },
         };
-      }
+      } catch (error: any) {
+        // Check for quota exceeded error
+        const isQuotaError = error?.message?.includes('RESOURCE_EXHAUSTED') ||
+                            error?.message?.includes('quota') ||
+                            error?.message?.includes('429');
 
-      // Re-throw if not a quota error or already using fallback
-      throw error;
+        if (!isQuotaError) {
+          throw error; // Re-throw non-quota errors immediately
+        }
+
+        // If quota error and we haven't tried fallback yet, retry with Flash
+        if (modelToUse !== FALLBACK_MODEL) {
+          console.log(`[GeminiProvider] Quota exceeded for ${modelToUse}, retrying with ${FALLBACK_MODEL}`);
+
+          try {
+            const fallbackResponse = await client.models.generateContent({
+              model: FALLBACK_MODEL,
+              contents: fullPrompt,
+              config: {
+                maxOutputTokens: options.maxTokens || 4096,
+                temperature: options.temperature || 0.7,
+              },
+            });
+
+            const text = fallbackResponse.text;
+            if (!text) {
+              throw new Error('No text response received from Gemini');
+            }
+
+            return {
+              text,
+              metadata: {
+                model: FALLBACK_MODEL,
+                provider: this.name,
+                fallback: true,
+              },
+            };
+          } catch (fallbackError: any) {
+            // If fallback also fails with quota error, continue to retry logic
+            const isFallbackQuotaError = fallbackError?.message?.includes('RESOURCE_EXHAUSTED') ||
+                                        fallbackError?.message?.includes('quota') ||
+                                        fallbackError?.message?.includes('429');
+            if (!isFallbackQuotaError) {
+              throw fallbackError;
+            }
+            error = fallbackError; // Use fallback error for retry logic
+          }
+        }
+
+        // Retry logic with exponential backoff
+        if (attempt < maxRetries) {
+          const retryDelay = this.extractRetryDelay(error) || (1000 * Math.pow(2, attempt));
+          console.log(`[GeminiProvider] Rate limited, retrying in ${retryDelay}ms (attempt ${attempt + 1}/${maxRetries})`);
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        } else {
+          console.error(`[GeminiProvider] Max retries exceeded after ${maxRetries} attempts`);
+          throw error;
+        }
+      }
     }
+
+    throw new Error('Unexpected: retry loop completed without result');
   }
 
   /**
