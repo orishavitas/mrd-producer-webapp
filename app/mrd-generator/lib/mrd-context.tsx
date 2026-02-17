@@ -14,6 +14,7 @@ import {
   MRDAction,
   mrdReducer,
   createInitialMRDState,
+  isValidMRDState,
 } from './mrd-state';
 
 // ============================================================================
@@ -49,9 +50,11 @@ export function MRDProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = sessionStorage.getItem(STATE_STORAGE_KEY);
       if (stored) {
-        const parsed = JSON.parse(stored) as MRDState;
-        if (parsed.sessionId && parsed.sections) {
+        const parsed = JSON.parse(stored);
+        if (isValidMRDState(parsed)) {
           initialState = parsed;
+        } else {
+          console.warn('Stored MRD state has invalid structure, using defaults');
         }
       }
     } catch (error) {

@@ -44,6 +44,22 @@ export interface SubsectionState {
   isComplete: boolean;
 }
 
+/** Validation helper for deserialized state */
+export function isValidMRDState(value: unknown): value is MRDState {
+  if (!value || typeof value !== 'object') return false;
+  const state = value as Record<string, unknown>;
+
+  return (
+    typeof state.sessionId === 'string' &&
+    typeof state.initialConcept === 'string' &&
+    typeof state.documentName === 'string' &&
+    typeof state.sections === 'object' &&
+    state.sections !== null &&
+    typeof state.conversationHistory === 'object' &&
+    Array.isArray(state.conversationHistory)
+  );
+}
+
 /** State for a single section */
 export interface SectionState {
   content: string;
