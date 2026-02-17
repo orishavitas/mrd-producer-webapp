@@ -1,0 +1,105 @@
+# config/product-brief-gaps.yaml
+
+fields:
+  product_description:
+    min_length: 100
+    required: true
+    checks:
+      - category: "Product Identity"
+        check: "mentions product name or model"
+        priority: "medium"
+        suggestion: "Add a specific product name or model number"
+      - category: "Key Features"
+        check: "describes at least 2 key features"
+        priority: "high"
+        suggestion: "Describe the main features that differentiate this product"
+      - category: "Purpose"
+        check: "explains what problem it solves"
+        priority: "medium"
+        suggestion: "Explain what problem this product solves"
+
+  target_industry:
+    min_items: 1
+    required: true
+    checks:
+      - category: "Industry Specificity"
+        check: "lists at least one specific industry"
+        priority: "high"
+        suggestion: "Add target industry (e.g., Hospitality, Healthcare, Retail)"
+      - category: "Market Breadth"
+        check: "not too broad (less than 5 industries)"
+        priority: "low"
+        suggestion: "Consider focusing on 2-3 primary industries"
+
+  where_used:
+    min_items: 1
+    required: true
+    checks:
+      - category: "Location Specificity"
+        check: "specifies physical locations"
+        priority: "high"
+        suggestion: "Add where product is used (e.g., Countertops, Floor, Wall-mounted)"
+      - category: "Environment"
+        check: "mentions indoor/outdoor if relevant"
+        priority: "medium"
+        suggestion: "Specify if indoor, outdoor, or both"
+
+  who_uses:
+    min_items: 1
+    required: true
+    checks:
+      - category: "User Types"
+        check: "identifies user personas"
+        priority: "high"
+        suggestion: "Add who uses it (e.g., Installers, Technicians, End customers)"
+      - category: "Skill Level"
+        check: "mentions skill level if relevant (trained, professional, etc.)"
+        priority: "low"
+        suggestion: "Clarify if users need training or special skills"
+
+  must_have:
+    min_items: 2
+    required: true
+    checks:
+      - category: "Feature Completeness"
+        check: "lists at least 2 critical features"
+        priority: "high"
+        suggestion: "Add more must-have features (minimum 2)"
+      - category: "Specificity"
+        check: "features are specific, not generic"
+        priority: "medium"
+        suggestion: "Make features more specific (measurements, standards, materials)"
+
+  nice_to_have:
+    min_items: 1
+    required: true
+    checks:
+      - category: "Optional Features"
+        check: "lists at least 1 nice-to-have"
+        priority: "medium"
+        suggestion: "Add optional features that would enhance the product"
+
+  moq:
+    optional: true
+    checks:
+      - category: "Quantity"
+        check: "mentions minimum order quantity"
+        priority: "low"
+        suggestion: "Specify minimum order quantity (e.g., 100 units, 1 pallet)"
+
+  risk_assessment:
+    optional: true
+    min_length: 50
+    checks:
+      - category: "Risk Identification"
+        check: "identifies potential risks"
+        priority: "medium"
+        suggestion: "Add potential risks (e.g., cost, timeline, technical challenges)"
+
+  competition:
+    optional: true
+    checks:
+      - category: "Competitive Awareness"
+        check: "mentions at least 1 competitor"
+        priority: "low"
+        suggestion: "Add known competitors or similar products"
