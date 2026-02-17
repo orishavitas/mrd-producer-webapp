@@ -49,12 +49,13 @@ const VALID_FIELDS: BriefField[] = [
   'nice-to-have',
 ];
 
-function validateRequest(body: any): { valid: true; data: ExtractRequest } | { valid: false; error: string } {
+function validateRequest(body: unknown): { valid: true; data: ExtractRequest } | { valid: false; error: string } {
   if (!body || typeof body !== 'object') {
     return { valid: false, error: 'Request body must be a JSON object' };
   }
 
-  const { fieldType, freeText } = body;
+  const b = body as Record<string, unknown>;
+  const { fieldType, freeText } = b;
 
   if (!fieldType || typeof fieldType !== 'string') {
     return { valid: false, error: 'fieldType is required and must be a string' };

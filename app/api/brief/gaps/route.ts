@@ -56,13 +56,14 @@ const VALID_FIELDS: BriefField[] = [
 ];
 
 function validateRequest(
-  body: any
+  body: unknown
 ): { valid: true; data: GapDetectionRequest } | { valid: false; error: string } {
   if (!body || typeof body !== 'object') {
     return { valid: false, error: 'Request body must be a JSON object' };
   }
 
-  const { fieldType, entities, bulletPoints } = body;
+  const b = body as Record<string, unknown>;
+  const { fieldType, entities, bulletPoints } = b;
 
   if (!fieldType || typeof fieldType !== 'string') {
     return { valid: false, error: 'fieldType is required and must be a string' };
