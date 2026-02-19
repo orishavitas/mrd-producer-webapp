@@ -8,7 +8,7 @@ import DynamicRoleSelector from './components/DynamicRoleSelector';
 import ChipInput from './components/ChipInput';
 import CompetitorInput from './components/CompetitorInput';
 import DocumentPreview from './components/DocumentPreview';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 interface ConfigData {
@@ -19,6 +19,7 @@ interface ConfigData {
 function OnePagerContent() {
   const { state, dispatch } = useOnePager();
   const [config, setConfig] = useState<ConfigData | null>(null);
+  const [isExporting, setIsExporting] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -27,9 +28,63 @@ function OnePagerContent() {
       .catch(console.error);
   }, []);
 
+  const handleExport = useCallback(async (format: 'docx' | 'html' | 'pdf') => {
+    setIsExporting(format);
+    try {
+      const response = await fetch(`/api/one-pager/export?format=${format}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(state),
+      });
+
+      if (format === 'pdf') {
+        const data = await response.json();
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(data.html);
+          printWindow.document.close();
+          printWindow.focus();
+          setTimeout(() => printWindow.print(), 500);
+        }
+      } else {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `one-pager-${Date.now()}.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (error) {
+      console.error('Export failed:', error);
+    } finally {
+      setIsExporting(null);
+    }
+  }, [state]);
+
   const leftPanel = (
     <div className={styles.inputSections}>
-      <h2 className={styles.pageTitle}>Product One-Pager</h2>
+      <div className={styles.toolbar}>
+        <h2 className={styles.pageTitle}>Product One-Pager</h2>
+        <div className={styles.exportButtons}>
+          <button
+            className={styles.exportButton}
+            onClick={() => handleExport('docx')}
+            disabled={isExporting !== null}
+          >
+            {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
+          </button>
+          <button
+            className={styles.exportButtonGhost}
+            onClick={() => handleExport('pdf')}
+            disabled={isExporting !== null}
+          >
+            {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
+          </button>
+        </div>
+      </div>
 
       {/* Section 1: Description */}
       <TextFieldWithExpand

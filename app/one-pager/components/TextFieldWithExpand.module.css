@@ -4,10 +4,12 @@
 
 .label {
   display: block;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
   margin-bottom: 6px;
-  color: #1f2937;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
+  text-transform: uppercase;
 }
 
 .textarea {
@@ -18,13 +20,13 @@
   font-size: 14px;
   line-height: 1.5;
   resize: vertical;
-  font-family: inherit;
+  font-family: "Barlow", sans-serif;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  border-color: #243469;
+  box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
 }
 
 .expandButton {
@@ -34,7 +36,7 @@
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 13px;
-  color: #4b5563;
+  color: #1D1F4A;
   cursor: pointer;
   transition: all 0.15s;
 }
@@ -51,8 +53,8 @@
 .expandPanel {
   margin-top: 8px;
   padding: 14px;
-  background: #f0f9ff;
-  border: 1px solid #bae6fd;
+  background: #f0f4ff;
+  border: 1px solid #243469;
   border-radius: 8px;
   animation: slideDown 0.2s ease-out;
 }
@@ -83,7 +85,7 @@
 
 .updateButton {
   padding: 6px 14px;
-  background: #3b82f6;
+  background: #1D1F4A;
   color: white;
   border: none;
   border-radius: 6px;
@@ -92,7 +94,7 @@
 }
 
 .updateButton:hover {
-  background: #2563eb;
+  background: #243469;
 }
 
 .closeButton {

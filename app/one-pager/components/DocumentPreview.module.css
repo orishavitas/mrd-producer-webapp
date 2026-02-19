@@ -13,7 +13,8 @@
 .title {
   font-size: 16px;
   font-weight: 600;
-  color: #1f2937;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
   margin: 0;
 }
 
@@ -21,28 +22,34 @@
   flex: 1;
   font-size: 14px;
   line-height: 1.7;
-  color: #374151;
+  font-family: "Barlow", sans-serif;
+  color: #333;
 }
 
 .content h1 {
   font-size: 22px;
   margin-bottom: 16px;
-  color: #111827;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
+  text-transform: uppercase;
 }
 
 .content h2 {
   font-size: 16px;
   margin-top: 20px;
   margin-bottom: 8px;
-  color: #1f2937;
-  border-bottom: 1px solid #f3f4f6;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
+  text-transform: uppercase;
+  border-bottom: 1px solid #e5e7eb;
   padding-bottom: 4px;
 }
 
 .content h3 {
   font-size: 14px;
   margin-top: 12px;
-  color: #374151;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #243469;
 }
 
 .content ul {
@@ -54,7 +61,7 @@
 }
 
 .content a {
-  color: #3b82f6;
+  color: #243469;
   text-decoration: none;
 }
 

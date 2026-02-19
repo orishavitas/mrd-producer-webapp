@@ -4,10 +4,11 @@
 
 .label {
   display: block;
-  font-weight: 600;
+  font-weight: 500;
   font-size: 14px;
   margin-bottom: 8px;
-  color: #1f2937;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
 }
 
 .hint {
@@ -41,7 +42,7 @@
 }
 
 .checkbox {
-  accent-color: #3b82f6;
+  accent-color: #1D1F4A;
 }
 
 .customRoles {
@@ -66,16 +67,16 @@
   align-items: center;
   gap: 4px;
   padding: 4px 10px;
-  background: #dbeafe;
+  background: #e8ecf4;
   border-radius: 16px;
   font-size: 13px;
-  color: #1e40af;
+  color: #1D1F4A;
 }
 
 .chipRemove {
   background: none;
   border: none;
-  color: #1e40af;
+  color: #1D1F4A;
   cursor: pointer;
   font-size: 12px;
   padding: 0 2px;
@@ -97,11 +98,12 @@
   border: 1px solid #d1d5db;
   border-radius: 6px;
   font-size: 13px;
+  font-family: "Barlow", sans-serif;
 }
 
 .customInput:focus {
   outline: none;
-  border-color: #3b82f6;
+  border-color: #243469;
 }
 
 .addButton {

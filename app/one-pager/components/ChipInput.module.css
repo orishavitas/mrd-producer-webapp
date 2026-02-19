@@ -6,7 +6,8 @@
   display: block;
   font-weight: 500;
   font-size: 13px;
-  color: #374151;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
   margin-bottom: 6px;
 }
 
@@ -22,8 +23,8 @@
 }
 
 .chipArea:focus-within {
-  border-color: #3b82f6;
-  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+  border-color: #243469;
+  box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
 }
 
 .chip {
@@ -31,16 +32,16 @@
   align-items: center;
   gap: 4px;
   padding: 3px 10px;
-  background: #e0e7ff;
+  background: #e8ecf4;
   border-radius: 16px;
   font-size: 13px;
-  color: #3730a3;
+  color: #1D1F4A;
 }
 
 .remove {
   background: none;
   border: none;
-  color: #3730a3;
+  color: #1D1F4A;
   cursor: pointer;
   font-size: 12px;
   padding: 0 2px;
@@ -58,4 +59,5 @@
   min-width: 120px;
   font-size: 13px;
   padding: 2px 4px;
+  font-family: "Barlow", sans-serif;
 }

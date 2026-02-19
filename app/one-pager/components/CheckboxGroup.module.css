@@ -6,7 +6,8 @@
   display: block;
   font-weight: 500;
   font-size: 13px;
-  color: #6b7280;
+  font-family: "Barlow Condensed", sans-serif;
+  color: #1D1F4A;
   margin-bottom: 8px;
   text-transform: uppercase;
   letter-spacing: 0.05em;
@@ -37,9 +38,10 @@
 }
 
 .checkbox {
-  accent-color: #3b82f6;
+  accent-color: #1D1F4A;
 }
 
 .text {
+  font-family: "Barlow", sans-serif;
   color: #374151;
 }
