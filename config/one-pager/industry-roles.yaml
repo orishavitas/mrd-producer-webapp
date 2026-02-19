@@ -1,0 +1,93 @@
+# Industry-to-Role mapping for One-Pager Generator
+# Edit this file to add/remove industries, environments, and roles.
+# Roles in the "Who" section are populated based on selected industries.
+
+environments:
+  - id: indoor
+    label: Indoor
+  - id: outdoor
+    label: Outdoor
+  - id: cloud
+    label: Cloud / SaaS
+  - id: on-prem
+    label: On-Premises
+  - id: mobile
+    label: Mobile / Field
+  - id: warehouse
+    label: Warehouse / Logistics
+
+industries:
+  healthcare:
+    label: Healthcare
+    roles:
+      - Nurses
+      - Doctors
+      - Lab Technicians
+      - Hospital Administrators
+      - Pharmacists
+      - Medical Assistants
+  hospitality:
+    label: Hospitality
+    roles:
+      - Hostesses
+      - Servers
+      - Bartenders
+      - Shift Managers
+      - Hotel Front Desk
+      - Concierge
+  retail:
+    label: Retail
+    roles:
+      - Store Managers
+      - Cashiers
+      - Stock Associates
+      - Visual Merchandisers
+      - Loss Prevention
+  technology:
+    label: Technology
+    roles:
+      - Software Engineers
+      - DevOps Engineers
+      - Product Managers
+      - IT Administrators
+      - Data Analysts
+  manufacturing:
+    label: Manufacturing
+    roles:
+      - Plant Managers
+      - Quality Inspectors
+      - Machine Operators
+      - Safety Officers
+      - Production Supervisors
+  education:
+    label: Education
+    roles:
+      - Teachers
+      - School Administrators
+      - IT Coordinators
+      - Librarians
+      - Guidance Counselors
+  finance:
+    label: Finance & Banking
+    roles:
+      - Bank Tellers
+      - Financial Advisors
+      - Compliance Officers
+      - Branch Managers
+      - Loan Officers
+  logistics:
+    label: Logistics & Transportation
+    roles:
+      - Warehouse Managers
+      - Drivers
+      - Dispatch Coordinators
+      - Inventory Specialists
+      - Fleet Managers
+  government:
+    label: Government & Public Sector
+    roles:
+      - Civil Servants
+      - Policy Analysts
+      - Field Inspectors
+      - Administrative Staff
+      - IT Security Officers
