@@ -1,0 +1,61 @@
+.container {
+  margin-bottom: 16px;
+}
+
+.label {
+  display: block;
+  font-weight: 500;
+  font-size: 13px;
+  color: #374151;
+  margin-bottom: 6px;
+}
+
+.chipArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  min-height: 40px;
+  align-items: center;
+}
+
+.chipArea:focus-within {
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: #e0e7ff;
+  border-radius: 16px;
+  font-size: 13px;
+  color: #3730a3;
+}
+
+.remove {
+  background: none;
+  border: none;
+  color: #3730a3;
+  cursor: pointer;
+  font-size: 12px;
+  padding: 0 2px;
+  opacity: 0.6;
+}
+
+.remove:hover {
+  opacity: 1;
+}
+
+.input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  font-size: 13px;
+  padding: 2px 4px;
+}
