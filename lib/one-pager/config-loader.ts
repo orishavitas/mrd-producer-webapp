@@ -68,3 +68,32 @@ export function getRolesForIndustries(industryIds: string[]): string[] {
 
   return Array.from(roleSet);
 }
+
+// ── Standard Features ────────────────────────────────────────────────────────
+
+export interface StandardFeatureCategory {
+  id: string;
+  label: string;
+  features: string[];
+}
+
+export interface StandardFeaturesConfig {
+  categories: StandardFeatureCategory[];
+}
+
+let cachedStandardFeatures: StandardFeaturesConfig | null = null;
+
+export function loadStandardFeatures(): StandardFeaturesConfig {
+  if (cachedStandardFeatures) return cachedStandardFeatures;
+
+  const configPath = path.join(process.cwd(), 'config', 'one-pager', 'standard-features.yaml');
+  const raw = fs.readFileSync(configPath, 'utf8');
+  const parsed = yaml.load(raw) as StandardFeaturesConfig;
+
+  if (!parsed?.categories || !Array.isArray(parsed.categories)) {
+    throw new Error('standard-features.yaml must have a "categories" array');
+  }
+
+  cachedStandardFeatures = parsed;
+  return parsed;
+}

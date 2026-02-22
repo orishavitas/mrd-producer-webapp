@@ -1,0 +1,36 @@
+# Standard Features for One-Pager Generator
+# 4 categories × 4 features = 16 total standard product features.
+# These appear as chip suggestions in the Features section.
+
+categories:
+  - id: mounting
+    label: Mounting
+    features:
+      - VESA mount compatible
+      - Desk stand included
+      - Wall mount kit
+      - Magnetic attachment
+
+  - id: movement
+    label: Movement
+    features:
+      - Tilt adjustment
+      - Swivel rotation
+      - Height adjustable
+      - Foldable / portable
+
+  - id: screen_size
+    label: Screen Size
+    features:
+      - 7" display
+      - 10" display
+      - 13" display
+      - Dual-screen option
+
+  - id: security
+    label: Security
+    features:
+      - Kensington lock slot
+      - Tamper-proof enclosure
+      - Remote lock / wipe
+      - Biometric login

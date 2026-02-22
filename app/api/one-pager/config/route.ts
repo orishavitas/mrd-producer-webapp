@@ -1,15 +1,22 @@
 import { NextResponse } from 'next/server';
-import { getEnvironments, getIndustries, loadIndustryRolesConfig } from '@/lib/one-pager/config-loader';
+import {
+  getEnvironments,
+  getIndustries,
+  loadIndustryRolesConfig,
+  loadStandardFeatures,
+} from '@/lib/one-pager/config-loader';
 
 export async function GET() {
   try {
     const config = loadIndustryRolesConfig();
+    const standardFeatures = loadStandardFeatures();
     return NextResponse.json({
       environments: config.environments,
       industries: getIndustries(),
       rolesByIndustry: Object.fromEntries(
         Object.entries(config.industries).map(([id, data]) => [id, data.roles])
       ),
+      standardFeatures: standardFeatures.categories,
     });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Failed to load config';
