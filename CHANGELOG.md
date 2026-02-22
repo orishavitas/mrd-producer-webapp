@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - feature/unified-dashboard
+
+### Added
+- Google OAuth authentication via NextAuth.js v5
+- Auth middleware protecting all routes except `/login` and `/api/auth/*`
+- Branded login page at `/login`
+- Vercel Postgres `documents` table schema (`lib/db-schema.sql`)
+- Document CRUD helpers in `lib/db.ts` (list, create, update, soft delete)
+- `next-auth@beta`, `@vercel/postgres`, `googleapis` dependencies
+
+### Planned (in progress)
+- Documents API endpoints (`/api/documents`, `/api/documents/[id]`)
+- Google Drive sync stub (`/api/drive/sync`)
+- MRD form moved to `/mrd`
+- Dashboard homepage at `/` with tool cards + documents table
+
+---
+
 ## [0.3.0] - 2026-02-03
 
 ### Added
