@@ -1,0 +1,35 @@
+# Standard Features for One-Pager Generator
+# Edit this file to add/remove features. Changes take effect on next server restart.
+
+categories:
+  - id: mounting
+    label: Mounting
+    features:
+      - VESA 100
+      - VESA 75
+      - Direct Mounting
+      - Floor Standing
+      - Counter Standing
+      - Wall Mounting
+      - Free Standing
+
+  - id: movement
+    label: Movement
+    features:
+      - Tilt
+      - Swivel
+
+  - id: screen_size
+    label: Screen Size
+    features:
+      - 'Screens 6"–15"'
+      - 'Screens 15"–24"'
+      - 'Screens 24"–42"'
+
+  - id: security
+    label: Security & Cable
+    features:
+      - Cable Management
+      - Cable Security
+      - Lock Slot
+      - Locking Device
