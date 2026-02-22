@@ -5,6 +5,9 @@ export interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
+  photoUrl?: string;
+  candidatePhotos?: string[];
+  scrapeTier?: 'basic' | 'standard' | 'deep';
 }
 
 export interface OnePagerState {
@@ -14,6 +17,8 @@ export interface OnePagerState {
   expandedDescription: string;
   goal: string;
   expandedGoal: string;
+  useCases: string;
+  expandedUseCases: string;
   context: {
     environments: string[];
     industries: string[];
@@ -38,6 +43,8 @@ export type OnePagerAction =
   | { type: 'SET_EXPANDED_DESCRIPTION'; payload: string }
   | { type: 'SET_GOAL'; payload: string }
   | { type: 'SET_EXPANDED_GOAL'; payload: string }
+  | { type: 'SET_USE_CASES'; payload: string }
+  | { type: 'SET_EXPANDED_USE_CASES'; payload: string }
   | { type: 'TOGGLE_ENVIRONMENT'; payload: string }
   | { type: 'TOGGLE_INDUSTRY'; payload: string }
   | { type: 'TOGGLE_ROLE'; payload: string }
@@ -49,7 +56,9 @@ export type OnePagerAction =
   | { type: 'SET_TARGET_PRICE'; payload: string }
   | { type: 'ADD_COMPETITOR'; payload: { url: string } }
   | { type: 'UPDATE_COMPETITOR'; payload: { url: string; data: Partial<CompetitorEntry> } }
-  | { type: 'REMOVE_COMPETITOR'; payload: string };
+  | { type: 'REMOVE_COMPETITOR'; payload: string }
+  | { type: 'SET_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
+  | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -63,6 +72,8 @@ export function createInitialState(): OnePagerState {
     expandedDescription: '',
     goal: '',
     expandedGoal: '',
+    useCases: '',
+    expandedUseCases: '',
     context: { environments: [], industries: [] },
     audience: { predefined: [], custom: [] },
     features: { mustHave: [], niceToHave: [] },
@@ -90,6 +101,12 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_EXPANDED_GOAL':
       return { ...base, expandedGoal: action.payload };
+
+    case 'SET_USE_CASES':
+      return { ...base, useCases: action.payload };
+
+    case 'SET_EXPANDED_USE_CASES':
+      return { ...base, expandedUseCases: action.payload };
 
     case 'TOGGLE_ENVIRONMENT':
       return {
@@ -193,6 +210,24 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
       return {
         ...base,
         competitors: base.competitors.filter((c) => c.url !== action.payload),
+      };
+
+    case 'SET_COMPETITOR_PHOTO':
+      return {
+        ...base,
+        competitors: base.competitors.map((c) =>
+          c.url === action.payload.url ? { ...c, photoUrl: action.payload.photoUrl } : c
+        ),
+      };
+
+    case 'SET_COMPETITOR_CANDIDATES':
+      return {
+        ...base,
+        competitors: base.competitors.map((c) =>
+          c.url === action.payload.url
+            ? { ...c, candidatePhotos: action.payload.candidatePhotos }
+            : c
+        ),
       };
 
     default:
