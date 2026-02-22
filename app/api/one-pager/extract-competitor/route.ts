@@ -1,36 +1,52 @@
+/**
+ * POST /api/one-pager/extract-competitor
+ *
+ * Accepts a competitor URL, scrapes the page, and uses the AI provider
+ * to extract structured competitor data (brand, product name, description,
+ * cost, link, imageUrl).
+ *
+ * Delegates all business logic to CompetitorOrchestratorAgent so the route
+ * handler stays thin.
+ */
+
 import { NextRequest, NextResponse } from 'next/server';
-import { getProviderChain } from '@/lib/providers/provider-chain';
+import { createExecutionContext } from '@/agent/core/execution-context';
+import { CompetitorOrchestratorAgent } from '@/agent/agents/one-pager/competitor-orchestrator';
+
+const orchestrator = new CompetitorOrchestratorAgent();
 
 export async function POST(request: NextRequest) {
+  // ── Parse request ─────────────────────────────────────────────────────────
+  let url: string;
   try {
-    const { url } = await request.json();
+    const body = await request.json();
+    url = body?.url;
+  } catch {
+    return NextResponse.json({ error: 'Invalid JSON body' }, { status: 400 });
+  }
 
-    if (!url || typeof url !== 'string') {
-      return NextResponse.json({ error: 'URL is required' }, { status: 400 });
-    }
+  if (!url || typeof url !== 'string') {
+    return NextResponse.json({ error: 'url is required' }, { status: 400 });
+  }
 
-    const chain = getProviderChain();
-    const systemPrompt = `You are a product analyst. Given a product URL, extract structured data. Return ONLY valid JSON with these fields:
-{
-  "brand": "company/brand name",
-  "productName": "product name",
-  "description": "1-2 sentence product description",
-  "cost": "price or price range if available, empty string if not",
-  "link": "the URL provided"
-}
-Do not include any text outside the JSON.`;
+  try {
+    new URL(url); // validate
+  } catch {
+    return NextResponse.json({ error: 'url must be a valid URL' }, { status: 400 });
+  }
 
-    const { result } = await chain.executeWithFallback(
-      (provider) => provider.generateText(
-        `Extract product information from this URL: ${url}`,
-        systemPrompt
-      )
-    );
+  // ── Execute ───────────────────────────────────────────────────────────────
+  const context = createExecutionContext({
+    requestId: `extract-competitor-${Date.now()}`,
+  });
 
-    const parsed = JSON.parse(result.text);
-    return NextResponse.json({ success: true, data: { ...parsed, link: url } });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Extraction failed';
+  const result = await orchestrator.execute({ url }, context);
+
+  if (!result.success || !result.data) {
+    const message = result.error ?? 'Competitor extraction failed';
+    context.log('error', '[extract-competitor] Orchestrator failed', { message });
     return NextResponse.json({ error: message }, { status: 500 });
   }
+
+  return NextResponse.json({ success: true, data: result.data });
 }
