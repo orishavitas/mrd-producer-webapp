@@ -5,15 +5,18 @@ import SplitLayout from './components/SplitLayout';
 import TextFieldWithExpand from './components/TextFieldWithExpand';
 import CheckboxGroup from './components/CheckboxGroup';
 import DynamicRoleSelector from './components/DynamicRoleSelector';
-import ChipInput from './components/ChipInput';
 import CompetitorInput from './components/CompetitorInput';
 import DocumentPreview from './components/DocumentPreview';
+import { PhotoPicker } from './components/PhotoPicker';
+import { FeatureSelector } from './components/FeatureSelector';
+import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useState } from 'react';
 import styles from './page.module.css';
 
 interface ConfigData {
   environments: { id: string; label: string }[];
   industries: { id: string; label: string }[];
+  standardFeatures: FeatureCategory[];
 }
 
 function OnePagerContent() {
@@ -137,22 +140,28 @@ function OnePagerContent() {
         onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
       />
 
+      {/* Use Cases */}
+      <TextFieldWithExpand
+        label="Use Cases"
+        value={state.useCases}
+        onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
+        placeholder="Describe how the device will be used in practice..."
+        field="useCases"
+      />
+
       {/* Section 5: Features */}
       <div className={styles.section}>
         <label className={styles.sectionLabel}>5. Features</label>
-        <ChipInput
-          label="Must Have"
-          chips={state.features.mustHave}
-          onAdd={(f) => dispatch({ type: 'ADD_FEATURE', payload: { category: 'mustHave', feature: f } })}
-          onRemove={(f) => dispatch({ type: 'REMOVE_FEATURE', payload: { category: 'mustHave', feature: f } })}
-          placeholder="Type a feature and press Enter..."
-        />
-        <ChipInput
-          label="Nice to Have"
-          chips={state.features.niceToHave}
-          onAdd={(f) => dispatch({ type: 'ADD_FEATURE', payload: { category: 'niceToHave', feature: f } })}
-          onRemove={(f) => dispatch({ type: 'REMOVE_FEATURE', payload: { category: 'niceToHave', feature: f } })}
-          placeholder="Type a feature and press Enter..."
+        <FeatureSelector
+          categories={config?.standardFeatures ?? []}
+          mustHave={state.features.mustHave}
+          niceToHave={state.features.niceToHave}
+          onToggle={(label, category) =>
+            dispatch({ type: 'ADD_FEATURE', payload: { category, feature: label } })
+          }
+          onRemove={(label, category) =>
+            dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
+          }
         />
       </div>
 
@@ -189,6 +198,23 @@ function OnePagerContent() {
         onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
         onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
         onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
+        onCandidates={(url, candidates) =>
+          dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
+        }
+        onSelectPhoto={(url, photoUrl) =>
+          dispatch({ type: 'SET_COMPETITOR_PHOTO', payload: { url, photoUrl } })
+        }
+        renderPhotoPicker={(comp) =>
+          comp.status === 'done' ? (
+            <PhotoPicker
+              candidates={comp.candidatePhotos ?? []}
+              selected={comp.photoUrl}
+              onSelect={(photoUrl) =>
+                dispatch({ type: 'SET_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
+              }
+            />
+          ) : null
+        }
       />
     </div>
   );

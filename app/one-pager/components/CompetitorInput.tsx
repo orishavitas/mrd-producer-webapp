@@ -10,6 +10,8 @@ interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
+  photoUrl?: string;
+  candidatePhotos?: string[];
 }
 
 interface CompetitorInputProps {
@@ -17,6 +19,9 @@ interface CompetitorInputProps {
   onAdd: (url: string) => void;
   onUpdate: (url: string, data: Partial<CompetitorEntry>) => void;
   onRemove: (url: string) => void;
+  onCandidates?: (url: string, candidates: string[]) => void;
+  onSelectPhoto?: (url: string, photoUrl: string) => void;
+  renderPhotoPicker?: (comp: CompetitorEntry) => React.ReactNode;
 }
 
 export default function CompetitorInput({
@@ -24,6 +29,8 @@ export default function CompetitorInput({
   onAdd,
   onUpdate,
   onRemove,
+  onCandidates,
+  renderPhotoPicker,
 }: CompetitorInputProps) {
   const [urlInput, setUrlInput] = useState('');
 
@@ -45,6 +52,9 @@ export default function CompetitorInput({
       const data = await response.json();
       if (data.success) {
         onUpdate(url, { ...data.data, status: 'done' });
+        if (onCandidates) {
+          onCandidates(url, data.candidatePhotos ?? []);
+        }
       } else {
         onUpdate(url, { status: 'error' });
       }
@@ -104,6 +114,7 @@ export default function CompetitorInput({
                   <a href={comp.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
                     View product
                   </a>
+                  {renderPhotoPicker && renderPhotoPicker(comp)}
                 </>
               )}
               {comp.status === 'pending' && (
