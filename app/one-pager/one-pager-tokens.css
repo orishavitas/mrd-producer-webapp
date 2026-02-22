@@ -1,0 +1,58 @@
+/*
+ * One-Pager Design Tokens
+ * Material 3 Expressive — Compulocks Brand Language 2025
+ *
+ * Token naming convention:
+ *   --op-{role}   (op = one-pager namespace)
+ *
+ * Fonts loaded via layout.tsx: --font-barlow, --font-barlow-condensed
+ */
+
+:root {
+  /* ── Brand / M3 Tonal Palette ─────────────────────────────── */
+  --op-primary:           #1D1F4A;
+  --op-on-primary:        #FFFFFF;
+  --op-primary-container: #DBE1FF;
+  --op-secondary:         #243469;
+  --op-on-secondary:      #FFFFFF;
+  --op-secondary-container: #DEE1FF;
+
+  /* ── Surface & Neutral ─────────────────────────────────────── */
+  --op-background:        #FDFBFF;
+  --op-surface:           #FDFBFF;
+  --op-surface-variant:   #E2E2EC;
+  --op-on-surface:        #1A1B1F;
+  --op-on-surface-variant:#45464F;
+  --op-outline:           #C5C6D0;
+  --op-outline-strong:    #757780;
+
+  /* ── State colors ──────────────────────────────────────────── */
+  --op-success:           #059669;
+  --op-error:             #BA1A1A;
+  --op-muted:             #45464F;
+
+  /* ── Shape (M3 Expressive) ─────────────────────────────────── */
+  --op-radius-xs:   4px;
+  --op-radius-s:    8px;
+  --op-radius-m:    12px;
+  --op-radius-l:    16px;
+  --op-radius-xl:   28px;
+  --op-radius-full: 9999px;
+
+  /* ── Chip height & button height (8dp grid) ────────────────── */
+  --op-chip-height:   2rem;    /* 32px */
+  --op-input-height:  2.5rem;  /* 40px */
+  --op-btn-height:    2rem;    /* 32px */
+
+  /* ── Elevation / shadow ────────────────────────────────────── */
+  --op-shadow-sm: 0 1px 3px rgba(29, 31, 74, 0.10);
+  --op-shadow-md: 0 4px 12px rgba(29, 31, 74, 0.14);
+
+  /* ── Alias: legacy var names used by FeatureSelector & PhotoPicker ── */
+  --color-primary:        var(--op-primary);
+  --color-secondary:      var(--op-secondary);
+  --color-text:           var(--op-on-surface);
+  --color-muted:          var(--op-muted);
+  --color-border:         var(--op-outline);
+  --color-surface-variant:var(--op-surface-variant);
+}

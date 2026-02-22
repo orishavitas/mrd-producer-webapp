@@ -11,6 +11,7 @@ import { PhotoPicker } from './components/PhotoPicker';
 import { FeatureSelector } from './components/FeatureSelector';
 import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useState } from 'react';
+import './one-pager-tokens.css';
 import styles from './page.module.css';
 
 interface ConfigData {

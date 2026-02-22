@@ -1,63 +1,137 @@
-/* app/one-pager/components/FeatureSelector.module.css */
-.root { display: flex; flex-direction: column; gap: 1rem; }
+/* app/one-pager/components/FeatureSelector.module.css — M3 Expressive */
 
-.toolbar { display: flex; gap: 0.5rem; }
-.layoutBtn, .layoutBtnActive {
-  padding: 0.25rem 0.875rem;
-  border-radius: 9999px;
-  border: 1.5px solid var(--color-primary, #1D1F4A);
-  background: transparent;
-  color: var(--color-primary, #1D1F4A);
-  font-size: 0.8125rem;
-  cursor: pointer;
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
-.layoutBtnActive { background: var(--color-primary, #1D1F4A); color: #fff; }
 
-.palette { display: flex; flex-direction: column; gap: 0.75rem; }
+/* Layout toggle — pill buttons */
+.toolbar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.layoutBtn {
+  height: var(--op-btn-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px solid var(--op-primary, #1D1F4A);
+  background: transparent;
+  color: var(--op-primary, #1D1F4A);
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.layoutBtnActive {
+  height: var(--op-btn-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px solid var(--op-primary, #1D1F4A);
+  background: var(--op-primary, #1D1F4A);
+  color: var(--op-on-primary, #fff);
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Chip palette */
+.palette {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
 
 .categoryGroup {}
+
 .categoryLabel {
-  font-size: 0.75rem;
-  font-weight: 600;
+  font-size: 0.6875rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
-  color: var(--color-muted, #666);
+  letter-spacing: 0.1em;
+  color: var(--op-on-surface-variant, #45464F);
   margin-bottom: 0.375rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
 }
 
-.chipRow { display: flex; flex-wrap: wrap; gap: 0.375rem; }
+.chipRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
 
-.chipWrapper { position: relative; }
+.chipWrapper {
+  position: relative;
+}
 
+/* M3 filter chip */
 .chip {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  border: 1.5px solid var(--color-border, #d1d5db);
+  height: var(--op-chip-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px solid var(--op-outline, #C5C6D0);
   background: transparent;
-  color: var(--color-text, #1D1F4A);
+  color: var(--op-on-surface, #1A1B1F);
   font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
   cursor: pointer;
   white-space: nowrap;
   transition: border-color 0.15s, background 0.15s;
 }
-.chip:hover { border-color: var(--color-primary, #1D1F4A); }
-.chipMust { background: var(--color-primary, #1D1F4A); color: #fff; border-color: var(--color-primary, #1D1F4A); }
-.chipNice { background: var(--color-secondary, #243469); color: #fff; border-color: var(--color-secondary, #243469); }
 
+.chip:hover {
+  border-color: var(--op-primary, #1D1F4A);
+  background: var(--op-surface-variant, #E2E2EC);
+}
+
+/* Must-have chip: primary fill */
+.chipMust {
+  height: var(--op-chip-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  background: var(--op-primary, #1D1F4A);
+  color: var(--op-on-primary, #fff);
+  border: 1.5px solid var(--op-primary, #1D1F4A);
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Nice-to-have chip: secondary fill */
+.chipNice {
+  height: var(--op-chip-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  background: var(--op-secondary, #243469);
+  color: var(--op-on-secondary, #fff);
+  border: 1.5px solid var(--op-secondary, #243469);
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+/* Assignment popover */
 .popover {
   position: absolute;
   top: calc(100% + 4px);
   left: 0;
   z-index: 20;
-  background: #fff;
-  border: 1.5px solid var(--color-border, #e5e7eb);
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  background: var(--op-surface, #FDFBFF);
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-m, 12px);
+  box-shadow: var(--op-shadow-md, 0 4px 12px rgba(29, 31, 74, 0.14));
   display: flex;
   flex-direction: column;
   overflow: hidden;
   min-width: 140px;
 }
+
 .popover button {
   padding: 0.5rem 0.875rem;
   text-align: left;
@@ -65,56 +139,104 @@
   background: none;
   cursor: pointer;
   font-size: 0.875rem;
-  color: var(--color-text, #1D1F4A);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface, #1A1B1F);
+  white-space: nowrap;
 }
-.popover button:hover { background: var(--color-surface-variant, #f3f4f6); }
 
+.popover button:hover {
+  background: var(--op-surface-variant, #E2E2EC);
+}
+
+/* Custom chip input */
 .customInput {
-  padding: 0.25rem 0.75rem;
-  border-radius: 9999px;
-  border: 1.5px dashed var(--color-border, #d1d5db);
+  height: var(--op-chip-height, 2rem);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px dashed var(--op-outline, #C5C6D0);
   font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: transparent;
+  color: var(--op-on-surface, #1A1B1F);
   width: 180px;
+  transition: border-color 0.15s;
 }
 
-.framesSideBySide { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-.framesStacked { display: flex; flex-direction: column; gap: 1rem; }
+.customInput:focus {
+  outline: none;
+  border-color: var(--op-secondary, #243469);
+}
+
+/* Feature frames — XL radius (M3 Expressive) */
+.framesSideBySide {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.framesStacked {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
 .frame {
-  border: 1.5px solid var(--color-border, #e5e7eb);
-  border-radius: 0.75rem;
-  padding: 0.75rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-xl, 28px);
+  padding: 1rem;
   min-height: 80px;
+  background: var(--op-surface, #FDFBFF);
 }
-.frameHeader {
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  color: var(--color-primary, #1D1F4A);
-  margin-bottom: 0.5rem;
-}
-.chipGroup { display: flex; flex-wrap: wrap; gap: 0.375rem; }
-.emptyHint { font-size: 0.75rem; color: var(--color-muted, #999); }
 
+.frameHeader {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--op-primary, #1D1F4A);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  margin-bottom: 0.625rem;
+}
+
+.chipGroup {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.emptyHint {
+  font-size: 0.75rem;
+  color: var(--op-outline-strong, #757780);
+  font-style: italic;
+}
+
+/* Selected chip inside frame */
 .selectedChip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  padding: 0.25rem 0.625rem;
-  border-radius: 9999px;
-  background: var(--color-surface-variant, #f3f4f6);
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  border-radius: var(--op-radius-full, 9999px);
+  background: var(--op-surface-variant, #E2E2EC);
   font-size: 0.8125rem;
-  color: var(--color-text, #1D1F4A);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface, #1A1B1F);
 }
+
 .removeChip {
   background: none;
   border: none;
   cursor: pointer;
-  color: var(--color-muted, #999);
+  color: var(--op-outline-strong, #757780);
   font-size: 1rem;
   line-height: 1;
   padding: 0;
+  transition: color 0.15s;
 }
-.removeChip:hover { color: var(--color-primary, #1D1F4A); }
+
+.removeChip:hover {
+  color: var(--op-primary, #1D1F4A);
+}
 
 .customRow {}

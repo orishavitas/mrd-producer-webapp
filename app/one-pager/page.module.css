@@ -6,121 +6,136 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 2px solid #1D1F4A;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--op-primary);
 }
 
 .pageTitle {
-  font-size: 20px;
+  font-size: 1.25rem;
   font-weight: 500;
-  font-family: "Barlow Condensed", sans-serif;
-  color: #1D1F4A;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary);
   text-transform: uppercase;
+  letter-spacing: 0.04em;
   margin: 0;
 }
 
 .exportButtons {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
 }
 
+/* M3 pill button — filled */
 .exportButton {
-  padding: 6px 16px;
-  background: #1D1F4A;
-  color: white;
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
+  background: var(--op-primary);
+  color: var(--op-on-primary);
   border: none;
-  border-radius: 6px;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
+  white-space: nowrap;
   transition: background 0.15s;
 }
 
 .exportButton:hover:not(:disabled) {
-  background: #243469;
+  background: var(--op-secondary);
 }
 
 .exportButton:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
+/* M3 pill button — outlined */
 .exportButtonGhost {
-  padding: 6px 16px;
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
   background: transparent;
-  color: #1D1F4A;
-  border: 1px solid #1D1F4A;
-  border-radius: 6px;
-  font-family: "Barlow Condensed", sans-serif;
-  font-size: 13px;
-  font-weight: 500;
+  color: var(--op-primary);
+  border: 1.5px solid var(--op-primary);
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  transition: all 0.15s;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
 }
 
 .exportButtonGhost:hover:not(:disabled) {
-  background: #1D1F4A;
-  color: white;
+  background: var(--op-primary);
+  color: var(--op-on-primary);
 }
 
 .exportButtonGhost:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
 .section {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .sectionLabel {
   display: block;
-  font-weight: 500;
-  font-size: 14px;
-  font-family: "Barlow Condensed", sans-serif;
-  color: #1D1F4A;
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary);
   text-transform: uppercase;
-  margin-bottom: 12px;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
 }
 
 .fieldRow {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 16px;
+  gap: 1rem;
 }
 
 .field {
   display: flex;
   flex-direction: column;
+  gap: 0.25rem;
 }
 
 .fieldLabel {
-  font-size: 13px;
+  font-size: 0.8125rem;
   font-weight: 500;
-  font-family: "Barlow", sans-serif;
-  color: #1D1F4A;
-  margin-bottom: 4px;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface);
 }
 
+/* M3 outlined text field */
 .textInput {
-  padding: 8px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
-  font-family: "Barlow", sans-serif;
+  height: var(--op-input-height);
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);
+  font-size: 0.875rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: var(--op-surface);
+  color: var(--op-on-surface);
+  transition: border-color 0.15s;
 }
 
 .textInput:focus {
   outline: none;
-  border-color: #243469;
+  border-color: var(--op-secondary);
   box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
 }
 
 .loading {
-  color: #9ca3af;
-  font-size: 13px;
+  color: var(--op-outline-strong);
+  font-size: 0.8125rem;
   font-style: italic;
 }

@@ -1,86 +1,105 @@
 .container {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
 .label {
   display: block;
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 8px;
-  font-family: "Barlow Condensed", sans-serif;
-  color: #1D1F4A;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary, #1D1F4A);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 .hint {
-  color: #9ca3af;
-  font-size: 13px;
+  color: var(--op-outline-strong, #757780);
+  font-size: 0.8125rem;
   font-style: italic;
 }
 
+/* M3 filter chips */
 .roleGrid {
   display: flex;
   flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 12px;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
 }
 
 .roleLabel {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 12px;
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 6px;
+  gap: 0.375rem;
+  height: var(--op-chip-height, 2rem);
+  padding: 0 0.875rem;
+  background: var(--op-surface, #FDFBFF);
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-full, 9999px);
   cursor: pointer;
-  font-size: 13px;
-  transition: all 0.15s;
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface, #1A1B1F);
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .roleLabel:hover {
-  background: #f3f4f6;
+  background: var(--op-surface-variant, #E2E2EC);
+  border-color: var(--op-outline-strong, #757780);
 }
 
 .checkbox {
-  accent-color: #1D1F4A;
+  accent-color: var(--op-primary, #1D1F4A);
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
 }
 
 .customRoles {
-  margin-bottom: 12px;
+  margin-bottom: 0.75rem;
 }
 
 .customLabel {
-  font-size: 12px;
-  color: #6b7280;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: var(--op-on-surface-variant, #45464F);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
   display: block;
-  margin-bottom: 6px;
+  margin-bottom: 0.375rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
 }
 
+/* M3 input chips container */
 .chipContainer {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 0.375rem;
 }
 
 .chip {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  padding: 4px 10px;
-  background: #e8ecf4;
-  border-radius: 16px;
-  font-size: 13px;
-  color: #1D1F4A;
+  gap: 0.25rem;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  background: var(--op-secondary-container, #DEE1FF);
+  border-radius: var(--op-radius-full, 9999px);
+  font-size: 0.8125rem;
+  color: var(--op-primary, #1D1F4A);
+  white-space: nowrap;
 }
 
 .chipRemove {
   background: none;
   border: none;
-  color: #1D1F4A;
+  color: var(--op-primary, #1D1F4A);
   cursor: pointer;
-  font-size: 12px;
+  font-size: 0.75rem;
   padding: 0 2px;
   opacity: 0.6;
+  line-height: 1;
 }
 
 .chipRemove:hover {
@@ -89,37 +108,49 @@
 
 .addCustom {
   display: flex;
-  gap: 8px;
+  gap: 0.5rem;
+  align-items: center;
 }
 
 .customInput {
   flex: 1;
-  padding: 6px 10px;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 13px;
-  font-family: "Barlow", sans-serif;
+  height: var(--op-input-height, 2.5rem);
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-s, 8px);
+  font-size: 0.8125rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: var(--op-surface, #FDFBFF);
+  color: var(--op-on-surface, #1A1B1F);
+  transition: border-color 0.15s;
 }
 
 .customInput:focus {
   outline: none;
-  border-color: #243469;
+  border-color: var(--op-secondary, #243469);
 }
 
+/* M3 pill — tonal */
 .addButton {
-  padding: 6px 14px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 13px;
+  height: var(--op-btn-height, 2rem);
+  padding: 0 1rem;
+  background: var(--op-surface-variant, #E2E2EC);
+  border: none;
+  border-radius: var(--op-radius-full, 9999px);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--op-primary, #1D1F4A);
   cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .addButton:hover:not(:disabled) {
-  background: #e5e7eb;
+  background: var(--op-primary-container, #DBE1FF);
 }
 
 .addButton:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }

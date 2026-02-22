@@ -1,112 +1,136 @@
 .container {
-  margin-bottom: 24px;
+  margin-bottom: 1.5rem;
 }
 
+/* M3 label — uppercase condensed */
 .label {
   display: block;
-  font-weight: 500;
-  font-size: 14px;
-  margin-bottom: 6px;
-  font-family: "Barlow Condensed", sans-serif;
-  color: #1D1F4A;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-bottom: 0.375rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary, #1D1F4A);
   text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
+/* M3 outlined textarea */
 .textarea {
   width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 0.625rem 0.75rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-s, 8px);
+  font-size: 0.875rem;
   line-height: 1.5;
   resize: vertical;
-  font-family: "Barlow", sans-serif;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: var(--op-surface, #FDFBFF);
+  color: var(--op-on-surface, #1A1B1F);
+  transition: border-color 0.15s;
 }
 
 .textarea:focus {
   outline: none;
-  border-color: #243469;
+  border-color: var(--op-secondary, #243469);
   box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
 }
 
+/* M3 pill button — tonal (surface-variant background) */
 .expandButton {
-  margin-top: 8px;
-  padding: 6px 14px;
-  background: #f3f4f6;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #1D1F4A;
+  margin-top: 0.5rem;
+  height: var(--op-btn-height, 2rem);
+  padding: 0 1rem;
+  background: var(--op-surface-variant, #E2E2EC);
+  border: none;
+  border-radius: var(--op-radius-full, 9999px);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--op-primary, #1D1F4A);
   cursor: pointer;
-  transition: all 0.15s;
+  white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .expandButton:hover:not(:disabled) {
-  background: #e5e7eb;
+  background: var(--op-primary-container, #DBE1FF);
 }
 
 .expandButton:disabled {
-  opacity: 0.5;
+  opacity: 0.45;
   cursor: not-allowed;
 }
 
+/* Expanded AI panel — uses primary-container tint */
 .expandPanel {
-  margin-top: 8px;
-  padding: 14px;
-  background: #f0f4ff;
-  border: 1px solid #243469;
-  border-radius: 8px;
+  margin-top: 0.5rem;
+  padding: 0.875rem;
+  background: var(--op-primary-container, #DBE1FF);
+  border: 1.5px solid var(--op-secondary, #243469);
+  border-radius: var(--op-radius-m, 12px);
   animation: slideDown 0.2s ease-out;
 }
 
 @keyframes slideDown {
-  from { opacity: 0; max-height: 0; }
-  to { opacity: 1; max-height: 500px; }
+  from { opacity: 0; max-height: 0; overflow: hidden; }
+  to   { opacity: 1; max-height: 600px; }
 }
 
 .loading {
-  color: #6b7280;
-  font-size: 13px;
-  padding: 8px 0;
+  color: var(--op-muted, #45464F);
+  font-size: 0.8125rem;
+  padding: 0.5rem 0;
 }
 
 .expandedText {
-  font-size: 14px;
+  font-size: 0.875rem;
   line-height: 1.6;
-  color: #1f2937;
+  color: var(--op-on-surface, #1A1B1F);
   white-space: pre-wrap;
 }
 
 .panelActions {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
 }
 
+/* M3 pill — filled */
 .updateButton {
-  padding: 6px 14px;
-  background: #1D1F4A;
-  color: white;
+  height: var(--op-btn-height, 2rem);
+  padding: 0 1rem;
+  background: var(--op-primary, #1D1F4A);
+  color: var(--op-on-primary, #fff);
   border: none;
-  border-radius: 6px;
-  font-size: 13px;
+  border-radius: var(--op-radius-full, 9999px);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
   cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
 }
 
 .updateButton:hover {
-  background: #243469;
+  background: var(--op-secondary, #243469);
 }
 
+/* M3 pill — outlined */
 .closeButton {
-  padding: 6px 14px;
+  height: var(--op-btn-height, 2rem);
+  padding: 0 1rem;
   background: transparent;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  font-size: 13px;
-  color: #6b7280;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-full, 9999px);
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.8125rem;
+  color: var(--op-on-surface-variant, #45464F);
   cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .closeButton:hover {
-  background: #f3f4f6;
+  background: var(--op-surface-variant, #E2E2EC);
+  border-color: var(--op-outline-strong, #757780);
 }
