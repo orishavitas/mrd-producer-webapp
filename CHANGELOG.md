@@ -13,13 +13,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Branded login page at `/login`
 - Vercel Postgres `documents` table schema (`lib/db-schema.sql`)
 - Document CRUD helpers in `lib/db.ts` (list, create, update, soft delete)
+- Documents API endpoints (`/api/documents` GET/POST, `/api/documents/[id]` DELETE)
+- Google Drive sync stub at `/api/drive/sync` (501 placeholder)
+- MRD form moved to `/mrd`; original `/` replaced with dashboard
+- Dashboard homepage at `/` with TopBar, ToolCard grid, DocumentsTable
+- `DashboardShell` client component for optimistic delete UI
 - `next-auth@beta`, `@vercel/postgres`, `googleapis` dependencies
-
-### Planned (in progress)
-- Documents API endpoints (`/api/documents`, `/api/documents/[id]`)
-- Google Drive sync stub (`/api/drive/sync`)
-- MRD form moved to `/mrd`
-- Dashboard homepage at `/` with tool cards + documents table
 
 ---
 
