@@ -12,6 +12,7 @@ import {
   Header,
   Footer,
   PageNumber,
+  ImageRun,
 } from 'docx';
 
 interface CompetitorEntry {
@@ -21,11 +22,13 @@ interface CompetitorEntry {
   description: string;
   cost: string;
   status: string;
+  photoUrl?: string;
 }
 
 interface OnePagerData {
   description: string;
   goal: string;
+  useCases: string;
   context: {
     environments: string[];
     industries: string[];
@@ -74,7 +77,7 @@ const BRAND = {
   },
 };
 
-function buildDocxChildren(data: OnePagerData): Paragraph[] {
+async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
   const children: Paragraph[] = [];
 
   // Title
@@ -199,6 +202,11 @@ function buildDocxChildren(data: OnePagerData): Paragraph[] {
     addSection('Who (Target Audience)', allRoles.map((r) => bulletPara(r)));
   }
 
+  // Use Cases
+  if (data.useCases) {
+    addSection('Use Cases', [textPara(data.useCases)]);
+  }
+
   // 5. Features
   const featureItems: Paragraph[] = [];
   if (data.features.mustHave.length > 0) {
@@ -266,6 +274,44 @@ function buildDocxChildren(data: OnePagerData): Paragraph[] {
           spacing: { before: 120, after: 40 },
         })
       );
+
+      // Competitor photo
+      if (comp.photoUrl) {
+        try {
+          let imgData: Buffer;
+          let imgType: 'jpg' | 'png' | 'gif' | 'bmp' = 'jpg';
+          if (comp.photoUrl.startsWith('data:')) {
+            const mime = comp.photoUrl.split(';')[0].split('/')[1];
+            if (mime === 'png') imgType = 'png';
+            else if (mime === 'gif') imgType = 'gif';
+            else if (mime === 'bmp') imgType = 'bmp';
+            const base64 = comp.photoUrl.split(',')[1];
+            imgData = Buffer.from(base64, 'base64');
+          } else {
+            const lowerUrl = comp.photoUrl.toLowerCase();
+            if (lowerUrl.includes('.png')) imgType = 'png';
+            else if (lowerUrl.includes('.gif')) imgType = 'gif';
+            else if (lowerUrl.includes('.bmp')) imgType = 'bmp';
+            const imgRes = await fetch(comp.photoUrl);
+            imgData = Buffer.from(await imgRes.arrayBuffer());
+          }
+          compItems.push(
+            new Paragraph({
+              children: [
+                new ImageRun({
+                  type: imgType,
+                  data: imgData,
+                  transformation: { width: 180, height: 120 },
+                }),
+              ],
+              spacing: { after: 80 },
+            })
+          );
+        } catch {
+          // skip photo if fetch fails
+        }
+      }
+
       if (comp.cost) compItems.push(labelValue('Price', comp.cost));
       if (comp.description) compItems.push(textPara(comp.description));
       compItems.push(
@@ -290,7 +336,7 @@ function buildDocxChildren(data: OnePagerData): Paragraph[] {
 }
 
 async function generateOnePagerDocx(data: OnePagerData): Promise<Buffer> {
-  const docChildren = buildDocxChildren(data);
+  const docChildren = await buildDocxChildren(data);
 
   const doc = new Document({
     styles: {
@@ -493,6 +539,10 @@ function generateOnePagerHtml(data: OnePagerData): string {
     html += '</ul>\n';
   }
 
+  if (data.useCases) {
+    html += `<h2>Use Cases</h2>\n<p>${esc(data.useCases)}</p>\n`;
+  }
+
   const hasFeatures = data.features.mustHave.length > 0 || data.features.niceToHave.length > 0;
   if (hasFeatures) {
     html += '<h2>Features</h2>\n';
@@ -520,6 +570,9 @@ function generateOnePagerHtml(data: OnePagerData): string {
     html += '<h2>Competitors</h2>\n';
     for (const comp of doneCompetitors) {
       html += `<h3>${esc(comp.brand)} — ${esc(comp.productName)}</h3>\n`;
+      if (comp.photoUrl) {
+        html += `<img src="${esc(comp.photoUrl)}" alt="${esc(comp.productName)}" style="float:right;max-width:200px;max-height:150px;object-fit:contain;margin-left:12px;border-radius:4px;margin-bottom:8px;">\n`;
+      }
       if (comp.cost) html += `<p><span class="label">Price:</span> ${esc(comp.cost)}</p>\n`;
       if (comp.description) html += `<p>${esc(comp.description)}</p>\n`;
       html += `<p><a href="${esc(comp.url)}" target="_blank">View product</a></p>\n`;
