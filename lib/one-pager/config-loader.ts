@@ -74,26 +74,36 @@ export function getRolesForIndustries(industryIds: string[]): string[] {
 export interface StandardFeatureCategory {
   id: string;
   label: string;
-  features: string[];
+  features: { id: string; label: string }[];
 }
 
 export interface StandardFeaturesConfig {
   categories: StandardFeatureCategory[];
 }
 
-let cachedStandardFeatures: StandardFeaturesConfig | null = null;
-
+// No module-level cache for standard features — file is small and editable at runtime
 export function loadStandardFeatures(): StandardFeaturesConfig {
-  if (cachedStandardFeatures) return cachedStandardFeatures;
 
   const configPath = path.join(process.cwd(), 'config', 'one-pager', 'standard-features.yaml');
   const raw = fs.readFileSync(configPath, 'utf8');
-  const parsed = yaml.load(raw) as StandardFeaturesConfig;
+  const parsed = yaml.load(raw) as { categories: { id: string; label: string; features: (string | { id: string; label: string })[] }[] };
 
   if (!parsed?.categories || !Array.isArray(parsed.categories)) {
     throw new Error('standard-features.yaml must have a "categories" array');
   }
 
-  cachedStandardFeatures = parsed;
-  return parsed;
+  // Normalise features: YAML may have plain strings or {id, label} objects
+  const normalised: StandardFeaturesConfig = {
+    categories: parsed.categories.map((cat) => ({
+      id: cat.id,
+      label: cat.label,
+      features: cat.features.map((f) =>
+        typeof f === 'string'
+          ? { id: f.toLowerCase().replace(/[^a-z0-9]+/g, '_'), label: f }
+          : f
+      ),
+    })),
+  };
+
+  return normalised;
 }
