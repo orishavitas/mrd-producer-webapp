@@ -387,6 +387,8 @@ console.log('Result:', result.text);
 - **Design tokens in one file**: All `--op-*` vars (light + dark mode) live in `app/one-pager/one-pager-tokens.css`. CSS modules reference only tokens — never hardcode hex.
 - **Worktrees need secrets**: Copy `.env.local` from repo root into each worktree manually — it is not inherited.
 - **Features config**: Edit `config/one-pager/standard-features.yaml` for chip palette (plain string lists per category). Restart dev server after changes.
+- **Logo placement**: Place `compulocks-logo.png` at `public/compulocks-logo.png` (served as `/compulocks-logo.png`). Size controlled by `--op-logo-height: 40px` in `one-pager-tokens.css`.
+- **Photo display rules**: Max container 640×640px. Height-first fit — photos in a row share same height, width follows natural ratio. 1-3 photos per row. `object-fit: contain`, no stretching.
 
 ## Conventions
 

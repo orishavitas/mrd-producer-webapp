@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased] - v1.1.0 one-pager enhancements
+
+### Planned
+- Fix photo upload → preview wiring (SET_COMPETITOR_PHOTO not reflected in DocumentPreview)
+- Photo display: natural aspect ratio, 640×640px max container, 1-3 per row, height-first fit
+- Document metadata fields: productName, preparedBy, userEmail, exportDate (header block in export)
+- DocumentPreview header with Compulocks logo (`public/compulocks-logo.png`, `--op-logo-height: 40px`)
+
 ## [Unreleased] - feature/unified-dashboard
 
 ### Added
