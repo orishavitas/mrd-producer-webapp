@@ -36,6 +36,11 @@ export interface OnePagerState {
     targetPrice: string;
   };
   competitors: CompetitorEntry[];
+
+  // Document metadata
+  productName: string;
+  preparedBy: string;
+  userEmail: string;   // placeholder — will come from auth later
 }
 
 export type OnePagerAction =
@@ -54,6 +59,9 @@ export type OnePagerAction =
   | { type: 'REMOVE_FEATURE'; payload: { category: 'mustHave' | 'niceToHave'; feature: string } }
   | { type: 'SET_MOQ'; payload: string }
   | { type: 'SET_TARGET_PRICE'; payload: string }
+  | { type: 'SET_PRODUCT_NAME'; payload: string }
+  | { type: 'SET_PREPARED_BY'; payload: string }
+  | { type: 'SET_USER_EMAIL'; payload: string }
   | { type: 'ADD_COMPETITOR'; payload: { url: string } }
   | { type: 'UPDATE_COMPETITOR'; payload: { url: string; data: Partial<CompetitorEntry> } }
   | { type: 'REMOVE_COMPETITOR'; payload: string }
@@ -79,6 +87,9 @@ export function createInitialState(): OnePagerState {
     features: { mustHave: [], niceToHave: [] },
     commercials: { moq: '', targetPrice: '' },
     competitors: [],
+    productName: '',
+    preparedBy: '',
+    userEmail: '',
   };
 }
 
@@ -181,6 +192,15 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_TARGET_PRICE':
       return { ...base, commercials: { ...base.commercials, targetPrice: action.payload } };
+
+    case 'SET_PRODUCT_NAME':
+      return { ...base, productName: action.payload };
+
+    case 'SET_PREPARED_BY':
+      return { ...base, preparedBy: action.payload };
+
+    case 'SET_USER_EMAIL':
+      return { ...base, userEmail: action.payload };
 
     case 'ADD_COMPETITOR':
       return {
