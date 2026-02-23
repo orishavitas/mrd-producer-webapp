@@ -4,7 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MRD Producer is a Next.js web application that generates Market Requirements Documents (MRDs) using AI. It accepts product concepts, conducts web research via Gemini's Google Search grounding, and produces structured 12-section MRDs following the Compulocks template format.
+**Version: 1.0.0** — First production-ready multi-tool release.
+
+MRD Producer is a Next.js web application with two production tools:
+
+1. **Main MRD Producer** (`/`) — AI-powered 12-section Market Requirements Documents via Gemini Search grounding.
+2. **One-Pager Generator** (`/one-pager`) — Guided 7-section product spec: free text + AI expand, environment/industry chips, dynamic role chips, feature chip palette (Must Have / Nice to Have), MOQ/price, competitor URL extraction with photo picker.
 
 ## Commands
 
@@ -371,3 +376,21 @@ console.log('Result:', result.text);
 - `docs/PHASE_4_RESEARCH_AGENTS.md` - Research agents documentation
 - `docs/PHASE5_IMPLEMENTATION.md` - Section generators and ensemble voting
 - `references/README.md` - Pipeline stage documentation
+
+---
+
+## One-Pager Generator — Key Gotchas
+
+- **API route must be dynamic**: `/api/one-pager/config` needs `export const dynamic = 'force-dynamic'` or Next.js pre-renders it at build time, serving stale YAML data.
+- **YAML features are plain strings**: `standard-features.yaml` uses string lists. `config-loader.ts` normalises them to `{id, label}` — do not add object syntax to the YAML.
+- **M3 chips = `<button aria-pressed>`**: Never use `<label><input type="checkbox"/>` for chips. The global `button` style in `globals.css` bleeds in — reset via `.one-pager-root button` in `one-pager-tokens.css`.
+- **Design tokens in one file**: All `--op-*` vars (light + dark mode) live in `app/one-pager/one-pager-tokens.css`. CSS modules reference only tokens — never hardcode hex.
+- **Worktrees need secrets**: Copy `.env.local` from repo root into each worktree manually — it is not inherited.
+- **Features config**: Edit `config/one-pager/standard-features.yaml` for chip palette (plain string lists per category). Restart dev server after changes.
+
+## Conventions
+
+- **"The trio"**: On every version bump or major feature completion, update all three of: `CLAUDE.md` + `memory/MEMORY.md` + `CHANGELOG.md`.
+- **Version**: Follow semver. Current: `1.0.0`. Bump minor for new tools/routes, patch for fixes.
+- **Design system**: Material 3 Expressive + Compulocks Brand Language 2025. Primary `#1D1F4A`, Secondary `#243469`, Barlow + Barlow Condensed fonts, pill buttons (`border-radius: 9999px`), XL card radius (28px).
+- **CSS pattern**: CSS Modules + `--op-*` tokens (one-pager) or `--brand-*` tokens (global). No hardcoded hex anywhere.

@@ -22,6 +22,33 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.0] - 2026-02-23
+
+### Added — One-Pager Generator (`/one-pager`)
+- Split-screen layout: guided input left, live document preview right
+- 7 input sections: Description, Goal, Where (environment + industry chips), Who (dynamic role chips), Use Cases, Features, Commercials (MOQ + price), Competitors
+- M3 Expressive design system: Compulocks brand palette (`#1D1F4A` / `#243469`), Barlow fonts, pill buttons, XL card radius (28px)
+- Full dark mode via `--op-*` CSS custom properties in `app/one-pager/one-pager-tokens.css`
+- M3 filter chips for all selection inputs (`<button aria-pressed>` — no checkboxes)
+- Feature chip palette with Must Have / Nice to Have assignment via popover; side-by-side and stacked frame layouts
+- `config/one-pager/standard-features.yaml` — editable chip palette (Screen Size, Orientation, Placement, Security & Cable)
+- `config/one-pager/industry-roles.yaml` — editable industry → role mapping
+- Competitor URL extraction: 2-tier scraper (fetch + Schema.org/OpenGraph → Playwright fallback)
+- Photo picker per competitor: thumbnails from scraped page, drag-drop upload, or URL link
+- AI text expansion for Description, Goal, Use Cases fields
+- DOCX + HTML + PDF export with competitor photos embedded
+- `lib/scraper/` shared scraper service (proxy-ready via `SCRAPER_PROXY_URL`)
+- `agent/agents/one-pager/` — CompetitorAnalysisAgent, CompetitorOrchestrator
+- `@types/js-yaml` dev dependency added
+
+### Changed
+- `app/layout.tsx`: Barlow + Barlow Condensed fonts loaded alongside IBM Plex Sans/Mono
+- `app/globals.css`: brand token vars (`--brand-primary`, `--brand-highlight`, `--font-barlow*`) added to `:root`
+- `/api/one-pager/config` made `force-dynamic` (was incorrectly pre-rendered as static)
+- `lib/one-pager/config-loader.ts`: normalises YAML string features to `{id, label}` objects
+
+---
+
 ## [0.3.0] - 2026-02-03
 
 ### Added
