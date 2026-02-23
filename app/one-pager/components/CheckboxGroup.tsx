@@ -15,15 +15,16 @@ export default function CheckboxGroup({ label, options, selected, onToggle }: Ch
       <span className={styles.groupLabel}>{label}</span>
       <div className={styles.grid}>
         {options.map((opt) => (
-          <label key={opt.id} className={styles.checkboxLabel}>
-            <input
-              type="checkbox"
-              checked={selected.includes(opt.id)}
-              onChange={() => onToggle(opt.id)}
-              className={styles.checkbox}
-            />
-            <span className={styles.text}>{opt.label}</span>
-          </label>
+          <button
+            key={opt.id}
+            type="button"
+            className={selected.includes(opt.id) ? styles.chipSelected : styles.chip}
+            onClick={() => onToggle(opt.id)}
+            aria-pressed={selected.includes(opt.id)}
+          >
+            {selected.includes(opt.id) && <span className={styles.checkMark}>✓</span>}
+            {opt.label}
+          </button>
         ))}
       </div>
     </div>

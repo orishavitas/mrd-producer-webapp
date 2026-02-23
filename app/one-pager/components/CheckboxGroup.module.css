@@ -2,54 +2,68 @@
   margin-bottom: 1rem;
 }
 
-/* M3 label — overline style */
 .groupLabel {
   display: block;
-  font-weight: 600;
+  font-weight: 700;
   font-size: 0.6875rem;
   font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
   color: var(--op-on-surface-variant, #45464F);
   margin-bottom: 0.5rem;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
 }
 
-/* M3 chip — filter chip */
 .grid {
   display: flex;
   flex-wrap: wrap;
   gap: 0.5rem;
 }
 
-.checkboxLabel {
-  display: flex;
+/* M3 filter chip — unselected */
+.chip {
+  display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  height: var(--op-chip-height, 2rem);
-  padding: 0 0.875rem;
-  background: var(--op-surface, #FDFBFF);
+  gap: 0.25rem;
+  height: 2rem;
+  padding: 0 1rem;
+  background: transparent;
   border: 1.5px solid var(--op-outline, #C5C6D0);
-  border-radius: var(--op-radius-full, 9999px);
+  border-radius: 9999px;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.875rem;
+  color: var(--op-on-surface, #1A1B1F);
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
-  font-size: 0.8125rem;
   white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  line-height: 1;
 }
 
-.checkboxLabel:hover {
+.chip:hover {
   background: var(--op-surface-variant, #E2E2EC);
   border-color: var(--op-outline-strong, #757780);
 }
 
-/* When checked, the label gets highlighted via accent-color on the checkbox */
-.checkbox {
-  accent-color: var(--op-primary, #1D1F4A);
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
+/* M3 filter chip — selected (filled) */
+.chipSelected {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 2rem;
+  padding: 0 1rem;
+  background: var(--op-secondary-container, #DEE1FF);
+  border: 1.5px solid var(--op-secondary, #243469);
+  border-radius: 9999px;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 0.875rem;
+  color: var(--op-primary, #1D1F4A);
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  line-height: 1;
 }
 
-.text {
-  font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface, #1A1B1F);
+.checkMark {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--op-primary, #1D1F4A);
 }

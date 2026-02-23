@@ -1,4 +1,4 @@
-/* app/one-pager/components/FeatureSelector.module.css — M3 Expressive */
+/* FeatureSelector.module.css — M3 Expressive */
 
 .root {
   display: flex;
@@ -6,55 +6,72 @@
   gap: 1rem;
 }
 
-/* Layout toggle — pill buttons */
+/* Layout toggle row */
 .toolbar {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
 }
 
+/* Outlined pill toggle */
 .layoutBtn {
-  height: var(--op-btn-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
-  border: 1.5px solid var(--op-primary, #1D1F4A);
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
   background: transparent;
-  color: var(--op-primary, #1D1F4A);
-  font-size: 0.8125rem;
+  color: var(--op-on-surface, #1A1B1F);
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
 }
 
+.layoutBtn:hover {
+  background: var(--op-surface-variant, #E2E2EC);
+  border-color: var(--op-outline-strong, #757780);
+}
+
+/* Active filled toggle */
 .layoutBtnActive {
-  height: var(--op-btn-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
   border: 1.5px solid var(--op-primary, #1D1F4A);
   background: var(--op-primary, #1D1F4A);
-  color: var(--op-on-primary, #fff);
-  font-size: 0.8125rem;
+  color: #fff;
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   cursor: pointer;
   white-space: nowrap;
+  line-height: 1;
 }
 
-/* Chip palette */
+/* Chip palette by category */
 .palette {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1rem;
 }
 
-.categoryGroup {}
+.categoryGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
 
 .categoryLabel {
   font-size: 0.6875rem;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   color: var(--op-on-surface-variant, #45464F);
-  margin-bottom: 0.375rem;
   font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
 }
 
@@ -62,78 +79,92 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.375rem;
+  align-items: center;
 }
 
 .chipWrapper {
   position: relative;
 }
 
-/* M3 filter chip */
+/* Unselected filter chip */
 .chip {
-  height: var(--op-chip-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
   border: 1.5px solid var(--op-outline, #C5C6D0);
   background: transparent;
   color: var(--op-on-surface, #1A1B1F);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   cursor: pointer;
   white-space: nowrap;
-  transition: border-color 0.15s, background 0.15s;
+  line-height: 1;
+  transition: background 0.15s, border-color 0.15s;
 }
 
 .chip:hover {
-  border-color: var(--op-primary, #1D1F4A);
   background: var(--op-surface-variant, #E2E2EC);
+  border-color: var(--op-outline-strong, #757780);
 }
 
-/* Must-have chip: primary fill */
+/* Must-have chip — primary filled */
 .chipMust {
-  height: var(--op-chip-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
   background: var(--op-primary, #1D1F4A);
-  color: var(--op-on-primary, #fff);
+  color: #fff;
   border: 1.5px solid var(--op-primary, #1D1F4A);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  line-height: 1;
 }
 
-/* Nice-to-have chip: secondary fill */
+/* Nice-to-have chip — secondary filled */
 .chipNice {
-  height: var(--op-chip-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
   background: var(--op-secondary, #243469);
-  color: var(--op-on-secondary, #fff);
+  color: #fff;
   border: 1.5px solid var(--op-secondary, #243469);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
+  line-height: 1;
 }
 
-/* Assignment popover */
+/* Must/Nice assignment popover */
 .popover {
   position: absolute;
-  top: calc(100% + 4px);
+  top: calc(100% + 6px);
   left: 0;
-  z-index: 20;
+  z-index: 30;
   background: var(--op-surface, #FDFBFF);
   border: 1.5px solid var(--op-outline, #C5C6D0);
-  border-radius: var(--op-radius-m, 12px);
-  box-shadow: var(--op-shadow-md, 0 4px 12px rgba(29, 31, 74, 0.14));
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 16px rgba(29, 31, 74, 0.16);
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  min-width: 140px;
+  min-width: 148px;
 }
 
 .popover button {
-  padding: 0.5rem 0.875rem;
+  display: block;
+  width: 100%;
+  padding: 0.625rem 1rem;
   text-align: left;
   border: none;
   background: none;
@@ -142,32 +173,41 @@
   font-family: var(--font-barlow, "Barlow", sans-serif);
   color: var(--op-on-surface, #1A1B1F);
   white-space: nowrap;
+  line-height: 1;
+  transition: background 0.12s;
 }
 
 .popover button:hover {
   background: var(--op-surface-variant, #E2E2EC);
 }
 
-/* Custom chip input */
+/* Custom feature input */
+.customRow {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
 .customInput {
-  height: var(--op-chip-height, 2rem);
-  padding: 0 0.875rem;
-  border-radius: var(--op-radius-full, 9999px);
+  height: 2rem;
+  padding: 0 1rem;
+  border-radius: 9999px;
   border: 1.5px dashed var(--op-outline, #C5C6D0);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   background: transparent;
   color: var(--op-on-surface, #1A1B1F);
-  width: 180px;
+  width: 200px;
   transition: border-color 0.15s;
 }
 
 .customInput:focus {
   outline: none;
   border-color: var(--op-secondary, #243469);
+  border-style: solid;
 }
 
-/* Feature frames — XL radius (M3 Expressive) */
+/* Must Have / Nice to Have frames — XL radius */
 .framesSideBySide {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -182,8 +222,8 @@
 
 .frame {
   border: 1.5px solid var(--op-outline, #C5C6D0);
-  border-radius: var(--op-radius-xl, 28px);
-  padding: 1rem;
+  border-radius: 1.75rem;
+  padding: 1rem 1.25rem;
   min-height: 80px;
   background: var(--op-surface, #FDFBFF);
 }
@@ -191,7 +231,7 @@
 .frameHeader {
   font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--op-primary, #1D1F4A);
   font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
@@ -205,38 +245,47 @@
 }
 
 .emptyHint {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--op-outline-strong, #757780);
   font-style: italic;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
 }
 
-/* Selected chip inside frame */
+/* Dismissible chip inside frames */
 .selectedChip {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
-  height: 1.75rem;
-  padding: 0 0.625rem;
-  border-radius: var(--op-radius-full, 9999px);
-  background: var(--op-surface-variant, #E2E2EC);
-  font-size: 0.8125rem;
+  height: 2rem;
+  padding: 0 0.5rem 0 1rem;
+  border-radius: 9999px;
+  background: var(--op-secondary-container, #DEE1FF);
+  font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface, #1A1B1F);
+  color: var(--op-primary, #1D1F4A);
+  font-weight: 500;
+  white-space: nowrap;
 }
 
 .removeChip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
   background: none;
   border: none;
+  border-radius: 50%;
   cursor: pointer;
-  color: var(--op-outline-strong, #757780);
+  color: var(--op-primary, #1D1F4A);
   font-size: 1rem;
   line-height: 1;
   padding: 0;
-  transition: color 0.15s;
+  opacity: 0.7;
+  transition: opacity 0.15s, background 0.15s;
 }
 
 .removeChip:hover {
-  color: var(--op-primary, #1D1F4A);
+  opacity: 1;
+  background: rgba(29, 31, 74, 0.12);
 }
-
-.customRow {}

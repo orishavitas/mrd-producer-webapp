@@ -10,7 +10,7 @@ interface SplitLayoutProps {
 
 export default function SplitLayout({ leftPanel, rightPanel }: SplitLayoutProps) {
   return (
-    <div className={styles.container}>
+    <div className={`${styles.container} one-pager-root`}>
       <div className={styles.leftPanel} role="region" aria-label="Input fields">
         {leftPanel}
       </div>

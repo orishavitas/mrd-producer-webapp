@@ -62,45 +62,46 @@ export default function DynamicRoleSelector({
   if (selectedIndustries.length === 0) {
     return (
       <div className={styles.container}>
-        <label className={styles.label}>4. Who (Target Audience)</label>
-        <p className={styles.hint}>Select industries in the "Where" section above to see relevant roles.</p>
+        <span className={styles.label}>4. Who (Target Audience)</span>
+        <p className={styles.hint}>Select industries above to see relevant roles.</p>
       </div>
     );
   }
 
   return (
     <div className={styles.container}>
-      <label className={styles.label}>4. Who (Target Audience)</label>
+      <span className={styles.label}>4. Who (Target Audience)</span>
 
       {availableRoles.length > 0 && (
         <div className={styles.roleGrid}>
           {availableRoles.map((role) => (
-            <label key={role} className={styles.roleLabel}>
-              <input
-                type="checkbox"
-                checked={selectedRoles.includes(role)}
-                onChange={() => onToggleRole(role)}
-                className={styles.checkbox}
-              />
-              <span>{role}</span>
-            </label>
+            <button
+              key={role}
+              type="button"
+              className={selectedRoles.includes(role) ? styles.chipSelected : styles.chip}
+              onClick={() => onToggleRole(role)}
+              aria-pressed={selectedRoles.includes(role)}
+            >
+              {selectedRoles.includes(role) && <span className={styles.checkMark}>✓</span>}
+              {role}
+            </button>
           ))}
         </div>
       )}
 
       {customRoles.length > 0 && (
         <div className={styles.customRoles}>
-          <span className={styles.customLabel}>Custom roles:</span>
+          <span className={styles.customLabel}>Custom roles</span>
           <div className={styles.chipContainer}>
             {customRoles.map((role) => (
-              <span key={role} className={styles.chip}>
+              <span key={role} className={styles.inputChip}>
                 {role}
                 <button
                   className={styles.chipRemove}
                   onClick={() => onRemoveCustom(role)}
                   aria-label={`Remove ${role}`}
                 >
-                  x
+                  ×
                 </button>
               </span>
             ))}
@@ -118,11 +119,12 @@ export default function DynamicRoleSelector({
           className={styles.customInput}
         />
         <button
+          type="button"
           className={styles.addButton}
           onClick={handleAddCustom}
           disabled={!customInput.trim()}
         >
-          Add
+          + Add
         </button>
       </div>
     </div>

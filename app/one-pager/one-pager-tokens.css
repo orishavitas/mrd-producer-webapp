@@ -56,3 +56,36 @@
   --color-border:         var(--op-outline);
   --color-surface-variant:var(--op-surface-variant);
 }
+
+/*
+ * Reset the global button base styles for the one-pager route.
+ * globals.css sets padding/border/background on all buttons which
+ * overrides chip appearance. We reset to "nothing" here so each
+ * component class has full control.
+ */
+.op-reset button,
+button.op-chip-reset {
+  all: unset;
+  cursor: pointer;
+}
+
+/*
+ * Scoped button reset: applied via a wrapper div on the one-pager page.
+ * Because CSS Modules class names are local, we use a global class
+ * on the SplitLayout left panel to scope the reset.
+ */
+:global(.one-pager-root) button {
+  /* Reset globals.css button defaults */
+  padding: unset;
+  font-size: unset;
+  font-weight: unset;
+  line-height: unset;
+  white-space: unset;
+  vertical-align: unset;
+  border: unset;
+  border-radius: unset;
+  background-color: unset;
+  -webkit-user-select: unset;
+  user-select: unset;
+  transition: unset;
+}
