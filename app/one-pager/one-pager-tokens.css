@@ -57,6 +57,45 @@
   --color-surface-variant:var(--op-surface-variant);
 }
 
+/* ── Dark mode ─────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* M3 dark tonal palette — Compulocks primary #1D1F4A */
+    --op-primary:           #B8C3FF;   /* lighter for dark bg */
+    --op-on-primary:        #0A0D35;
+    --op-primary-container: #292C5E;   /* dark container */
+    --op-secondary:         #B8C4F0;
+    --op-on-secondary:      #0E1740;
+    --op-secondary-container:#293174;
+
+    /* Dark surfaces */
+    --op-background:        #111217;
+    --op-surface:           #111217;
+    --op-surface-variant:   #1E2030;
+    --op-on-surface:        #E3E2EB;
+    --op-on-surface-variant:#C6C5D0;
+    --op-outline:           #404255;   /* subtle border on dark */
+    --op-outline-strong:    #8F8FA3;
+
+    /* State */
+    --op-success:           #34D399;
+    --op-error:             #FFB4AB;
+    --op-muted:             #C6C5D0;
+
+    /* Shadows become near-invisible on dark — use subtle glow instead */
+    --op-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40);
+    --op-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.55);
+
+    /* Alias sync */
+    --color-primary:        var(--op-primary);
+    --color-secondary:      var(--op-secondary);
+    --color-text:           var(--op-on-surface);
+    --color-muted:          var(--op-muted);
+    --color-border:         var(--op-outline);
+    --color-surface-variant:var(--op-surface-variant);
+  }
+}
+
 /*
  * Reset the global button base styles for the one-pager route.
  * globals.css sets padding/border/background on all buttons which
