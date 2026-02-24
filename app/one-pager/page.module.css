@@ -108,6 +108,11 @@
   gap: 0.25rem;
 }
 
+.fieldFull {
+  margin-top: var(--op-spacing-xs, 0.5rem);
+}
+
+
 .fieldLabel {
   font-size: 0.8125rem;
   font-weight: 500;

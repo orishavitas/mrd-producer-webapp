@@ -90,6 +90,43 @@ function OnePagerContent() {
         </div>
       </div>
 
+      {/* Document Metadata */}
+      <div className={styles.section}>
+        <label className={styles.sectionLabel}>Document Info</label>
+        <div className={styles.fieldRow}>
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>Product Name</label>
+            <input
+              type="text"
+              value={state.productName}
+              onChange={(e) => dispatch({ type: 'SET_PRODUCT_NAME', payload: e.target.value })}
+              placeholder="e.g., Compulocks iPad Enclosure"
+              className={styles.textInput}
+            />
+          </div>
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>Prepared By</label>
+            <input
+              type="text"
+              value={state.preparedBy}
+              onChange={(e) => dispatch({ type: 'SET_PREPARED_BY', payload: e.target.value })}
+              placeholder="Your name"
+              className={styles.textInput}
+            />
+          </div>
+        </div>
+        <div className={`${styles.field} ${styles.fieldFull}`}>
+          <label className={styles.fieldLabel}>Email</label>
+          <input
+            type="email"
+            value={state.userEmail}
+            onChange={(e) => dispatch({ type: 'SET_USER_EMAIL', payload: e.target.value })}
+            placeholder="your@email.com"
+            className={styles.textInput}
+          />
+        </div>
+      </div>
+
       {/* Section 1: Description */}
       <TextFieldWithExpand
         label="1. Product Description"
