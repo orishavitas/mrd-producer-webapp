@@ -8,6 +8,17 @@
   padding-bottom: 0.75rem;
   border-bottom: 1.5px solid var(--op-outline, #C5C6D0);
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+}
+
+.logo {
+  height: var(--op-logo-height, 40px);
+  width: auto;
+  display: block;
+  flex-shrink: 0;
 }
 
 .title {

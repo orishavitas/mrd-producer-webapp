@@ -74,6 +74,13 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
   return (
     <div className={styles.container}>
       <div className={styles.header}>
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src="/compulocks-logo.png"
+          alt="Compulocks"
+          className={styles.logo}
+          onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+        />
         <h3 className={styles.title}>Document Preview</h3>
       </div>
       <div className={styles.content}>

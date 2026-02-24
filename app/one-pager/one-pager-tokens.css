@@ -44,6 +44,9 @@
   --op-input-height:  2.5rem;  /* 40px */
   --op-btn-height:    2rem;    /* 32px */
 
+  /* ── Logo ────────────────────────────────────────────────────────── */
+  --op-logo-height: 40px;
+
   /* ── Elevation / shadow ────────────────────────────────────── */
   --op-shadow-sm: 0 1px 3px rgba(29, 31, 74, 0.10);
   --op-shadow-md: 0 4px 12px rgba(29, 31, 74, 0.14);
