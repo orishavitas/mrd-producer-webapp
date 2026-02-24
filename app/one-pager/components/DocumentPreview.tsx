@@ -59,8 +59,11 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       parts.push('## Competitors', '');
       for (const comp of state.competitors.filter((c) => c.status === 'done')) {
         parts.push(`### ${comp.brand} - ${comp.productName}`);
+        if (comp.photoUrl) {
+          parts.push(`![${comp.productName}](${comp.photoUrl})`, '');
+        }
         if (comp.cost) parts.push(`**Price:** ${comp.cost}`);
-        parts.push(comp.description);
+        if (comp.description) parts.push(comp.description);
         parts.push(`[View product](${comp.url})`, '');
       }
     }
