@@ -76,3 +76,23 @@
 .content a:hover {
   text-decoration: underline;
 }
+
+/* ── Competitor photo grid ──────────────────────────────────── */
+
+/*
+ * Photos (<img>) inside .content are sized height-first:
+ * fixed height, natural width (aspect ratio preserved).
+ * Max 640×640. object-fit:contain prevents stretching.
+ */
+
+.content img {
+  display: block;
+  max-width: 640px;
+  max-height: 640px;
+  width: auto;
+  height: 160px;          /* base height — photos share this row height */
+  object-fit: contain;
+  border-radius: var(--op-radius-s, 8px);
+  background: var(--op-surface-variant, #E2E2EC);
+  margin: 0.5rem 0 0.75rem;
+}
