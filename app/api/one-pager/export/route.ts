@@ -571,7 +571,8 @@ function generateOnePagerHtml(data: OnePagerData): string {
     for (const comp of doneCompetitors) {
       html += `<h3>${esc(comp.brand)} — ${esc(comp.productName)}</h3>\n`;
       if (comp.photoUrl) {
-        html += `<img src="${esc(comp.photoUrl)}" alt="${esc(comp.productName)}" style="float:right;max-width:200px;max-height:150px;object-fit:contain;margin-left:12px;border-radius:4px;margin-bottom:8px;">\n`;
+        html += `<img src="${esc(comp.photoUrl)}" alt="${esc(comp.productName)}" style="display:block;max-width:640px;max-height:640px;height:160px;width:auto;object-fit:contain;border-radius:4px;margin:8px 0 12px;background:#f3f4f6;">
+`;
       }
       if (comp.cost) html += `<p><span class="label">Price:</span> ${esc(comp.cost)}</p>\n`;
       if (comp.description) html += `<p>${esc(comp.description)}</p>\n`;
