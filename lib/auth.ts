@@ -20,6 +20,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       if (account) {
         token.accessToken = account.access_token;
         token.refreshToken = account.refresh_token;
+        // TODO: Add token refresh logic before Drive sync goes live.
+        // Google access tokens expire after 1h. Use refreshToken to obtain a new accessToken.
+        // Reference: https://next-auth.js.org/tutorials/refresh-token-rotation
       }
       return token;
     },

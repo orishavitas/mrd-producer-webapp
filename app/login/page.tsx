@@ -6,7 +6,7 @@ export default function LoginPage() {
       <div className="container" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}>
         <div className="card" style={{ maxWidth: '420px', width: '100%', textAlign: 'center' }}>
           <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>MRD Producer</h1>
-          <p style={{ color: 'var(--on-surface-variant)', marginBottom: '2rem' }}>
+          <p style={{ color: 'var(--muted)', marginBottom: '2rem' }}>
             Sign in to access your tools and documents
           </p>
           <form

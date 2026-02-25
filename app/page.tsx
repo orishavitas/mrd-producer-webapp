@@ -1,3 +1,4 @@
+import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
 import { listDocuments } from '@/lib/db';
 import TopBar from './components/TopBar';
@@ -20,8 +21,8 @@ const TOOLS = [
 
 export default async function DashboardPage() {
   const session = await auth();
-  const userId = session?.user?.email ?? '';
-  const documents = userId ? await listDocuments(userId) : [];
+  if (!session?.user?.email) redirect('/login');
+  const documents = await listDocuments(session.user.email);
 
   return (
     <>

@@ -60,10 +60,19 @@ export async function updateDocument(
   if (updates.drive_file_id !== undefined) { setClauses.push(`drive_file_id = $${paramIndex++}`); values.push(updates.drive_file_id); }
   if (updates.drive_folder !== undefined) { setClauses.push(`drive_folder = $${paramIndex++}`); values.push(updates.drive_folder); }
 
+  if (values.length === 0) {
+    throw new Error('updateDocument called with no fields to update');
+  }
+
   const { rows } = await sql.query(
-    `UPDATE documents SET ${setClauses.join(', ')} WHERE id = $${paramIndex++} AND user_id = $${paramIndex} RETURNING *`,
+    `UPDATE documents SET ${setClauses.join(', ')} WHERE id = $${paramIndex++} AND user_id = $${paramIndex} AND deleted_at IS NULL RETURNING *`,
     [...values, id, userId]
   );
+
+  if (!rows[0]) {
+    throw new Error(`Document ${id} not found or access denied`);
+  }
+
   return rows[0] as Document;
 }
 

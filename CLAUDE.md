@@ -225,6 +225,10 @@ Path alias `@/*` maps to project root.
 | `ANTHROPIC_API_KEY` | No | Claude API key (Phase 3) |
 | `OPENAI_API_KEY` | No | OpenAI API key (Phase 3) |
 | `USE_MULTI_AGENT` | No | Enable new multi-agent system |
+| `AUTH_SECRET` | Yes (auth) | Random secret for NextAuth JWT signing — `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | Yes (auth) | Google OAuth client ID (from Google Cloud Console) |
+| `GOOGLE_CLIENT_SECRET` | Yes (auth) | Google OAuth client secret |
+| `POSTGRES_URL` | Yes (auth) | Vercel Postgres connection string |
 
 ## Deployment
 
