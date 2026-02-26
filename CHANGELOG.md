@@ -19,14 +19,46 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Logo embedded in DOCX export (ImageRun in document header with tab stop) and HTML export (base64 inline in `.doc-header` div).
 - `productName`, `preparedBy`, `userEmail` metadata fields — free-text inputs in form, rendered in preview header and exported to DOCX/HTML.
 
+### Added (Dashboard & Auth)
+- Google OAuth authentication via NextAuth.js v5
+- Auth middleware protecting all routes except `/login` and `/api/auth/*`
+- Branded login page at `/login`
+- Vercel Postgres `documents` table schema (`lib/db-schema.sql`)
+- Document CRUD helpers in `lib/db.ts` (list, create, update, soft delete)
+- Documents API endpoints (`/api/documents` GET/POST, `/api/documents/[id]` DELETE)
+- Google Drive sync stub at `/api/drive/sync` (501 placeholder)
+- Dashboard homepage at `/` with TopBar, ToolCard grid, DocumentsTable
+- `DashboardShell` client component for optimistic delete UI
+
 ### Changed
 - Merged `feat/one-pager-integrate` → `main`; One-Pager Generator now live on Vercel.
-- `feature/unified-dashboard` branch: auth/dashboard fixes committed and pushed (awaiting env vars in Vercel to go live).
+- Merged `feature/unified-dashboard` → `main`; auth + dashboard in main tree.
+- MRD form moved to `/mrd`; original `/` is now the dashboard.
+- `app/page.tsx`: hard redirect to `/login` when no session.
+- `lib/db.ts`: `updateDocument` validates non-empty updates, filters soft-deleted rows, throws on missing row.
 
-### Infrastructure
-- Added `AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `POSTGRES_URL` to CLAUDE.md env vars table.
-- `app/page.tsx`: hard redirect to `/login` when no session (replaced silent empty-state fallback).
-- `lib/db.ts`: `updateDocument` now validates non-empty updates, filters soft-deleted rows, and throws on missing row.
+## [1.0.0] - 2026-02-23
+
+### Added — One-Pager Generator (`/one-pager`)
+- Split-screen layout: guided input left, live document preview right
+- 7 input sections: Description, Goal, Where (environment + industry chips), Who (dynamic role chips), Use Cases, Features, Commercials (MOQ + price), Competitors
+- M3 Expressive design system: Compulocks brand palette (`#1D1F4A` / `#243469`), Barlow fonts, pill buttons, XL card radius (28px)
+- Full dark mode via `--op-*` CSS custom properties in `app/one-pager/one-pager-tokens.css`
+- M3 filter chips for all selection inputs (`<button aria-pressed>` — no checkboxes)
+- Feature chip palette with Must Have / Nice to Have assignment via popover; side-by-side and stacked frame layouts
+- `config/one-pager/standard-features.yaml` — editable chip palette
+- `config/one-pager/industry-roles.yaml` — editable industry → role mapping
+- Competitor URL extraction: 2-tier scraper (fetch + Schema.org/OpenGraph → Playwright fallback)
+- Photo picker per competitor: thumbnails from scraped page, drag-drop upload, or URL link
+- AI text expansion for Description, Goal, Use Cases fields
+- DOCX + HTML + PDF export with competitor photos embedded
+- `lib/scraper/` shared scraper service
+- `agent/agents/one-pager/` — CompetitorAnalysisAgent, CompetitorOrchestrator
+
+### Changed
+- `app/layout.tsx`: Barlow + Barlow Condensed fonts added
+- `/api/one-pager/config` made `force-dynamic`
+- `lib/one-pager/config-loader.ts`: normalises YAML string features to `{id, label}` objects
 
 ## [0.3.0] - 2026-02-03
 

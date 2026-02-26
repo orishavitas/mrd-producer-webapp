@@ -4,11 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Version: 1.0.1** — One-Pager bug fixes + logo export.
+**Version: 1.0.1** — One-Pager bug fixes + logo export + auth + dashboard.
 
 MRD Producer is a Next.js web application with two production tools:
 
-1. **Main MRD Producer** (`/`) — AI-powered 12-section Market Requirements Documents via Gemini Search grounding.
+1. **Main MRD Producer** (`/mrd`) — AI-powered 12-section Market Requirements Documents via Gemini Search grounding.
 2. **One-Pager Generator** (`/one-pager`) — Guided 7-section product spec: free text + AI expand, environment/industry chips, dynamic role chips, feature chip palette (Must Have / Nice to Have), MOQ/price, competitor URL extraction with photo picker. **LIVE on main.**
 
 ## Commands
@@ -236,6 +236,10 @@ Path alias `@/*` maps to project root.
 | `ANTHROPIC_API_KEY` | No | Claude API key (Phase 3) |
 | `OPENAI_API_KEY` | No | OpenAI API key (Phase 3) |
 | `USE_MULTI_AGENT` | No | Enable new multi-agent system |
+| `AUTH_SECRET` | Yes (auth) | Random secret for NextAuth JWT signing — `openssl rand -base64 32` |
+| `GOOGLE_CLIENT_ID` | Yes (auth) | Google OAuth client ID (from Google Cloud Console) |
+| `GOOGLE_CLIENT_SECRET` | Yes (auth) | Google OAuth client secret |
+| `POSTGRES_URL` | Yes (auth) | Vercel Postgres connection string |
 
 ## Deployment
 
@@ -410,3 +414,4 @@ console.log('Result:', result.text);
 - `docs/PHASE5_IMPLEMENTATION.md` - Section generators and ensemble voting
 - `docs/plans/2026-02-19-one-pager-generator-design.md` - One-Pager design doc
 - `references/README.md` - Pipeline stage documentation
+
