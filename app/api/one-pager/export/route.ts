@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
+import fs from 'fs';
+import path from 'path';
 import {
   Document,
   Packer,
@@ -13,6 +15,8 @@ import {
   Footer,
   PageNumber,
   ImageRun,
+  TabStopPosition,
+  TabStopType,
 } from 'docx';
 
 interface CompetitorEntry {
@@ -335,8 +339,18 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
   return children;
 }
 
+function loadLogoBuffer(): Buffer | null {
+  try {
+    const logoPath = path.join(process.cwd(), 'public', 'compulocks-logo.png');
+    return fs.readFileSync(logoPath);
+  } catch {
+    return null;
+  }
+}
+
 async function generateOnePagerDocx(data: OnePagerData): Promise<Buffer> {
   const docChildren = await buildDocxChildren(data);
+  const logoBuffer = loadLogoBuffer();
 
   const doc = new Document({
     styles: {
@@ -399,8 +413,18 @@ async function generateOnePagerDocx(data: OnePagerData): Promise<Buffer> {
                     size: BRAND.sizes.small,
                     color: BRAND.colors.muted,
                   }),
+                  ...(logoBuffer ? [
+                    new TextRun({ text: '\t' }),
+                    new ImageRun({
+                      type: 'png',
+                      data: logoBuffer,
+                      transformation: { width: 80, height: 14 },
+                    }),
+                  ] : []),
                 ],
-                alignment: AlignmentType.RIGHT,
+                tabStops: [
+                  { type: TabStopType.RIGHT, position: TabStopPosition.MAX },
+                ],
               }),
             ],
           }),
@@ -437,6 +461,11 @@ async function generateOnePagerDocx(data: OnePagerData): Promise<Buffer> {
 }
 
 function generateOnePagerHtml(data: OnePagerData): string {
+  const logoBuffer = loadLogoBuffer();
+  const logoSrc = logoBuffer
+    ? `data:image/png;base64,${logoBuffer.toString('base64')}`
+    : null;
+
   let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -454,6 +483,21 @@ function generateOnePagerHtml(data: OnePagerData): string {
       margin: 0 auto;
       padding: 20px;
     }
+    .doc-header {
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      margin-bottom: 8pt;
+      border-bottom: 3px solid #1D1F4A;
+      padding-bottom: 8pt;
+    }
+    .doc-header h1 {
+      margin: 0;
+      border: none;
+      padding: 0;
+    }
+    .doc-header h1::after { display: none; }
+    .doc-logo { height: 20px; width: auto; display: block; }
     h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 22pt;
@@ -509,7 +553,10 @@ function generateOnePagerHtml(data: OnePagerData): string {
   </style>
 </head>
 <body>
-<h1>Product One-Pager</h1>
+<div class="doc-header">
+  <h1>Product One-Pager</h1>
+  ${logoSrc ? `<img src="${logoSrc}" alt="Compulocks" class="doc-logo">` : ''}
+</div>
 `;
 
   const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
