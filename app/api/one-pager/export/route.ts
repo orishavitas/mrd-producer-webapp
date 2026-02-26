@@ -26,7 +26,7 @@ interface CompetitorEntry {
   description: string;
   cost: string;
   status: string;
-  photoUrl?: string;
+  photoUrls: string[];
 }
 
 interface OnePagerData {
@@ -279,24 +279,24 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
         })
       );
 
-      // Competitor photo
-      if (comp.photoUrl) {
+      // Competitor photos
+      for (const photoUrl of comp.photoUrls ?? []) {
         try {
           let imgData: Buffer;
           let imgType: 'jpg' | 'png' | 'gif' | 'bmp' = 'jpg';
-          if (comp.photoUrl.startsWith('data:')) {
-            const mime = comp.photoUrl.split(';')[0].split('/')[1];
+          if (photoUrl.startsWith('data:')) {
+            const mime = photoUrl.split(';')[0].split('/')[1];
             if (mime === 'png') imgType = 'png';
             else if (mime === 'gif') imgType = 'gif';
             else if (mime === 'bmp') imgType = 'bmp';
-            const base64 = comp.photoUrl.split(',')[1];
+            const base64 = photoUrl.split(',')[1];
             imgData = Buffer.from(base64, 'base64');
           } else {
-            const lowerUrl = comp.photoUrl.toLowerCase();
+            const lowerUrl = photoUrl.toLowerCase();
             if (lowerUrl.includes('.png')) imgType = 'png';
             else if (lowerUrl.includes('.gif')) imgType = 'gif';
             else if (lowerUrl.includes('.bmp')) imgType = 'bmp';
-            const imgRes = await fetch(comp.photoUrl);
+            const imgRes = await fetch(photoUrl);
             imgData = Buffer.from(await imgRes.arrayBuffer());
           }
           compItems.push(
@@ -617,9 +617,8 @@ function generateOnePagerHtml(data: OnePagerData): string {
     html += '<h2>Competitors</h2>\n';
     for (const comp of doneCompetitors) {
       html += `<h3>${esc(comp.brand)} — ${esc(comp.productName)}</h3>\n`;
-      if (comp.photoUrl) {
-        html += `<img src="${esc(comp.photoUrl)}" alt="${esc(comp.productName)}" style="display:block;max-width:640px;max-height:640px;height:160px;width:auto;object-fit:contain;border-radius:4px;margin:8px 0 12px;background:#f3f4f6;">
-`;
+      for (const photoUrl of comp.photoUrls ?? []) {
+        html += `<img src="${esc(photoUrl)}" alt="${esc(comp.productName)}" style="display:inline-block;max-width:640px;max-height:640px;height:160px;width:auto;object-fit:contain;border-radius:4px;margin:8px 8px 12px 0;background:#f3f4f6;">\n`;
       }
       if (comp.cost) html += `<p><span class="label">Price:</span> ${esc(comp.cost)}</p>\n`;
       if (comp.description) html += `<p>${esc(comp.description)}</p>\n`;

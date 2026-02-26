@@ -5,7 +5,7 @@ export interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
-  photoUrl?: string;
+  photoUrls: string[];
   candidatePhotos?: string[];
   scrapeTier?: 'basic' | 'standard' | 'deep';
 }
@@ -65,7 +65,7 @@ export type OnePagerAction =
   | { type: 'ADD_COMPETITOR'; payload: { url: string } }
   | { type: 'UPDATE_COMPETITOR'; payload: { url: string; data: Partial<CompetitorEntry> } }
   | { type: 'REMOVE_COMPETITOR'; payload: string }
-  | { type: 'SET_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
+  | { type: 'TOGGLE_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
   | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } };
 
 function generateSessionId(): string {
@@ -203,6 +203,7 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
       return { ...base, userEmail: action.payload };
 
     case 'ADD_COMPETITOR':
+      if (base.competitors.some((c) => c.url === action.payload.url)) return state;
       return {
         ...base,
         competitors: [
@@ -214,6 +215,7 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
             description: '',
             cost: '',
             status: 'pending',
+            photoUrls: [],
           },
         ],
       };
@@ -232,13 +234,22 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
         competitors: base.competitors.filter((c) => c.url !== action.payload),
       };
 
-    case 'SET_COMPETITOR_PHOTO':
+    case 'TOGGLE_COMPETITOR_PHOTO': {
+      const { url, photoUrl } = action.payload;
       return {
         ...base,
-        competitors: base.competitors.map((c) =>
-          c.url === action.payload.url ? { ...c, photoUrl: action.payload.photoUrl } : c
-        ),
+        competitors: base.competitors.map((c) => {
+          if (c.url !== url) return c;
+          const exists = c.photoUrls.includes(photoUrl);
+          return {
+            ...c,
+            photoUrls: exists
+              ? c.photoUrls.filter((p) => p !== photoUrl)
+              : [...c.photoUrls, photoUrl],
+          };
+        }),
       };
+    }
 
     case 'SET_COMPETITOR_CANDIDATES':
       return {

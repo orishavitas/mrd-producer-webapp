@@ -37,6 +37,10 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       parts.push('## Who (Target Audience)', '', allRoles.map((r) => `- ${r}`).join('\n'), '');
     }
 
+    if (state.useCases) {
+      parts.push('## Use Cases', '', state.useCases, '');
+    }
+
     if (state.features.mustHave.length > 0 || state.features.niceToHave.length > 0) {
       parts.push('## Features');
       if (state.features.mustHave.length > 0) {
@@ -59,8 +63,9 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       parts.push('## Competitors', '');
       for (const comp of state.competitors.filter((c) => c.status === 'done')) {
         parts.push(`### ${comp.brand} - ${comp.productName}`);
-        if (comp.photoUrl) {
-          parts.push(`![${comp.productName}](${comp.photoUrl})`, '');
+        if (comp.photoUrls?.length > 0) {
+          comp.photoUrls.forEach((url) => parts.push(`![${comp.productName}](${url})`));
+          parts.push('');
         }
         if (comp.cost) parts.push(`**Price:** ${comp.cost}`);
         if (comp.description) parts.push(comp.description);

@@ -10,7 +10,7 @@ interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
-  photoUrl?: string;
+  photoUrls: string[];
   candidatePhotos?: string[];
 }
 
@@ -20,7 +20,6 @@ interface CompetitorInputProps {
   onUpdate: (url: string, data: Partial<CompetitorEntry>) => void;
   onRemove: (url: string) => void;
   onCandidates?: (url: string, candidates: string[]) => void;
-  onSelectPhoto?: (url: string, photoUrl: string) => void;
   renderPhotoPicker?: (comp: CompetitorEntry) => React.ReactNode;
 }
 

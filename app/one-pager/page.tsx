@@ -239,16 +239,13 @@ function OnePagerContent() {
         onCandidates={(url, candidates) =>
           dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
         }
-        onSelectPhoto={(url, photoUrl) =>
-          dispatch({ type: 'SET_COMPETITOR_PHOTO', payload: { url, photoUrl } })
-        }
         renderPhotoPicker={(comp) =>
           comp.status === 'done' ? (
             <PhotoPicker
               candidates={comp.candidatePhotos ?? []}
-              selected={comp.photoUrl}
+              selected={comp.photoUrls}
               onSelect={(photoUrl) =>
-                dispatch({ type: 'SET_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
+                dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
               }
             />
           ) : null

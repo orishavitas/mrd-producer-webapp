@@ -4,7 +4,7 @@ import styles from './PhotoPicker.module.css';
 
 interface PhotoPickerProps {
   candidates: string[];
-  selected: string | undefined;
+  selected: string[];
   onSelect: (url: string) => void;
 }
 
@@ -54,13 +54,13 @@ export function PhotoPicker({ candidates, selected, onSelect }: PhotoPickerProps
           {candidates.map((url) => (
             <button
               key={url}
-              className={`${styles.thumbnail} ${selected === url ? styles.thumbnailSelected : ''}`}
+              className={`${styles.thumbnail} ${selected.includes(url) ? styles.thumbnailSelected : ''}`}
               onClick={() => onSelect(url)}
               title={url}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src={url} alt="Product" className={styles.thumbImg} />
-              {selected === url && <span className={styles.checkBadge}>&#10003;</span>}
+              {selected.includes(url) && <span className={styles.checkBadge}>&#10003;</span>}
             </button>
           ))}
         </div>
@@ -88,10 +88,10 @@ export function PhotoPicker({ candidates, selected, onSelect }: PhotoPickerProps
             className={styles.hiddenInput}
             onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }}
           />
-          {selected?.startsWith('data:') && (
+          {selected.filter((s) => s.startsWith('data:')).map((s) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={selected} alt="Uploaded" className={styles.uploadPreview} />
-          )}
+            <img key={s} src={s} alt="Uploaded" className={styles.uploadPreview} />
+          ))}
         </div>
       )}
 
@@ -111,10 +111,10 @@ export function PhotoPicker({ candidates, selected, onSelect }: PhotoPickerProps
           >
             Use image
           </button>
-          {selected && !selected.startsWith('data:') && (
+          {selected.filter((s) => !s.startsWith('data:')).map((s) => (
             // eslint-disable-next-line @next/next/no-img-element
-            <img src={selected} alt="Preview" className={styles.uploadPreview} />
-          )}
+            <img key={s} src={s} alt="Preview" className={styles.uploadPreview} />
+          ))}
         </div>
       )}
     </div>

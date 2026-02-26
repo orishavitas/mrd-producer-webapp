@@ -122,20 +122,22 @@ export function FeatureSelector({
         <div className={styles.customRow}>
           <div className={styles.categoryLabel}>Custom</div>
           <div className={styles.chipRow}>
-            <input
-              type="text"
-              placeholder="Type feature + Enter"
-              value={customInput}
-              onChange={(e) => setCustomInput(e.target.value)}
-              onKeyDown={handleCustomKeyDown}
-              className={styles.customInput}
-            />
-            {popover?.startsWith('__custom__') && (
-              <div className={styles.popover}>
-                <button onClick={() => { handleAddToCategory(customInput.trim(), 'mustHave'); setCustomInput(''); }}>Must Have</button>
-                <button onClick={() => { handleAddToCategory(customInput.trim(), 'niceToHave'); setCustomInput(''); }}>Nice to Have</button>
-              </div>
-            )}
+            <div className={styles.chipWrapper}>
+              <input
+                type="text"
+                placeholder="Type feature + Enter"
+                value={customInput}
+                onChange={(e) => setCustomInput(e.target.value)}
+                onKeyDown={handleCustomKeyDown}
+                className={styles.customInput}
+              />
+              {popover?.startsWith('__custom__') && (
+                <div className={styles.popover}>
+                  <button onClick={() => { handleAddToCategory(customInput.trim(), 'mustHave'); setCustomInput(''); }}>Must Have</button>
+                  <button onClick={() => { handleAddToCategory(customInput.trim(), 'niceToHave'); setCustomInput(''); }}>Nice to Have</button>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
