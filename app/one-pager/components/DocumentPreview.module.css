@@ -2,16 +2,32 @@
   height: 100%;
   display: flex;
   flex-direction: column;
-  position: relative;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1.5px solid var(--op-outline, #C5C6D0);
+  margin-bottom: 1rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 600;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary, #1D1F4A);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0;
 }
 
 .logo {
-  position: absolute;
-  top: 0;
-  right: 0;
   height: var(--op-logo-height, 20px);
   width: auto;
   display: block;
+  flex-shrink: 0;
 }
 
 
@@ -32,7 +48,6 @@
   color: var(--op-primary, #1D1F4A);
   text-transform: uppercase;
   letter-spacing: 0.04em;
-  padding-right: 8rem;
 }
 
 .content h2 {
