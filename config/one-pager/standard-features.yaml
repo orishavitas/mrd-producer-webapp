@@ -1,0 +1,40 @@
+# Standard Features for One-Pager Generator
+# Edit this file freely — changes take effect on next server restart.
+# Each item under "features:" is a plain string label.
+# Sections: Screen Size | Orientation | Placement | Security & Cable
+
+categories:
+
+  - id: screen_size
+    label: Screen Size
+    features:
+      - 'Small (6"–10")'
+      - 'Medium (10"–15")'
+      - 'Large (15"–24")'
+      - 'XL (24"–32")'
+      - 'XXL (32"+)'
+
+  - id: orientation
+    label: Orientation
+    features:
+      - Landscape
+      - Portrait
+      - Auto-Rotate
+
+  - id: placement
+    label: Placement
+    features:
+      - Wall Mount
+      - Counter / Desktop
+      - Floor Stand
+      - Ceiling Mount
+      - Pole / Kiosk
+
+  - id: security
+    label: Security & Cable
+    features:
+      - Cable Management
+      - Lock Slot (Kensington)
+      - Locking Enclosure
+      - Anti-Theft Bracket
+      - Tamper-Proof Screws

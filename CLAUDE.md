@@ -4,7 +4,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MRD Producer is a Next.js web application that generates Market Requirements Documents (MRDs) using AI. It accepts product concepts, conducts web research via Gemini's Google Search grounding, and produces structured 12-section MRDs following the Compulocks template format.
+MRD Producer is a Next.js web application with multiple product specification tools:
+
+1. **Main MRD Producer** (`/`) - Generates full 12-section Market Requirements Documents with AI-powered competitive research via Gemini's Google Search grounding.
+
+2. **One-Pager Generator** (`/one-pager`) - Guided 7-section product specification tool with split-screen layout. Mix of free text (with optional AI expansion), checkbox selections (environments/industries), dynamic role checkboxes (populated from YAML config by industry), chip inputs (features), and URL-based competitor extraction. (feature/one-pager branch)
 
 ## Commands
 
@@ -25,9 +29,14 @@ The codebase follows a **multi-agent architecture** with provider abstraction:
 
 ```
 app/                    # Next.js App Router - UI and API endpoints
+├── one-pager/          # One-Pager Generator (feature/one-pager)
+│   ├── components/     # SplitLayout, TextFieldWithExpand, CheckboxGroup,
+│   │                   # DynamicRoleSelector, ChipInput, CompetitorInput, DocumentPreview
+│   └── lib/            # one-pager-state, one-pager-context
 ├── api/
 │   ├── generate/       # Main MRD generation endpoint
 │   ├── download/       # Document export (DOCX, HTML, PDF)
+│   ├── one-pager/      # One-Pager endpoints (config, expand, extract-competitor)
 │   └── workflow/       # Multi-stage stateful pipeline
 
 agent/                  # Multi-agent orchestration system
@@ -79,8 +88,14 @@ skills/                 # Atomic capabilities (pure functions)
 └── web_search.ts       # Legacy search (deprecated)
 
 config/
-└── agents/
-    └── default.yaml    # Agent configuration
+├── agents/
+│   └── default.yaml    # Agent configuration
+└── one-pager/
+    └── industry-roles.yaml  # Industry-to-role mapping (editable)
+
+lib/
+├── one-pager/
+│   └── config-loader.ts     # YAML loader for industry-roles (server-side only)
 
 references/             # Prompt templates and MRD specifications
 ├── 01_parse_request.md - 04_generate_mrd.md
@@ -363,6 +378,22 @@ console.log('Used provider:', providerUsed);
 console.log('Result:', result.text);
 ```
 
+## One-Pager Generator (feature/one-pager)
+
+**Route:** `/one-pager`
+
+**7 Sections:** Description (free text + AI expand), Goal (free text + AI expand), Where (environment + industry checkboxes), Who (dynamic role checkboxes from YAML + custom add), Features (must-have/nice-to-have chip inputs), Commercials (MOQ + price), Competitors (URL extraction + cards).
+
+**Key files:**
+- `config/one-pager/industry-roles.yaml` — edit to add industries/environments/roles
+- `lib/one-pager/config-loader.ts` — server-side YAML loader (do NOT import in client components)
+- `app/one-pager/lib/one-pager-state.ts` — 16-action reducer
+- `app/one-pager/lib/one-pager-context.tsx` — React context + sessionStorage
+- `app/one-pager/components/` — 7 UI components
+- `app/api/one-pager/` — 3 API endpoints (config, expand, extract-competitor)
+
+**Design doc:** `docs/plans/2026-02-19-one-pager-generator-design.md`
+
 ## Documentation
 
 - `docs/AGENT.md` - Agent behavioral contracts and patterns
@@ -370,4 +401,5 @@ console.log('Result:', result.text);
 - `docs/DESIGN_GUIDE.md` - Architecture principles
 - `docs/PHASE_4_RESEARCH_AGENTS.md` - Research agents documentation
 - `docs/PHASE5_IMPLEMENTATION.md` - Section generators and ensemble voting
+- `docs/plans/2026-02-19-one-pager-generator-design.md` - One-Pager design doc
 - `references/README.md` - Pipeline stage documentation

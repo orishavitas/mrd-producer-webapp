@@ -27,6 +27,12 @@
   --shadow: 0 14px 30px rgba(20, 23, 26, 0.08);
   --font-sans: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
+
+  /* Brand tokens (Compulocks Brand Language 2025) */
+  --brand-primary: #1D1F4A;
+  --brand-highlight: #243469;
+  --font-barlow: 'Barlow', sans-serif;
+  --font-barlow-condensed: 'Barlow Condensed', sans-serif;
 }
 
 /* Dark mode support */
