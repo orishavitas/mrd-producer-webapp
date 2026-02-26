@@ -4,11 +4,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-MRD Producer is a Next.js web application with multiple product specification tools:
+**Version: 1.0.1** — One-Pager bug fixes + logo export.
 
-1. **Main MRD Producer** (`/`) - Generates full 12-section Market Requirements Documents with AI-powered competitive research via Gemini's Google Search grounding.
+MRD Producer is a Next.js web application with two production tools:
 
-2. **One-Pager Generator** (`/one-pager`) - Guided 7-section product specification tool with split-screen layout. Mix of free text (with optional AI expansion), checkbox selections (environments/industries), dynamic role checkboxes (populated from YAML config by industry), chip inputs (features), and URL-based competitor extraction. (feature/one-pager branch)
+1. **Main MRD Producer** (`/`) — AI-powered 12-section Market Requirements Documents via Gemini Search grounding.
+2. **One-Pager Generator** (`/one-pager`) — Guided 7-section product spec: free text + AI expand, environment/industry chips, dynamic role chips, feature chip palette (Must Have / Nice to Have), MOQ/price, competitor URL extraction with photo picker. **LIVE on main.**
 
 ## Commands
 
@@ -378,21 +379,27 @@ console.log('Used provider:', providerUsed);
 console.log('Result:', result.text);
 ```
 
-## One-Pager Generator (feature/one-pager)
+## One-Pager Generator — Key Gotchas
 
-**Route:** `/one-pager`
+- **API route must be dynamic**: `/api/one-pager/config` needs `export const dynamic = 'force-dynamic'` or Next.js pre-renders it at build time, serving stale YAML data.
+- **YAML features are plain strings**: `standard-features.yaml` uses string lists. `config-loader.ts` normalises them to `{id, label}` — do not add object syntax to the YAML.
+- **M3 chips = `<button aria-pressed>`**: Never use `<label><input type="checkbox"/>` for chips. The global `button` style in `globals.css` bleeds in — reset via `.one-pager-root button` in `one-pager-tokens.css`.
+- **Design tokens in one file**: All `--op-*` vars (light + dark mode) live in `app/one-pager/one-pager-tokens.css`. CSS modules reference only tokens — never hardcode hex.
+- **Worktrees need secrets**: Copy `.env.local` from repo root into each worktree manually — it is not inherited.
+- **Features config**: Edit `config/one-pager/standard-features.yaml` for chip palette (plain string lists per category). Restart dev server after changes.
+- **Logo placement**: Place `compulocks-logo.png` at `public/compulocks-logo.png` (served as `/compulocks-logo.png`). Size controlled by `--op-logo-height: 20px` in `one-pager-tokens.css`.
+- **Photo state is an array**: `photoUrls: string[]` per competitor. `TOGGLE_COMPETITOR_PHOTO` action adds or removes (includes() toggle). Never singular `photoUrl`.
+- **Popover anchoring**: Feature popovers need `position: relative` on the `chipWrapper` div that wraps both trigger button and popover — otherwise they escape to page bottom.
+- **Logo in DOCX export**: Use `ImageRun` inside a `Header` paragraph with `TabStopType.RIGHT` to pin logo flush-right. Read file with `fs.readFileSync` and pass as `Buffer`.
+- **Logo in HTML export**: Base64-encode the logo buffer and embed as `data:image/png;base64,...` in `<img src>` — no external URL needed, works in printed docs.
 
-**7 Sections:** Description (free text + AI expand), Goal (free text + AI expand), Where (environment + industry checkboxes), Who (dynamic role checkboxes from YAML + custom add), Features (must-have/nice-to-have chip inputs), Commercials (MOQ + price), Competitors (URL extraction + cards).
-
-**Key files:**
-- `config/one-pager/industry-roles.yaml` — edit to add industries/environments/roles
-- `lib/one-pager/config-loader.ts` — server-side YAML loader (do NOT import in client components)
-- `app/one-pager/lib/one-pager-state.ts` — 16-action reducer
-- `app/one-pager/lib/one-pager-context.tsx` — React context + sessionStorage
-- `app/one-pager/components/` — 7 UI components
-- `app/api/one-pager/` — 3 API endpoints (config, expand, extract-competitor)
-
-**Design doc:** `docs/plans/2026-02-19-one-pager-generator-design.md`
+**Key files (One-Pager):**
+- Design tokens (light + dark): `app/one-pager/one-pager-tokens.css` — all `--op-*` vars
+- Feature config: `config/one-pager/standard-features.yaml` (plain string lists)
+- Industry/role config: `config/one-pager/industry-roles.yaml`
+- State: `app/one-pager/lib/one-pager-state.ts`, `one-pager-context.tsx`
+- Export: `app/api/one-pager/export/route.ts` — DOCX + HTML + PDF
+- Components: `app/one-pager/components/` — SplitLayout, TextFieldWithExpand, CheckboxGroup, DynamicRoleSelector, FeatureSelector, PhotoPicker, CompetitorInput, DocumentPreview
 
 ## Documentation
 

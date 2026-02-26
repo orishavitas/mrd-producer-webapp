@@ -5,6 +5,29 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.1] - 2026-02-26
+
+### Fixed (One-Pager Generator)
+- **Multiple photos per competitor**: Migrated `photoUrl: string` → `photoUrls: string[]` across state, reducer, PhotoPicker, CompetitorInput, page, DocumentPreview, and export route. Toggle-add/remove pattern via `TOGGLE_COMPETITOR_PHOTO` action.
+- **Photos broken in preview**: `DocumentPreview` now iterates `photoUrls[]` and renders each via ReactMarkdown `![]()` syntax.
+- **Can't add additional competitors**: Added duplicate URL guard in `ADD_COMPETITOR` reducer (early return if URL already exists).
+- **Use cases not showing in preview**: Added `useCases` block to `generateMarkdown()` in `DocumentPreview`.
+- **Feature popover anchored to page bottom**: Wrapped custom input row in `<div className={styles.chipWrapper}>` so popover is `position: absolute` relative to its trigger, not the page.
+
+### Added (One-Pager Generator)
+- Compulocks logo in `DocumentPreview` header (right-aligned, `--op-logo-height: 20px`).
+- Logo embedded in DOCX export (ImageRun in document header with tab stop) and HTML export (base64 inline in `.doc-header` div).
+- `productName`, `preparedBy`, `userEmail` metadata fields — free-text inputs in form, rendered in preview header and exported to DOCX/HTML.
+
+### Changed
+- Merged `feat/one-pager-integrate` → `main`; One-Pager Generator now live on Vercel.
+- `feature/unified-dashboard` branch: auth/dashboard fixes committed and pushed (awaiting env vars in Vercel to go live).
+
+### Infrastructure
+- Added `AUTH_SECRET`, `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`, `POSTGRES_URL` to CLAUDE.md env vars table.
+- `app/page.tsx`: hard redirect to `/login` when no session (replaced silent empty-state fallback).
+- `lib/db.ts`: `updateDocument` now validates non-empty updates, filters soft-deleted rows, and throws on missing row.
+
 ## [0.3.0] - 2026-02-03
 
 ### Added
