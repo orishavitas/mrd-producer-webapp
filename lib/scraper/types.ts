@@ -63,6 +63,8 @@ export interface CompetitorData {
   link: string;
   /** Hero / product image URL (best candidate from scrape) */
   imageUrl?: string;
+  /** All candidate product photo URLs from the scrape (for PhotoPicker) */
+  candidatePhotos?: string[];
 }
 
 // ---------------------------------------------------------------------------

@@ -125,15 +125,19 @@ export class CompetitorOrchestratorAgent extends BaseAgent<
     }
 
     // Ensure link always points to the original input URL
+    // Populate candidatePhotos from all scraped images (for PhotoPicker)
+    const allImageUrls = page.images.map((img) => img.url);
     const competitor: CompetitorData = {
       ...analysisResult.data,
       link: input.url,
+      candidatePhotos: allImageUrls.length > 0 ? allImageUrls : (analysisResult.data.imageUrl ? [analysisResult.data.imageUrl] : []),
     };
 
     context.log('info', `[${this.id}] Extraction complete`, {
       brand: competitor.brand,
       productName: competitor.productName,
       hasImage: !!competitor.imageUrl,
+      candidateCount: competitor.candidatePhotos?.length ?? 0,
     });
 
     return competitor;

@@ -52,7 +52,7 @@ export default function CompetitorInput({
       if (data.success) {
         onUpdate(url, { ...data.data, status: 'done' });
         if (onCandidates) {
-          onCandidates(url, data.candidatePhotos ?? []);
+          onCandidates(url, data.data.candidatePhotos ?? []);
         }
       } else {
         onUpdate(url, { status: 'error' });
