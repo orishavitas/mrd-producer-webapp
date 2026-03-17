@@ -93,14 +93,16 @@ export function extractImages($: cheerio.CheerioAPI, baseUrl: string): ScrapedIm
     const widthAttr = $(el).attr('width');
     const heightAttr = $(el).attr('height');
 
-    const width = widthAttr ? parseInt(widthAttr, 10) : undefined;
-    const height = heightAttr ? parseInt(heightAttr, 10) : undefined;
+    // Only use dimension if it's a plain integer (no %, px, etc.)
+    const isPlainInt = (v: string | undefined) => v !== undefined && /^\d+$/.test(v.trim());
+    const width = isPlainInt(widthAttr) ? parseInt(widthAttr!, 10) : undefined;
+    const height = isPlainInt(heightAttr) ? parseInt(heightAttr!, 10) : undefined;
 
     images.push({
       url: resolvedUrl,
       alt,
-      width: width && !isNaN(width) ? width : undefined,
-      height: height && !isNaN(height) ? height : undefined,
+      width,
+      height,
     });
   });
 
