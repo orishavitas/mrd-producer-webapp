@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createExecutionContext } from '@/agent/core/execution-context';
+import { ragAgent } from '@/agent/agents/one-pager-beta/rag-agent';
 
 interface FeatureCategory {
   category: string;
@@ -28,6 +29,19 @@ JSON shape:
   "niceToHave": ["exact label 3"],
   "reasoning": "one sentence"
 }`;
+
+function buildRagContext(docs: import('@/agent/agents/one-pager-beta/rag-agent').RetrievedDoc[]): string {
+  if (!docs.length) return '';
+  const lines = ['Similar products in our database selected these features:'];
+  for (const doc of docs) {
+    const name = doc.productName || 'Unknown product';
+    const mh = doc.mustHave.length ? `Must Have: ${doc.mustHave.join(', ')}` : '';
+    const nth = doc.niceToHave.length ? `Nice to Have: ${doc.niceToHave.join(', ')}` : '';
+    lines.push(`- ${name}: ${[mh, nth].filter(Boolean).join(' / ')}`);
+  }
+  lines.push('Use this as additional signal, but prioritize the product description.');
+  return lines.join('\n');
+}
 
 function buildUserPrompt(req: SuggestFeaturesRequest): string {
   const lines: string[] = [];
@@ -61,9 +75,21 @@ export async function POST(request: NextRequest) {
   const context = createExecutionContext({ requestId: `suggest-features-${Date.now()}` });
   const provider = context.getProvider();
 
+  // Attempt RAG retrieval — graceful degradation if unavailable
+  let ragContext = '';
+  try {
+    const queryText = [body.description, body.goal, body.useCases].filter(Boolean).join('\n');
+    const similar = await ragAgent.retrieve(queryText, 5);
+    ragContext = buildRagContext(similar);
+  } catch {
+    // RAG unavailable — continue without it
+  }
+
+  const userPrompt = buildUserPrompt(body) + (ragContext ? `\n\n${ragContext}` : '');
+
   let raw: string;
   try {
-    const result = await provider.generateText(buildUserPrompt(body), SYSTEM_PROMPT);
+    const result = await provider.generateText(userPrompt, SYSTEM_PROMPT);
     raw = result.text;
   } catch (err) {
     return NextResponse.json({ error: 'AI provider failed' }, { status: 500 });
