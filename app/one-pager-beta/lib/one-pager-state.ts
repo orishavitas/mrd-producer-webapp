@@ -66,7 +66,8 @@ export type OnePagerAction =
   | { type: 'UPDATE_COMPETITOR'; payload: { url: string; data: Partial<CompetitorEntry> } }
   | { type: 'REMOVE_COMPETITOR'; payload: string }
   | { type: 'TOGGLE_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
-  | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } };
+  | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } }
+  | { type: 'SET_FEATURES'; payload: { mustHave: string[]; niceToHave: string[] } };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -259,6 +260,15 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
             ? { ...c, candidatePhotos: action.payload.candidatePhotos }
             : c
         ),
+      };
+
+    case 'SET_FEATURES':
+      return {
+        ...base,
+        features: {
+          mustHave: action.payload.mustHave,
+          niceToHave: action.payload.niceToHave,
+        },
       };
 
     default:
