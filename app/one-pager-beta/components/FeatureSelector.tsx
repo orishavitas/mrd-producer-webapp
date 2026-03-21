@@ -14,6 +14,8 @@ interface FeatureSelectorProps {
   niceToHave: string[];
   onToggle: (label: string, category: 'mustHave' | 'niceToHave') => void;
   onRemove: (label: string, category: 'mustHave' | 'niceToHave') => void;
+  onAutoFill?: () => void;
+  isAutoFilling?: boolean;
 }
 
 type Layout = 'sideBySide' | 'stacked';
@@ -24,6 +26,8 @@ export function FeatureSelector({
   niceToHave,
   onToggle,
   onRemove,
+  onAutoFill,
+  isAutoFilling,
 }: FeatureSelectorProps) {
   const [layout, setLayout] = useState<Layout>('sideBySide');
   const [popover, setPopover] = useState<string | null>(null); // feature label
@@ -86,6 +90,15 @@ export function FeatureSelector({
           className={layout === 'stacked' ? styles.layoutBtnActive : styles.layoutBtn}
           onClick={() => setLayout('stacked')}
         >Stacked</button>
+        {onAutoFill && (
+          <button
+            className={styles.autoFillButton}
+            onClick={onAutoFill}
+            disabled={isAutoFilling}
+          >
+            {isAutoFilling ? 'Filling...' : 'Auto-fill Features'}
+          </button>
+        )}
       </div>
 
       {/* Predefined chip palette */}
