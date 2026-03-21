@@ -24,6 +24,7 @@ function OnePagerContent() {
   const { state, dispatch } = useOnePager();
   const [config, setConfig] = useState<ConfigData | null>(null);
   const [isExporting, setIsExporting] = useState<string | null>(null);
+  const [isAutoFilling, setIsAutoFilling] = useState(false);
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -67,6 +68,41 @@ function OnePagerContent() {
       setIsExporting(null);
     }
   }, [state]);
+
+  const handleAutoFill = useCallback(async () => {
+    if (!config) return;
+    setIsAutoFilling(true);
+    try {
+      const availableFeatures = config.standardFeatures.map((cat) => ({
+        category: cat.label,
+        features: cat.features.map((f: { label: string }) => f.label),
+      }));
+      const response = await fetch('/api/one-pager-beta/suggest-features', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          description: state.description || state.expandedDescription,
+          goal: state.goal || state.expandedGoal,
+          useCases: state.useCases || state.expandedUseCases,
+          availableFeatures,
+        }),
+      });
+      const data = await response.json();
+      if (data.mustHave || data.niceToHave) {
+        dispatch({
+          type: 'SET_FEATURES',
+          payload: {
+            mustHave: data.mustHave ?? [],
+            niceToHave: data.niceToHave ?? [],
+          },
+        });
+      }
+    } catch (err) {
+      console.error('Auto-fill failed:', err);
+    } finally {
+      setIsAutoFilling(false);
+    }
+  }, [config, state, dispatch]);
 
   const leftPanel = (
     <div className={styles.inputSections}>
@@ -216,6 +252,8 @@ function OnePagerContent() {
           onRemove={(label, category) =>
             dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
           }
+          onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
+          isAutoFilling={isAutoFilling}
         />
       </div>
 
