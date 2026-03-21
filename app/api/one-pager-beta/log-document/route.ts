@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { appendSheetRow } from '@/lib/google-sheets';
+import { ragAgent } from '@/agent/agents/one-pager-beta/rag-agent';
 
 interface LogDocumentRequest {
   state: {
@@ -69,6 +70,22 @@ export async function POST(request: NextRequest) {
 
   try {
     await appendSheetRow(row);
+
+    // Fire-and-forget RAG ingest
+    ragAgent.ingest({
+      sessionId: state.sessionId ?? '',
+      productName: state.productName ?? '',
+      description,
+      goal,
+      useCases,
+      mustHave: state.features?.mustHave ?? [],
+      niceToHave: state.features?.niceToHave ?? [],
+      environments: state.context?.environments ?? [],
+      industries: state.context?.industries ?? [],
+    }).catch((err) => {
+      console.error('[log-document] RAG ingest failed:', err instanceof Error ? err.message : err);
+    });
+
     return NextResponse.json({ success: true });
   } catch (err) {
     console.error('[log-document] Sheets write failed:', err instanceof Error ? err.message : err);
