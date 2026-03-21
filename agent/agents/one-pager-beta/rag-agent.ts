@@ -5,7 +5,7 @@
  * retrieve(query, topK) — finds similar past documents by cosine similarity
  */
 
-import { sql } from '@vercel/postgres';
+import { sql } from '@/lib/db-client';
 import { embedText } from '@/lib/embeddings';
 
 export interface IngestDoc {
@@ -72,7 +72,14 @@ export class RagAgent {
     const embedding = await embedText(query);
     const embeddingStr = `[${embedding.join(',')}]`;
 
-    const result = await sql`
+    interface EmbeddingRow {
+      session_id: string;
+      product_name: string;
+      metadata: { mustHave?: string[]; niceToHave?: string[] } | null;
+      similarity: string;
+    }
+
+    const result = await sql<EmbeddingRow>`
       SELECT
         session_id,
         product_name,
