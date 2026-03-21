@@ -33,7 +33,16 @@ function OnePagerContent() {
       .catch(console.error);
   }, []);
 
+  const logDocument = useCallback((format: string) => {
+    fetch('/api/one-pager-beta/log-document', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ state, exportFormat: format }),
+    }).catch(() => {}); // fire and forget
+  }, [state]);
+
   const handleExport = useCallback(async (format: 'docx' | 'html' | 'pdf') => {
+    logDocument(format); // fire and forget — log before export
     setIsExporting(format);
     try {
       const response = await fetch(`/api/one-pager/export?format=${format}`, {
@@ -67,7 +76,7 @@ function OnePagerContent() {
     } finally {
       setIsExporting(null);
     }
-  }, [state]);
+  }, [state, logDocument]);
 
   const handleAutoFill = useCallback(async () => {
     if (!config) return;
