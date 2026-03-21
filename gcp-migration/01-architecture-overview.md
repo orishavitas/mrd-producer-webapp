@@ -36,16 +36,16 @@ User browser
     │
     ▼
 Vercel (Production host)
-    │
     ├── Serves Next.js app (SSR + static)
     ├── Runs API routes (serverless functions)
     └── Provides Postgres database (Vercel Postgres)
-            │
-            ├── GitHub (source of truth, CI/CD trigger)
-            ├── Google OAuth (user authentication)
-            ├── Gemini API (AI text generation + search grounding)
-            ├── Anthropic Claude API (AI fallback)
-            └── Google Custom Search API (web search for MRD)
+
+External services called by Vercel at runtime:
+    ├── GitHub (source of truth, CI/CD trigger)
+    ├── Google OAuth (user authentication)
+    ├── Gemini API (AI text generation + search grounding)
+    ├── Anthropic Claude API (AI fallback)
+    └── Google Custom Search API (web search for MRD)
 ```
 
 **CI/CD flow (current):**
@@ -68,7 +68,7 @@ app/                    # Next.js pages and API routes
 │   ├── documents/      # CRUD for saved documents
 │   └── drive/sync      # Google Drive sync stub (returns 501 — not yet active)
 
-lib/
+lib/                    # Shared utilities and server-side code
 ├── auth.ts             # NextAuth.js v5 config (Google OAuth)
 ├── db.ts               # Database helpers (currently @vercel/postgres)
 ├── providers/          # AI provider abstraction (Gemini, Claude, OpenAI)
@@ -126,7 +126,7 @@ After migration, these move to **Google Secret Manager**.
 | Current | After Migration |
 |---------|----------------|
 | Vercel production hosting | Google Cloud Run |
-| Vercel Postgres | Cloud SQL (PostgreSQL) — see Doc 4 for options |
+| Vercel Postgres | Cloud SQL (PostgreSQL) — see `04-database-options.md` for options |
 | `@vercel/postgres` npm package | `pg` package — requires one code change in `lib/db.ts` |
 | Vercel environment variables | Google Secret Manager |
 | Vercel deploy in GitHub Actions | Cloud Run deploy in GitHub Actions |

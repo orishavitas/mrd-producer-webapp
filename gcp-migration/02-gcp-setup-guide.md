@@ -125,8 +125,10 @@ docker push europe-west1-docker.pkg.dev/YOUR_PROJECT_ID/mrd-producer/app:latest
 
 ## Step 6: Store Secrets in Secret Manager
 
+> **Security note:** Replace `YOUR_VALUE` with the actual secret value. Avoid typing real credentials directly into your terminal — use the GCP Console UI (Secret Manager → Create Secret) or pipe from a file to avoid storing values in shell history.
+
 ```bash
-# Store each secret (repeat for each variable from the inventory in Doc 1)
+# Store each secret using the GCP Console UI, or via CLI:
 echo -n "YOUR_VALUE" | gcloud secrets create GOOGLE_API_KEY --data-file=-
 echo -n "YOUR_VALUE" | gcloud secrets create GOOGLE_SEARCH_ENGINE_ID --data-file=-
 echo -n "YOUR_VALUE" | gcloud secrets create GOOGLE_CLIENT_ID --data-file=-
@@ -140,38 +142,12 @@ echo -n "YOUR_VALUE" | gcloud secrets create POSTGRES_URL --data-file=-
 
 ---
 
-## Step 7: Deploy to Cloud Run
+## Step 7: Grant Cloud Run Access to Secret Manager
+
+> **Do this before deploying** — Cloud Run needs Secret Manager access to read secrets during deployment.
 
 ```bash
-gcloud run deploy mrd-producer \
-  --image=europe-west1-docker.pkg.dev/YOUR_PROJECT_ID/mrd-producer/app:latest \
-  --platform=managed \
-  --region=europe-west1 \
-  --allow-unauthenticated \
-  --memory=512Mi \
-  --cpu=1 \
-  --max-instances=10 \
-  --concurrency=80 \
-  --set-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,\
-GOOGLE_SEARCH_ENGINE_ID=GOOGLE_SEARCH_ENGINE_ID:latest,\
-GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,\
-GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,\
-AUTH_SECRET=AUTH_SECRET:latest,\
-POSTGRES_URL=POSTGRES_URL:latest
-```
-
-> **Baseline config:** 512MB RAM, 1 vCPU, max 10 instances, concurrency 80. Adjust after load testing.
-> **`--allow-unauthenticated`:** Required — users access the app from the browser without GCP credentials.
-
-After deploy, Cloud Run outputs a service URL like:
-`https://mrd-producer-<hash>-ew.a.run.app`
-
----
-
-## Step 8: Grant Cloud Run Access to Secret Manager
-
-```bash
-# Get the Cloud Run service account
+# Get the default compute service account number
 PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)")
 SERVICE_ACCOUNT="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
 
@@ -183,13 +159,38 @@ gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
 
 ---
 
+## Step 8: Deploy to Cloud Run
+
+Run this in **Git Bash** (not PowerShell or CMD — the line continuation syntax requires bash):
+
+```bash
+gcloud run deploy mrd-producer \
+  --image=europe-west1-docker.pkg.dev/YOUR_PROJECT_ID/mrd-producer/app:latest \
+  --platform=managed \
+  --region=europe-west1 \
+  --allow-unauthenticated \
+  --memory=512Mi \
+  --cpu=1 \
+  --max-instances=10 \
+  --concurrency=80 \
+  --set-secrets=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,GOOGLE_SEARCH_ENGINE_ID=GOOGLE_SEARCH_ENGINE_ID:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,AUTH_SECRET=AUTH_SECRET:latest,POSTGRES_URL=POSTGRES_URL:latest
+```
+
+> **Baseline config:** 512MB RAM, 1 vCPU, max 10 instances, concurrency 80. Adjust after load testing.
+> **`--allow-unauthenticated`:** Required — users access the app from the browser without GCP credentials.
+
+After deploy, Cloud Run outputs a service URL like:
+`https://mrd-producer-<hash>-ew.a.run.app`
+
+---
+
 ## Step 9: Custom Domain Setup
 
 ```bash
 # Map your domain to the Cloud Run service
 gcloud run domain-mappings create \
   --service=mrd-producer \
-  --domain=mrd.yourcompany.com \
+  --domain=YOUR_APP_DOMAIN \
   --region=europe-west1
 ```
 
@@ -206,7 +207,7 @@ In Google Cloud Console → APIs & Services → Credentials → your OAuth 2.0 C
 
 Add to **Authorized Redirect URIs:**
 ```
-https://mrd.yourcompany.com/api/auth/callback/google
+https://YOUR_APP_DOMAIN/api/auth/callback/google
 ```
 
 > If the OAuth client was created under a personal Google account rather than your org's GCP project, it must be **transferred to the org project first**. Contact whoever set up the original OAuth client.
@@ -219,8 +220,8 @@ https://mrd.yourcompany.com/api/auth/callback/google
 # Check service status
 gcloud run services describe mrd-producer --region=europe-west1
 
-# Tail logs
-gcloud run services logs tail mrd-producer --region=europe-west1
+# View recent logs
+gcloud logging read "resource.type=cloud_run_revision AND resource.labels.service_name=mrd-producer" --limit=50 --format=json
 ```
 
 Expected: Service shows `READY`. Open the service URL in a browser — the login page should load and Google OAuth should work.
@@ -248,6 +249,7 @@ gcloud run services update-traffic mrd-producer \
 Cloud Run automatically probes `GET /` every 30 seconds. If the app is healthy, it returns HTTP 200.
 To check manually:
 ```bash
-curl -I https://mrd.yourcompany.com
-# Expected: HTTP/2 200
+curl -I https://YOUR_APP_DOMAIN
+# Expected: HTTP/2 302 (redirect to login page — this is correct for an authenticated app)
+# If you see HTTP/2 200 on a public endpoint, the app is also healthy.
 ```
