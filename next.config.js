@@ -1,5 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Output standalone server for Docker deployment
+  output: 'standalone',
+
   // Enable React strict mode for better development experience
   reactStrictMode: true,
 
