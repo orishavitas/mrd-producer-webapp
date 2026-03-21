@@ -30,7 +30,7 @@ jobs:
       - run: npm ci
 
       - name: Run linter
-        run: npm run lint --if-present
+        run: npm run --if-present lint
         continue-on-error: true
 
       - name: Build
@@ -65,7 +65,9 @@ jobs:
             --image=${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:${{ github.sha }} \
             --platform=managed \
             --region=${{ secrets.GCP_REGION }} \
-            --allow-unauthenticated
+            --project=${{ secrets.GCP_PROJECT_ID }} \
+            --allow-unauthenticated \
+            --add-cloudsql-instances=${{ secrets.GCP_PROJECT_ID }}:${{ secrets.GCP_REGION }}:mrd-producer-db
 
   # ── PR preview via Vercel (pull requests only) ────────────────────────
   preview-vercel:

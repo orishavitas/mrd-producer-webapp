@@ -104,6 +104,9 @@ gcloud iam workload-identity-pools providers create-oidc github-provider \
   --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
   --issuer-uri="https://token.actions.githubusercontent.com"
 
+# Get your project number (needed for the binding command below)
+# YOUR_PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)")
+
 # Bind the service account to the GitHub repo
 gcloud iam service-accounts add-iam-policy-binding \
   github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com \
@@ -111,8 +114,21 @@ gcloud iam service-accounts add-iam-policy-binding \
   --member="principalSet://iam.googleapis.com/projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_ORG/mrd-producer-webapp"
 ```
 
-Save the WIF provider resource name (output of the provider create command) as `WIF_PROVIDER` in GitHub secrets.
-Save the service account email as `WIF_SERVICE_ACCOUNT` in GitHub secrets.
+After running the commands above, retrieve the values to add as GitHub secrets:
+
+```bash
+# Get the WIF provider resource name
+gcloud iam workload-identity-pools providers describe github-provider \
+  --location=global \
+  --workload-identity-pool=github-pool \
+  --format="value(name)"
+# Save this output as WIF_PROVIDER in GitHub secrets
+
+# The service account email to save as WIF_SERVICE_ACCOUNT:
+echo "github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com"
+```
+
+Save the WIF provider name as `WIF_PROVIDER` and the service account email as `WIF_SERVICE_ACCOUNT` in GitHub repo secrets.
 
 ---
 
@@ -178,7 +194,7 @@ jobs:
       - run: npm ci
 
       - name: Run linter
-        run: npm run lint --if-present
+        run: npm run --if-present lint
         continue-on-error: true
 
       - name: Build

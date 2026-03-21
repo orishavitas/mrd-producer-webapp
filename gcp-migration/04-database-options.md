@@ -63,6 +63,7 @@ gcloud sql instances create mrd-producer-db \
   --tier=db-f1-micro \
   --region=europe-west1 \
   --storage-auto-increase \
+  --backup \
   --backup-start-time=02:00
 ```
 
@@ -81,7 +82,11 @@ gcloud sql users create app_user \
 ### 3. Run the schema
 
 ```bash
-# Connect via Cloud SQL Auth Proxy (see connection section below)
+# First, install and run Cloud SQL Auth Proxy locally:
+# Download: https://cloud.google.com/sql/docs/postgres/connect-auth-proxy#install
+./cloud-sql-proxy YOUR_PROJECT_ID:europe-west1:mrd-producer-db &
+
+# Then run the schema (proxy listens on 127.0.0.1:5432 by default):
 psql "host=127.0.0.1 port=5432 dbname=mrd_producer user=app_user" \
   -f lib/db-schema.sql
 ```
@@ -89,8 +94,9 @@ psql "host=127.0.0.1 port=5432 dbname=mrd_producer user=app_user" \
 ### 4. Migrate existing data from Vercel Postgres
 
 ```bash
-# Export from Vercel Postgres
-pg_dump "VERCEL_POSTGRES_URL" --no-owner --no-acl -f vercel-backup.sql
+# Export from Vercel Postgres (substitute the actual connection string from your Vercel dashboard)
+VERCEL_POSTGRES_URL="postgresql://user:password@host/dbname"
+pg_dump "$VERCEL_POSTGRES_URL" --no-owner --no-acl -f vercel-backup.sql
 
 # Import to Cloud SQL
 psql "host=127.0.0.1 port=5432 dbname=mrd_producer user=app_user" \
@@ -112,10 +118,21 @@ Add to your `gcloud run deploy` command:
 --add-cloudsql-instances=YOUR_PROJECT_ID:europe-west1:mrd-producer-db
 ```
 
-Then set the connection string (in Secret Manager as `POSTGRES_URL`) to:
+For Cloud Run, the `pg` Node.js package requires the socket path as the `host` config field, not as a URL query parameter.
+
+Update the connection code in `lib/db.ts` to use this pattern:
+
+```typescript
+import { Pool } from 'pg';
+const pool = new Pool({
+  user: 'app_user',
+  password: process.env.DB_PASSWORD,
+  database: 'mrd_producer',
+  host: '/cloudsql/YOUR_PROJECT_ID:europe-west1:mrd-producer-db',
+});
 ```
-postgresql://app_user:PASSWORD@localhost/mrd_producer?host=/cloudsql/YOUR_PROJECT_ID:europe-west1:mrd-producer-db
-```
+
+> Store `DB_PASSWORD` as a separate secret in Secret Manager. Do not embed passwords in connection strings.
 
 ### Grant Cloud Run access to Cloud SQL
 
