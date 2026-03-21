@@ -1,0 +1,74 @@
+.container {
+  margin-bottom: 1rem;
+}
+
+.label {
+  display: block;
+  font-weight: 600;
+  font-size: 0.6875rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-on-surface-variant, #45464F);
+  margin-bottom: 0.375rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+/* M3 chip input container */
+.chipArea {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+  padding: 0.5rem 0.625rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-s, 8px);
+  min-height: var(--op-input-height, 2.5rem);
+  align-items: center;
+  background: var(--op-surface, #FDFBFF);
+  transition: border-color 0.15s;
+}
+
+.chipArea:focus-within {
+  border-color: var(--op-secondary, #243469);
+  box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
+}
+
+/* M3 input chip */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  height: 1.75rem;
+  padding: 0 0.625rem;
+  background: var(--op-secondary-container, #DEE1FF);
+  border-radius: var(--op-radius-full, 9999px);
+  font-size: 0.8125rem;
+  color: var(--op-primary, #1D1F4A);
+  white-space: nowrap;
+}
+
+.remove {
+  background: none;
+  border: none;
+  color: var(--op-primary, #1D1F4A);
+  cursor: pointer;
+  font-size: 0.75rem;
+  padding: 0 2px;
+  opacity: 0.6;
+  line-height: 1;
+}
+
+.remove:hover {
+  opacity: 1;
+}
+
+.input {
+  border: none;
+  outline: none;
+  flex: 1;
+  min-width: 120px;
+  font-size: 0.8125rem;
+  padding: 2px 4px;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: transparent;
+  color: var(--op-on-surface, #1A1B1F);
+}

@@ -1,0 +1,146 @@
+.inputSections {
+  max-width: 600px;
+}
+
+.toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--op-primary);
+}
+
+.pageTitle {
+  font-size: 1.25rem;
+  font-weight: 500;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+
+.exportButtons {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* M3 pill button — filled */
+.exportButton {
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
+  background: var(--op-primary);
+  color: var(--op-on-primary);
+  border: none;
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+}
+
+.exportButton:hover:not(:disabled) {
+  background: var(--op-secondary);
+}
+
+.exportButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+/* M3 pill button — outlined */
+.exportButtonGhost {
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
+  background: transparent;
+  color: var(--op-primary);
+  border: 1.5px solid var(--op-primary);
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+
+.exportButtonGhost:hover:not(:disabled) {
+  background: var(--op-primary);
+  color: var(--op-on-primary);
+}
+
+.exportButtonGhost:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.section {
+  margin-bottom: 1.5rem;
+}
+
+.sectionLabel {
+  display: block;
+  font-weight: 600;
+  font-size: 0.75rem;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 0.75rem;
+}
+
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.fieldFull {
+  margin-top: var(--op-spacing-xs, 0.5rem);
+}
+
+
+.fieldLabel {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface);
+}
+
+/* M3 outlined text field */
+.textInput {
+  height: var(--op-input-height);
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);
+  font-size: 0.875rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  background: var(--op-surface);
+  color: var(--op-on-surface);
+  transition: border-color 0.15s;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: var(--op-secondary);
+  box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
+}
+
+.loading {
+  color: var(--op-outline-strong);
+  font-size: 0.8125rem;
+  font-style: italic;
+}

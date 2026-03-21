@@ -17,12 +17,23 @@ const TOOLS = [
     description: 'Create concise product one-pagers for stakeholder communication.',
     href: '/one-pager',
   },
+  {
+    title: 'One-Pager',
+    description: 'Development sandbox for testing new AI features, database integration, and product-specific enhancements.',
+    href: '/one-pager-beta',
+    badge: 'Beta',
+  },
 ];
 
 export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user?.email) redirect('/login');
-  const documents = await listDocuments(session.user.email);
+  let documents: Awaited<ReturnType<typeof listDocuments>> = [];
+  try {
+    documents = await listDocuments(session.user.email);
+  } catch {
+    // DB not configured yet — show empty state
+  }
 
   return (
     <>
