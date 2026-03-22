@@ -1,8 +1,8 @@
 /**
  * Tests for new fields and actions added in Phase C1:
  * - OnePagerState: useCases, expandedUseCases
- * - CompetitorEntry: photoUrl?, candidatePhotos?, scrapeTier?
- * - Actions: SET_USE_CASES, SET_EXPANDED_USE_CASES, SET_COMPETITOR_PHOTO, SET_COMPETITOR_CANDIDATES
+ * - CompetitorEntry: photoUrls, candidatePhotos?, scrapeTier?
+ * - Actions: SET_USE_CASES, SET_EXPANDED_USE_CASES, TOGGLE_COMPETITOR_PHOTO, SET_COMPETITOR_CANDIDATES
  */
 
 import {
@@ -68,32 +68,48 @@ describe('onePagerReducer - new fields (Phase C1)', () => {
     expect(next.expandedUseCases).toBe('Expanded version');
   });
 
-  // ── CompetitorEntry: photoUrl, candidatePhotos, scrapeTier ───────────────
+  // ── CompetitorEntry: photoUrls, candidatePhotos, scrapeTier ─────────────
 
-  it('ADD_COMPETITOR entry has undefined photoUrl, candidatePhotos, scrapeTier by default', () => {
+  it('ADD_COMPETITOR entry has empty photoUrls, undefined candidatePhotos and scrapeTier by default', () => {
     const next = onePagerReducer(state, {
       type: 'ADD_COMPETITOR',
       payload: { url: 'https://acme.com' },
     });
     const entry = next.competitors[0];
-    expect(entry.photoUrl).toBeUndefined();
+    expect(entry.photoUrls).toEqual([]);
     expect(entry.candidatePhotos).toBeUndefined();
     expect(entry.scrapeTier).toBeUndefined();
   });
 
-  it('SET_COMPETITOR_PHOTO sets photoUrl on matching competitor', () => {
+  it('TOGGLE_COMPETITOR_PHOTO adds a photo URL when not present', () => {
     let next = onePagerReducer(state, {
       type: 'ADD_COMPETITOR',
       payload: { url: 'https://acme.com' },
     });
     next = onePagerReducer(next, {
-      type: 'SET_COMPETITOR_PHOTO',
+      type: 'TOGGLE_COMPETITOR_PHOTO',
       payload: { url: 'https://acme.com', photoUrl: 'https://acme.com/img/product.jpg' },
     });
-    expect(next.competitors[0].photoUrl).toBe('https://acme.com/img/product.jpg');
+    expect(next.competitors[0].photoUrls).toContain('https://acme.com/img/product.jpg');
   });
 
-  it('SET_COMPETITOR_PHOTO does not affect other competitors', () => {
+  it('TOGGLE_COMPETITOR_PHOTO removes a photo URL when already present', () => {
+    let next = onePagerReducer(state, {
+      type: 'ADD_COMPETITOR',
+      payload: { url: 'https://acme.com' },
+    });
+    next = onePagerReducer(next, {
+      type: 'TOGGLE_COMPETITOR_PHOTO',
+      payload: { url: 'https://acme.com', photoUrl: 'https://acme.com/img/product.jpg' },
+    });
+    next = onePagerReducer(next, {
+      type: 'TOGGLE_COMPETITOR_PHOTO',
+      payload: { url: 'https://acme.com', photoUrl: 'https://acme.com/img/product.jpg' },
+    });
+    expect(next.competitors[0].photoUrls).not.toContain('https://acme.com/img/product.jpg');
+  });
+
+  it('TOGGLE_COMPETITOR_PHOTO does not affect other competitors', () => {
     let next = onePagerReducer(state, {
       type: 'ADD_COMPETITOR',
       payload: { url: 'https://acme.com' },
@@ -103,11 +119,11 @@ describe('onePagerReducer - new fields (Phase C1)', () => {
       payload: { url: 'https://other.com' },
     });
     next = onePagerReducer(next, {
-      type: 'SET_COMPETITOR_PHOTO',
+      type: 'TOGGLE_COMPETITOR_PHOTO',
       payload: { url: 'https://acme.com', photoUrl: 'https://acme.com/img/product.jpg' },
     });
-    expect(next.competitors[0].photoUrl).toBe('https://acme.com/img/product.jpg');
-    expect(next.competitors[1].photoUrl).toBeUndefined();
+    expect(next.competitors[0].photoUrls).toContain('https://acme.com/img/product.jpg');
+    expect(next.competitors[1].photoUrls).toEqual([]);
   });
 
   it('SET_COMPETITOR_CANDIDATES sets candidatePhotos on matching competitor', () => {

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import fs from 'fs';
 import path from 'path';
+import { auth } from '@/lib/auth';
+import { createDocument } from '@/lib/db';
 import {
   Document,
   Packer,
@@ -50,6 +52,9 @@ interface OnePagerData {
     targetPrice: string;
   };
   competitors: CompetitorEntry[];
+  productName?: string;
+  preparedBy?: string;
+  userEmail?: string;
 }
 
 const BRAND = {
@@ -89,7 +94,7 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
     new Paragraph({
       children: [
         new TextRun({
-          text: 'Product One-Pager',
+          text: 'Marketing Requirement Document',
           font: BRAND.fonts.heading,
           size: BRAND.sizes.title,
           bold: true,
@@ -177,6 +182,14 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
       ],
       spacing: { after: BRAND.spacing.afterParagraph },
     });
+
+  // Document metadata (product name, prepared by, contact)
+  if (data.productName) children.push(labelValue('Product', data.productName));
+  if (data.preparedBy) children.push(labelValue('Prepared By', data.preparedBy));
+  if (data.userEmail) children.push(labelValue('Contact', data.userEmail));
+  if (data.productName || data.preparedBy || data.userEmail) {
+    children.push(new Paragraph({ spacing: { after: 120 } }));
+  }
 
   // 1. Description
   if (data.description) {
@@ -408,7 +421,7 @@ async function generateOnePagerDocx(data: OnePagerData): Promise<Buffer> {
               new Paragraph({
                 children: [
                   new TextRun({
-                    text: 'Product One-Pager',
+                    text: data.productName || 'Marketing Requirement Document',
                     font: BRAND.fonts.heading,
                     size: BRAND.sizes.small,
                     color: BRAND.colors.muted,
@@ -466,11 +479,13 @@ function generateOnePagerHtml(data: OnePagerData): string {
     ? `data:image/png;base64,${logoBuffer.toString('base64')}`
     : null;
 
+  const docTitle = data.productName || 'Marketing Requirement Document';
+
   let html = `<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Product One-Pager</title>
+  <title>${docTitle}</title>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500&family=Barlow:wght@400;500&display=swap" rel="stylesheet">
   <style>
     @page { size: letter; margin: 0.75in; }
@@ -498,6 +513,8 @@ function generateOnePagerHtml(data: OnePagerData): string {
     }
     .doc-header h1::after { display: none; }
     .doc-logo { height: 20px; width: auto; display: block; }
+    .doc-meta { margin-bottom: 12pt; font-size: 10pt; }
+    .doc-meta p { margin: 2pt 0; }
     h1 {
       font-family: 'Barlow Condensed', sans-serif;
       font-size: 22pt;
@@ -538,6 +555,23 @@ function generateOnePagerHtml(data: OnePagerData): string {
     li { margin-bottom: 3pt; }
     .label { font-weight: 500; color: #1D1F4A; }
     a { color: #243469; }
+    .photo-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 12px;
+    }
+    .photo-row img {
+      flex: 1 1 auto;
+      min-width: 0;
+      max-width: calc(25% - 6px);
+      max-height: 1280px;
+      height: auto;
+      width: auto;
+      object-fit: contain;
+      border-radius: 4px;
+      background: #f3f4f6;
+    }
     .footer {
       text-align: center;
       font-size: 9pt;
@@ -554,12 +588,18 @@ function generateOnePagerHtml(data: OnePagerData): string {
 </head>
 <body>
 <div class="doc-header">
-  <h1>Product One-Pager</h1>
+  <h1>Marketing Requirement Document</h1>
   ${logoSrc ? `<img src="${logoSrc}" alt="Compulocks" class="doc-logo">` : ''}
 </div>
+${(data.productName || data.preparedBy || data.userEmail) ? `<div class="doc-meta">
+  ${data.productName ? `<p><span class="label">Product:</span> ${data.productName}</p>` : ''}
+  ${data.preparedBy ? `<p><span class="label">Prepared By:</span> ${data.preparedBy}</p>` : ''}
+  ${data.userEmail ? `<p><span class="label">Contact:</span> <a href="mailto:${data.userEmail}">${data.userEmail}</a></p>` : ''}
+</div>` : ''}
 `;
 
   const esc = (t: string) => t.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
   if (data.description) {
     html += `<h2>Product Description</h2>\n<p>${esc(data.description)}</p>\n`;
@@ -572,10 +612,10 @@ function generateOnePagerHtml(data: OnePagerData): string {
   if (hasWhere) {
     html += '<h2>Where</h2>\n';
     if (data.context.environments.length > 0) {
-      html += `<p><span class="label">Environment:</span> ${esc(data.context.environments.join(', '))}</p>\n`;
+      html += `<p><span class="label">Environment:</span> ${esc(data.context.environments.map(cap).join(', '))}</p>\n`;
     }
     if (data.context.industries.length > 0) {
-      html += `<p><span class="label">Industry:</span> ${esc(data.context.industries.join(', '))}</p>\n`;
+      html += `<p><span class="label">Industry:</span> ${esc(data.context.industries.map(cap).join(', '))}</p>\n`;
     }
   }
 
@@ -617,8 +657,12 @@ function generateOnePagerHtml(data: OnePagerData): string {
     html += '<h2>Competitors</h2>\n';
     for (const comp of doneCompetitors) {
       html += `<h3>${esc(comp.brand)} — ${esc(comp.productName)}</h3>\n`;
-      for (const photoUrl of comp.photoUrls ?? []) {
-        html += `<img src="${esc(photoUrl)}" alt="${esc(comp.productName)}" style="display:inline-block;max-width:640px;max-height:640px;height:160px;width:auto;object-fit:contain;border-radius:4px;margin:8px 8px 12px 0;background:#f3f4f6;">\n`;
+      if ((comp.photoUrls ?? []).length > 0) {
+        html += `<div class="photo-row">\n`;
+        for (const photoUrl of comp.photoUrls) {
+          html += `<img src="${esc(photoUrl)}" alt="${esc(comp.productName)}">\n`;
+        }
+        html += `</div>\n`;
       }
       if (comp.cost) html += `<p><span class="label">Price:</span> ${esc(comp.cost)}</p>\n`;
       if (comp.description) html += `<p>${esc(comp.description)}</p>\n`;
@@ -635,6 +679,16 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const format = new URL(request.url).searchParams.get('format') || 'docx';
     const data: OnePagerData = body;
+
+    // Save to documents table (fire-and-forget — never blocks the export response)
+    auth().then((session) => {
+      if (session?.user?.email) {
+        const title = data.productName || 'Untitled One-Pager';
+        createDocument(session.user.email, title, 'one-pager', body as Record<string, unknown>).catch(
+          (err) => console.error('[export] createDocument failed:', err instanceof Error ? err.message : err)
+        );
+      }
+    }).catch(() => { /* auth unavailable — skip */ });
 
     if (format === 'html' || format === 'pdf') {
       const html = generateOnePagerHtml(data);
