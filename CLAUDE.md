@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-**Version: 1.0.1** — One-Pager bug fixes + logo export + auth + dashboard.
+**Version: 1.1.0** — Neon Postgres + pgvector RAG + documents saved on export + GCP migration docs.
 
 MRD Producer is a Next.js web application with two production tools:
 

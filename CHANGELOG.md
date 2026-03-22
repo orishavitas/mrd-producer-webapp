@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2026-03-22
+
+### Added
+- **Neon Postgres database** — provisioned with `documents` and `document_embeddings` (pgvector 768-dim, IVFFlat cosine index) tables.
+- **`lib/db-client.ts`** — shared `pg` Pool singleton with `query()` and tagged `sql\`\`` helpers. Replaces `@vercel/postgres`.
+- **Documents saved on export** — `/api/one-pager/export` calls `createDocument()` fire-and-forget; exported one-pagers now appear in dashboard.
+- **GCP migration docs** — `gcp-migration/01-05`, `Dockerfile`, updated GitHub Actions for Cloud Run.
+
+### Fixed
+- Migrated `@vercel/postgres` → `pg` (works on Neon, Vercel Postgres, Cloud SQL, local).
+- Stale `one-pager-state` tests: `SET_COMPETITOR_PHOTO`/`photoUrl` → `TOGGLE_COMPETITOR_PHOTO`/`photoUrls[]`. 310/310 passing.
+- Added `AUTH_SECRET` + `POSTGRES_URL` to Vercel — login server error resolved.
+
 ## [1.0.1] - 2026-02-26
 
 ### Fixed (One-Pager Generator)
