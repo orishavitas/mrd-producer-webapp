@@ -14,6 +14,22 @@ export interface Document {
   deleted_at: string | null;
 }
 
+export interface DocumentWithCreator extends Document {
+  creator_name: string | null;
+  creator_email: string | null;
+}
+
+export interface ViolationRecord {
+  userId: string;
+  userName?: string;
+  userEmail?: string;
+  ip?: string;
+  userAgent?: string;
+  actionType: string;
+  inputText: string;
+  violationTypes: string[];
+}
+
 export async function listDocuments(userId: string, toolType?: string): Promise<Document[]> {
   if (toolType && toolType !== 'all') {
     const { rows } = await sql<Document>`
@@ -35,11 +51,13 @@ export async function createDocument(
   userId: string,
   title: string,
   toolType: 'mrd' | 'one-pager' | 'brief',
-  contentJson?: Record<string, unknown>
+  contentJson?: Record<string, unknown>,
+  creatorName?: string,
+  creatorEmail?: string
 ): Promise<Document> {
   const { rows } = await sql<Document>`
-    INSERT INTO documents (id, user_id, title, tool_type, status, content_json, created_at, updated_at)
-    VALUES (gen_random_uuid(), ${userId}, ${title}, ${toolType}, 'draft', ${JSON.stringify(contentJson || {})}, NOW(), NOW())
+    INSERT INTO documents (id, user_id, title, tool_type, status, content_json, creator_name, creator_email, created_at, updated_at)
+    VALUES (gen_random_uuid(), ${userId}, ${title}, ${toolType}, 'draft', ${JSON.stringify(contentJson || {})}, ${creatorName ?? null}, ${creatorEmail ?? null}, NOW(), NOW())
     RETURNING *
   `;
   return rows[0];
@@ -81,4 +99,50 @@ export async function softDeleteDocument(id: string, userId: string): Promise<vo
     UPDATE documents SET deleted_at = NOW(), updated_at = NOW()
     WHERE id = ${id} AND user_id = ${userId}
   `;
+}
+
+export async function listDocumentsWithCreator(userId: string, toolType?: string): Promise<DocumentWithCreator[]> {
+  if (toolType && toolType !== 'all') {
+    const { rows } = await sql<DocumentWithCreator>`
+      SELECT * FROM documents
+      WHERE user_id = ${userId} AND deleted_at IS NULL AND tool_type = ${toolType}
+      ORDER BY updated_at DESC
+    `;
+    return rows;
+  }
+  const { rows } = await sql<DocumentWithCreator>`
+    SELECT * FROM documents
+    WHERE user_id = ${userId} AND deleted_at IS NULL
+    ORDER BY updated_at DESC
+  `;
+  return rows;
+}
+
+export async function logViolation(data: ViolationRecord): Promise<void> {
+  await sql`
+    INSERT INTO guardrail_violations (user_id, user_name, user_email, ip, user_agent, action_type, input_text, violation_type)
+    VALUES (${data.userId}, ${data.userName ?? null}, ${data.userEmail ?? null}, ${data.ip ?? null}, ${data.userAgent ?? null}, ${data.actionType}, ${data.inputText}, ${data.violationTypes})
+  `;
+}
+
+export async function countViolations(userId: string): Promise<number> {
+  const { rows } = await sql<{ count: string }>`
+    SELECT COUNT(*) as count FROM guardrail_violations WHERE user_id = ${userId}
+  `;
+  return parseInt(rows[0]?.count ?? '0', 10);
+}
+
+export async function banUser(userId: string, reason: string): Promise<void> {
+  await sql`
+    INSERT INTO banned_users (user_id, reason, violation_count)
+    VALUES (${userId}, ${reason}, 2)
+    ON CONFLICT (user_id) DO UPDATE SET reason = EXCLUDED.reason, violation_count = banned_users.violation_count + 1
+  `;
+}
+
+export async function isUserBanned(userId: string): Promise<boolean> {
+  const { rows } = await sql<{ user_id: string }>`
+    SELECT user_id FROM banned_users WHERE user_id = ${userId}
+  `;
+  return rows.length > 0;
 }

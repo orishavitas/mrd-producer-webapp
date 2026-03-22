@@ -41,6 +41,10 @@ export interface OnePagerState {
   productName: string;
   preparedBy: string;
   userEmail: string;   // placeholder — will come from auth later
+
+  // Publish flow
+  documentId: string | null;
+  isPublished: boolean;
 }
 
 export type OnePagerAction =
@@ -66,7 +70,9 @@ export type OnePagerAction =
   | { type: 'UPDATE_COMPETITOR'; payload: { url: string; data: Partial<CompetitorEntry> } }
   | { type: 'REMOVE_COMPETITOR'; payload: string }
   | { type: 'TOGGLE_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
-  | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } };
+  | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } }
+  | { type: 'SET_DOCUMENT_ID'; payload: string }
+  | { type: 'SET_PUBLISHED'; payload: boolean };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -90,6 +96,8 @@ export function createInitialState(): OnePagerState {
     productName: '',
     preparedBy: '',
     userEmail: '',
+    documentId: null,
+    isPublished: false,
   };
 }
 
@@ -260,6 +268,12 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
             : c
         ),
       };
+
+    case 'SET_DOCUMENT_ID':
+      return { ...base, documentId: action.payload };
+
+    case 'SET_PUBLISHED':
+      return { ...base, isPublished: action.payload };
 
     default:
       return state;

@@ -1,6 +1,6 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import { listDocuments } from '@/lib/db';
+import { listDocumentsWithCreator, DocumentWithCreator } from '@/lib/db';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
 import DashboardShell from './components/DashboardShell';
@@ -28,9 +28,9 @@ const TOOLS = [
 export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user?.email) redirect('/login');
-  let documents: Awaited<ReturnType<typeof listDocuments>> = [];
+  let documents: DocumentWithCreator[] = [];
   try {
-    documents = await listDocuments(session.user.email);
+    documents = await listDocumentsWithCreator(session.user.email);
   } catch {
     // DB not configured yet — show empty state
   }
@@ -64,7 +64,7 @@ export default async function DashboardPage() {
             </div>
           </section>
 
-          <DashboardShell initialDocuments={documents} />
+          <DashboardShell initialDocuments={documents} currentUserEmail={session.user.email} />
         </div>
       </main>
     </>

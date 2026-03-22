@@ -1,0 +1,87 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.card {
+  background: var(--op-surface);
+  border-radius: var(--op-radius-l);
+  box-shadow: var(--op-shadow-md);
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.heading {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 600;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  color: var(--op-on-surface);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.body {
+  margin: 0;
+  font-size: 0.9375rem;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  color: var(--op-on-surface-variant);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.publishBtn {
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
+  background: var(--op-primary);
+  color: var(--op-on-primary);
+  border: none;
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.publishBtn:hover {
+  background: var(--op-secondary);
+}
+
+.cancelBtn {
+  height: var(--op-btn-height);
+  padding: 0 1.25rem;
+  background: transparent;
+  color: var(--op-primary);
+  border: 1.5px solid var(--op-primary);
+  border-radius: var(--op-radius-full);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.cancelBtn:hover {
+  background: var(--op-primary);
+  color: var(--op-on-primary);
+}

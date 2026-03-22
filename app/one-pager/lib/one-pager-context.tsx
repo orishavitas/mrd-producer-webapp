@@ -16,6 +16,12 @@ interface OnePagerContextValue {
   reset: () => void;
 }
 
+interface OnePagerProviderProps {
+  children: React.ReactNode;
+  readOnly?: boolean;
+  initialState?: Partial<OnePagerState> | null;
+}
+
 const OnePagerContext = createContext<OnePagerContextValue | null>(null);
 
 function loadFromStorage(): OnePagerState | null {
@@ -33,11 +39,17 @@ function loadFromStorage(): OnePagerState | null {
   }
 }
 
-export function OnePagerProvider({ children }: { children: React.ReactNode }) {
-  const [state, dispatch] = useReducer(
+export function OnePagerProvider({ children, readOnly, initialState }: OnePagerProviderProps) {
+  const [state, rawDispatch] = useReducer(
     onePagerReducer,
     null,
-    () => loadFromStorage() ?? createInitialState()
+    () => {
+      const base = loadFromStorage() ?? createInitialState();
+      if (initialState) {
+        return { ...base, ...initialState };
+      }
+      return base;
+    }
   );
 
   useEffect(() => {
@@ -48,6 +60,14 @@ export function OnePagerProvider({ children }: { children: React.ReactNode }) {
     sessionStorage.removeItem(STORAGE_KEY);
     window.location.reload();
   }, []);
+
+  const dispatch: React.Dispatch<OnePagerAction> = useCallback(
+    (action) => {
+      if (readOnly) return;
+      rawDispatch(action);
+    },
+    [readOnly]
+  );
 
   return (
     <OnePagerContext.Provider value={{ state, dispatch, reset }}>

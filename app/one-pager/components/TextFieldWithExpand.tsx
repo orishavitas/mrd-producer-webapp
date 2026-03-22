@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import styles from './TextFieldWithExpand.module.css';
+import GuardrailWarningModal from './GuardrailWarningModal';
 
 interface TextFieldWithExpandProps {
   label: string;
@@ -9,6 +10,12 @@ interface TextFieldWithExpandProps {
   onChange: (value: string) => void;
   placeholder?: string;
   field: string;
+}
+
+interface GuardrailState {
+  show: boolean;
+  violationTypes: string[];
+  isBanned: boolean;
 }
 
 export default function TextFieldWithExpand({
@@ -21,6 +28,7 @@ export default function TextFieldWithExpand({
   const [expandedText, setExpandedText] = useState('');
   const [isExpanding, setIsExpanding] = useState(false);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [guardrailState, setGuardrailState] = useState<GuardrailState | null>(null);
 
   const handleExpand = async () => {
     if (value.trim().length < 10) return;
@@ -33,6 +41,26 @@ export default function TextFieldWithExpand({
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ text: value, field }),
       });
+
+      if (response.status === 403) {
+        setIsPanelOpen(false);
+        setGuardrailState({ show: true, violationTypes: [], isBanned: true });
+        return;
+      }
+
+      if (response.status === 422) {
+        const body = await response.json();
+        if (body.error === 'guardrail_violation') {
+          setIsPanelOpen(false);
+          setGuardrailState({
+            show: true,
+            violationTypes: body.violationTypes ?? [],
+            isBanned: false,
+          });
+          return;
+        }
+      }
+
       const data = await response.json();
       if (data.expanded) {
         setExpandedText(data.expanded);
@@ -89,6 +117,14 @@ export default function TextFieldWithExpand({
             </>
           )}
         </div>
+      )}
+
+      {guardrailState?.show && (
+        <GuardrailWarningModal
+          violationTypes={guardrailState.violationTypes}
+          isBanned={guardrailState.isBanned}
+          onAcknowledge={() => setGuardrailState(null)}
+        />
       )}
     </div>
   );

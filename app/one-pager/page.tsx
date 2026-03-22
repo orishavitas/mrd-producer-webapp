@@ -9,6 +9,8 @@ import CompetitorInput from './components/CompetitorInput';
 import DocumentPreview from './components/DocumentPreview';
 import { PhotoPicker } from './components/PhotoPicker';
 import { FeatureSelector } from './components/FeatureSelector';
+import PublishGateModal from './components/PublishGateModal';
+import DraftWarningBanner from './components/DraftWarningBanner';
 import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useState } from 'react';
 import './one-pager-tokens.css';
@@ -24,6 +26,10 @@ function OnePagerContent() {
   const { state, dispatch } = useOnePager();
   const [config, setConfig] = useState<ConfigData | null>(null);
   const [isExporting, setIsExporting] = useState<string | null>(null);
+  const [isSaving, setIsSaving] = useState(false);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishGatePending, setPublishGatePending] = useState<'docx' | 'html' | 'pdf' | null>(null);
+  const [bannerDismissed, setBannerDismissed] = useState(false);
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -32,7 +38,7 @@ function OnePagerContent() {
       .catch(console.error);
   }, []);
 
-  const handleExport = useCallback(async (format: 'docx' | 'html' | 'pdf') => {
+  const runExport = useCallback(async (format: 'docx' | 'html' | 'pdf') => {
     setIsExporting(format);
     try {
       const response = await fetch(`/api/one-pager/export?format=${format}`, {
@@ -68,22 +74,120 @@ function OnePagerContent() {
     }
   }, [state]);
 
+  const handleExport = useCallback((format: 'docx' | 'html' | 'pdf') => {
+    if (!state.isPublished) {
+      setPublishGatePending(format);
+      return;
+    }
+    runExport(format);
+  }, [state.isPublished, runExport]);
+
+  const handleSaveDraft = useCallback(async () => {
+    setIsSaving(true);
+    try {
+      const title = state.productName || 'Untitled One-Pager';
+      if (!state.documentId) {
+        const res = await fetch('/api/documents', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, tool_type: 'one-pager', content_json: state }),
+        });
+        const data = await res.json();
+        if (data.id) {
+          dispatch({ type: 'SET_DOCUMENT_ID', payload: data.id });
+        }
+      } else {
+        await fetch(`/api/documents/${state.documentId}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ contentJson: state }),
+        });
+      }
+    } catch (error) {
+      console.error('Save draft failed:', error);
+    } finally {
+      setIsSaving(false);
+    }
+  }, [state, dispatch]);
+
+  const handlePublish = useCallback(async () => {
+    setIsPublishing(true);
+    try {
+      // Auto-save first if we don't have a documentId
+      let docId = state.documentId;
+      if (!docId) {
+        const title = state.productName || 'Untitled One-Pager';
+        const res = await fetch('/api/documents', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ title, tool_type: 'one-pager', content_json: state }),
+        });
+        const data = await res.json();
+        if (data.id) {
+          dispatch({ type: 'SET_DOCUMENT_ID', payload: data.id });
+          docId = data.id;
+        }
+      }
+
+      if (!docId) return;
+
+      await fetch(`/api/documents/${docId}/publish`, {
+        method: 'POST',
+      });
+      dispatch({ type: 'SET_PUBLISHED', payload: true });
+    } catch (error) {
+      console.error('Publish failed:', error);
+    } finally {
+      setIsPublishing(false);
+    }
+  }, [state, dispatch]);
+
+  const handleGatePublish = useCallback(async () => {
+    const pending = publishGatePending;
+    setPublishGatePending(null);
+    await handlePublish();
+    if (pending) {
+      runExport(pending);
+    }
+  }, [publishGatePending, handlePublish, runExport]);
+
+  const isWorking = isExporting !== null || isSaving || isPublishing;
+
   const leftPanel = (
     <div className={styles.inputSections}>
+      {/* Draft warning banner */}
+      {!state.isPublished && state.documentId !== null && !bannerDismissed && (
+        <DraftWarningBanner onDismiss={() => setBannerDismissed(true)} />
+      )}
+
       <div className={styles.toolbar}>
-        <h2 className={styles.pageTitle}>Product One-Pager</h2>
+        <h2 className={styles.pageTitle}>Marketing Requirement Document</h2>
         <div className={styles.exportButtons}>
+          <button
+            className={styles.exportButtonGhost}
+            onClick={handleSaveDraft}
+            disabled={isWorking}
+          >
+            {isSaving ? 'Saving...' : 'Save Draft'}
+          </button>
+          <button
+            className={styles.exportButtonGhost}
+            onClick={handlePublish}
+            disabled={isWorking || state.isPublished}
+          >
+            {isPublishing ? 'Publishing...' : state.isPublished ? 'Published' : 'Publish'}
+          </button>
           <button
             className={styles.exportButton}
             onClick={() => handleExport('docx')}
-            disabled={isExporting !== null}
+            disabled={isWorking}
           >
             {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
           </button>
           <button
             className={styles.exportButtonGhost}
             onClick={() => handleExport('pdf')}
-            disabled={isExporting !== null}
+            disabled={isWorking}
           >
             {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
           </button>
@@ -251,6 +355,15 @@ function OnePagerContent() {
           ) : null
         }
       />
+
+      {/* Publish gate modal */}
+      {publishGatePending !== null && (
+        <PublishGateModal
+          pending={publishGatePending}
+          onPublish={handleGatePublish}
+          onCancel={() => setPublishGatePending(null)}
+        />
+      )}
     </div>
   );
 
