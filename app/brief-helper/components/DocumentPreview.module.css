@@ -1,0 +1,212 @@
+/* Document Preview Component Styles */
+
+.container {
+  max-width: var(--preview-container-max-width);
+  margin: 0 auto;
+  padding: var(--preview-container-padding);
+  background: var(--preview-container-bg);
+  height: 100%;
+  overflow-y: auto;
+}
+
+/* ========================================
+   Document Header
+   ======================================== */
+
+.header {
+  padding: var(--preview-header-padding);
+  background: var(--preview-header-bg);
+  border-bottom: 2px solid var(--border);
+  margin-bottom: var(--space-8);
+  border-radius: var(--radius);
+}
+
+.title {
+  font-size: var(--text-3xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  margin: 0 0 var(--space-2);
+  line-height: var(--leading-tight);
+}
+
+.subtitle {
+  font-size: var(--text-sm);
+  color: var(--text-secondary);
+  margin: 0;
+}
+
+/* ========================================
+   Document Content
+   ======================================== */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--preview-section-gap);
+}
+
+.section {
+  padding: var(--space-6);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: all var(--duration-fast) var(--ease-out);
+}
+
+.activeSection {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.sectionTitle {
+  font-size: var(--preview-section-title-size);
+  font-weight: var(--preview-section-title-weight);
+  color: var(--preview-section-title-color);
+  margin: 0 0 var(--space-4);
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--border);
+}
+
+.bulletList {
+  list-style: disc;
+  margin: 0;
+  padding-left: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--preview-bullet-spacing);
+}
+
+.bulletItem {
+  font-size: var(--preview-bullet-size);
+  line-height: var(--preview-bullet-line-height);
+  color: var(--preview-bullet-color);
+}
+
+.placeholder {
+  font-size: var(--preview-bullet-size);
+  color: var(--text-muted);
+  margin: 0;
+  font-style: italic;
+  text-align: center;
+  padding: var(--space-4) 0;
+}
+
+/* ========================================
+   Document Footer
+   ======================================== */
+
+.footer {
+  margin-top: var(--space-8);
+  padding-top: var(--space-6);
+  border-top: 1px solid var(--border);
+}
+
+.footerText {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin: 0;
+  text-align: center;
+}
+
+/* ========================================
+   Print Styles
+   ======================================== */
+
+@media print {
+  .container {
+    max-width: 100%;
+    padding: 0;
+    background: white;
+  }
+
+  .header {
+    background: white;
+    border-bottom-color: #000;
+  }
+
+  .section {
+    background: white;
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+
+  .activeSection {
+    border-color: #000;
+    box-shadow: none;
+  }
+
+  .sectionTitle {
+    color: #000;
+    border-bottom-color: #000;
+  }
+
+  .bulletItem {
+    color: #000;
+  }
+
+  .placeholder {
+    color: #666;
+  }
+
+  .footer {
+    border-top-color: #000;
+  }
+
+  .footerText {
+    color: #666;
+  }
+}
+
+/* ========================================
+   Mobile Responsive (<768px)
+   ======================================== */
+
+@media (max-width: 767px) {
+  .container {
+    padding: var(--space-4);
+  }
+
+  .header {
+    padding: var(--space-4);
+    margin-bottom: var(--space-6);
+  }
+
+  .title {
+    font-size: var(--text-2xl);
+  }
+
+  .section {
+    padding: var(--space-4);
+  }
+
+  .sectionTitle {
+    font-size: var(--text-base);
+  }
+
+  .bulletList {
+    padding-left: var(--space-4);
+  }
+
+  .bulletItem {
+    font-size: var(--text-sm);
+  }
+}
+
+/* ========================================
+   Accessibility
+   ======================================== */
+
+/* Ensure sufficient contrast in all modes */
+@media (prefers-color-scheme: dark) {
+  .placeholder {
+    color: var(--text-muted);
+    opacity: 0.8;
+  }
+}
+
+/* Reduced Motion */
+@media (prefers-reduced-motion: reduce) {
+  .section {
+    transition: none;
+  }
+}

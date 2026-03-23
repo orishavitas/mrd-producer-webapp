@@ -1,0 +1,64 @@
+/**
+ * Split Layout Styles
+ *
+ * Responsive 50/50 grid for desktop, single column for mobile.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--split-layout-gap);
+  min-height: 100vh;
+  padding: var(--spacing-4);
+  background: var(--bg-primary);
+}
+
+.leftPanel {
+  overflow-y: auto;
+  padding-right: var(--spacing-2);
+}
+
+.rightPanel {
+  overflow-y: auto;
+  padding-left: var(--spacing-2);
+  position: sticky;
+  top: var(--spacing-4);
+  max-height: calc(100vh - var(--spacing-4) * 2);
+}
+
+/* Tablet and below: Single column stack */
+
+@media (max-width: 1023px) {
+  .container {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-4);
+  }
+
+  .leftPanel {
+    padding-right: 0;
+  }
+
+  .rightPanel {
+    padding-left: 0;
+    position: static;
+    max-height: none;
+  }
+}
+
+/* Mobile: Smaller padding */
+
+@media (max-width: 768px) {
+  .container {
+    padding: var(--spacing-3);
+    gap: var(--spacing-3);
+  }
+}
+
+/* Dark Mode */
+
+@media (prefers-color-scheme: dark) {
+  .container {
+    background: var(--bg-primary);
+  }
+}

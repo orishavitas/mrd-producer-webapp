@@ -1,0 +1,150 @@
+/**
+ * Brief Field Styles
+ *
+ * Container layout for a single field with label, text box, and panels.
+ */
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--field-internal-gap);
+  margin-bottom: var(--field-container-gap);
+}
+
+/* Header with label and badge */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+/* Field label */
+.label {
+  font-size: var(--field-label-size);
+  font-weight: var(--field-label-weight);
+  color: var(--field-label-color);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+/* Help text */
+.helpText {
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+}
+
+/* Extracted bullet points */
+.bulletPoints {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: var(--radius);
+  background: var(--surface-secondary);
+  border: 1px solid var(--border-default);
+  animation: slide-in-down var(--duration-normal) var(--ease-out);
+}
+
+.bulletPointsTitle {
+  margin: 0 0 12px 0;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.bulletPointsList {
+  margin: 0;
+  padding-left: 24px;
+  list-style: disc;
+}
+
+.bulletPoint {
+  margin: 8px 0;
+  font-size: var(--text-sm);
+  line-height: var(--leading-relaxed);
+  color: var(--text-primary);
+}
+
+.bulletPoint:first-child {
+  margin-top: 0;
+}
+
+.bulletPoint:last-child {
+  margin-bottom: 0;
+}
+
+/* Gap detection panel slot */
+.gapSlot {
+  animation: slide-in-down var(--duration-normal) var(--ease-out);
+}
+
+/* Placeholder for future panels */
+.placeholder {
+  padding: var(--space-3);
+  background-color: var(--gap-detected-bg);
+  border: 1px solid var(--gap-detected);
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  text-align: center;
+}
+
+/* Done button container */
+.doneButtonContainer {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--border);
+}
+
+.doneButton {
+  padding: var(--space-3) var(--space-6);
+  background: var(--field-complete);
+  color: var(--color-white);
+  border: none;
+  border-radius: var(--radius);
+  font-size: var(--text-sm);
+  font-weight: var(--font-semibold);
+  cursor: pointer;
+  transition: all var(--duration-fast) var(--ease-out);
+  box-shadow: var(--shadow-sm);
+}
+
+.doneButton:hover {
+  background: var(--field-complete);
+  filter: brightness(1.1);
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.doneButton:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-sm);
+}
+
+.doneButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--field-complete-bg);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .bulletPoints,
+  .gapSlot {
+    animation: none;
+  }
+
+  .doneButton {
+    transition: none;
+  }
+
+  .doneButton:hover {
+    transform: none;
+  }
+
+  .doneButton:active {
+    transform: none;
+  }
+}

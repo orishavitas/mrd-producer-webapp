@@ -1,0 +1,79 @@
+/**
+ * Brief Helper Page Styles
+ *
+ * Main page layout with responsive single-column design.
+ */
+
+.page {
+  min-height: 100vh;
+  background-color: var(--background);
+  padding: var(--space-4);
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* Page header */
+.header {
+  text-align: center;
+  margin-bottom: var(--space-8);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-size: var(--text-xs);
+  font-weight: var(--font-semibold);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: var(--space-2);
+}
+
+.title {
+  font-size: var(--text-4xl);
+  font-weight: var(--font-bold);
+  color: var(--text-primary);
+  line-height: var(--leading-tight);
+  margin: 0;
+  margin-bottom: var(--space-3);
+}
+
+.subtitle {
+  font-size: var(--text-lg);
+  color: var(--text-secondary);
+  line-height: var(--leading-relaxed);
+  margin: 0;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Form container */
+.form {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Responsive adjustments */
+@media (min-width: 768px) {
+  .page {
+    padding: var(--space-6);
+  }
+
+  .header {
+    margin-bottom: var(--space-12);
+  }
+
+  .title {
+    font-size: var(--text-5xl);
+  }
+}
+
+@media (min-width: 1024px) {
+  .page {
+    padding: var(--space-8);
+  }
+}

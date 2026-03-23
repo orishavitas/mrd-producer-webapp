@@ -18,7 +18,12 @@ const TOOLS = [
     href: '/one-pager',
   },
   {
-    title: 'One-Pager',
+    title: 'Brief Helper',
+    description: 'Capture a quick product brief with AI-powered extraction, gap detection, and field expansion.',
+    href: '/brief-helper',
+  },
+  {
+    title: 'One-Pager (Beta)',
     description: 'Development sandbox for testing new AI features, database integration, and product-specific enhancements.',
     href: '/one-pager-beta',
     badge: 'Beta',

@@ -1,0 +1,107 @@
+/**
+ * SmartTextBox Styles
+ *
+ * Auto-expanding textarea with AI processing states.
+ * Uses design tokens from styles/tokens/brief-helper.css
+ */
+
+/* ============================================================================
+   Container
+   ============================================================================ */
+
+.container {
+  position: relative;
+  width: 100%;
+}
+
+/* ============================================================================
+   Textarea
+   ============================================================================ */
+
+.textarea {
+  width: 100%;
+  min-height: var(--text-box-min-height);
+  padding: var(--text-box-padding-y) var(--text-box-padding-x);
+
+  /* Typography */
+  font-size: var(--text-box-font-size);
+  font-family: inherit;
+  line-height: var(--text-box-line-height);
+  color: var(--text-primary);
+
+  /* Appearance */
+  background-color: var(--text-box-bg);
+  border: 1px solid var(--text-box-border);
+  border-radius: var(--text-box-radius);
+
+  /* Behavior */
+  resize: none;
+  overflow-y: auto;
+  transition: var(--text-box-transition);
+}
+
+.textarea::placeholder {
+  color: var(--text-muted);
+}
+
+/* Focus state */
+.textarea:focus {
+  outline: none;
+  border-color: var(--text-box-border-active);
+  box-shadow: var(--text-box-focus-ring);
+}
+
+/* AI Processing state */
+.textarea[data-ai-processing] {
+  background-color: var(--text-box-ai-bg);
+  border-color: var(--text-box-ai-border);
+  animation: ai-processing 2s ease-in-out infinite;
+}
+
+/* Complete state */
+.textarea[data-complete] {
+  border-color: var(--field-complete);
+}
+
+/* AI Processing animation (from brief-helper.css) */
+@keyframes ai-processing {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* ============================================================================
+   Character Counter
+   ============================================================================ */
+
+.charCounter {
+  position: absolute;
+  bottom: var(--space-2);
+  right: var(--space-3);
+
+  font-size: var(--field-counter-size);
+  font-weight: var(--field-counter-weight);
+  color: var(--field-counter-color);
+
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ============================================================================
+   Reduced Motion Support
+   ============================================================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  .textarea {
+    transition: none;
+  }
+
+  @keyframes ai-processing {
+    0%, 100% {
+      opacity: 0.8;
+    }
+  }
+}
