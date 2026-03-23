@@ -42,26 +42,30 @@ export default function TextFieldWithExpand({
         body: JSON.stringify({ text: value, field }),
       });
 
-      if (response.status === 403) {
+      // Read response body once at the top to avoid double-consumption
+      const data = await response.json();
+
+      if (response.status === 403 && data.error === 'banned') {
         setIsPanelOpen(false);
         setGuardrailState({ show: true, violationTypes: [], isBanned: true });
         return;
       }
 
-      if (response.status === 422) {
-        const body = await response.json();
-        if (body.error === 'guardrail_violation') {
-          setIsPanelOpen(false);
-          setGuardrailState({
-            show: true,
-            violationTypes: body.violationTypes ?? [],
-            isBanned: false,
-          });
-          return;
-        }
+      if (response.status === 422 && data.error === 'guardrail_violation') {
+        setIsPanelOpen(false);
+        setGuardrailState({
+          show: true,
+          violationTypes: data.violationTypes ?? [],
+          isBanned: false,
+        });
+        return;
       }
 
-      const data = await response.json();
+      if (!response.ok) {
+        console.error('Expand request failed:', data.error);
+        return;
+      }
+
       if (data.expanded) {
         setExpandedText(data.expanded);
       }

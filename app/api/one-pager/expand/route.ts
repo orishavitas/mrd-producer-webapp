@@ -3,6 +3,7 @@ import { getProviderChain } from '@/lib/providers/provider-chain';
 import { auth } from '@/lib/auth';
 import { checkInput, checkOutput, hardenSystemPrompt } from '@/lib/guardrails';
 import { handleViolation } from '@/lib/guardrail-logger';
+import { logViolation } from '@/lib/db';
 import { assertNotBanned, bannedResponse, BannedUserError } from '@/lib/ban-check';
 
 export async function POST(request: NextRequest) {
@@ -62,11 +63,15 @@ export async function POST(request: NextRequest) {
     // Step 7: Output guardrail check
     const outputCheck = checkOutput(result.text);
     if (!outputCheck.passed) {
-      await handleViolation({
-        req: request,
-        session,
+      // Log output violation for monitoring, but don't count toward ban
+      await logViolation({
+        userId,
+        userName: session?.user?.name ?? undefined,
+        userEmail: session?.user?.email ?? undefined,
+        ip: request.ip ?? request.headers.get('x-forwarded-for') ?? undefined,
+        userAgent: request.headers.get('user-agent') ?? undefined,
         actionType: 'expand-output',
-        inputText: result.text,
+        inputText: result.text.slice(0, 2000),
         violationTypes: outputCheck.violationTypes,
       });
       return NextResponse.json(

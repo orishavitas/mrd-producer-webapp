@@ -12,6 +12,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { CompetitorOrchestratorAgent } from '@/agent/agents/one-pager/competitor-orchestrator';
+import { auth } from '@/lib/auth';
+import { checkInput, hardenSystemPrompt } from '@/lib/guardrails';
+import { handleViolation } from '@/lib/guardrail-logger';
+import { assertNotBanned, bannedResponse, BannedUserError } from '@/lib/ban-check';
 
 const orchestrator = new CompetitorOrchestratorAgent();
 
@@ -33,6 +37,38 @@ export async function POST(request: NextRequest) {
     new URL(url); // validate
   } catch {
     return NextResponse.json({ error: 'url must be a valid URL' }, { status: 400 });
+  }
+
+  // ── Auth check ────────────────────────────────────────────────────────────
+  const session = await auth();
+  const userId = session?.user?.email ?? request.ip ?? 'anonymous';
+
+  // ── Ban check ────────────────────────────────────────────────────────────
+  try {
+    await assertNotBanned(userId);
+  } catch (err) {
+    if (err instanceof BannedUserError) return bannedResponse();
+    throw err;
+  }
+
+  // ── Input guardrail check ────────────────────────────────────────────────
+  const inputCheck = checkInput(url);
+  if (!inputCheck.passed) {
+    await handleViolation({
+      req: request,
+      session,
+      actionType: 'extract-competitor',
+      inputText: url,
+      violationTypes: inputCheck.violationTypes,
+    });
+    return NextResponse.json(
+      {
+        error: 'guardrail_violation',
+        violationTypes: inputCheck.violationTypes,
+        message: 'Input rejected by content policy',
+      },
+      { status: 422 }
+    );
   }
 
   // ── Execute ───────────────────────────────────────────────────────────────

@@ -10,7 +10,7 @@ export default function DraftWarningBanner({ onDismiss }: DraftWarningBannerProp
   return (
     <div className={styles.banner} role="alert">
       <span className={styles.text}>
-        This document is unpublished. Unpublished documents are automatically deleted after 7 days.
+        This document is unpublished. Unpublished documents may be removed after 7 days.
       </span>
       <button className={styles.dismiss} onClick={onDismiss} aria-label="Dismiss warning">
         ✕

@@ -1,6 +1,7 @@
 import { NextRequest } from 'next/server';
 import { Session } from 'next-auth';
 import { logViolation, countViolations, banUser } from '@/lib/db';
+import { BAN_THRESHOLD } from '@/lib/guardrails';
 
 export async function handleViolation(opts: {
   req: NextRequest;
@@ -24,7 +25,7 @@ export async function handleViolation(opts: {
   });
 
   const count = await countViolations(userId);
-  if (count >= 2) {
+  if (count >= BAN_THRESHOLD) {
     await banUser(userId, `Auto-banned after ${count} guardrail violations`);
     return { banned: true };
   }

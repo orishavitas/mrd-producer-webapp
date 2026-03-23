@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { ragAgent } from '@/agent/agents/one-pager-beta/rag-agent';
+import { auth } from '@/lib/auth';
+import { checkInput, hardenSystemPrompt } from '@/lib/guardrails';
+import { handleViolation } from '@/lib/guardrail-logger';
+import { assertNotBanned, bannedResponse, BannedUserError } from '@/lib/ban-check';
 
 interface FeatureCategory {
   category: string;
@@ -70,6 +74,38 @@ export async function POST(request: NextRequest) {
 
   if (!body.availableFeatures?.length) {
     return NextResponse.json({ error: 'availableFeatures is required' }, { status: 400 });
+  }
+
+  // ── Auth check ────────────────────────────────────────────────────────────
+  const session = await auth();
+  const userId = session?.user?.email ?? request.ip ?? 'anonymous';
+
+  // ── Ban check ────────────────────────────────────────────────────────────
+  try {
+    await assertNotBanned(userId);
+  } catch (err) {
+    if (err instanceof BannedUserError) return bannedResponse();
+    throw err;
+  }
+
+  // ── Input guardrail check ────────────────────────────────────────────────
+  const inputCheck = checkInput(body.description);
+  if (!inputCheck.passed) {
+    await handleViolation({
+      req: request,
+      session,
+      actionType: 'suggest-features',
+      inputText: body.description,
+      violationTypes: inputCheck.violationTypes,
+    });
+    return NextResponse.json(
+      {
+        error: 'guardrail_violation',
+        violationTypes: inputCheck.violationTypes,
+        message: 'Input rejected by content policy',
+      },
+      { status: 422 }
+    );
   }
 
   const context = createExecutionContext({ requestId: `suggest-features-${Date.now()}` });

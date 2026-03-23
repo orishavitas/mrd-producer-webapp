@@ -133,11 +133,16 @@ export async function countViolations(userId: string): Promise<number> {
 }
 
 export async function banUser(userId: string, reason: string): Promise<void> {
+  // Note: violation_count DEFAULT 2 corresponds to BAN_THRESHOLD in lib/guardrails.ts
   await sql`
     INSERT INTO banned_users (user_id, reason, violation_count)
     VALUES (${userId}, ${reason}, 2)
     ON CONFLICT (user_id) DO UPDATE SET reason = EXCLUDED.reason, violation_count = banned_users.violation_count + 1
   `;
+}
+
+export async function unbanUser(userId: string): Promise<void> {
+  await sql`DELETE FROM banned_users WHERE user_id = ${userId}`;
 }
 
 export async function isUserBanned(userId: string): Promise<boolean> {
