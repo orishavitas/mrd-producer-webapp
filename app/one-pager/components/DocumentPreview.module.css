@@ -64,11 +64,10 @@
 }
 
 .content h3 {
-  font-size: 0.8125rem;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 16px;
   font-weight: 600;
-  margin-top: 0.75rem;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-secondary, #243469);
+  color: var(--brand-primary, #1D1F4A);
 }
 
 .content ul {
