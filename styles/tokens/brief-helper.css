@@ -8,10 +8,10 @@
    Semantic Colors - AI Processing States
    ======================================== */
 :root {
-  --ai-processing: rgba(15, 118, 110, 0.06);
-  --ai-processing-border: rgba(15, 118, 110, 0.24);
-  --ai-badge: #0f766e;
-  --ai-badge-bg: rgba(15, 118, 110, 0.12);
+  --ai-processing: rgba(0, 153, 102, 0.06);
+  --ai-processing-border: rgba(0, 153, 102, 0.24);
+  --ai-badge: #009966;
+  --ai-badge-bg: rgba(0, 153, 102, 0.12);
 }
 
 @media (prefers-color-scheme: dark) {
@@ -184,7 +184,7 @@
    ======================================== */
 :root {
   --btn-generate-bg: var(--accent);
-  --btn-generate-hover-bg: var(--accent-strong);
+  --btn-generate-hover-bg: var(--accent-hover);
   --btn-generate-color: var(--color-white);
   --btn-generate-radius: var(--radius);
   --btn-generate-padding-y: var(--space-4);
@@ -390,7 +390,7 @@
 
   /* Edit button */
   --collapsed-edit-color: var(--accent);
-  --collapsed-edit-hover: var(--accent-strong);
+  --collapsed-edit-hover: var(--accent-hover);
 
   /* Gap badge on collapsed card */
   --collapsed-gap-badge-bg: var(--gap-detected-bg);
@@ -465,7 +465,7 @@
 
   /* Continue button */
   --start-continue-bg: var(--accent);
-  --start-continue-hover-bg: var(--accent-strong);
+  --start-continue-hover-bg: var(--accent-hover);
   --start-continue-disabled-bg: var(--field-incomplete-bg);
   --start-continue-disabled-color: var(--text-muted);
 
