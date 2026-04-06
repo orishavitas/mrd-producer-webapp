@@ -12,11 +12,11 @@
 }
 
 .pageTitle {
-  font-size: 1.25rem;
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  font-size: 36px;
   font-weight: 500;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-primary);
-  text-transform: uppercase;
+  text-transform: capitalize;
+  color: var(--brand-primary, #1D1F4A);
   letter-spacing: 0.04em;
   margin: 0;
 }
