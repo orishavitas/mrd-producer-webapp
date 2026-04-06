@@ -33,30 +33,30 @@
 
 .content {
   flex: 1;
-  font-size: 0.875rem;
+  font-size: 18px;
   line-height: 1.7;
   font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface, #1A1B1F);
+  color: var(--brand-primary, #1D1F4A);
 }
 
 /* Document heading hierarchy */
 .content h1 {
-  font-size: 1.375rem;
-  font-weight: 600;
+  font-size: 36px;
+  font-weight: 500;
   margin-bottom: 1rem;
   font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-primary, #1D1F4A);
-  text-transform: uppercase;
+  color: var(--brand-primary, #1D1F4A);
+  text-transform: capitalize;
   letter-spacing: 0.04em;
 }
 
 .content h2 {
-  font-size: 0.875rem;
-  font-weight: 700;
+  font-size: 21px;
+  font-weight: 600;
   margin-top: 1.25rem;
   margin-bottom: 0.5rem;
   font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-primary, #1D1F4A);
+  color: var(--brand-primary, #1D1F4A);
   text-transform: uppercase;
   letter-spacing: 0.08em;
   border-bottom: 1px solid var(--op-outline, #C5C6D0);
@@ -77,6 +77,10 @@
 
 .content li {
   margin-bottom: 2px;
+  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--brand-primary, #1D1F4A);
 }
 
 .content a {
@@ -103,7 +107,7 @@
   width: auto;
   height: 160px;          /* base height — photos share this row height */
   object-fit: contain;
-  border-radius: var(--op-radius-s, 8px);
+  border-radius: 12px;
   background: var(--op-surface-variant, #E2E2EC);
   margin: 0.5rem 0 0.75rem;
 }
