@@ -5,8 +5,17 @@
   /* ─── Brand Colors ─────────────────────────────────── */
   --brand-primary: #1D1F4A;
   --brand-highlight: #243469;
-  --brand-surface: #f4f5f9;
+  --brand-green-dark: #009966;    /* Primary CTA, buttons, success — DO NOT change */
+  --brand-green-light: #1db274;   /* Secondary accent, gradients */
+  --brand-surface: #f2f2f2;       /* Was #f4f5f9 — corrected to brand spec */
   --brand-surface-alt: #fafafa;
+  --brand-white: #ffffff;
+
+  /* ─── Semantic Aliases ─────────────────────────────── */
+  --accent:        var(--brand-green-dark);   /* Primary CTA color */
+  --accent-hover:  #007a52;                   /* Darken 8% for hover */
+  --accent-soft:   rgba(0, 153, 102, 0.12);   /* Ghost button bg */
+  --accent-light:  var(--brand-green-light);  /* Secondary accent */
 
   /* ─── Typography ───────────────────────────────────── */
   --font-body: 'Barlow', sans-serif;
@@ -59,4 +68,67 @@
   --duration-fast:   120ms;
   --duration-normal: 200ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ─── Brand Typography Utility Classes ─────────────── */
+/* Use these globally — matches Compulocks R&D AI Design Kit */
+
+.section-heading {
+  font-family: var(--font-heading);
+  font-size: 69px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--brand-primary);
+}
+
+.slide-title {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--brand-primary);
+}
+
+.small-title {
+  font-family: var(--font-body);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--brand-primary);
+}
+
+.paragraph-text {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 400;
+  color: var(--brand-primary);
+}
+
+.small-text {
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--brand-primary);
+}
+
+/* ─── Brand Card ────────────────────────────────────── */
+.content-card {
+  background-color: var(--brand-surface);
+  border: 1px solid #e0e0e0;
+  border-radius: 24px;
+  padding: 32px;
+}
+
+.content-card img {
+  width: 100%;
+  border-radius: 12px;
+  margin-bottom: 16px;
+}
+
+.content-card .card-caption {
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--brand-primary);
+  text-align: center;
 }
