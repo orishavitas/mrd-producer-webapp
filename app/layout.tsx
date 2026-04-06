@@ -1,24 +1,10 @@
 import type { Metadata, Viewport } from 'next';
-import { IBM_Plex_Mono, IBM_Plex_Sans, Barlow, Barlow_Condensed } from 'next/font/google';
+import { Barlow, Barlow_Condensed } from 'next/font/google';
 import './globals.css';
-
-const sans = IBM_Plex_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-sans',
-  display: 'swap',
-});
-
-const mono = IBM_Plex_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-mono',
-  display: 'swap',
-});
 
 const barlow = Barlow({
   subsets: ['latin'],
-  weight: ['400', '500'],
+  weight: ['400', '500', '600'],
   style: ['normal', 'italic'],
   variable: '--font-barlow',
   display: 'swap',
@@ -61,7 +47,7 @@ export default function RootLayout({
         {/* Favicon for all browsers */}
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={`${sans.variable} ${mono.variable} ${barlow.variable} ${barlowCondensed.variable}`}>
+      <body className={`${barlow.variable} ${barlowCondensed.variable}`}>
         {children}
       </body>
     </html>
