@@ -21,14 +21,15 @@
 /* Root variables with fallbacks for older browsers */
 :root {
   /* Colors */
-  --background: #f6f5f1;
+  --background: #f2f2f2;
   --foreground: #14171a;
   --muted: #5c646a;
   --surface: #ffffff;
   --border: #d7d9dd;
-  --accent: #0f766e;
-  --accent-strong: #0b5f59;
-  --accent-soft: rgba(15, 118, 110, 0.12);
+  /* Compulocks brand green — references compulocks.css token */
+  --accent: var(--brand-green-dark, #009966);
+  --accent-hover: #007a52;
+  --accent-soft: rgba(0, 153, 102, 0.12);
   --error: #dc2626;
   --color-white: #ffffff;
 
@@ -57,7 +58,7 @@
   --shadow-lg: 0 10px 15px rgba(20, 23, 26, 0.15);
 
   /* Typography */
-  --font-sans: 'IBM Plex Sans', 'Segoe UI', Arial, sans-serif;
+  --font-sans: 'Barlow', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
 
   /* Brand tokens (Compulocks Brand Language 2025) */
@@ -102,7 +103,7 @@
     --surface: #14181c;
     --border: #2a2f36;
     --accent: #34d399;
-    --accent-strong: #10b981;
+    --accent-hover: #10b981;
     --accent-soft: rgba(52, 211, 153, 0.16);
     --error: #ef4444;
 
@@ -157,7 +158,7 @@ a {
 }
 
 a:hover {
-  color: var(--accent-strong);
+  color: var(--accent-hover);
   text-decoration: underline;
 }
 
@@ -442,8 +443,8 @@ h3 { font-size: 1.25rem; }
 }
 
 .btn-primary:hover {
-  background-color: var(--accent-strong);
-  border-color: var(--accent-strong);
+  background-color: var(--accent-hover);
+  border-color: var(--accent-hover);
 }
 
 .btn-ghost {
