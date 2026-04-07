@@ -59,22 +59,10 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       parts.push('');
     }
 
-    if (state.competitors.filter((c) => c.status === 'done').length > 0) {
-      parts.push('## Competitors', '');
-      for (const comp of state.competitors.filter((c) => c.status === 'done')) {
-        parts.push(`### ${comp.brand} - ${comp.productName}`);
-        if (comp.photoUrls?.length > 0) {
-          comp.photoUrls.forEach((url) => parts.push(`![${comp.productName}](${url})`));
-          parts.push('');
-        }
-        if (comp.cost) parts.push(`**Price:** ${comp.cost}`);
-        if (comp.description) parts.push(comp.description);
-        parts.push(`[View product](${comp.url})`, '');
-      }
-    }
-
     return parts.join('\n');
   };
+
+  const doneCompetitors = state.competitors.filter((c) => c.status === 'done');
 
   return (
     <div className={styles.container}>
@@ -92,6 +80,28 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
         <ReactMarkdown remarkPlugins={[remarkGfm]}>
           {generateMarkdown()}
         </ReactMarkdown>
+
+        {doneCompetitors.length > 0 && (
+          <div>
+            <h2>Competitors</h2>
+            {doneCompetitors.map((comp) => (
+              <div key={comp.url}>
+                <h3>{comp.brand} - {comp.productName}</h3>
+                {comp.photoUrls?.length > 0 && (
+                  <div className={styles.photoRow}>
+                    {comp.photoUrls.map((photoUrl) => (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img key={photoUrl} src={photoUrl} alt={comp.productName} />
+                    ))}
+                  </div>
+                )}
+                {comp.cost && <p><strong>Price:</strong> {comp.cost}</p>}
+                {comp.description && <p>{comp.description}</p>}
+                <p><a href={comp.url}>View product</a></p>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );

@@ -93,20 +93,19 @@
 
 /* ── Competitor photo grid ──────────────────────────────────── */
 
-/*
- * Photos (<img>) inside .content are sized height-first:
- * fixed height, natural width (aspect ratio preserved).
- * Max 640×640. object-fit:contain prevents stretching.
- */
+.photoRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0.5rem 0 0.75rem;
+}
 
-.content img {
-  display: block;
-  max-width: 640px;
-  max-height: 640px;
+.photoRow img {
+  height: 160px;
   width: auto;
-  height: 160px;          /* base height — photos share this row height */
+  max-width: 100%;
   object-fit: contain;
   border-radius: 12px;
   background: var(--op-surface-variant, #E2E2EC);
-  margin: 0.5rem 0 0.75rem;
+  flex-shrink: 0;
 }
