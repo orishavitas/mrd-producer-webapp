@@ -72,7 +72,7 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       <div className={styles.doc}>
         {/* Doc header: title left, logo right, split line below */}
         <div className={styles.docHeader}>
-          <h1 className={styles.docTitle}>Market Requirement Document</h1>
+          <h1 className={styles.docTitle}>Marketing Requirement Document</h1>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
             src="/compulocks-logo.png"

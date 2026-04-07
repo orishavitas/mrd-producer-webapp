@@ -10,8 +10,8 @@
 .chrome {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 0.5rem 0 0.5rem 0;
+  justify-content: center;
+  padding: 0.5rem 0;
   margin-bottom: 0.75rem;
 }
 
@@ -26,10 +26,7 @@
 }
 
 .chromeLogo {
-  height: 0.75rem;
-  width: auto;
-  display: block;
-  opacity: 0.4;
+  display: none;
 }
 
 /* ── White document card ─────────────────────────────────────── */
