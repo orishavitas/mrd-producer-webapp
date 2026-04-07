@@ -1,66 +1,113 @@
+/* ── Outer wrapper ────────────────────────────────────────────── */
 .container {
   height: 100%;
   display: flex;
   flex-direction: column;
+  gap: 0;
 }
 
-.header {
+/* ── Chrome bar (sits above the white doc, matches panel bg) ── */
+.chrome {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  padding-bottom: 0.75rem;
-  border-bottom: 1.5px solid var(--op-outline, #C5C6D0);
-  margin-bottom: 1rem;
+  justify-content: space-between;
+  padding: 0.5rem 0 0.5rem 0;
+  margin-bottom: 0.75rem;
 }
 
-.title {
-  font-size: 1rem;
+.chromeLabel {
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  font-size: 0.75rem;
   font-weight: 600;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-primary, #1D1F4A);
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  margin: 0;
+  letter-spacing: 0.1em;
+  color: var(--op-primary, #1D1F4A);
+  opacity: 0.55;
 }
 
-.logo {
-  height: 1rem;
+.chromeLogo {
+  height: 0.75rem;
+  width: auto;
+  display: block;
+  opacity: 0.4;
+}
+
+/* ── White document card ─────────────────────────────────────── */
+.doc {
+  flex: 1;
+  background: #ffffff;
+  border-radius: 8px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 12px rgba(29, 31, 74, 0.07);
+  overflow-y: auto;
+  padding: 2rem 2.5rem 3rem;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Doc header row: title left, logo right ─────────────────── */
+.docHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.docTitle {
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  font-size: 36px;
+  font-weight: 500;
+  text-transform: capitalize;
+  color: var(--brand-primary, #1D1F4A);
+  margin: 0;
+  line-height: 1.1;
+}
+
+.docLogo {
+  height: 36px;
   width: auto;
   display: block;
   flex-shrink: 0;
 }
 
+.docDivider {
+  border: none;
+  border-top: 1.5px solid #e0e0e0;
+  margin: 0 0 1.25rem 0;
+}
 
+/* ── Metadata strip ──────────────────────────────────────────── */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 13px;
+  color: var(--brand-primary, #1D1F4A);
+  opacity: 0.7;
+}
+
+/* ── Main content ────────────────────────────────────────────── */
 .content {
   flex: 1;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
   font-size: 18px;
-  line-height: 1.7;
-  font-family: var(--font-barlow, "Barlow", sans-serif);
+  line-height: 1.65;
   color: var(--brand-primary, #1D1F4A);
 }
 
-/* Document heading hierarchy */
-.content h1 {
-  font-size: 36px;
-  font-weight: 500;
-  margin-bottom: 1rem;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--brand-primary, #1D1F4A);
-  text-transform: capitalize;
-  letter-spacing: 0.04em;
-}
-
+/* Markdown headings */
 .content h2 {
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
   font-size: 21px;
   font-weight: 600;
-  margin-top: 1.25rem;
-  margin-bottom: 0.5rem;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
   color: var(--brand-primary, #1D1F4A);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
-  border-bottom: 1px solid var(--op-outline, #C5C6D0);
+  letter-spacing: 0.06em;
+  margin: 1.75rem 0 0.5rem;
   padding-bottom: 0.25rem;
+  border-bottom: 1px solid #e0e0e0;
 }
 
 .content h3 {
@@ -68,22 +115,27 @@
   font-size: 16px;
   font-weight: 600;
   color: var(--brand-primary, #1D1F4A);
+  margin: 1rem 0 0.25rem;
+}
+
+.content p {
+  margin: 0 0 0.75rem;
 }
 
 .content ul {
   padding-left: 1.25rem;
+  margin: 0 0 0.75rem;
 }
 
 .content li {
-  margin-bottom: 2px;
-  font-family: var(--font-barlow, "Barlow", sans-serif);
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
   font-size: 18px;
-  font-weight: 400;
   color: var(--brand-primary, #1D1F4A);
+  margin-bottom: 2px;
 }
 
 .content a {
-  color: var(--op-secondary, #243469);
+  color: var(--brand-highlight, #243469);
   text-decoration: none;
 }
 
@@ -91,8 +143,81 @@
   text-decoration: underline;
 }
 
-/* ── Competitor photo grid ──────────────────────────────────── */
+/* ── Shared section wrapper (features, competitors) ─────────── */
+.section {
+  margin-top: 1.75rem;
+}
 
+.sectionHeading {
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  font-size: 21px;
+  font-weight: 600;
+  color: var(--brand-primary, #1D1F4A);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin: 0 0 0.75rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+/* ── Feature side-by-side cards ─────────────────────────────── */
+.featureCards {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.featureCard {
+  flex: 1 1 200px;
+  background: var(--brand-surface, #f2f2f2);
+  border: 1px solid #e0e0e0;
+  border-radius: 24px;
+  padding: 1.5rem 1.75rem;
+}
+
+.featureCardLabel {
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--brand-green-dark, #009966);
+  margin-bottom: 0.75rem;
+}
+
+.featureCard ul {
+  padding-left: 1.1rem;
+  margin: 0;
+}
+
+.featureCard li {
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 16px;
+  color: var(--brand-primary, #1D1F4A);
+  margin-bottom: 4px;
+}
+
+/* ── Competitor entries ──────────────────────────────────────── */
+.competitor {
+  margin-bottom: 1.5rem;
+}
+
+.competitorName {
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--brand-primary, #1D1F4A);
+  margin: 0 0 0.5rem;
+}
+
+.body {
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 18px;
+  color: var(--brand-primary, #1D1F4A);
+  margin: 0 0 0.4rem;
+}
+
+/* ── Competitor photo row ────────────────────────────────────── */
 .photoRow {
   display: flex;
   flex-wrap: wrap;
@@ -106,6 +231,6 @@
   max-width: 100%;
   object-fit: contain;
   border-radius: 12px;
-  background: var(--op-surface-variant, #E2E2EC);
+  background: #f2f2f2;
   flex-shrink: 0;
 }
