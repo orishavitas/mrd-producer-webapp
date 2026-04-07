@@ -7,7 +7,7 @@
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 0.5rem;
   padding-bottom: 0.75rem;
   border-bottom: 1.5px solid var(--op-outline, #C5C6D0);
   margin-bottom: 1rem;
@@ -24,7 +24,7 @@
 }
 
 .logo {
-  height: var(--op-logo-height, 20px);
+  height: 1rem;
   width: auto;
   display: block;
   flex-shrink: 0;
