@@ -16,11 +16,21 @@ const config = {
       displayName: 'node',
       testEnvironment: 'node',
       testMatch: ['**/__tests__/**/*.test.ts'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+      },
+      transform: {
+        '^.+\\.tsx?$': ['ts-jest', {}],
+      },
     },
     {
       displayName: 'jsdom',
       testEnvironment: 'jsdom',
       testMatch: ['**/__tests__/**/*.test.tsx'],
+      moduleNameMapper: {
+        '^@/(.*)$': '<rootDir>/$1',
+        '\\.(css|less|scss|sass)$': 'identity-obj-proxy',
+      },
       transform: {
         '^.+\\.tsx?$': ['ts-jest', {
           tsconfig: {
