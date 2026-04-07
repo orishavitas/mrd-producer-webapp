@@ -61,6 +61,7 @@ export type OnePagerAction =
   | { type: 'REMOVE_CUSTOM_ROLE'; payload: string }
   | { type: 'ADD_FEATURE'; payload: { category: 'mustHave' | 'niceToHave'; feature: string } }
   | { type: 'REMOVE_FEATURE'; payload: { category: 'mustHave' | 'niceToHave'; feature: string } }
+  | { type: 'SET_FEATURES'; payload: { mustHave: string[]; niceToHave: string[] } }
   | { type: 'SET_MOQ'; payload: string }
   | { type: 'SET_TARGET_PRICE'; payload: string }
   | { type: 'SET_PRODUCT_NAME'; payload: string }
@@ -194,6 +195,9 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
           ),
         },
       };
+
+    case 'SET_FEATURES':
+      return { ...base, features: action.payload };
 
     case 'SET_MOQ':
       return { ...base, commercials: { ...base.commercials, moq: action.payload } };

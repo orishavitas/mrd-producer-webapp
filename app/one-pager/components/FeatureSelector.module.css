@@ -289,3 +289,24 @@
   opacity: 1;
   background: rgba(29, 31, 74, 0.12);
 }
+
+.autoFillButton {
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.75rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--op-primary, #1D1F4A);
+  background: transparent;
+  color: var(--op-primary, #1D1F4A);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  margin-left: 0.75rem;
+}
+.autoFillButton:hover:not(:disabled) {
+  background: var(--op-primary, #1D1F4A);
+  color: #fff;
+}
+.autoFillButton:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
