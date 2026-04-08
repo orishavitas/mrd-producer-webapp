@@ -310,3 +310,170 @@
   opacity: 0.45;
   cursor: not-allowed;
 }
+
+/* ── Customization sections ──────────────────────────────────── */
+
+.customizationSection {
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--op-outline, #C5C6D0);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.custRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.custLabel {
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--op-primary, #1D1F4A);
+  min-width: 90px;
+  padding-top: 0.3rem;
+  flex-shrink: 0;
+}
+
+.custField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  flex: 1;
+}
+
+.custHint {
+  font-size: 0.7rem;
+  color: var(--op-primary, #1D1F4A);
+  opacity: 0.45;
+  font-style: italic;
+}
+
+/* Logo upload button */
+.uploadBtn {
+  height: 32px;
+  padding: 0 0.875rem;
+  border: 1.5px dashed var(--op-outline, #C5C6D0);
+  border-radius: var(--op-radius-s, 8px);
+  background: transparent;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--op-primary, #1D1F4A);
+  cursor: pointer;
+  text-align: left;
+  transition: border-color 0.15s, background 0.15s;
+  max-width: 280px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.uploadBtn:hover {
+  border-color: var(--op-secondary, #243469);
+  background: rgba(36, 52, 105, 0.04);
+}
+
+/* Color entries */
+.colorEntry {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.colorModeSelect {
+  height: 30px;
+  padding: 0 0.4rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: 6px;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.75rem;
+  color: var(--op-primary, #1D1F4A);
+  background: #fff;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.colorValueInput {
+  height: 30px;
+  padding: 0 0.6rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: 6px;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--op-primary, #1D1F4A);
+  background: #fff;
+  flex: 1;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+.colorValueInput:focus {
+  outline: none;
+  border-color: var(--op-secondary, #243469);
+}
+
+.removeColorBtn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 1rem;
+  color: var(--op-primary, #1D1F4A);
+  opacity: 0.5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  padding: 0;
+}
+.removeColorBtn:hover { opacity: 1; background: rgba(29,31,74,0.08); }
+
+.addColorBtn {
+  align-self: flex-start;
+  height: 28px;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: var(--op-primary, #1D1F4A);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.addColorBtn:hover {
+  border-color: var(--op-secondary, #243469);
+  background: rgba(36,52,105,0.04);
+}
+
+/* Finish chips */
+.finishChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.finishChip {
+  height: 28px;
+  padding: 0 0.875rem;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--font-barlow, 'Barlow', sans-serif);
+  font-size: 0.8125rem;
+  color: var(--op-primary, #1D1F4A);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.finishChip:hover {
+  border-color: var(--op-secondary, #243469);
+}
+.finishChipActive {
+  background: var(--op-primary, #1D1F4A);
+  border-color: var(--op-primary, #1D1F4A);
+  color: #fff;
+}

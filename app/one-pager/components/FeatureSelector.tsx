@@ -1,6 +1,7 @@
 'use client';
-import { useState, KeyboardEvent } from 'react';
+import { useRef, useState, KeyboardEvent } from 'react';
 import styles from './FeatureSelector.module.css';
+import type { OnePagerState, OnePagerAction } from '../lib/one-pager-state';
 
 export interface FeatureCategory {
   id: string;
@@ -16,6 +17,8 @@ interface FeatureSelectorProps {
   onRemove: (label: string, category: 'mustHave' | 'niceToHave') => void;
   onAutoFill?: () => void;
   isAutoFilling?: boolean;
+  customization: OnePagerState['customization'];
+  dispatch: React.Dispatch<OnePagerAction>;
 }
 
 type Layout = 'sideBySide' | 'stacked';
@@ -28,10 +31,13 @@ export function FeatureSelector({
   onRemove,
   onAutoFill,
   isAutoFilling,
+  customization,
+  dispatch,
 }: FeatureSelectorProps) {
   const [layout, setLayout] = useState<Layout>('sideBySide');
-  const [popover, setPopover] = useState<string | null>(null); // feature label
+  const [popover, setPopover] = useState<string | null>(null);
   const [customInput, setCustomInput] = useState('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const allSelected = new Set([...mustHave, ...niceToHave]);
 
@@ -131,9 +137,9 @@ export function FeatureSelector({
           </div>
         ))}
 
-        {/* Custom input */}
+        {/* Other (custom) input */}
         <div className={styles.customRow}>
-          <div className={styles.categoryLabel}>Custom</div>
+          <div className={styles.categoryLabel}>Other</div>
           <div className={styles.chipRow}>
             <div className={styles.chipWrapper}>
               <input
@@ -152,6 +158,130 @@ export function FeatureSelector({
               )}
             </div>
           </div>
+        </div>
+
+        {/* ── Custom Logo & Color ─────────────────────────────────── */}
+        <div className={styles.customizationSection}>
+          <div className={styles.categoryLabel}>Custom Logo &amp; Color</div>
+
+          {/* Logo upload */}
+          <div className={styles.custRow}>
+            <span className={styles.custLabel}>Logo file</span>
+            <div className={styles.custField}>
+              <button className={styles.uploadBtn} onClick={() => fileInputRef.current?.click()}>
+                {customization.logoFileName ? customization.logoFileName : 'Upload logo…'}
+              </button>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".svg,.ai,.pdf"
+                style={{ display: 'none' }}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) dispatch({ type: 'SET_LOGO_FILE', payload: file.name });
+                }}
+              />
+              <span className={styles.custHint}>Vector only (SVG, AI, PDF)</span>
+            </div>
+          </div>
+
+          {/* Logo colors */}
+          <div className={styles.custRow}>
+            <span className={styles.custLabel}>Logo color(s)</span>
+            <div className={styles.custField}>
+              {customization.logoColors.map((lc, i) => (
+                <div key={i} className={styles.colorEntry}>
+                  <select
+                    className={styles.colorModeSelect}
+                    value={lc.mode}
+                    onChange={(e) => dispatch({ type: 'UPDATE_LOGO_COLOR', payload: { index: i, mode: e.target.value as 'CMYK' | 'Pantone' } })}
+                  >
+                    <option value="CMYK">CMYK</option>
+                    <option value="Pantone">Pantone</option>
+                  </select>
+                  <input
+                    className={styles.colorValueInput}
+                    type="text"
+                    value={lc.value}
+                    placeholder={lc.mode === 'CMYK' ? 'e.g. 0, 0, 0, 100' : 'e.g. PMS 295 C'}
+                    onChange={(e) => dispatch({ type: 'UPDATE_LOGO_COLOR', payload: { index: i, value: e.target.value } })}
+                  />
+                  <button className={styles.removeColorBtn} onClick={() => dispatch({ type: 'REMOVE_LOGO_COLOR', payload: i })}>&times;</button>
+                </div>
+              ))}
+              <button
+                className={styles.addColorBtn}
+                onClick={() => dispatch({ type: 'ADD_LOGO_COLOR', payload: { mode: 'CMYK', value: '' } })}
+              >+ Add color</button>
+            </div>
+          </div>
+        </div>
+
+        {/* ── Product Paint ───────────────────────────────────────── */}
+        <div className={styles.customizationSection}>
+          <div className={styles.categoryLabel}>Product Paint</div>
+
+          {/* Finish selector */}
+          <div className={styles.custRow}>
+            <span className={styles.custLabel}>Finish</span>
+            <div className={styles.finishChips}>
+              {(['gloss', 'satin', 'matte', 'textured'] as const).map((f) => (
+                <button
+                  key={f}
+                  className={`${styles.finishChip} ${customization.paint.finish === f ? styles.finishChipActive : ''}`}
+                  onClick={() => dispatch({ type: 'SET_PAINT_FINISH', payload: customization.paint.finish === f ? '' : f })}
+                >
+                  {f.charAt(0).toUpperCase() + f.slice(1)}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Color — only for gloss/satin */}
+          {(customization.paint.finish === 'gloss' || customization.paint.finish === 'satin') && (
+            <div className={styles.custRow}>
+              <span className={styles.custLabel}>RAL code</span>
+              <input
+                className={styles.colorValueInput}
+                type="text"
+                value={customization.paint.color}
+                placeholder="e.g. RAL 9005"
+                onChange={(e) => dispatch({ type: 'SET_PAINT_COLOR', payload: e.target.value })}
+              />
+            </div>
+          )}
+
+          {/* Color — matte/textured: only black or white */}
+          {(customization.paint.finish === 'matte' || customization.paint.finish === 'textured') && (
+            <div className={styles.custRow}>
+              <span className={styles.custLabel}>Color</span>
+              <div className={styles.finishChips}>
+                {(['Black', 'White'] as const).map((c) => (
+                  <button
+                    key={c}
+                    className={`${styles.finishChip} ${customization.paint.color === c ? styles.finishChipActive : ''}`}
+                    onClick={() => dispatch({ type: 'SET_PAINT_COLOR', payload: customization.paint.color === c ? '' : c })}
+                  >
+                    {c}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Free text description — always visible when finish is selected */}
+          {customization.paint.finish && (
+            <div className={styles.custRow}>
+              <span className={styles.custLabel}>Description</span>
+              <input
+                className={styles.colorValueInput}
+                type="text"
+                value={customization.paint.description}
+                placeholder="Any additional paint notes…"
+                onChange={(e) => dispatch({ type: 'SET_PAINT_DESCRIPTION', payload: e.target.value })}
+              />
+            </div>
+          )}
         </div>
       </div>
 

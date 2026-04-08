@@ -37,6 +37,16 @@ export interface OnePagerState {
   };
   competitors: CompetitorEntry[];
 
+  customization: {
+    logoFileName: string;        // original filename, empty if none
+    logoColors: { mode: 'CMYK' | 'Pantone'; value: string }[];
+    paint: {
+      finish: 'gloss' | 'satin' | 'matte' | 'textured' | '';
+      color: string;             // RAL code for gloss/satin; empty for matte/textured
+      description: string;       // free text
+    };
+  };
+
   // Document metadata
   productName: string;
   preparedBy: string;
@@ -73,7 +83,14 @@ export type OnePagerAction =
   | { type: 'TOGGLE_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
   | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } }
   | { type: 'SET_DOCUMENT_ID'; payload: string }
-  | { type: 'SET_PUBLISHED'; payload: boolean };
+  | { type: 'SET_PUBLISHED'; payload: boolean }
+  | { type: 'SET_LOGO_FILE'; payload: string }
+  | { type: 'ADD_LOGO_COLOR'; payload: { mode: 'CMYK' | 'Pantone'; value: string } }
+  | { type: 'UPDATE_LOGO_COLOR'; payload: { index: number; mode?: 'CMYK' | 'Pantone'; value?: string } }
+  | { type: 'REMOVE_LOGO_COLOR'; payload: number }
+  | { type: 'SET_PAINT_FINISH'; payload: 'gloss' | 'satin' | 'matte' | 'textured' | '' }
+  | { type: 'SET_PAINT_COLOR'; payload: string }
+  | { type: 'SET_PAINT_DESCRIPTION'; payload: string };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -94,6 +111,11 @@ export function createInitialState(): OnePagerState {
     features: { mustHave: [], niceToHave: [] },
     commercials: { moq: '', targetPrice: '' },
     competitors: [],
+    customization: {
+      logoFileName: '',
+      logoColors: [],
+      paint: { finish: '', color: '', description: '' },
+    },
     productName: '',
     preparedBy: '',
     userEmail: '',
@@ -278,6 +300,37 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_PUBLISHED':
       return { ...base, isPublished: action.payload };
+
+    case 'SET_LOGO_FILE':
+      return { ...base, customization: { ...base.customization, logoFileName: action.payload } };
+
+    case 'ADD_LOGO_COLOR':
+      return { ...base, customization: { ...base.customization, logoColors: [...base.customization.logoColors, action.payload] } };
+
+    case 'UPDATE_LOGO_COLOR': {
+      const colors = base.customization.logoColors.map((c, i) =>
+        i === action.payload.index
+          ? { mode: action.payload.mode ?? c.mode, value: action.payload.value ?? c.value }
+          : c
+      );
+      return { ...base, customization: { ...base.customization, logoColors: colors } };
+    }
+
+    case 'REMOVE_LOGO_COLOR':
+      return { ...base, customization: { ...base.customization, logoColors: base.customization.logoColors.filter((_, i) => i !== action.payload) } };
+
+    case 'SET_PAINT_FINISH': {
+      const finish = action.payload;
+      // Reset color when switching to matte/textured (only black/white allowed there)
+      const color = (finish === 'matte' || finish === 'textured') ? '' : base.customization.paint.color;
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, finish, color } } };
+    }
+
+    case 'SET_PAINT_COLOR':
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, color: action.payload } } };
+
+    case 'SET_PAINT_DESCRIPTION':
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, description: action.payload } } };
 
     default:
       return state;

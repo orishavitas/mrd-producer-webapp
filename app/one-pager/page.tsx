@@ -312,6 +312,8 @@ function OnePagerContent() {
           }
           onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
           isAutoFilling={isAutoFilling}
+          customization={state.customization}
+          dispatch={dispatch}
         />
       </div>
 
