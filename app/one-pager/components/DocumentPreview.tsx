@@ -7,9 +7,10 @@ import { OnePagerState } from '../lib/one-pager-state';
 
 interface DocumentPreviewProps {
   state: OnePagerState;
+  featureLayout?: 'sideBySide' | 'stacked';
 }
 
-export default function DocumentPreview({ state }: DocumentPreviewProps) {
+export default function DocumentPreview({ state, featureLayout = 'sideBySide' }: DocumentPreviewProps) {
   const generateMarkdown = (): string => {
     const parts: string[] = [];
 
@@ -104,7 +105,7 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
           {hasFeatures && (
             <div className={styles.section}>
               <h2 className={styles.sectionHeading}>Features</h2>
-              <div className={styles.featureCards}>
+              <div className={featureLayout === 'sideBySide' ? styles.featureCards : styles.featureCardsStacked}>
                 {state.features.mustHave.length > 0 && (
                   <div className={styles.featureCard}>
                     <div className={styles.featureCardLabel}>Must Have</div>

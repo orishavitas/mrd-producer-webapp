@@ -55,6 +55,7 @@ interface OnePagerData {
   productName?: string;
   preparedBy?: string;
   userEmail?: string;
+  featureLayout?: 'sideBySide' | 'stacked';
 }
 
 const BRAND = {
@@ -572,6 +573,29 @@ function generateOnePagerHtml(data: OnePagerData): string {
       border-radius: 4px;
       background: #f3f4f6;
     }
+    .feature-cards {
+      display: flex;
+      gap: 8pt;
+      flex-wrap: wrap;
+    }
+    .feature-card {
+      flex: 1 1 180pt;
+      background: #f2f2f2;
+      border: 1px solid #e0e0e0;
+      border-radius: 12pt;
+      padding: 12pt 14pt;
+    }
+    .feature-card-label {
+      font-family: 'Barlow', sans-serif;
+      font-size: 9pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #009966;
+      margin-bottom: 6pt;
+    }
+    .feature-card ul { margin: 0; padding-left: 14px; }
+    .feature-card li { font-size: 10pt; margin-bottom: 2pt; }
     .footer {
       text-align: center;
       font-size: 9pt;
@@ -633,15 +657,31 @@ ${(data.productName || data.preparedBy || data.userEmail) ? `<div class="doc-met
   const hasFeatures = data.features.mustHave.length > 0 || data.features.niceToHave.length > 0;
   if (hasFeatures) {
     html += '<h2>Features</h2>\n';
-    if (data.features.mustHave.length > 0) {
-      html += '<h3>Must Have</h3>\n<ul>\n';
-      data.features.mustHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
-      html += '</ul>\n';
-    }
-    if (data.features.niceToHave.length > 0) {
-      html += '<h3>Nice to Have</h3>\n<ul>\n';
-      data.features.niceToHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
-      html += '</ul>\n';
+    const isSideBySide = (data.featureLayout ?? 'sideBySide') === 'sideBySide';
+    if (isSideBySide) {
+      html += '<div class="feature-cards">\n';
+      if (data.features.mustHave.length > 0) {
+        html += '<div class="feature-card"><div class="feature-card-label">Must Have</div><ul>\n';
+        data.features.mustHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
+        html += '</ul></div>\n';
+      }
+      if (data.features.niceToHave.length > 0) {
+        html += '<div class="feature-card"><div class="feature-card-label">Nice to Have</div><ul>\n';
+        data.features.niceToHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
+        html += '</ul></div>\n';
+      }
+      html += '</div>\n';
+    } else {
+      if (data.features.mustHave.length > 0) {
+        html += '<div class="feature-card" style="margin-bottom:8pt"><div class="feature-card-label">Must Have</div><ul>\n';
+        data.features.mustHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
+        html += '</ul></div>\n';
+      }
+      if (data.features.niceToHave.length > 0) {
+        html += '<div class="feature-card"><div class="feature-card-label">Nice to Have</div><ul>\n';
+        data.features.niceToHave.forEach((f) => { html += `<li>${esc(f)}</li>\n`; });
+        html += '</ul></div>\n';
+      }
     }
   }
 

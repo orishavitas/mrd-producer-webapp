@@ -19,6 +19,8 @@ interface FeatureSelectorProps {
   isAutoFilling?: boolean;
   customization: OnePagerState['customization'];
   dispatch: React.Dispatch<OnePagerAction>;
+  layout?: 'sideBySide' | 'stacked';
+  onLayoutChange?: (layout: 'sideBySide' | 'stacked') => void;
 }
 
 type Layout = 'sideBySide' | 'stacked';
@@ -33,8 +35,12 @@ export function FeatureSelector({
   isAutoFilling,
   customization,
   dispatch,
+  layout: layoutProp,
+  onLayoutChange,
 }: FeatureSelectorProps) {
-  const [layout, setLayout] = useState<Layout>('sideBySide');
+  const [layoutLocal, setLayoutLocal] = useState<Layout>('sideBySide');
+  const layout = layoutProp ?? layoutLocal;
+  function setLayout(l: Layout) { setLayoutLocal(l); onLayoutChange?.(l); }
   const [popover, setPopover] = useState<string | null>(null);
   const [customInput, setCustomInput] = useState('');
   const fileInputRef = useRef<HTMLInputElement>(null);

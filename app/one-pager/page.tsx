@@ -31,6 +31,7 @@ function OnePagerContent() {
   const [isPublishing, setIsPublishing] = useState(false);
   const [publishGatePending, setPublishGatePending] = useState<'docx' | 'html' | 'pdf' | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
+  const [featureLayout, setFeatureLayout] = useState<'sideBySide' | 'stacked'>('sideBySide');
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -45,7 +46,7 @@ function OnePagerContent() {
       const response = await fetch(`/api/one-pager/export?format=${format}`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(state),
+        body: JSON.stringify({ ...state, featureLayout }),
       });
 
       if (format === 'pdf') {
@@ -314,6 +315,8 @@ function OnePagerContent() {
           isAutoFilling={isAutoFilling}
           customization={state.customization}
           dispatch={dispatch}
+          layout={featureLayout}
+          onLayoutChange={setFeatureLayout}
         />
       </div>
 
@@ -377,7 +380,7 @@ function OnePagerContent() {
     </div>
   );
 
-  const rightPanel = <DocumentPreview state={state} />;
+  const rightPanel = <DocumentPreview state={state} featureLayout={featureLayout} />;
 
   const leftBar = (
     <>
