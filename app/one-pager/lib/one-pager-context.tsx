@@ -31,7 +31,9 @@ function loadFromStorage(): OnePagerState | null {
     if (!stored) return null;
     const parsed = JSON.parse(stored);
     if (parsed && typeof parsed.sessionId === 'string' && parsed.context) {
-      return parsed as OnePagerState;
+      // Merge with initial state so new fields added after the session was saved
+      // always have their defaults (prevents crashes on missing nested keys).
+      return { ...createInitialState(), ...parsed } as OnePagerState;
     }
     return null;
   } catch {
