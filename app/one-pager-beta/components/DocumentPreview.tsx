@@ -11,15 +11,7 @@ interface DocumentPreviewProps {
 
 export default function DocumentPreview({ state }: DocumentPreviewProps) {
   const generateMarkdown = (): string => {
-    const parts: string[] = ['# Marketing Requirement Document', ''];
-
-    // Document metadata header
-    if (state.productName || state.preparedBy || state.userEmail) {
-      if (state.productName) parts.push(`**Product:** ${state.productName}`);
-      if (state.preparedBy) parts.push(`**Prepared By:** ${state.preparedBy}`);
-      if (state.userEmail) parts.push(`**Contact:** ${state.userEmail}`);
-      parts.push('');
-    }
+    const parts: string[] = [];
 
     if (state.description) {
       parts.push('## Product Description', '', state.description, '');
@@ -31,12 +23,11 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
 
     if (state.context.environments.length > 0 || state.context.industries.length > 0) {
       parts.push('## Where');
-      const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
       if (state.context.environments.length > 0) {
-        parts.push('', '**Environment:** ' + state.context.environments.map(cap).join(', '));
+        parts.push('', '**Environment:** ' + state.context.environments.join(', '));
       }
       if (state.context.industries.length > 0) {
-        parts.push('', '**Industry:** ' + state.context.industries.map(cap).join(', '));
+        parts.push('', '**Industry:** ' + state.context.industries.join(', '));
       }
       parts.push('');
     }
@@ -50,17 +41,6 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
       parts.push('## Use Cases', '', state.useCases, '');
     }
 
-    if (state.features.mustHave.length > 0 || state.features.niceToHave.length > 0) {
-      parts.push('## Features');
-      if (state.features.mustHave.length > 0) {
-        parts.push('', '**Must Have:**', state.features.mustHave.map((f) => `- ${f}`).join('\n'));
-      }
-      if (state.features.niceToHave.length > 0) {
-        parts.push('', '**Nice to Have:**', state.features.niceToHave.map((f) => `- ${f}`).join('\n'));
-      }
-      parts.push('');
-    }
-
     if (state.commercials.moq || state.commercials.targetPrice) {
       parts.push('## Commercials');
       if (state.commercials.moq) parts.push('', `**MOQ:** ${state.commercials.moq}`);
@@ -72,45 +52,102 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
   };
 
   const doneCompetitors = state.competitors.filter((c) => c.status === 'done');
+  const hasFeatures = state.features.mustHave.length > 0 || state.features.niceToHave.length > 0;
 
   return (
     <div className={styles.container}>
-      <div className={styles.header}>
-        <h3 className={styles.title}>Document Preview</h3>
+      {/* ── Chrome header (outside the white doc area) ── */}
+      <div className={styles.chrome}>
+        <span className={styles.chromeLabel}>Document Preview</span>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/compulocks-logo.png"
           alt="Compulocks"
-          className={styles.logo}
+          className={styles.chromeLogo}
           onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
         />
       </div>
-      <div className={styles.content}>
-        <ReactMarkdown remarkPlugins={[remarkGfm]}>
-          {generateMarkdown()}
-        </ReactMarkdown>
 
-        {doneCompetitors.length > 0 && (
-          <div>
-            <h2>Competitors</h2>
-            {doneCompetitors.map((comp) => (
-              <div key={comp.url}>
-                <h3>{comp.brand} - {comp.productName}</h3>
-                {comp.photoUrls?.length > 0 && (
-                  <div className={styles.photoRow}>
-                    {comp.photoUrls.map((photoUrl) => (
-                      // eslint-disable-next-line @next/next/no-img-element
-                      <img key={photoUrl} src={photoUrl} alt={comp.productName} />
-                    ))}
-                  </div>
-                )}
-                {comp.cost && <p><strong>Price:</strong> {comp.cost}</p>}
-                {comp.description && <p>{comp.description}</p>}
-                <p><a href={comp.url}>View product</a></p>
-              </div>
-            ))}
+      {/* ── White document area ── */}
+      <div className={styles.doc}>
+        {/* Doc header: title left, logo right, split line below */}
+        <div className={styles.docHeader}>
+          <h1 className={styles.docTitle}>Marketing Requirement Document</h1>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/compulocks-logo.svg"
+            alt="Compulocks"
+            className={styles.docLogo}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = '/compulocks-logo.png';
+            }}
+          />
+        </div>
+        <hr className={styles.docDivider} />
+
+        {/* Metadata */}
+        {(state.productName || state.preparedBy || state.userEmail) && (
+          <div className={styles.meta}>
+            {state.productName && <span><strong>Product:</strong> {state.productName}</span>}
+            {state.preparedBy && <span><strong>Prepared by:</strong> {state.preparedBy}</span>}
+            {state.userEmail && <span><strong>Contact:</strong> {state.userEmail}</span>}
           </div>
         )}
+
+        {/* Body sections via ReactMarkdown */}
+        <div className={styles.content}>
+          <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            {generateMarkdown()}
+          </ReactMarkdown>
+
+          {/* Features — side-by-side cards */}
+          {hasFeatures && (
+            <div className={styles.section}>
+              <h2 className={styles.sectionHeading}>Features</h2>
+              <div className={styles.featureCards}>
+                {state.features.mustHave.length > 0 && (
+                  <div className={styles.featureCard}>
+                    <div className={styles.featureCardLabel}>Must Have</div>
+                    <ul>
+                      {state.features.mustHave.map((f) => <li key={f}>{f}</li>)}
+                    </ul>
+                  </div>
+                )}
+                {state.features.niceToHave.length > 0 && (
+                  <div className={styles.featureCard}>
+                    <div className={styles.featureCardLabel}>Nice to Have</div>
+                    <ul>
+                      {state.features.niceToHave.map((f) => <li key={f}>{f}</li>)}
+                    </ul>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+
+          {/* Competitors */}
+          {doneCompetitors.length > 0 && (
+            <div className={styles.section}>
+              <h2 className={styles.sectionHeading}>Competitors</h2>
+              {doneCompetitors.map((comp) => (
+                <div key={comp.url} className={styles.competitor}>
+                  <h3 className={styles.competitorName}>{comp.brand} — {comp.productName}</h3>
+                  {comp.photoUrls?.length > 0 && (
+                    <div className={styles.photoRow}>
+                      {comp.photoUrls.map((photoUrl) => (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img key={photoUrl} src={photoUrl} alt={comp.productName} />
+                      ))}
+                    </div>
+                  )}
+                  {comp.cost && <p className={styles.body}><strong>Price:</strong> {comp.cost}</p>}
+                  {comp.description && <p className={styles.body}>{comp.description}</p>}
+                  <p className={styles.body}><a href={comp.url}>View product</a></p>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );

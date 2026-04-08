@@ -19,7 +19,7 @@
 
   /* ── Surface & Neutral ─────────────────────────────────────── */
   --op-background:        #FDFBFF;
-  --op-surface:           #FDFBFF;
+  --op-surface:           #f2f2f2;
   --op-surface-variant:   #E2E2EC;
   --op-on-surface:        #1A1B1F;
   --op-on-surface-variant:#45464F;
@@ -31,6 +31,11 @@
   --op-error:             #BA1A1A;
   --op-muted:             #45464F;
 
+  /* ── Brand Accent (Compulocks Green) ───────────────────────── */
+  --op-accent:            var(--brand-green-dark, #009966);
+  --op-accent-hover:      #007a52;
+  --op-accent-soft:       rgba(0, 153, 102, 0.12);
+
   /* ── Shape (M3 Expressive) ─────────────────────────────────── */
   --op-radius-xs:   4px;
   --op-radius-s:    8px;
@@ -38,6 +43,10 @@
   --op-radius-l:    16px;
   --op-radius-xl:   28px;
   --op-radius-full: 9999px;
+
+  /* ── Card Tokens ───────────────────────────────────────────── */
+  --op-card-radius:       24px;
+  --op-card-padding:      32px;
 
   /* ── Chip height & button height (8dp grid) ────────────────── */
   --op-chip-height:   2rem;    /* 32px */
@@ -73,7 +82,7 @@
 
     /* Dark surfaces */
     --op-background:        #111217;
-    --op-surface:           #111217;
+    --op-surface:           #1a1a1a;
     --op-surface-variant:   #1E2030;
     --op-on-surface:        #E3E2EB;
     --op-on-surface-variant:#C6C5D0;

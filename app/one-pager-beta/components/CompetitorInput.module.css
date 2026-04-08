@@ -69,13 +69,13 @@
   gap: 0.5rem;
 }
 
-/* M3 elevated card — uses XL radius */
+/* M3 elevated card — uses brand card tokens */
 .card {
   position: relative;
-  padding: 0.875rem;
-  background: var(--op-surface, #FDFBFF);
-  border: 1.5px solid var(--op-outline, #C5C6D0);
-  border-radius: var(--op-radius-xl, 28px);
+  padding: var(--op-card-padding, 32px);
+  background-color: var(--op-surface, #f2f2f2);
+  border: 1px solid #e0e0e0;
+  border-radius: var(--op-card-radius, 24px);
   box-shadow: var(--op-shadow-sm, 0 1px 3px rgba(29, 31, 74, 0.10));
 }
 

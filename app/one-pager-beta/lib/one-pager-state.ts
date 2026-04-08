@@ -41,6 +41,10 @@ export interface OnePagerState {
   productName: string;
   preparedBy: string;
   userEmail: string;   // placeholder — will come from auth later
+
+  // Publish flow
+  documentId: string | null;
+  isPublished: boolean;
 }
 
 export type OnePagerAction =
@@ -57,6 +61,7 @@ export type OnePagerAction =
   | { type: 'REMOVE_CUSTOM_ROLE'; payload: string }
   | { type: 'ADD_FEATURE'; payload: { category: 'mustHave' | 'niceToHave'; feature: string } }
   | { type: 'REMOVE_FEATURE'; payload: { category: 'mustHave' | 'niceToHave'; feature: string } }
+  | { type: 'SET_FEATURES'; payload: { mustHave: string[]; niceToHave: string[] } }
   | { type: 'SET_MOQ'; payload: string }
   | { type: 'SET_TARGET_PRICE'; payload: string }
   | { type: 'SET_PRODUCT_NAME'; payload: string }
@@ -67,7 +72,8 @@ export type OnePagerAction =
   | { type: 'REMOVE_COMPETITOR'; payload: string }
   | { type: 'TOGGLE_COMPETITOR_PHOTO'; payload: { url: string; photoUrl: string } }
   | { type: 'SET_COMPETITOR_CANDIDATES'; payload: { url: string; candidatePhotos: string[] } }
-  | { type: 'SET_FEATURES'; payload: { mustHave: string[]; niceToHave: string[] } };
+  | { type: 'SET_DOCUMENT_ID'; payload: string }
+  | { type: 'SET_PUBLISHED'; payload: boolean };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -91,6 +97,8 @@ export function createInitialState(): OnePagerState {
     productName: '',
     preparedBy: '',
     userEmail: '',
+    documentId: null,
+    isPublished: false,
   };
 }
 
@@ -188,6 +196,9 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
         },
       };
 
+    case 'SET_FEATURES':
+      return { ...base, features: action.payload };
+
     case 'SET_MOQ':
       return { ...base, commercials: { ...base.commercials, moq: action.payload } };
 
@@ -262,14 +273,11 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
         ),
       };
 
-    case 'SET_FEATURES':
-      return {
-        ...base,
-        features: {
-          mustHave: action.payload.mustHave,
-          niceToHave: action.payload.niceToHave,
-        },
-      };
+    case 'SET_DOCUMENT_ID':
+      return { ...base, documentId: action.payload };
+
+    case 'SET_PUBLISHED':
+      return { ...base, isPublished: action.payload };
 
     default:
       return state;
