@@ -3,9 +3,6 @@
 }
 
 .toolbar {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
   border-bottom: 2px solid var(--op-primary);
@@ -13,12 +10,15 @@
 
 .pageTitle {
   font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-  font-size: 36px;
+  font-size: 28px;
   font-weight: 500;
   text-transform: capitalize;
   color: var(--brand-primary, #1D1F4A);
   letter-spacing: 0.04em;
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .exportButtons {

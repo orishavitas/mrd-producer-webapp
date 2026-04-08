@@ -197,37 +197,7 @@ function OnePagerContent() {
       )}
 
       <div className={styles.toolbar}>
-        <h2 className={styles.pageTitle}>Marketing Requirement Document</h2>
-        <div className={styles.exportButtons}>
-          <button
-            className={styles.exportButtonGhost}
-            onClick={handleSaveDraft}
-            disabled={isWorking}
-          >
-            {isSaving ? 'Saving...' : 'Save Draft'}
-          </button>
-          <button
-            className={styles.exportButtonGhost}
-            onClick={handlePublish}
-            disabled={isWorking || state.isPublished}
-          >
-            {isPublishing ? 'Publishing...' : state.isPublished ? 'Published' : 'Publish'}
-          </button>
-          <button
-            className={styles.exportButton}
-            onClick={() => handleExport('docx')}
-            disabled={isWorking}
-          >
-            {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
-          </button>
-          <button
-            className={styles.exportButtonGhost}
-            onClick={() => handleExport('pdf')}
-            disabled={isWorking}
-          >
-            {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
-          </button>
-        </div>
+        <h2 className={styles.pageTitle}>Marketing Requirement Document Producer</h2>
       </div>
 
       {/* Document Metadata */}
@@ -407,7 +377,40 @@ function OnePagerContent() {
 
   const rightPanel = <DocumentPreview state={state} />;
 
-  return <SplitLayout leftPanel={leftPanel} rightPanel={rightPanel} />;
+  const leftBar = (
+    <>
+      <button
+        className={styles.exportButtonGhost}
+        onClick={handleSaveDraft}
+        disabled={isWorking}
+      >
+        {isSaving ? 'Saving...' : 'Save Draft'}
+      </button>
+      <button
+        className={styles.exportButtonGhost}
+        onClick={handlePublish}
+        disabled={isWorking || state.isPublished}
+      >
+        {isPublishing ? 'Publishing...' : state.isPublished ? 'Published' : 'Publish'}
+      </button>
+      <button
+        className={styles.exportButton}
+        onClick={() => handleExport('docx')}
+        disabled={isWorking}
+      >
+        {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
+      </button>
+      <button
+        className={styles.exportButtonGhost}
+        onClick={() => handleExport('pdf')}
+        disabled={isWorking}
+      >
+        {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
+      </button>
+    </>
+  );
+
+  return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} />;
 }
 
 export default function OnePagerPage() {

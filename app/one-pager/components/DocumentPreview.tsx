@@ -75,10 +75,12 @@ export default function DocumentPreview({ state }: DocumentPreviewProps) {
           <h1 className={styles.docTitle}>Marketing Requirement Document</h1>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
-            src="/compulocks-logo.png"
+            src="/compulocks-logo.svg"
             alt="Compulocks"
             className={styles.docLogo}
-            onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            onError={(e) => {
+              (e.currentTarget as HTMLImageElement).src = '/compulocks-logo.png';
+            }}
           />
         </div>
         <hr className={styles.docDivider} />
