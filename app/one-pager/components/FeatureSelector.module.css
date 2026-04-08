@@ -393,6 +393,7 @@
   background: #fff;
   cursor: pointer;
   flex-shrink: 0;
+  width: 88px;
 }
 
 .colorValueInput {
