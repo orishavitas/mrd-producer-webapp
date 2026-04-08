@@ -13,6 +13,7 @@ import PublishGateModal from './components/PublishGateModal';
 import DraftWarningBanner from './components/DraftWarningBanner';
 import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useState } from 'react';
+import Link from 'next/link';
 import './one-pager-tokens.css';
 import styles from './page.module.css';
 
@@ -23,7 +24,7 @@ interface ConfigData {
 }
 
 function OnePagerContent() {
-  const { state, dispatch } = useOnePager();
+  const { state, dispatch, reset } = useOnePager();
   const [config, setConfig] = useState<ConfigData | null>(null);
   const [isExporting, setIsExporting] = useState<string | null>(null);
   const [isAutoFilling, setIsAutoFilling] = useState(false);
@@ -382,37 +383,80 @@ function OnePagerContent() {
 
   const rightPanel = <DocumentPreview state={state} featureLayout={featureLayout} />;
 
+  const handleUnpublish = useCallback(async () => {
+    if (!state.documentId) {
+      dispatch({ type: 'SET_PUBLISHED', payload: false });
+      return;
+    }
+    try {
+      await fetch(`/api/documents/${state.documentId}/publish`, { method: 'DELETE' });
+      dispatch({ type: 'SET_PUBLISHED', payload: false });
+    } catch {
+      dispatch({ type: 'SET_PUBLISHED', payload: false });
+    }
+  }, [state.documentId, dispatch]);
+
+  const handleReset = useCallback(() => {
+    if (window.confirm('Reset the form? All unsaved data will be lost.')) {
+      reset();
+    }
+  }, [reset]);
+
   const leftBar = (
-    <>
-      <button
-        className={styles.exportButtonGhost}
-        onClick={handleSaveDraft}
-        disabled={isWorking}
-      >
-        {isSaving ? 'Saving...' : 'Save Draft'}
-      </button>
-      <button
-        className={styles.exportButtonGhost}
-        onClick={handlePublish}
-        disabled={isWorking || state.isPublished}
-      >
-        {isPublishing ? 'Publishing...' : state.isPublished ? 'Published' : 'Publish'}
-      </button>
-      <button
-        className={styles.exportButton}
-        onClick={() => handleExport('docx')}
-        disabled={isWorking}
-      >
-        {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
-      </button>
-      <button
-        className={styles.exportButtonGhost}
-        onClick={() => handleExport('pdf')}
-        disabled={isWorking}
-      >
-        {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
-      </button>
-    </>
+    <div className={styles.barRow}>
+      <div className={styles.barLeft}>
+        <Link href="/" className={styles.barIconBtn} title="Home">
+          &#8962;
+        </Link>
+        <button
+          className={styles.barIconBtn}
+          onClick={handleReset}
+          title="Reset form"
+        >
+          &#8635;
+        </button>
+      </div>
+      <div className={styles.barRight}>
+        <button
+          className={styles.exportButtonGhost}
+          onClick={handleSaveDraft}
+          disabled={isWorking}
+        >
+          {isSaving ? 'Saving...' : 'Save Draft'}
+        </button>
+        {state.isPublished ? (
+          <button
+            className={styles.exportButtonGhost}
+            onClick={handleUnpublish}
+            disabled={isWorking}
+          >
+            Unpublish
+          </button>
+        ) : (
+          <button
+            className={styles.exportButtonGhost}
+            onClick={handlePublish}
+            disabled={isWorking}
+          >
+            {isPublishing ? 'Publishing...' : 'Publish'}
+          </button>
+        )}
+        <button
+          className={styles.exportButton}
+          onClick={() => handleExport('docx')}
+          disabled={isWorking}
+        >
+          {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
+        </button>
+        <button
+          className={styles.exportButtonGhost}
+          onClick={() => handleExport('pdf')}
+          disabled={isWorking}
+        >
+          {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
+        </button>
+      </div>
+    </div>
   );
 
   return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} />;
