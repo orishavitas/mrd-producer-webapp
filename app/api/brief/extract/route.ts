@@ -9,6 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { createLogger } from '@/lib/logger';
 import { TextExtractionAgent } from '@/agent/agents/brief/text-extraction-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { sanitizeInput } from '@/lib/sanitize';
@@ -122,9 +123,9 @@ export async function POST(request: NextRequest) {
     });
 
     // Create execution context
-    const context = createExecutionContext({
-      requestId: `brief-extract-${Date.now()}`,
-    });
+    const requestId = crypto.randomUUID();
+    const logger = createLogger(requestId);
+    const context = createExecutionContext({ requestId });
 
     // Create and execute agent
     const agent = new TextExtractionAgent();
@@ -159,7 +160,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[Brief Extract API] Unexpected error:', error);
+    const logger = createLogger();
+    logger.error('Unexpected error', { route: 'brief/extract', error: error instanceof Error ? error.message : String(error) });
 
     return NextResponse.json(
       {

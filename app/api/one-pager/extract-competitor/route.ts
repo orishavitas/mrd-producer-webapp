@@ -10,6 +10,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/lib/logger';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { CompetitorOrchestratorAgent } from '@/agent/agents/one-pager/competitor-orchestrator';
 import { auth } from '@/lib/auth';
@@ -72,15 +73,15 @@ export async function POST(request: NextRequest) {
   }
 
   // ── Execute ───────────────────────────────────────────────────────────────
-  const context = createExecutionContext({
-    requestId: `extract-competitor-${Date.now()}`,
-  });
+  const requestId = crypto.randomUUID();
+  const logger = createLogger(requestId);
+  const context = createExecutionContext({ requestId });
 
   const result = await orchestrator.execute({ url }, context);
 
   if (!result.success || !result.data) {
     const message = result.error ?? 'Competitor extraction failed';
-    context.log('error', '[extract-competitor] Orchestrator failed', { message });
+    logger.error('Orchestrator failed', { route: 'one-pager/extract-competitor', message });
     return NextResponse.json({ error: message }, { status: 500 });
   }
 

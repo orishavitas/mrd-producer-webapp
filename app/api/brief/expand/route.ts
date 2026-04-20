@@ -9,6 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { createLogger } from '@/lib/logger';
 import { ExpansionAgent } from '@/agent/agents/brief/expansion-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { sanitizeInput } from '@/lib/sanitize';
@@ -194,9 +195,9 @@ export async function POST(request: NextRequest) {
     }));
 
     // Create execution context
-    const context = createExecutionContext({
-      requestId: `brief-expand-${Date.now()}`,
-    });
+    const requestId = crypto.randomUUID();
+    const logger = createLogger(requestId);
+    const context = createExecutionContext({ requestId });
 
     // Create and execute agent
     const agent = new ExpansionAgent();
@@ -234,7 +235,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[Brief Expand API] Unexpected error:', error);
+    const logger = createLogger();
+    logger.error('Unexpected error', { route: 'brief/expand', error: error instanceof Error ? error.message : String(error) });
 
     return NextResponse.json(
       {

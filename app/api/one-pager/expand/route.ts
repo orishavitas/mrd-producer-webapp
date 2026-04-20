@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/lib/logger';
 import { getProviderChain } from '@/lib/providers/provider-chain';
 import { auth } from '@/lib/auth';
 import { checkInput, checkOutput, hardenSystemPrompt } from '@/lib/guardrails';
@@ -7,6 +8,9 @@ import { logViolation } from '@/lib/db';
 import { assertNotBanned, bannedResponse, BannedUserError } from '@/lib/ban-check';
 
 export async function POST(request: NextRequest) {
+  const requestId = crypto.randomUUID();
+  const logger = createLogger(requestId);
+
   try {
     // Step 1: Parse body
     const { text, field } = await request.json();
@@ -88,6 +92,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ expanded: result.text });
   } catch (error) {
     const message = error instanceof Error ? error.message : 'Expansion failed';
+    logger.error('Unexpected error', { route: 'one-pager/expand', error: message });
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { createLogger } from '@/lib/logger';
 import { conductResearch, isGeminiAvailable } from '@/lib/gemini';
 import { generateMRD, MRDInput, ResearchSource } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
@@ -28,7 +29,10 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('[API] Generating MRD for:', productConcept.slice(0, 50));
+    const requestId = crypto.randomUUID();
+    const logger = createLogger(requestId);
+
+    logger.info('Generating MRD', { productConcept: productConcept.slice(0, 50) });
 
     let researchFindings: ResearchSource[] = [];
     let researchSummary: string | undefined;
@@ -36,7 +40,7 @@ export async function POST(request: NextRequest) {
     // Use Gemini with Google Search grounding for research
     if (isGeminiAvailable()) {
       try {
-        console.log('[API] Conducting research with Gemini Search grounding');
+        logger.info('Conducting research with Gemini Search grounding');
         const researchTopic = `${productConcept} for ${targetMarket}`;
         const researchContext = additionalDetails || undefined;
 
@@ -49,13 +53,13 @@ export async function POST(request: NextRequest) {
           snippet: s.snippet,
         }));
 
-        console.log(`[API] Research complete: ${researchFindings.length} sources`);
+        logger.info('Research complete', { sourceCount: researchFindings.length });
       } catch (error) {
-        console.error('[API] Research failed:', error);
+        logger.error('Research failed', { error: error instanceof Error ? error.message : String(error) });
         // Continue without research - MRD will be generated with available info
       }
     } else {
-      console.log('[API] Gemini not available, skipping research');
+      logger.info('Gemini not available, skipping research');
     }
 
     // Generate the MRD (uses AI if available, otherwise template)
@@ -79,7 +83,7 @@ export async function POST(request: NextRequest) {
       })),
     });
   } catch (error) {
-    console.error('[API] Error generating MRD:', error);
+    createLogger().error('Error generating MRD', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
       { error: 'Failed to generate MRD. Please try again.' },
       { status: 500 }

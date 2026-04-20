@@ -10,6 +10,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { createLogger } from '@/lib/logger';
 import { BatchExtractionAgent } from '@/agent/agents/brief/batch-extraction-agent';
 import { GapDetectionAgent } from '@/agent/agents/brief/gap-detection-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
@@ -115,9 +116,9 @@ export async function POST(request: NextRequest) {
     });
 
     // Create execution context
-    const context = createExecutionContext({
-      requestId: `brief-batch-extract-${Date.now()}`,
-    });
+    const requestId = crypto.randomUUID();
+    const logger = createLogger(requestId);
+    const context = createExecutionContext({ requestId });
 
     // Create and execute batch extraction agent
     const batchAgent = new BatchExtractionAgent();
@@ -182,7 +183,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[Brief Batch Extract API] Unexpected error:', error);
+    const logger = createLogger();
+    logger.error('Unexpected error', { route: 'brief/batch-extract', error: error instanceof Error ? error.message : String(error) });
 
     return NextResponse.json(
       {

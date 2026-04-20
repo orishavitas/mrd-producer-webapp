@@ -9,6 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { createLogger } from '@/lib/logger';
 import { GapDetectionAgent } from '@/agent/agents/brief/gap-detection-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { BriefField } from '@/app/brief-helper/lib/brief-state';
@@ -143,9 +144,9 @@ export async function POST(request: NextRequest) {
     const { fieldType, entities, bulletPoints } = validation.data;
 
     // Create execution context
-    const context = createExecutionContext({
-      requestId: `brief-gaps-${Date.now()}`,
-    });
+    const requestId = crypto.randomUUID();
+    const logger = createLogger(requestId);
+    const context = createExecutionContext({ requestId });
 
     // Create and execute agent
     const agent = new GapDetectionAgent();
@@ -180,7 +181,8 @@ export async function POST(request: NextRequest) {
       { status: 200 }
     );
   } catch (error) {
-    console.error('[Brief Gaps API] Unexpected error:', error);
+    const logger = createLogger();
+    logger.error('Unexpected error', { route: 'brief/gaps', error: error instanceof Error ? error.message : String(error) });
 
     return NextResponse.json(
       {
