@@ -8,6 +8,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 import { TextExtractionAgent } from '@/agent/agents/brief/text-extraction-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 import { sanitizeInput } from '@/lib/sanitize';
@@ -91,6 +92,11 @@ function validateRequest(body: any): { valid: true; data: ExtractRequest } | { v
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Parse request body
     const body = await request.json();
 

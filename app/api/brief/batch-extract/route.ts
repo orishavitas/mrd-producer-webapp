@@ -9,6 +9,7 @@
  */
 
 import { NextRequest, NextResponse } from 'next/server';
+import { auth } from '@/lib/auth';
 import { BatchExtractionAgent } from '@/agent/agents/brief/batch-extraction-agent';
 import { GapDetectionAgent } from '@/agent/agents/brief/gap-detection-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
@@ -84,6 +85,11 @@ function validateRequest(
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     // Parse request body
     const body = await request.json();
 

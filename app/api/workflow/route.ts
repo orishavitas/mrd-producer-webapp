@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { executeWorkflow, WorkflowInput } from '@/agent/workflow';
 import { WorkflowState } from '@/lib/schemas';
+import { auth } from '@/lib/auth';
 
 /**
  * POST /api/workflow
@@ -24,6 +25,11 @@ import { WorkflowState } from '@/lib/schemas';
  */
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
 
     const input: WorkflowInput = {

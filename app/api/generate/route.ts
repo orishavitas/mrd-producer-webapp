@@ -2,9 +2,15 @@ import { NextRequest, NextResponse } from 'next/server';
 import { conductResearch, isGeminiAvailable } from '@/lib/gemini';
 import { generateMRD, MRDInput, ResearchSource } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
+import { auth } from '@/lib/auth';
 
 export async function POST(request: NextRequest) {
   try {
+    const session = await auth();
+    if (!session?.user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+
     const body = await request.json();
 
     // Sanitize user inputs to prevent prompt injection
