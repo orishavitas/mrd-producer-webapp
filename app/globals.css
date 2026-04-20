@@ -7,6 +7,7 @@
 /* ========================================
    Design Token Imports
    ======================================== */
+@import '../styles/tokens/compulocks.css';
 @import '../styles/tokens/brief-helper.css';
 
 /* CSS Reset - normalize across browsers */
@@ -61,9 +62,8 @@
   --font-sans: 'Barlow', 'Segoe UI', Arial, sans-serif;
   --font-mono: 'IBM Plex Mono', 'SF Mono', Menlo, monospace;
 
-  /* Brand tokens (Compulocks Brand Language 2025) */
-  --brand-primary: #1D1F4A;
-  --brand-highlight: #243469;
+  /* Brand tokens — defined in compulocks.css (imported above) */
+  /* Local aliases for Barlow font shorthand access */
   --font-barlow: 'Barlow', sans-serif;
   --font-barlow-condensed: 'Barlow Condensed', sans-serif;
 
@@ -102,9 +102,9 @@
     --muted: #9aa3ab;
     --surface: #14181c;
     --border: #2a2f36;
-    --accent: #34d399;
-    --accent-hover: #10b981;
-    --accent-soft: rgba(52, 211, 153, 0.16);
+    --accent: var(--brand-green-light, #1db274);
+    --accent-hover: #17a366;
+    --accent-soft: rgba(29, 178, 116, 0.16);
     --error: #ef4444;
 
     /* Text colors */
@@ -521,7 +521,7 @@ h3 { font-size: 1.25rem; }
 
 @media (prefers-color-scheme: dark) {
   .sources {
-    background-color: rgba(52, 211, 153, 0.12);
+    background-color: rgba(29, 178, 116, 0.12);
   }
 
   .result-body {
