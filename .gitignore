@@ -56,3 +56,4 @@ e2e-screenshots/
 # Claude Code / MCP artifacts
 .claude/settings.local.json
 .playwright-mcp/
+.worktrees/
