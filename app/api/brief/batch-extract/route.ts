@@ -47,13 +47,13 @@ interface BatchExtractResponse {
 // ============================================================================
 
 function validateRequest(
-  body: any
+  body: unknown
 ): { valid: true; data: BatchExtractRequest } | { valid: false; error: string } {
   if (!body || typeof body !== 'object') {
     return { valid: false, error: 'Request body must be a JSON object' };
   }
 
-  const { description } = body;
+  const { description } = body as Record<string, unknown>;
 
   if (!description || typeof description !== 'string') {
     return { valid: false, error: 'description is required and must be a string' };

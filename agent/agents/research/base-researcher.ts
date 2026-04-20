@@ -289,21 +289,29 @@ Format your response clearly with structured sections.`;
    * Parse JSON from a text response that may contain markdown code blocks.
    */
   protected parseJsonFromText<T>(text: string): T | null {
+    let directParseErr: unknown;
+
+    // First try direct parsing
     try {
-      // First try direct parsing
       return JSON.parse(text) as T;
-    } catch {
-      // Try extracting from markdown code block
-      const codeBlockMatch = text.match(/```(?:json)?\s*\n([\s\S]*?)\n```/);
-      if (codeBlockMatch) {
-        try {
-          return JSON.parse(codeBlockMatch[1]) as T;
-        } catch {
-          return null;
-        }
-      }
-      return null;
+    } catch (err) {
+      directParseErr = err;
     }
+
+    // Try extracting from markdown code block
+    const codeBlockMatch = text.match(/```(?:json)?\s*\n([\s\S]*?)\n```/);
+    if (codeBlockMatch) {
+      try {
+        return JSON.parse(codeBlockMatch[1]) as T;
+      } catch {
+        // fall through to throw below
+      }
+    }
+
+    // Both attempts failed — throw a descriptive error
+    throw new Error(
+      `Agent JSON parse failed: ${directParseErr instanceof Error ? directParseErr.message : 'unknown'}\nRaw: ${text.slice(0, 200)}`
+    );
   }
 
   /**

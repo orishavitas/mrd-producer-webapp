@@ -85,22 +85,54 @@ export abstract class BaseAgent<TInput = unknown, TOutput = unknown>
         }
       }
 
-      // Execute with timeout if configured
+      // Execute with timeout and retry loop
       const config = { ...DEFAULT_AGENT_CONFIG, ...context.config };
-      const result = await this.executeWithTimeout(
-        () => this.executeCore(input, context),
-        config.timeoutMs,
-        context.signal
-      );
+      const maxRetries = config.maxRetries ?? 0;
 
-      const executionTimeMs = Date.now() - startTime;
-      log('info', `[${this.id}] Execution completed`, { executionTimeMs });
+      let lastError: unknown;
+      for (let attempt = 0; attempt <= maxRetries; attempt++) {
+        // Check for cancellation before each attempt
+        if (context.signal?.aborted) {
+          return this.createFailureResult('Execution cancelled', startTime);
+        }
 
-      return {
-        success: true,
-        data: result,
-        metadata: this.createMetadata(context, executionTimeMs),
-      };
+        try {
+          const result = await this.executeWithTimeout(
+            () => this.executeCore(input, context),
+            config.timeoutMs,
+            context.signal
+          );
+
+          const executionTimeMs = Date.now() - startTime;
+          log('info', `[${this.id}] Execution completed`, { executionTimeMs, attempt });
+
+          return {
+            success: true,
+            data: result,
+            metadata: this.createMetadata(context, executionTimeMs),
+          };
+        } catch (error) {
+          lastError = error;
+
+          // Do not retry on validation errors or cancellation — they are permanent
+          if (this.isPermanentError(error)) {
+            throw error;
+          }
+
+          if (attempt < maxRetries) {
+            const delayMs = Math.min(1000 * Math.pow(2, attempt), 10000);
+            log('warn', `[${this.id}] Attempt ${attempt + 1} failed, retrying in ${delayMs}ms`, {
+              error: error instanceof Error ? error.message : String(error),
+              attempt,
+              maxRetries,
+            });
+            await new Promise<void>((resolve) => setTimeout(resolve, delayMs));
+          }
+        }
+      }
+
+      // All retries exhausted — re-throw so the outer catch can try fallback
+      throw lastError;
     } catch (error) {
       const executionTimeMs = Date.now() - startTime;
       const errorMessage =
@@ -134,6 +166,23 @@ export abstract class BaseAgent<TInput = unknown, TOutput = unknown>
    */
   async cleanup?(context: ExecutionContext): Promise<void> {
     // Default: no cleanup needed
+  }
+
+  /**
+   * Determine whether an error is permanent (non-transient).
+   * Permanent errors are NOT retried: validation failures, cancellation, etc.
+   * Transient errors ARE retried: network issues, timeouts, rate limits.
+   */
+  private isPermanentError(error: unknown): boolean {
+    if (!(error instanceof Error)) return false;
+    const msg = error.message.toLowerCase();
+    // Cancellation
+    if (msg.includes('cancelled') || msg.includes('aborted')) return true;
+    // Input validation failures
+    if (msg.includes('validation')) return true;
+    // Explicit permanent markers
+    if (msg.includes('not found') || msg.includes('invalid input')) return true;
+    return false;
   }
 
   /**

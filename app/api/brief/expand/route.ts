@@ -56,14 +56,14 @@ const VALID_FIELDS: BriefField[] = [
 ];
 
 function validateRequest(
-  body: any
+  body: unknown
 ): { valid: true; data: ExpansionRequest } | { valid: false; error: string } {
   if (!body || typeof body !== 'object') {
     return { valid: false, error: 'Request body must be a JSON object' };
   }
 
   const { fieldType, currentBullets, gaps, userMessage, conversationHistory } =
-    body;
+    body as Record<string, unknown>;
 
   if (!fieldType || typeof fieldType !== 'string') {
     return { valid: false, error: 'fieldType is required and must be a string' };

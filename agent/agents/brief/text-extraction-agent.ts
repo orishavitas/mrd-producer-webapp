@@ -17,6 +17,7 @@
 import { BaseAgent } from '@/agent/core/base-agent';
 import { ExecutionContext, ValidationResult } from '@/agent/core/types';
 import { ProviderCapabilities } from '@/lib/providers/types';
+import { parseAIJson } from '@/agent/core/json-utils';
 import {
   TextExtractionInput,
   TextExtractionOutput,
@@ -190,24 +191,9 @@ export class TextExtractionAgent extends BaseAgent<
     });
 
     // Parse JSON response (strip markdown code blocks if present)
-    let parsed: any;
+    let parsed: ReturnType<typeof parseAIJson>;
     try {
-      // Remove markdown code blocks (```json ... ```)
-      let cleanedText = response.text.trim();
-      if (cleanedText.startsWith('```')) {
-        // Find the first newline after ``` (skips ```json or ```JSON)
-        const firstNewline = cleanedText.indexOf('\n');
-        if (firstNewline > 0) {
-          cleanedText = cleanedText.substring(firstNewline + 1);
-        }
-        // Remove trailing ```
-        if (cleanedText.endsWith('```')) {
-          cleanedText = cleanedText.substring(0, cleanedText.lastIndexOf('```'));
-        }
-        cleanedText = cleanedText.trim();
-      }
-
-      parsed = JSON.parse(cleanedText);
+      parsed = parseAIJson(response.text);
     } catch (error) {
       context.log('error', `[${this.id}] Failed to parse JSON response`, {
         error,

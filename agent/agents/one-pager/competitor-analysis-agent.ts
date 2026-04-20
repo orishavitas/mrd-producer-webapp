@@ -17,6 +17,7 @@ import { ExecutionContext, ValidationResult } from '@/agent/core/types';
 import { ProviderCapabilities } from '@/lib/providers/types';
 import { ScrapedPage, CompetitorData } from '@/lib/scraper/types';
 import { selectBestPhoto } from '@/lib/scraper/photo-filter';
+import { parseAIJson } from '@/agent/core/json-utils';
 
 // ---------------------------------------------------------------------------
 // Input / Output
@@ -66,20 +67,8 @@ function buildUserPrompt(input: CompetitorAnalysisInput): string {
 // JSON parsing helper
 // ---------------------------------------------------------------------------
 
-/**
- * Strip markdown code fences that some models wrap JSON in.
- */
-function stripMarkdownJson(text: string): string {
-  return text
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/```\s*$/i, '')
-    .trim();
-}
-
 function parseCompetitorJson(raw: string, fallbackUrl: string): CompetitorData {
-  const cleaned = stripMarkdownJson(raw);
-  const parsed = JSON.parse(cleaned);
+  const parsed = parseAIJson<Record<string, unknown>>(raw);
 
   return {
     brand: String(parsed.brand ?? ''),
