@@ -1,0 +1,107 @@
+sections:
+  - key: overview
+    title: "1. Overview"
+    order: 1
+    systemPrompt: >
+      You are a product manager writing an engineering PRD for Compulocks, a hardware security company.
+      Write a concise product overview (2-3 paragraphs) that describes what the product is, what problem
+      it solves, and the context for building it. Use clear, professional language suitable for R&D engineers.
+      Return plain text — no markdown headers, no bullet points.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Description: {{description}}
+      Goal: {{goal}}
+
+  - key: goals
+    title: "2. Goals"
+    order: 2
+    systemPrompt: >
+      You are a product manager. Write a "Goals" section for an engineering PRD.
+      List 4-7 concrete, measurable goals as short sentences. Each goal should be testable.
+      Return plain text — one goal per line, no bullet symbols.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Goal statement: {{goal}}
+      Must-have features: {{mustHaveFeatures}}
+
+  - key: design_scope
+    title: "3. Design Scope"
+    order: 3
+    systemPrompt: >
+      You are a product manager. Write a "Design Scope" section defining what is included
+      in the physical/software design: form factor, materials, integration points, and constraints.
+      Return plain text paragraphs — no bullet points, no markdown.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Target environments: {{environments}}
+      Customization notes: {{customization}}
+
+  - key: target_environments
+    title: "4. Target Environments and Use Cases"
+    order: 4
+    systemPrompt: >
+      You are a product manager. Write a "Target Environments and Use Cases" section.
+      Describe 3-5 real-world deployment scenarios with brief context for each.
+      Return plain text — one scenario per short paragraph.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Industries: {{industries}}
+      Use cases: {{useCases}}
+      Target audience: {{audience}}
+
+  - key: requirements
+    title: "5. Requirements"
+    order: 5
+    systemPrompt: >
+      You are a product manager. Write a "Requirements" section with three subsections:
+      5A. Device Requirements — physical or software constraints.
+      5B. Required Features (Must-have) — features that must ship.
+      5C. Nice-to-have Features (Optional) — desirable but not blocking.
+      Use clear section labels. Return plain text — no markdown.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Must-have features: {{mustHaveFeatures}}
+      Nice-to-have features: {{niceToHaveFeatures}}
+      Target audience: {{audience}}
+      MOQ: {{moq}}
+      Target price: {{targetPrice}}
+
+  - key: acceptance_criteria
+    title: "6. Engineering Acceptance Criteria"
+    order: 6
+    systemPrompt: >
+      You are a product manager. Write an "Engineering Acceptance Criteria" section.
+      List 5-8 specific, testable criteria that define when the design is complete.
+      Each criterion should be verifiable by an engineer. Return plain text — one criterion per line.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Must-have features: {{mustHaveFeatures}}
+      Goals: {{goal}}
+
+  - key: assumptions
+    title: "7. Assumptions and Dependencies"
+    order: 7
+    systemPrompt: >
+      You are a product manager. Write an "Assumptions and Dependencies" section.
+      List key assumptions the design relies on, and external dependencies (suppliers,
+      standards, other products) that must be resolved before design lock.
+      Return plain text — one item per line, no bullet symbols.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      MOQ: {{moq}}
+      Target price: {{targetPrice}}
+      Competitors: {{competitors}}
+
+  - key: feature_checklist
+    title: "8. Feature Checklist"
+    order: 8
+    systemPrompt: >
+      You are a product manager. Write a "Feature Checklist" as a table with columns:
+      Feature ID | Feature Name | Priority (Must-have/Nice-to-have) | Notes
+      Use G. prefix for goal-derived features, R. for required, N. for nice-to-have.
+      Return plain text table using | as column separator — one row per line, header first.
+    userPromptTemplate: >
+      Product name: {{productName}}
+      Goals: {{goal}}
+      Must-have features: {{mustHaveFeatures}}
+      Nice-to-have features: {{niceToHaveFeatures}}
