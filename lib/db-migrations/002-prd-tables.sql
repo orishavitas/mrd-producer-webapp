@@ -28,7 +28,8 @@ CREATE TABLE IF NOT EXISTS prd_frames (
   section_key     TEXT NOT NULL,
   section_order   INTEGER NOT NULL,
   content         TEXT NOT NULL,
-  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
+  created_at      TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT NOW()
 );
 
 CREATE INDEX IF NOT EXISTS idx_pipeline_runs_source ON pipeline_runs(source_document_id);
