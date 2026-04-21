@@ -47,6 +47,13 @@ export async function listDocuments(userId: string, toolType?: string): Promise<
   return rows;
 }
 
+export async function getDocument(id: string): Promise<Document | null> {
+  const { rows } = await sql<Document>`
+    SELECT * FROM documents WHERE id = ${id} AND deleted_at IS NULL
+  `;
+  return rows[0] ?? null;
+}
+
 export async function createDocument(
   userId: string,
   title: string,
