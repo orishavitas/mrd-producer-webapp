@@ -81,6 +81,9 @@ export async function updatePipelineRunStatus(
     `UPDATE pipeline_runs SET ${sets.join(', ')} WHERE id = $1 RETURNING *`,
     values
   );
+  if (!rows[0]) {
+    throw new Error(`Pipeline run ${id} not found`);
+  }
   return rows[0];
 }
 
