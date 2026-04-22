@@ -13,6 +13,7 @@ import { ExecutionContext, ValidationResult } from '@/agent/core/types';
 import { ProviderCapabilities } from '@/lib/providers/types';
 import { loadPRDSections } from '@/lib/prd-sections-loader';
 import { OnePagerSummary, PRDSkeleton, PRDSkeletonSection } from './types';
+import { stripMarkdown } from './utils';
 
 export interface ArchitectInput {
   summary: OnePagerSummary;
@@ -31,10 +32,6 @@ JSON shape:
     "writingDirective": "Specific instructions for the writer agent"
   }
 ]`;
-
-function stripMarkdown(text: string): string {
-  return text.replace(/```json?\s*/gi, '').replace(/```/g, '').trim();
-}
 
 export class PRDArchitectAgent extends BaseAgent<ArchitectInput, PRDSkeleton> {
   readonly id = 'prd-architect-agent';

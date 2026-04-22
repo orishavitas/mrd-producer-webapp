@@ -11,6 +11,7 @@ import { BaseAgent } from '@/agent/core/base-agent';
 import { ExecutionContext, ValidationResult } from '@/agent/core/types';
 import { ProviderCapabilities } from '@/lib/providers/types';
 import { PRDFrame, QAReport } from './types';
+import { stripMarkdown } from './utils';
 
 export interface QAInput {
   frames: PRDFrame[];
@@ -29,10 +30,6 @@ JSON shape:
   ]
 }`;
 
-function stripMarkdown(text: string): string {
-  return text.replace(/\`\`\`json?\s*/gi, '').replace(/\`\`\`/g, '').trim();
-}
-
 export class PRDQAAgent extends BaseAgent<QAInput, QAReport> {
   readonly id = 'prd-qa-agent';
   readonly name = 'PRD QA Agent';
@@ -45,11 +42,14 @@ export class PRDQAAgent extends BaseAgent<QAInput, QAReport> {
     if (!input?.frames || !Array.isArray(input.frames) || input.frames.length === 0) {
       errors.push('frames must be a non-empty array');
     }
+    if (!input?.productName) {
+      errors.push('productName is required');
+    }
     return errors.length === 0 ? { valid: true } : { valid: false, errors };
   }
 
   protected async executeCore(input: QAInput, context: ExecutionContext): Promise<QAReport> {
-    const fullPRD = input.frames
+    const fullPRD = [...input.frames]
       .sort((a, b) => a.sectionOrder - b.sectionOrder)
       .map((f) => `=== ${f.sectionKey.toUpperCase()} ===\n${f.content}`)
       .join('\n\n');

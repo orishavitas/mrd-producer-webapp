@@ -92,4 +92,30 @@ describe('PRDQAAgent', () => {
     expect(result.success).toBe(true);
     expect((result.data as QAReport).score).toBe(100);
   });
+
+  it('validates that productName is required', () => {
+    expect(agent.validateInput!({ frames: mockFrames, productName: '' }).valid).toBe(false);
+  });
+
+  it('clamps score below 0 to 0', async () => {
+    const mockProvider = {
+      generateText: jest.fn().mockResolvedValue({
+        text: JSON.stringify({ score: -10, suggestions: [] }),
+      }),
+      capabilities: { textGeneration: true },
+    };
+    const context = {
+      log: jest.fn(),
+      getProvider: () => mockProvider as any,
+      getFallbackChain: () => [],
+      config: { timeoutMs: 30000, enableFallback: false, maxRetries: 0 },
+      state: new Map(),
+      emit: jest.fn(),
+      requestId: 'test-req',
+      traceId: 'test-trace',
+    };
+    const result = await agent.execute({ frames: mockFrames, productName: 'EMV Bracket' }, context as any);
+    expect(result.success).toBe(true);
+    expect((result.data as QAReport).score).toBe(0);
+  });
 });
