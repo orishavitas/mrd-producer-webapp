@@ -110,6 +110,13 @@ export async function getPRDDocument(id: string): Promise<PRDDocument | null> {
   return rows[0] ?? null;
 }
 
+export async function getPRDDocumentByRunId(runId: string): Promise<PRDDocument | null> {
+  const { rows } = await sql<PRDDocument>`
+    SELECT * FROM prd_documents WHERE run_id = ${runId}
+  `;
+  return rows[0] ?? null;
+}
+
 export async function savePRDFrames(
   prdDocumentId: string,
   frames: { sectionKey: string; sectionOrder: number; content: string }[]
