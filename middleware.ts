@@ -1,5 +1,9 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
+import { isRDEmail } from '@/lib/rd-email-gate';
+
+// Re-export for backward compatibility
+export { isRDEmail } from '@/lib/rd-email-gate';
 
 const ALLOWED_DOMAIN = 'compulocks.com';
 
@@ -22,6 +26,13 @@ export default auth((req) => {
   // Logged in but not allowed → redirect to access-denied
   if (!isAllowed(email)) {
     return NextResponse.redirect(new URL('/access-denied', nextUrl));
+  }
+
+  // R&D gate for /prd routes
+  if (nextUrl.pathname.startsWith('/prd') || nextUrl.pathname.startsWith('/api/pipeline/prd')) {
+    if (!isRDEmail(email)) {
+      return NextResponse.redirect(new URL('/access-denied', nextUrl));
+    }
   }
 
   return NextResponse.next();
