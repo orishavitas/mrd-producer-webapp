@@ -11,7 +11,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { getPipelineRun, updatePipelineRunStatus } from '@/lib/prd-db';
-import { PRDSkeletonSection } from '@/lib/prd-db';
+import type { PRDSkeletonSection } from '@/lib/prd-db';
 
 /**
  * Request body type.
@@ -34,6 +34,10 @@ export async function POST(
 
   if (!run) {
     return NextResponse.json({ error: 'Run not found' }, { status: 404 });
+  }
+
+  if (run.created_by !== session.user.email) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   if (run.status !== 'awaiting_approval') {

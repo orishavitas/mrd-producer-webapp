@@ -27,6 +27,10 @@ export async function GET(
     return NextResponse.json({ error: 'Run not found' }, { status: 404 });
   }
 
+  if (run.created_by !== session.user.email) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
+
   return NextResponse.json({
     id: run.id,
     status: run.status,

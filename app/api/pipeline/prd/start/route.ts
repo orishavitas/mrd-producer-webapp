@@ -23,6 +23,7 @@ import {
   createPRDDocument,
   getPipelineRun,
 } from '@/lib/prd-db';
+import type { PRDSkeleton } from '@/agent/agents/prd/types';
 import { OnePagerAnalystAgent } from '@/agent/agents/prd/one-pager-analyst-agent';
 import { PRDArchitectAgent } from '@/agent/agents/prd/prd-architect-agent';
 import { PRDWriterAgent } from '@/agent/agents/prd/prd-writer-agent';
@@ -30,6 +31,9 @@ import { PRDQAAgent } from '@/agent/agents/prd/prd-qa-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 
 export const dynamic = 'force-dynamic';
+
+const POLL_INTERVAL_MS = 3000;
+const APPROVAL_TIMEOUT_MS = 30 * 60 * 1000;
 
 /**
  * Encode object as NDJSON line (JSON + newline).
@@ -85,6 +89,7 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
    * Stream implementation using ReadableStream.
    * Executes the 4-agent pipeline and emits NDJSON events.
    */
+  const userEmail = session.user.email;
   const stream = new ReadableStream<Uint8Array>({
     async start(controller) {
       try {
@@ -139,12 +144,12 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
         // =====================================================================
         // Poll until approved or timeout (30 minutes)
         // =====================================================================
-        const deadline = Date.now() + 30 * 60 * 1000;
+        const deadline = Date.now() + APPROVAL_TIMEOUT_MS;
         let approvedSkeleton = skeleton;
-        const pollIntervalMs = 3000;
+        let wasApproved = false;
 
         while (Date.now() < deadline) {
-          await new Promise((r) => setTimeout(r, pollIntervalMs));
+          await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
           const fresh = await getPipelineRun(run.id);
 
           if (!fresh) {
@@ -152,7 +157,8 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
           }
 
           if (fresh.status === 'approved') {
-            approvedSkeleton = fresh.skeleton_json ?? skeleton;
+            approvedSkeleton = (fresh.skeleton_json as PRDSkeleton) ?? skeleton;
+            wasApproved = true;
             controller.enqueue(
               encode({
                 type: 'approval_confirmed',
@@ -167,7 +173,7 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
           }
         }
 
-        if (Date.now() >= deadline) {
+        if (!wasApproved) {
           throw new Error('Pipeline approval timeout (30 minutes)');
         }
 
@@ -227,7 +233,7 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
           run.id,
           documentId,
           summary.productName,
-          session.user.email,
+          userEmail,
           qaReport.score,
           qaReport.suggestions
         );

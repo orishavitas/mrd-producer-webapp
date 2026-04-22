@@ -11,6 +11,7 @@ jest.mock('@/lib/prd-db', () => ({
     id: 'run-1',
     status: 'awaiting_approval',
     skeleton_json: [],
+    created_by: 'ori@compulocks.com',
   }),
   updatePipelineRunStatus: jest.fn().mockResolvedValue({
     id: 'run-1',
@@ -51,6 +52,16 @@ describe('POST /api/pipeline/prd/[run_id]/approve', () => {
       params: Promise.resolve({ run_id: 'run-1' }),
     });
     expect(res.status).toBe(404);
+  });
+
+  it('returns 409 when run is not awaiting approval', async () => {
+    const { getPipelineRun } = require('@/lib/prd-db');
+    getPipelineRun.mockResolvedValueOnce({ id: 'run-1', status: 'completed', skeleton_json: [], created_by: 'ori@compulocks.com' });
+    const req = new NextRequest('http://localhost/api/pipeline/prd/run-1/approve', {
+      method: 'POST', body: JSON.stringify({})
+    });
+    const res = await POST_APPROVE(req, { params: Promise.resolve({ run_id: 'run-1' }) });
+    expect(res.status).toBe(409);
   });
 
   it('returns 200 and marks run approved', async () => {

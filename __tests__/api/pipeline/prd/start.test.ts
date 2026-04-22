@@ -105,4 +105,16 @@ describe('POST /api/pipeline/prd/start', () => {
     const res = await POST(req);
     expect(res.status).toBe(404);
   });
+
+  it('returns a streaming response for a valid authenticated request', async () => {
+    const req = new NextRequest('http://localhost/api/pipeline/prd/start', {
+      method: 'POST',
+      body: JSON.stringify({ documentId: 'doc-1' }),
+    });
+    const res = await POST(req);
+    // The route returns a streaming Response (not NextResponse), status 200
+    expect(res.status).toBe(200);
+    expect(res.headers.get('content-type')).toBe('text/event-stream');
+    expect(res.headers.get('x-run-id')).toBe('run-1');
+  });
 });
