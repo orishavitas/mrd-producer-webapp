@@ -1,0 +1,232 @@
+.page {
+  min-height: 100vh;
+  background: var(--brand-surface);
+  padding: 48px 32px;
+  font-family: var(--font-body);
+}
+
+.header {
+  margin-bottom: 40px;
+}
+
+.title {
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin: 0 0 8px;
+}
+
+.subtitle {
+  font-size: 16px;
+  color: #666;
+  margin: 0;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 24px;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 64px 32px;
+  color: #666;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.cardTitle {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-primary);
+  margin: 0;
+}
+
+.cardMeta {
+  font-size: 13px;
+  color: #888;
+  margin: 0;
+}
+
+.generateBtn {
+  margin-top: auto;
+  background: var(--brand-green-dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.generateBtn:hover {
+  opacity: 0.85;
+}
+
+.pipelineContainer {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+}
+
+.overlayCard {
+  background: #1a1d3a;
+  border-radius: 16px;
+  padding: 40px 48px;
+  min-width: 480px;
+  color: #fff;
+}
+
+.overlayTitle {
+  font-family: var(--font-heading);
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0 0 24px;
+}
+
+.checklist {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 15px;
+}
+
+.checklistIcon {
+  width: 24px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.skeletonForm {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.sectionRow {
+  background: #f9f9f9;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.sectionTitle {
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--brand-primary);
+  margin: 0 0 8px;
+}
+
+.strategyTextarea {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 8px 10px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  resize: vertical;
+  min-height: 60px;
+  box-sizing: border-box;
+}
+
+.approveBtn {
+  background: var(--brand-green-dark);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 28px;
+  font-family: var(--font-body);
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+  align-self: flex-end;
+}
+
+.prdViewer {
+  max-width: 800px;
+  margin: 0 auto;
+  background: #fff;
+  border-radius: 12px;
+  padding: 48px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+}
+
+.prdSectionTitle {
+  font-family: var(--font-heading);
+  font-size: 20px;
+  color: var(--brand-primary);
+  margin: 32px 0 12px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.prdContent {
+  font-size: 15px;
+  line-height: 1.7;
+  color: #222;
+  white-space: pre-wrap;
+}
+
+.qaPanel {
+  background: #f0faf5;
+  border: 1px solid #b2dfc9;
+  border-radius: 10px;
+  padding: 20px 24px;
+  margin-bottom: 32px;
+}
+
+.qaScore {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--brand-green-dark);
+}
+
+.exportBar {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 32px;
+}
+
+.exportBtn {
+  background: var(--brand-primary);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
