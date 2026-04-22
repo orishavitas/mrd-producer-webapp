@@ -1,3 +1,12 @@
+/**
+ * OnePagerAnalystAgent — Agent 1 in the PRD Producer pipeline.
+ *
+ * Input:  { contentJson: Record<string, unknown> } — raw One-Pager document content_json from DB
+ * Output: OnePagerSummary — normalised, typed summary of all One-Pager fields
+ *
+ * No AI calls. Pure synchronous normalisation only.
+ */
+
 import { BaseAgent } from '@/agent/core/base-agent';
 import { ExecutionContext, ValidationResult } from '@/agent/core/types';
 import { ProviderCapabilities } from '@/lib/providers/types';
@@ -43,7 +52,7 @@ export class OnePagerAnalystAgent extends BaseAgent<AnalystInput, OnePagerSummar
     const paint = (customization.paint ?? {}) as Record<string, unknown>;
     const paintStr = [paint.finish, paint.color].filter(Boolean).join(' / ');
     const logoColors = ((customization.logoColors ?? []) as Record<string, unknown>[]).map(
-      (c) => `${c.mode} ${c.value}`
+      (c) => `${String(c.mode ?? '')} ${String(c.value ?? '')}`.trim()
     );
 
     return {

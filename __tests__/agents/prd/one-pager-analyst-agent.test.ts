@@ -52,4 +52,26 @@ describe('OnePagerAnalystAgent', () => {
     expect(summary.competitors[0].brand).toBe('Acme');
     expect(summary.customization.paint).toBe('gloss / RAL 9005');
   });
+
+  it('maps logoColors correctly', () => {
+    const summary = OnePagerAnalystAgent.normalise({
+      customization: {
+        paint: {},
+        logoColors: [{ mode: 'HEX', value: '#FF0000' }],
+      },
+    });
+    expect(summary.customization.logoColors).toEqual(['HEX #FF0000']);
+  });
+
+  it('executes successfully via agent.execute()', async () => {
+    const context = {
+      log: jest.fn(),
+      getProvider: jest.fn(() => ({ name: 'test-provider' })),
+      getFallbackChain: () => [],
+      config: { timeoutMs: 30000, enableFallback: false, maxRetries: 0 },
+    };
+    const result = await agent.execute({ contentJson: { productName: 'Test Product' } }, context as any);
+    expect(result.success).toBe(true);
+    expect((result.data as any).productName).toBe('Test Product');
+  });
 });
