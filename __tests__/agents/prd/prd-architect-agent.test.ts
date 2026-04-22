@@ -34,7 +34,7 @@ describe('PRDArchitectAgent', () => {
     expect(result.valid).toBe(true);
   });
 
-  it.skip('generates skeleton with 8 sections (requires AI)', async () => {
+  it('generates skeleton via execute() with mocked provider', async () => {
     const mockProvider = {
       generateText: jest.fn().mockResolvedValue({
         text: JSON.stringify([
@@ -46,15 +46,43 @@ describe('PRDArchitectAgent', () => {
           },
         ]),
       }),
+      name: 'mock-provider',
+      capabilities: { textGeneration: true },
     };
     const context = {
+      requestId: 'test-req',
+      traceId: 'test-trace',
       log: jest.fn(),
       getProvider: () => mockProvider as any,
       getFallbackChain: () => [],
+      state: new Map(),
+      emit: jest.fn(),
       config: { timeoutMs: 30000, enableFallback: false, maxRetries: 0 },
     };
     const result = await agent.execute({ summary: mockSummary }, context as any);
     expect(result.success).toBe(true);
     expect(Array.isArray(result.data)).toBe(true);
+  });
+
+  it('falls back to YAML-derived skeleton when AI returns invalid JSON', async () => {
+    const mockProvider = {
+      generateText: jest.fn().mockResolvedValue({ text: 'not valid json {{' }),
+      name: 'mock-provider',
+      capabilities: { textGeneration: true },
+    };
+    const context = {
+      requestId: 'test-req',
+      traceId: 'test-trace',
+      log: jest.fn(),
+      getProvider: () => mockProvider as any,
+      getFallbackChain: () => [],
+      state: new Map(),
+      emit: jest.fn(),
+      config: { timeoutMs: 30000, enableFallback: false, maxRetries: 0 },
+    };
+    const result = await agent.execute({ summary: mockSummary }, context as any);
+    expect(result.success).toBe(true);
+    expect(Array.isArray(result.data)).toBe(true);
+    expect((result.data as any[]).length).toBe(8);
   });
 });

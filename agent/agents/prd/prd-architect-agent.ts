@@ -33,11 +33,7 @@ JSON shape:
 ]`;
 
 function stripMarkdown(text: string): string {
-  return text
-    .replace(/^```json\s*/i, '')
-    .replace(/^```\s*/i, '')
-    .replace(/```\s*$/i, '')
-    .trim();
+  return text.replace(/```json?\s*/gi, '').replace(/```/g, '').trim();
 }
 
 export class PRDArchitectAgent extends BaseAgent<ArchitectInput, PRDSkeleton> {
@@ -64,10 +60,17 @@ export class PRDArchitectAgent extends BaseAgent<ArchitectInput, PRDSkeleton> {
     const userPrompt = `Product: ${input.summary.productName}
 Description: ${input.summary.description}
 Goals: ${input.summary.goal}
+Use cases: ${input.summary.useCases}
+Target environments: ${input.summary.environments.join(', ')}
+Industries: ${input.summary.industries.join(', ')}
+Audience: ${input.summary.audience.join(', ')}
 Must-have features: ${input.summary.mustHaveFeatures.join(', ')}
 Nice-to-have features: ${input.summary.niceToHaveFeatures.join(', ')}
+MOQ: ${input.summary.moq}
+Target price: ${input.summary.targetPrice}
+Competitors: ${input.summary.competitors.map((c) => `${c.brand} ${c.productName}`).join(', ') || 'none'}
 
-Generate skeleton for these sections:
+Generate skeleton for these 8 sections:
 ${sectionList}`;
 
     const provider = context.getProvider();
@@ -76,7 +79,9 @@ ${sectionList}`;
 
     let skeleton: PRDSkeletonSection[];
     try {
-      skeleton = JSON.parse(cleaned);
+      const parsed = JSON.parse(cleaned);
+      if (!Array.isArray(parsed)) throw new Error('Expected JSON array');
+      skeleton = parsed;
     } catch {
       // Fallback to default skeleton from YAML config
       skeleton = sections.map((s) => ({
