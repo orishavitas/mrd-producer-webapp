@@ -56,7 +56,8 @@ export class PRDWriterAgent extends BaseAgent<WriterInput, PRDFrame[]> {
    */
   static buildUserPrompt(
     sectionKey: string,
-    summary: OnePagerSummary
+    summary: OnePagerSummary,
+    preloadedSections?: ReturnType<typeof loadPRDSections>
   ): string {
     // Prepare replacement map from summary
     const replacements: Record<string, string> = {
@@ -77,7 +78,7 @@ export class PRDWriterAgent extends BaseAgent<WriterInput, PRDFrame[]> {
       customization: summary.customization.paint,
     };
 
-    const sections = loadPRDSections();
+    const sections = preloadedSections ?? loadPRDSections();
     const config = sections.find((s) => s.key === sectionKey);
     if (!config) {
       return `Write the ${sectionKey} section for: ${summary.productName}`;
@@ -110,7 +111,8 @@ export class PRDWriterAgent extends BaseAgent<WriterInput, PRDFrame[]> {
           '';
         const userPrompt = PRDWriterAgent.buildUserPrompt(
           skeletonSection.sectionKey,
-          input.summary
+          input.summary,
+          sections
         );
 
         const response = await provider.generateText(userPrompt, systemPrompt);

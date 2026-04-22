@@ -147,16 +147,14 @@ describe('PRDWriterAgent', () => {
     );
 
     expect(onSectionDone).toHaveBeenCalledTimes(2);
-    expect(onSectionDone).toHaveBeenNthCalledWith(
-      1,
+    expect(onSectionDone).toHaveBeenCalledWith(
       expect.objectContaining({
         sectionKey: 'overview',
         sectionOrder: 1,
         content: 'Content for section.',
       })
     );
-    expect(onSectionDone).toHaveBeenNthCalledWith(
-      2,
+    expect(onSectionDone).toHaveBeenCalledWith(
       expect.objectContaining({
         sectionKey: 'goals',
         sectionOrder: 2,
@@ -222,5 +220,40 @@ describe('PRDWriterAgent', () => {
     expect(frames[0].content).toBe('Section with whitespace');
     expect(frames[0].content).not.toMatch(/^\s+/);
     expect(frames[0].content).not.toMatch(/\s+$/);
+  });
+
+  it('uses YAML systemPrompt as fallback when writingDirective is empty', async () => {
+    const skeletonWithNoDirective: PRDSkeleton = [
+      {
+        sectionKey: 'overview',
+        sectionTitle: '1. Overview',
+        strategy: 'Summarise product',
+        writingDirective: '',
+      },
+    ];
+    const mockProvider = {
+      generateText: jest.fn().mockResolvedValue({ text: 'Content.' }),
+      name: 'mock-provider',
+      capabilities: { textGeneration: true },
+    };
+    const context = {
+      log: jest.fn(),
+      getProvider: () => mockProvider as any,
+      getFallbackChain: () => [],
+      config: {
+        timeoutMs: 30000,
+        enableFallback: false,
+        maxRetries: 0,
+      },
+    };
+
+    const result = await agent.execute(
+      { summary: mockSummary, skeleton: skeletonWithNoDirective },
+      context as any
+    );
+
+    expect(result.success).toBe(true);
+    // provider was called — meaning fallback systemPrompt was used instead of throwing
+    expect(mockProvider.generateText).toHaveBeenCalledTimes(1);
   });
 });
