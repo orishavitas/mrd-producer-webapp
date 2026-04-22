@@ -68,7 +68,12 @@ export async function GET(
       },
     });
   } catch (error) {
-    console.error('Export error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    console.error('[PRD Export] Error:', {
+      run_id,
+      format,
+      error: errorMessage,
+    });
     return NextResponse.json(
       { error: 'Failed to export PRD' },
       { status: 500 }
