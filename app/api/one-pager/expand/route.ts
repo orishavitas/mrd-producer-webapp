@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
 
     // Step 2: Auth — get session
     const session = await auth();
-    const userId = session?.user?.email ?? request.ip ?? 'anonymous';
+    const userId = session?.user?.email ?? request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'anonymous';
 
     // Step 3: Ban check
     try {
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
         userId,
         userName: session?.user?.name ?? undefined,
         userEmail: session?.user?.email ?? undefined,
-        ip: request.ip ?? request.headers.get('x-forwarded-for') ?? undefined,
+        ip: request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? undefined,
         userAgent: request.headers.get('user-agent') ?? undefined,
         actionType: 'expand-output',
         inputText: result.text.slice(0, 2000),

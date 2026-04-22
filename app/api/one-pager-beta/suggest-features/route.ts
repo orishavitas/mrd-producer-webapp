@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
 
   // ── Auth check ────────────────────────────────────────────────────────────
   const session = await auth();
-  const userId = session?.user?.email ?? request.ip ?? 'anonymous';
+  const userId = session?.user?.email ?? request.headers.get('x-forwarded-for')?.split(',')[0].trim() ?? 'anonymous';
 
   // ── Ban check ────────────────────────────────────────────────────────────
   try {

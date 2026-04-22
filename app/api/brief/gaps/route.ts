@@ -118,6 +118,8 @@ function validateRequest(
 // API Handler
 // ============================================================================
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
@@ -165,7 +167,7 @@ export async function POST(request: NextRequest) {
         {
           success: false,
           error: 'Gap detection failed',
-          details: result.error || 'Unknown error',
+          details: isProd ? 'Internal server error' : (result.error || 'Unknown error'),
         } as GapDetectionResponse,
         { status: 500 }
       );
@@ -188,7 +190,7 @@ export async function POST(request: NextRequest) {
       {
         success: false,
         error: 'Internal server error',
-        details: error instanceof Error ? error.message : 'Unknown error',
+        details: isProd ? 'Internal server error' : (error instanceof Error ? error.message : 'Unknown error'),
       } as GapDetectionResponse,
       { status: 500 }
     );

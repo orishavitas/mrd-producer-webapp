@@ -5,6 +5,8 @@ import { generateMRD, MRDInput, ResearchSource } from '@/skills/mrd_generator';
 import { sanitizeMRDInput } from '@/lib/sanitize';
 import { auth } from '@/lib/auth';
 
+const isProd = process.env.NODE_ENV === 'production';
+
 export async function POST(request: NextRequest) {
   try {
     const session = await auth();
@@ -85,7 +87,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     createLogger().error('Error generating MRD', { error: error instanceof Error ? error.message : String(error) });
     return NextResponse.json(
-      { error: 'Failed to generate MRD. Please try again.' },
+      { error: isProd ? 'Internal server error' : (error instanceof Error ? error.message : 'Unknown error') },
       { status: 500 }
     );
   }
