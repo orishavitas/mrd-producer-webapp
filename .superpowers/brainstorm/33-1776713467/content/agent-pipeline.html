@@ -1,0 +1,94 @@
+<h2>PRD Producer — 4-Agent Pipeline</h2>
+<p class="subtitle">Does this agent chain match your vision? Let me know what to adjust.</p>
+
+<div class="section">
+  <div style="display:flex;flex-direction:column;gap:12px;max-width:700px;margin:0 auto;">
+
+    <!-- Agent 1 -->
+    <div style="background:#1a1d3a;border:1px solid #243469;border-radius:12px;padding:20px 24px;position:relative;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="background:#009966;color:#fff;font-weight:700;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">1</div>
+        <div>
+          <span style="font-weight:700;font-size:16px;color:#fff;">MRD Analyst</span>
+          <span style="margin-left:10px;font-size:12px;color:#8892b0;background:#0d1117;padding:2px 8px;border-radius:4px;">~5s</span>
+        </div>
+      </div>
+      <p style="color:#a8b2d8;margin:0;font-size:14px;">Reads the saved MRD. Extracts key product signals: problem statement, target market, requirements, constraints. Outputs a structured <code style="background:#0d1117;padding:1px 5px;border-radius:3px;">MRDSummary</code> object.</p>
+    </div>
+
+    <!-- Arrow -->
+    <div style="text-align:center;color:#243469;font-size:22px;">↓</div>
+
+    <!-- Agent 2 -->
+    <div style="background:#1a1d3a;border:1px solid #243469;border-radius:12px;padding:20px 24px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="background:#009966;color:#fff;font-weight:700;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">2</div>
+        <div>
+          <span style="font-weight:700;font-size:16px;color:#fff;">PRD Architect</span>
+          <span style="margin-left:10px;font-size:12px;color:#8892b0;background:#0d1117;padding:2px 8px;border-radius:4px;">~10s</span>
+        </div>
+      </div>
+      <p style="color:#a8b2d8;margin:0;font-size:14px;">Generates a PRD skeleton — section headings, field strategies, writing directives. Defines <em>how</em> each PRD section will be written before any prose is generated.</p>
+      <div style="margin-top:12px;background:#0d1117;border-radius:8px;padding:10px 14px;display:flex;align-items:center;gap:8px;">
+        <span style="font-size:18px;">🚧</span>
+        <span style="color:#f5c518;font-size:13px;font-weight:600;">HUMAN GATE</span>
+        <span style="color:#8892b0;font-size:13px;margin-left:4px;">— User reviews skeleton before Agent 3 proceeds</span>
+      </div>
+    </div>
+
+    <!-- Arrow -->
+    <div style="text-align:center;color:#243469;font-size:22px;">↓</div>
+
+    <!-- Agent 3 -->
+    <div style="background:#1a1d3a;border:1px solid #243469;border-radius:12px;padding:20px 24px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="background:#009966;color:#fff;font-weight:700;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">3</div>
+        <div>
+          <span style="font-weight:700;font-size:16px;color:#fff;">PRD Writer</span>
+          <span style="margin-left:10px;font-size:12px;color:#8892b0;background:#0d1117;padding:2px 8px;border-radius:4px;">~20s</span>
+        </div>
+      </div>
+      <p style="color:#a8b2d8;margin:0;font-size:14px;">Writes all PRD sections in parallel using the approved skeleton + MRD data. Each section gets its own prompt. Streams results to the UI as they complete.</p>
+    </div>
+
+    <!-- Arrow -->
+    <div style="text-align:center;color:#243469;font-size:22px;">↓</div>
+
+    <!-- Agent 4 -->
+    <div style="background:#1a1d3a;border:1px solid #243469;border-radius:12px;padding:20px 24px;">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:8px;">
+        <div style="background:#009966;color:#fff;font-weight:700;border-radius:50%;width:32px;height:32px;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;">4</div>
+        <div>
+          <span style="font-weight:700;font-size:16px;color:#fff;">PRD QA Reviewer</span>
+          <span style="margin-left:10px;font-size:12px;color:#8892b0;background:#0d1117;padding:2px 8px;border-radius:4px;">~10s</span>
+        </div>
+      </div>
+      <p style="color:#a8b2d8;margin:0;font-size:14px;">Reviews the full draft. Checks completeness, consistency, alignment with MRD. Produces a quality score + inline suggestions. User sees final PRD + QA report.</p>
+    </div>
+
+    <!-- Total -->
+    <div style="text-align:center;margin-top:8px;color:#8892b0;font-size:13px;">
+      Total pipeline: ~45s end-to-end (including human gate pause)
+    </div>
+  </div>
+</div>
+
+<div class="section" style="max-width:700px;margin:24px auto 0;">
+  <h3>Does this match your vision?</h3>
+  <div class="options">
+    <div class="option" data-choice="yes" onclick="toggleSelect(this)">
+      <div class="letter">A</div>
+      <div class="content">
+        <h3>Yes — looks right</h3>
+        <p>Agent names, roles, and human gate position are correct</p>
+      </div>
+    </div>
+    <div class="option" data-choice="changes" onclick="toggleSelect(this)">
+      <div class="letter">B</div>
+      <div class="content">
+        <h3>Needs changes</h3>
+        <p>I'll describe what to adjust in the terminal</p>
+      </div>
+    </div>
+  </div>
+</div>

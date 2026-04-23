@@ -5,6 +5,35 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0-dev] - 2026-04-20
+
+### Added (PRD Producer — feature/prd-producer branch)
+- Created `feature/prd-producer` worktree at `.worktrees/prd-producer`
+- Copied 13 pipeline design docs into `docs/prd-pipeline/` (architecture, methodology, roles)
+- Completed brainstorming session — decisions: MRD picker trigger (Option A), human gate enabled at Agent 2, PRD viewer output only, DevLog skipped for now, Gemini-primary provider chain, proper new DB tables (hidden from user doc list)
+- Selected implementation approach: streaming pipeline (Option B) with LoadingOverlay pattern
+
+---
+
+## [1.2.0] - 2026-04-06
+
+### Changed (Brand Token Migration — Compulocks R&D AI Design Kit)
+- **Green accent colors added** — `--brand-green-dark: #009966` and `--brand-green-light: #1db274` now defined in `styles/tokens/compulocks.css`; all teal `#0f766e` references replaced site-wide
+- **IBM Plex fonts removed** — `layout.tsx` no longer imports IBM Plex Sans/Mono; Barlow + Barlow Condensed are now the only fonts loaded
+- **Barlow as default `--font-sans`** — `globals.css` default body font changed from IBM Plex to Barlow
+- **Background corrected** — `--background` changed from warm beige `#f6f5f1` to brand-spec neutral `#f2f2f2`
+- **Typography utility classes** — `.section-heading`, `.slide-title`, `.small-title`, `.paragraph-text`, `.small-text`, `.content-card` added to `compulocks.css` as globals
+- **DocumentPreview heading scale** — h1: 36px Barlow Condensed/500, h2: 21px/600, h3: 16px, body: 18px Barlow (was 22px/14px/13px/14px)
+- **Competitor card spec** — radius 24px, border 1px #e0e0e0, padding 32px (was 28px/1.5px/14px)
+- **One-pager page title** — 36px Barlow Condensed weight 500, capitalize (was ~20px)
+- **`brief-helper.css` cleaned** — 7 teal references replaced with brand green, `--accent-strong` → `--accent-hover`
+
+### Plan
+- Task 8 (import compulocks.css into globals) — in progress
+- Task 9 (visual smoke test + final verification) — pending
+
+---
+
 ## [1.1.0] - 2026-03-22
 
 ### Added

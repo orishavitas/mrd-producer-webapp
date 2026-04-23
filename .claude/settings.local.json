@@ -58,7 +58,18 @@
       "Bash(cd /c/Users/OriShavit/documents/github/mrd-producer-webapp && vercel logs https://mrd-producer-webapp-mgm0t5yb2-orishavitas-projects.vercel.app --limit 50 2>&1)",
       "Bash(cd /c/Users/OriShavit/documents/github/mrd-producer-webapp && vercel alias ls 2>&1)",
       "Bash(cd /c/Users/OriShavit/documents/github/mrd-producer-webapp && git checkout main && git merge feat/one-pager-integrate --no-ff -m \"feat: merge one-pager generator into main \\(v1.0.0\\)\" 2>&1)",
-      "mcp__plugin_playwright_playwright__browser_type"
+      "mcp__plugin_playwright_playwright__browser_type",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)",
+      "Bash(git worktree:*)",
+      "Bash(git branch:*)",
+      "mcp__plugin_playwright_playwright__browser_evaluate",
+      "Bash(cp app/one-pager/components/DocumentPreview.tsx app/one-pager-beta/components/DocumentPreview.tsx)",
+      "Bash(cp app/one-pager/components/DocumentPreview.module.css app/one-pager-beta/components/DocumentPreview.module.css)",
+      "Bash(cp app/one-pager/components/CompetitorInput.module.css app/one-pager-beta/components/CompetitorInput.module.css)",
+      "Bash(cp app/one-pager/components/SplitLayout.tsx app/one-pager-beta/components/SplitLayout.tsx)",
+      "Bash(cp app/one-pager/components/SplitLayout.module.css app/one-pager-beta/components/SplitLayout.module.css)",
+      "mcp__claude_ai_monday_com__get_board_info"
     ]
   }
 }
