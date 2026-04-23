@@ -18,7 +18,7 @@ export default async function TopBar() {
       zIndex: 10,
     }}>
       <span style={{ fontWeight: 600, fontSize: '1.1rem', letterSpacing: '-0.01em' }}>
-        MRD Producer
+        Documentation Center
       </span>
       {user && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>

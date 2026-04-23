@@ -23,6 +23,12 @@ const TOOLS = [
     href: '/brief-helper',
   },
   {
+    title: 'PRD Producer',
+    description: 'Transform a saved One-Pager into a structured engineering PRD with a 4-agent AI pipeline.',
+    href: '/prd',
+    badge: 'R&D',
+  },
+  {
     title: 'One-Pager (Beta)',
     description: 'Development sandbox for testing new AI features, database integration, and product-specific enhancements.',
     href: '/one-pager-beta',
