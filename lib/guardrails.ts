@@ -1,6 +1,7 @@
 import { PROFANITY_PATTERNS, SUBSTANCE_PATTERNS } from './guardrails-wordlist';
+import { config } from './config';
 
-export const BAN_THRESHOLD = 2;
+export const BAN_THRESHOLD = config.security.banThreshold;
 
 export interface GuardrailResult {
   passed: boolean;

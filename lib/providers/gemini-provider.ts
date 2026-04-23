@@ -14,10 +14,7 @@ import {
   GroundedSource,
 } from './types';
 
-/**
- * Default model to use for Gemini requests.
- */
-const DEFAULT_MODEL = 'gemini-2.5-pro';
+import { config } from '@/lib/config';
 
 /**
  * Gemini provider implementation.
@@ -72,7 +69,7 @@ export class GeminiProvider implements AIProvider {
       : prompt;
 
     const response = await client.models.generateContent({
-      model: options.model || DEFAULT_MODEL,
+      model: options.model || config.ai.geminiModel,
       contents: fullPrompt,
       config: {
         maxOutputTokens: options.maxTokens || 4096,
@@ -88,7 +85,7 @@ export class GeminiProvider implements AIProvider {
     return {
       text,
       metadata: {
-        model: options.model || DEFAULT_MODEL,
+        model: options.model || config.ai.geminiModel,
         provider: this.name,
       },
     };
@@ -113,7 +110,7 @@ export class GeminiProvider implements AIProvider {
     console.log('[GeminiProvider] Generating with Google Search grounding...');
 
     const response = await client.models.generateContent({
-      model: options.model || DEFAULT_MODEL,
+      model: options.model || config.ai.geminiModel,
       contents: fullPrompt,
       config: {
         maxOutputTokens: options.maxTokens || 8192,
@@ -140,7 +137,7 @@ export class GeminiProvider implements AIProvider {
       sources,
       searchQueries,
       metadata: {
-        model: options.model || DEFAULT_MODEL,
+        model: options.model || config.ai.geminiModel,
         provider: this.name,
         grounded: true,
       },

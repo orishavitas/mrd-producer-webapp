@@ -1,11 +1,10 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
-
-const ALLOWED_DOMAIN = 'compulocks.com';
+import { config } from '@/lib/config';
 
 function isAllowed(email: string | null | undefined): boolean {
   if (!email) return false;
-  if (email.endsWith(`@${ALLOWED_DOMAIN}`)) return true;
+  if (email.endsWith(`@${config.security.allowedDomain}`)) return true;
   const extra = process.env.ALLOWED_EMAILS ?? '';
   return extra.split(',').map((e) => e.trim().toLowerCase()).includes(email.toLowerCase());
 }

@@ -12,11 +12,12 @@
  */
 
 import { Pool } from 'pg';
+import { config } from './config';
 
 function getPool(): Pool {
   const connectionString = process.env.POSTGRES_URL;
   if (!connectionString) throw new Error('POSTGRES_URL environment variable is not set');
-  return new Pool({ connectionString, max: 10 });
+  return new Pool({ connectionString, max: config.db.poolMax });
 }
 
 // Singleton pool — reused across requests in the same Node.js process.

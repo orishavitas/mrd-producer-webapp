@@ -6,6 +6,7 @@
  */
 
 import { GoogleGenAI, GenerateContentResponse } from '@google/genai';
+import { config } from './config';
 
 let genAI: GoogleGenAI | null = null;
 
@@ -70,10 +71,10 @@ export async function generateText(
     : prompt;
 
   const response = await client.models.generateContent({
-    model: options.model || 'gemini-2.5-flash',
+    model: options.model || config.ai.geminiFlashModel,
     contents: fullPrompt,
     config: {
-      maxOutputTokens: options.maxTokens || 4096,
+      maxOutputTokens: options.maxTokens || config.ai.maxTokens,
       temperature: options.temperature || 0.7,
     },
   });
@@ -110,7 +111,7 @@ export async function generateWithSearch(
   console.log('[Gemini] Generating with Google Search grounding...');
 
   const response = await client.models.generateContent({
-    model: options.model || 'gemini-2.5-flash',
+    model: options.model || config.ai.geminiFlashModel,
     contents: fullPrompt,
     config: {
       maxOutputTokens: options.maxTokens || 8192,
