@@ -28,13 +28,6 @@ export default auth((req) => {
     return NextResponse.redirect(new URL('/access-denied', nextUrl));
   }
 
-  // R&D gate for /prd routes
-  if (nextUrl.pathname.startsWith('/prd') || nextUrl.pathname.startsWith('/api/pipeline/prd')) {
-    if (!isRDEmail(email)) {
-      return NextResponse.redirect(new URL('/access-denied', nextUrl));
-    }
-  }
-
   return NextResponse.next();
 });
 

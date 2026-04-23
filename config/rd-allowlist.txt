@@ -1,0 +1,5 @@
+# R&D Allowlist — PRD Producer access
+# One email per line. Lines starting with # are ignored.
+# After editing, set ALLOWED_RD_EMAILS in Vercel to match (comma-separated).
+
+ori@compulocks.com
