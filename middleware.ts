@@ -1,9 +1,5 @@
 import { auth } from '@/lib/auth';
 import { NextResponse } from 'next/server';
-import { isRDEmail } from '@/lib/rd-email-gate';
-
-// Re-export for backward compatibility
-export { isRDEmail } from '@/lib/rd-email-gate';
 
 const ALLOWED_DOMAIN = 'compulocks.com';
 

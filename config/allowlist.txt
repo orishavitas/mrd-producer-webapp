@@ -1,0 +1,23 @@
+# ─────────────────────────────────────────────
+#  Documentation Center — Feature Allowlist
+#  Admins: ori@compulocks.com, danny@compulocks.com
+# ─────────────────────────────────────────────
+#
+# FEATURES
+#   1 = mrd-generator   — MRD Generator       (/mrd)
+#   2 = one-pager       — One-Pager           (/one-pager)
+#   3 = brief-helper    — Brief Helper        (/brief-helper)
+#   4 = one-pager-beta  — One-Pager Beta      (/one-pager-beta)
+#   5 = prd-producer    — PRD Producer        (/prd)          [Alpha]
+#
+# FORMAT:  email : 1 2 3 ...
+#   - Space-separated feature numbers after the colon
+#   - Lines starting with # are comments
+#   - Blank lines are ignored
+# ─────────────────────────────────────────────
+
+ori@compulocks.com   : 1 2 3 4 5
+danny@compulocks.com : 1 2 3 4 5
+shahar@compulocks.com: 2 4 5
+shmuel@compulocks.com: 2 4
+*@compulocks.com: 2

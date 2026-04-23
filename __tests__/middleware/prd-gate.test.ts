@@ -1,57 +1,70 @@
-/**
- * PRD Gate Middleware Tests
- *
- * Tests the R&D email gate for /prd and /api/pipeline/prd routes.
- */
+import { jest } from '@jest/globals';
 
-import { isRDEmail } from '@/lib/rd-email-gate';
+jest.mock('fs');
 
-describe('isRDEmail', () => {
-  const originalEnv = process.env;
+import fs from 'fs';
+import { getFeaturesForEmail, hasFeature } from '@/lib/feature-gate';
 
-  beforeEach(() => {
-    process.env = {
-      ...originalEnv,
-      ALLOWED_RD_EMAILS: 'ori@compulocks.com,eng@compulocks.com',
-    };
+const SAMPLE_ALLOWLIST = `
+# FEATURES
+#   1 = mrd-generator
+#   2 = one-pager
+#   5 = prd-producer
+
+ori@compulocks.com   : 1 2 5
+danny@compulocks.com : 1 2 5
+sales@compulocks.com : 1 2
+`;
+
+beforeEach(() => {
+  (fs.readFileSync as jest.Mock).mockReturnValue(SAMPLE_ALLOWLIST);
+});
+
+afterEach(() => {
+  jest.resetAllMocks();
+});
+
+describe('getFeaturesForEmail', () => {
+  it('returns correct features for admin user', () => {
+    const features = getFeaturesForEmail('ori@compulocks.com');
+    expect(features.has('mrd-generator')).toBe(true);
+    expect(features.has('one-pager')).toBe(true);
+    expect(features.has('prd-producer')).toBe(true);
   });
 
-  afterEach(() => {
-    process.env = originalEnv;
+  it('returns subset features for restricted user', () => {
+    const features = getFeaturesForEmail('sales@compulocks.com');
+    expect(features.has('mrd-generator')).toBe(true);
+    expect(features.has('one-pager')).toBe(true);
+    expect(features.has('prd-producer')).toBe(false);
   });
 
-  it('allows listed emails', () => {
-    expect(isRDEmail('ori@compulocks.com')).toBe(true);
-    expect(isRDEmail('eng@compulocks.com')).toBe(true);
+  it('returns empty set for unknown email', () => {
+    const features = getFeaturesForEmail('unknown@example.com');
+    expect(features.size).toBe(0);
   });
 
-  it('allows case-insensitive matches', () => {
-    expect(isRDEmail('ORI@COMPULOCKS.COM')).toBe(true);
-    expect(isRDEmail('Eng@Compulocks.Com')).toBe(true);
+  it('is case-insensitive', () => {
+    const features = getFeaturesForEmail('ORI@COMPULOCKS.COM');
+    expect(features.has('prd-producer')).toBe(true);
   });
 
-  it('rejects unlisted emails', () => {
-    expect(isRDEmail('sales@compulocks.com')).toBe(false);
-    expect(isRDEmail('random@example.com')).toBe(false);
+  it('returns empty set for null/undefined', () => {
+    expect(getFeaturesForEmail(null).size).toBe(0);
+    expect(getFeaturesForEmail(undefined).size).toBe(0);
+  });
+});
+
+describe('hasFeature', () => {
+  it('returns true when user has the feature', () => {
+    expect(hasFeature('ori@compulocks.com', 'prd-producer')).toBe(true);
   });
 
-  it('rejects null and undefined', () => {
-    expect(isRDEmail(null)).toBe(false);
-    expect(isRDEmail(undefined)).toBe(false);
+  it('returns false when user lacks the feature', () => {
+    expect(hasFeature('sales@compulocks.com', 'prd-producer')).toBe(false);
   });
 
-  it('rejects empty string', () => {
-    expect(isRDEmail('')).toBe(false);
-  });
-
-  it('handles whitespace in allowed list', () => {
-    process.env.ALLOWED_RD_EMAILS = '  ori@compulocks.com  ,  eng@compulocks.com  ';
-    expect(isRDEmail('ori@compulocks.com')).toBe(true);
-    expect(isRDEmail('eng@compulocks.com')).toBe(true);
-  });
-
-  it('returns false when env var is not set', () => {
-    delete process.env.ALLOWED_RD_EMAILS;
-    expect(isRDEmail('ori@compulocks.com')).toBe(false);
+  it('returns false for unknown email', () => {
+    expect(hasFeature('nobody@example.com', 'mrd-generator')).toBe(false);
   });
 });
