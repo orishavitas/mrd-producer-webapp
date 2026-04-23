@@ -14,27 +14,24 @@ Plan: `docs/superpowers/plans/2026-04-06-compulocks-brand-token-migration.md`
 - [x] Task 8 — Import `compulocks.css` into `globals.css`, verify build + tests
 - [x] Task 9 — Visual smoke test across all routes, confirm green buttons + card styles
 
-## PRD Producer (feature/prd-producer — next up)
+## PRD Producer (feature/prd-producer — COMPLETE ✅)
 
-Design decisions locked:
-- Trigger: MRD picker (user selects saved MRD from list)
-- Human gate: ENABLED at Agent 2 (skeleton review before writing)
-- Output: PRD viewer + DOCX/HTML/PDF export (no Composer, no DevLog)
-- Provider: Gemini primary, Claude fallback (existing chain)
-- Storage: New tables — `prd_documents`, `prd_frames`, `pipeline_runs`
-- Pipeline UX: Streaming with LoadingOverlay progress (Option B)
+Released as v1.3.0 (2026-04-23). All 15 implementation tasks done. Pending: merge to main.
 
-Next action: Resume brainstorming → write design spec → invoke writing-plans
-
-- [ ] Complete brainstorming session (next session)
-- [ ] Write design spec to `docs/superpowers/specs/2026-04-20-prd-producer-design.md`
-- [ ] Create implementation plan via writing-plans skill
-- [ ] Implement DB schema extension (`prd_documents`, `prd_frames`, `pipeline_runs`)
-- [ ] Implement 4 PRD agents in `agent/agents/prd/`
-- [ ] Implement pipeline orchestrator + streaming API
-- [ ] Build `/prd` route — MRD picker UI
-- [ ] Build Agent 2 human gate review UI
-- [ ] Build PRD viewer + export
+- [x] Complete brainstorming session
+- [x] Write design spec to `docs/superpowers/specs/2026-04-21-prd-producer-design.md`
+- [x] Create implementation plan via writing-plans skill
+- [x] DB migration: `lib/db-migrations/002-prd-tables.sql` (`pipeline_runs`, `prd_documents`, `prd_frames`)
+- [x] Implement 4 PRD agents in `agent/agents/prd/` (analyst, architect, writer, QA)
+- [x] Implement pipeline orchestrator + streaming API (`/api/pipeline/prd/start`)
+- [x] Status + Approve endpoints (`/api/pipeline/prd/[run_id]/status|approve`)
+- [x] Export endpoint (`/api/pipeline/prd/[run_id]/export`)
+- [x] R&D email gate (`lib/rd-email-gate.ts`, middleware)
+- [x] Build `/prd` route — One-Pager document picker UI
+- [x] Build Agent 2 human gate review UI (SkeletonReviewForm)
+- [x] Build PRD viewer + export (PRDViewer, QAPanel)
+- [x] PRD document generator (`lib/prd-document-generator.ts`)
+- [x] 63 tests across agents, API routes, and components
 
 ---
 
