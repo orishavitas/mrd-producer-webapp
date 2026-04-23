@@ -1,13 +1,13 @@
 'use client';
 
 import { OnePagerProvider, useOnePager } from './lib/one-pager-context';
-import SplitLayout from './components/SplitLayout';
+import SplitLayout from '../one-pager/components/SplitLayout';
 import TextFieldWithExpand from './components/TextFieldWithExpand';
-import CheckboxGroup from './components/CheckboxGroup';
-import DynamicRoleSelector from './components/DynamicRoleSelector';
+import CheckboxGroup from '../one-pager/components/CheckboxGroup';
+import DynamicRoleSelector from '../one-pager/components/DynamicRoleSelector';
 import CompetitorInput from './components/CompetitorInput';
 import DocumentPreview from './components/DocumentPreview';
-import { PhotoPicker } from './components/PhotoPicker';
+import { PhotoPicker } from '../one-pager/components/PhotoPicker';
 import { FeatureSelector } from './components/FeatureSelector';
 import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useRef, useState } from 'react';
