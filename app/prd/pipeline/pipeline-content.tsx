@@ -19,7 +19,11 @@ export function PipelineContent() {
   const startedRef = useRef(false);
 
   useEffect(() => {
-    if (!documentId || startedRef.current) return;
+    if (!documentId) {
+      setError('No document selected. Please go back and select a One-Pager.');
+      return;
+    }
+    if (startedRef.current) return;
     startedRef.current = true;
     startPipeline(documentId);
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -80,12 +84,21 @@ export function PipelineContent() {
 
   async function handleApprove(editedSkeleton: PRDSkeletonSection[]) {
     if (!runId) return;
-    await fetch(`/api/pipeline/prd/${runId}/approve`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ skeleton: editedSkeleton }),
-    });
-    setStep('writer');
+    try {
+      const res = await fetch(`/api/pipeline/prd/${runId}/approve`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skeleton: editedSkeleton }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? `Approval failed (${res.status})`);
+        return;
+      }
+      setStep('writer');
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Approval failed');
+    }
   }
 
   if (error) {

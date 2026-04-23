@@ -43,7 +43,7 @@ export function PRDViewer({
           Export HTML
         </button>
         {onRegenerate && (
-          <button className={styles.exportBtn} style={{ background: '#666' }} onClick={onRegenerate}>
+          <button className={styles.regenerateBtn} onClick={onRegenerate}>
             Regenerate
           </button>
         )}

@@ -9,7 +9,7 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { getPRDDocumentByRunId, getPRDFrames } from '@/lib/prd-db';
+import { getPRDDocument, getPRDFrames } from '@/lib/prd-db';
 import { generatePRDDocx, generatePRDHtml } from '@/lib/prd-document-generator';
 
 export async function GET(
@@ -24,8 +24,8 @@ export async function GET(
   const { run_id } = await params;
   const format = req.nextUrl.searchParams.get('format') ?? 'docx';
 
-  // Get PRD document by run_id
-  const prdDoc = await getPRDDocumentByRunId(run_id);
+  // Get PRD document by prd_documents.id (URL segment is now the prd_document_id)
+  const prdDoc = await getPRDDocument(run_id);
   if (!prdDoc) {
     return NextResponse.json({ error: 'PRD not found' }, { status: 404 });
   }
