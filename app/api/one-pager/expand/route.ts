@@ -88,8 +88,10 @@ const userId = 'dev';
 
     // Step 8: Return result
     return NextResponse.json({ expanded: result.text });
-  } catch (error) {
-    const message = error instanceof Error ? error.message : 'Expansion failed';
-    return NextResponse.json({ error: message }, { status: 500 });
-  }
+  }catch (error) {
+  console.error('🔥 EXPAND API ERROR:', error);
+
+  const message = error instanceof Error ? error.message : 'Expansion failed';
+  return NextResponse.json({ error: message }, { status: 500 });
+}
 }
