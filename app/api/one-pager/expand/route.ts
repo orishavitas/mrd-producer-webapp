@@ -17,13 +17,14 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Step 2: Auth — get session
-const session = {
-  user: { email: 'dev@local' },
-  expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
-};
+    // Step 2: Fake session (temporary)
+    const session = {
+      user: { email: 'dev@local' },
+      expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+    };
 
-const userId = 'dev';
+    const userId = 'dev';
+
     // Step 3: Ban check
     try {
       await assertNotBanned(userId);
@@ -42,6 +43,7 @@ const userId = 'dev';
         inputText: text,
         violationTypes: inputCheck.violationTypes,
       });
+
       return NextResponse.json(
         {
           error: 'guardrail_violation',
@@ -52,23 +54,28 @@ const userId = 'dev';
       );
     }
 
-    // Step 5: Harden system prompt
+    // Step 5: Prompt
     const baseSystemPrompt = `You are a professional product specification writer. Expand the user's brief ${field || 'description'} input into a clear, professional paragraph. Keep the original meaning. Do not add information the user didn't provide. Be concise but thorough. Return only the expanded text, no preamble.`;
+
     const systemPrompt = hardenSystemPrompt(baseSystemPrompt);
+
+    // 🔥 DEBUG LOGS (IMPORTANT)
+    console.log('👉 Starting AI call');
+    console.log('👉 GOOGLE_API_KEY exists:', !!process.env.GOOGLE_API_KEY);
 
     // Step 6: AI call
     const chain = getProviderChain();
+
     const { result } = await chain.executeWithFallback(
       (provider) => provider.generateText(text, systemPrompt)
     );
 
-    // Step 7: Output guardrail check
+    // Step 7: Output guardrail
     const outputCheck = checkOutput(result.text);
     if (!outputCheck.passed) {
-      // Log output violation for monitoring, but don't count toward ban
       await logViolation({
         userId,
-       userName: undefined,
+        userName: undefined,
         userEmail: undefined,
         ip: request.ip ?? request.headers.get('x-forwarded-for') ?? undefined,
         userAgent: request.headers.get('user-agent') ?? undefined,
@@ -76,6 +83,7 @@ const userId = 'dev';
         inputText: result.text.slice(0, 2000),
         violationTypes: outputCheck.violationTypes,
       });
+
       return NextResponse.json(
         {
           error: 'guardrail_violation',
@@ -86,12 +94,20 @@ const userId = 'dev';
       );
     }
 
-    // Step 8: Return result
+    // Step 8: Success
     return NextResponse.json({ expanded: result.text });
-  }catch (error) {
-  console.error('🔥 EXPAND API ERROR:', error);
 
-  const message = error instanceof Error ? error.message : 'Expansion failed';
-  return NextResponse.json({ error: message }, { status: 500 });
-}
+  } catch (error) {
+    // 🔥 CRITICAL DEBUG
+    console.error('🔥 EXPAND API ERROR:', error);
+    console.error('🔥 FULL ERROR JSON:', JSON.stringify(error, null, 2));
+
+    return NextResponse.json(
+      {
+        error: error instanceof Error ? error.message : 'Expansion failed',
+        debug: String(error),
+      },
+      { status: 500 }
+    );
+  }
 }
