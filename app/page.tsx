@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
+
 import { listDocumentsWithCreator, DocumentWithCreator } from '@/lib/db';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
