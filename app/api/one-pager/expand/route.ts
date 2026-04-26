@@ -18,8 +18,12 @@ export async function POST(request: NextRequest) {
     }
 
     // Step 2: Auth — get session
-   const session = { user: { email: 'dev@local' } };
-   const userId = session.user.email;
+const session = {
+  user: { email: 'dev@local' },
+  expires: new Date(Date.now() + 60 * 60 * 1000).toISOString(),
+};
+
+const userId = 'dev';
     // Step 3: Ban check
     try {
       await assertNotBanned(userId);
@@ -65,7 +69,7 @@ export async function POST(request: NextRequest) {
       await logViolation({
         userId,
        userName: undefined,
-        userEmail: session?.user?.email ?? undefined,
+        userEmail: undefined,
         ip: request.ip ?? request.headers.get('x-forwarded-for') ?? undefined,
         userAgent: request.headers.get('user-agent') ?? undefined,
         actionType: 'expand-output',
