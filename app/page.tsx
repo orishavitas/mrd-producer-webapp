@@ -1,6 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import { listDocumentsWithCreator, DocumentWithCreator } from '@/lib/db';
+import { listDocumentsWithCreator, toLibraryDocument, toPRDLibraryDocument, type LibraryDocument } from '@/lib/db';
+import { listPRDDocuments } from '@/lib/prd-db';
 import { getFeaturesForEmail } from '@/lib/feature-gate';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
@@ -46,14 +47,26 @@ export default async function DashboardPage() {
   const session = await auth();
   if (!session?.user?.email) redirect('/login');
 
-  let documents: DocumentWithCreator[] = [];
+  const email = session.user.email;
+  const features = getFeaturesForEmail(email);
+  const hasPRD = features.has('prd-producer');
+
+  let libraryDocs: LibraryDocument[] = [];
   try {
-    documents = await listDocumentsWithCreator(session.user.email);
+    const [opDocs, prdDocs] = await Promise.all([
+      listDocumentsWithCreator(email),
+      hasPRD ? listPRDDocuments(email) : Promise.resolve([]),
+    ]);
+    libraryDocs = [
+      ...opDocs
+        .filter((d) => d.tool_type === 'one-pager')
+        .map(toLibraryDocument),
+      ...prdDocs.map(toPRDLibraryDocument),
+    ].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
   } catch {
-    // DB not configured yet — show empty state
+    // DB not configured — show empty state
   }
 
-  const features = getFeaturesForEmail(session.user.email);
   const tools = ALL_TOOLS.filter((t) => features.has(t.feature));
 
   return (
@@ -65,27 +78,21 @@ export default async function DashboardPage() {
             <h1 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: '0.25rem' }}>
               Welcome{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
             </h1>
-            <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>
-              Choose a tool to get started.
-            </p>
+            <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>Choose a tool to get started.</p>
           </header>
 
           <section>
             <h2 style={{ fontSize: '0.8rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.07em', color: 'var(--muted)', marginBottom: '0.75rem' }}>
               Tools
             </h2>
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))',
-              gap: '1rem',
-            }}>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '1rem' }}>
               {tools.map(({ feature: _, ...tool }) => (
                 <ToolCard key={tool.href} {...tool} />
               ))}
             </div>
           </section>
 
-          <DashboardShell initialDocuments={documents} currentUserEmail={session.user.email} />
+          <DashboardShell initialDocuments={libraryDocs} currentUserEmail={email} />
         </div>
       </main>
     </>

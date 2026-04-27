@@ -42,18 +42,23 @@ Released as v1.3.0 (2026-04-23). All 15 implementation tasks done. Pending: merg
 - [ ] Task 5.3 — Run setup-sheet endpoint
 - [ ] Task 5.4 — Run RAG backfill endpoint
 
-## Documents Library (next up)
+## Documents Library ✅ COMPLETE
 
 Plan: `docs/superpowers/plans/2026-04-27-documents-library.md`
 Spec: `docs/superpowers/specs/2026-04-27-documents-library-design.md`
 
-- [ ] Task 1 — Add `listPRDDocuments` to `lib/prd-db.ts`
-- [ ] Task 2 — Add `LibraryDocument` type + mapper functions to `lib/db.ts`
-- [ ] Task 3 — `GET /api/documents/[id]/export` — One-Pager download by ID
-- [ ] Task 4 — `DELETE /api/pipeline/prd/[prd_id]/delete` + `softDeletePRDDocument`
-- [ ] Task 5 — Upgrade `DocumentsTable` with tabs + DOCX/HTML download buttons
-- [ ] Task 6 — Wire dashboard to fetch both sources, unified `LibraryDocument[]`
-- [ ] Task 7 — Final verification + push
+- [x] Task 1 — Add `listPRDDocuments` to `lib/prd-db.ts`
+- [x] Task 2 — Add `LibraryDocument` type + mapper functions to `lib/db.ts`
+- [x] Task 3 — `GET /api/documents/[id]/export` — One-Pager download by ID
+- [x] Task 4 — `DELETE /api/pipeline/prd/[run_id]/delete` + `softDeletePRDDocument`
+- [x] Task 5 — Upgrade `DocumentsTable` with tabs + DOCX/HTML download buttons
+- [x] Task 6 — Wire dashboard to fetch both sources, unified `LibraryDocument[]`
+- [x] Task 7 — Final verification + push
+
+> **Note:** Before deploying, run this migration in Neon console:
+> ```sql
+> ALTER TABLE prd_documents ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
+> ```
 
 ## Future
 

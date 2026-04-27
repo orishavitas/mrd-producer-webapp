@@ -1,16 +1,16 @@
 'use client';
 
 import { useState } from 'react';
-import { DocumentWithCreator } from '@/lib/db';
+import type { LibraryDocument } from '@/lib/db';
 import DocumentsTable from './DocumentsTable';
 
 interface DashboardShellProps {
-  initialDocuments: DocumentWithCreator[];
+  initialDocuments: LibraryDocument[];
   currentUserEmail: string;
 }
 
 export default function DashboardShell({ initialDocuments, currentUserEmail }: DashboardShellProps) {
-  const [documents, setDocuments] = useState<DocumentWithCreator[]>(initialDocuments);
+  const [documents, setDocuments] = useState<LibraryDocument[]>(initialDocuments);
 
   const handleDelete = (id: string) => {
     setDocuments((prev) => prev.filter((d) => d.id !== id));
@@ -19,7 +19,7 @@ export default function DashboardShell({ initialDocuments, currentUserEmail }: D
   return (
     <div className="card" style={{ marginTop: '2rem' }}>
       <h2 style={{ fontSize: '1.1rem', fontWeight: 600, marginBottom: '1rem' }}>
-        Recent Documents
+        Documents
       </h2>
       <DocumentsTable documents={documents} onDelete={handleDelete} currentUserEmail={currentUserEmail} />
     </div>

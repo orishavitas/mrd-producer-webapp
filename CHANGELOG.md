@@ -5,12 +5,23 @@
 ### Added
 - **Feature-gate allowlist** (`config/allowlist.txt`) — number-based per-user feature visibility; `lib/feature-gate.ts` with `getFeaturesForEmail()` / `hasFeature()`; replaces binary `isRDEmail` gate
 - **Documents Library spec + plan** — unified dashboard view for One-Pager + PRD documents with tabs, DOCX/HTML download, delete; design: `docs/superpowers/specs/2026-04-27-documents-library-design.md`; plan: `docs/superpowers/plans/2026-04-27-documents-library.md`
+- **Documents Library implementation** — unified document library on dashboard with tab filtering (All / One-Pager / PRD), DOCX/HTML download links, and delete support
+  - `lib/one-pager-export.ts` — extracted `generateOnePagerDocx` and `generateOnePagerHtml` from export route (reusable lib)
+  - `lib/db.ts` — `LibraryDocument` interface, `toLibraryDocument()`, `toPRDLibraryDocument()` mapper functions
+  - `lib/prd-db.ts` — `listPRDDocuments(email)`, `softDeletePRDDocument(id)`, `getPRDDocument` now filters `deleted_at IS NULL`
+  - `GET /api/documents/[id]/export` — download One-Pager by DB document ID (DOCX or HTML)
+  - `DELETE /api/pipeline/prd/[run_id]/delete` — soft-delete a PRD document
+  - `DocumentsTable` — rewritten to accept `LibraryDocument[]`, tab bar, DOCX/HTML anchor links, delete button
+  - `DashboardShell` — updated to `LibraryDocument[]` state
+  - `app/page.tsx` — fetches One-Pager + PRD docs in parallel, merges into unified sorted list
+  - 22 new tests across 5 test files (all passing)
 
 ### Changed
 - **TopBar** renamed from "MRD Producer" → "Documentation Center"
 - **PRD Producer dashboard card** — badge changed from "R&D" → "Alpha"; soft-gated (hidden for non-allowlist users, no redirect)
 - **Middleware** — removed R&D route blocking; access control is now dashboard-level visibility only
 - **`lib/rd-email-gate.ts`** — now reads from `config/allowlist.txt` as fallback when `ALLOWED_RD_EMAILS` env var not set
+- **`app/api/one-pager/export/route.ts`** — now imports from `lib/one-pager-export.ts` instead of defining functions inline
 
 ---
 

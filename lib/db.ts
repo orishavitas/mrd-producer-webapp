@@ -158,3 +158,43 @@ export async function isUserBanned(userId: string): Promise<boolean> {
   `;
   return rows.length > 0;
 }
+
+export interface LibraryDocument {
+  id: string;
+  title: string;
+  toolType: 'one-pager' | 'prd';
+  creatorName: string | null;
+  creatorEmail: string | null;
+  updatedAt: string;
+  exportBaseUrl: string;
+  deleteUrl: string;
+  deleteMethod: 'DELETE';
+}
+
+export function toLibraryDocument(doc: DocumentWithCreator): LibraryDocument {
+  return {
+    id: doc.id,
+    title: doc.title,
+    toolType: doc.tool_type as 'one-pager',
+    creatorName: doc.creator_name,
+    creatorEmail: doc.creator_email,
+    updatedAt: doc.updated_at,
+    exportBaseUrl: `/api/documents/${doc.id}/export`,
+    deleteUrl: `/api/documents/${doc.id}`,
+    deleteMethod: 'DELETE',
+  };
+}
+
+export function toPRDLibraryDocument(doc: import('@/lib/prd-db').PRDDocument): LibraryDocument {
+  return {
+    id: doc.id,
+    title: doc.product_name,
+    toolType: 'prd',
+    creatorName: null,
+    creatorEmail: doc.created_by,
+    updatedAt: doc.updated_at,
+    exportBaseUrl: `/api/pipeline/prd/${doc.id}/export`,
+    deleteUrl: `/api/pipeline/prd/${doc.id}/delete`,
+    deleteMethod: 'DELETE',
+  };
+}

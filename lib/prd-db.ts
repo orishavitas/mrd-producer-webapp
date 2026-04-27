@@ -105,7 +105,7 @@ export async function createPRDDocument(
 
 export async function getPRDDocument(id: string): Promise<PRDDocument | null> {
   const { rows } = await sql<PRDDocument>`
-    SELECT * FROM prd_documents WHERE id = ${id}
+    SELECT * FROM prd_documents WHERE id = ${id} AND deleted_at IS NULL
   `;
   return rows[0] ?? null;
 }
@@ -134,4 +134,20 @@ export async function getPRDFrames(prdDocumentId: string): Promise<PRDFrame[]> {
     SELECT * FROM prd_frames WHERE prd_document_id = ${prdDocumentId} ORDER BY section_order ASC
   `;
   return rows;
+}
+
+export async function listPRDDocuments(createdBy: string): Promise<PRDDocument[]> {
+  const { rows } = await sql<PRDDocument>`
+    SELECT * FROM prd_documents
+    WHERE created_by = ${createdBy} AND deleted_at IS NULL
+    ORDER BY updated_at DESC
+  `;
+  return rows;
+}
+
+export async function softDeletePRDDocument(id: string): Promise<void> {
+  await sql`
+    UPDATE prd_documents SET deleted_at = NOW(), updated_at = NOW()
+    WHERE id = ${id}
+  `;
 }
