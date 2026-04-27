@@ -1,17 +1,38 @@
 # Changelog
 
+## [Unreleased] - 2026-04-27
+
+### Added
+- **Feature-gate allowlist** (`config/allowlist.txt`) — number-based per-user feature visibility; `lib/feature-gate.ts` with `getFeaturesForEmail()` / `hasFeature()`; replaces binary `isRDEmail` gate
+- **Documents Library spec + plan** — unified dashboard view for One-Pager + PRD documents with tabs, DOCX/HTML download, delete; design: `docs/superpowers/specs/2026-04-27-documents-library-design.md`; plan: `docs/superpowers/plans/2026-04-27-documents-library.md`
+
+### Changed
+- **TopBar** renamed from "MRD Producer" → "Documentation Center"
+- **PRD Producer dashboard card** — badge changed from "R&D" → "Alpha"; soft-gated (hidden for non-allowlist users, no redirect)
+- **Middleware** — removed R&D route blocking; access control is now dashboard-level visibility only
+- **`lib/rd-email-gate.ts`** — now reads from `config/allowlist.txt` as fallback when `ALLOWED_RD_EMAILS` env var not set
+
+---
+
 All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.3.0-dev] - 2026-04-20
+## [1.3.0] - 2026-04-23
 
-### Added (PRD Producer — feature/prd-producer branch)
-- Created `feature/prd-producer` worktree at `.worktrees/prd-producer`
-- Copied 13 pipeline design docs into `docs/prd-pipeline/` (architecture, methodology, roles)
-- Completed brainstorming session — decisions: MRD picker trigger (Option A), human gate enabled at Agent 2, PRD viewer output only, DevLog skipped for now, Gemini-primary provider chain, proper new DB tables (hidden from user doc list)
-- Selected implementation approach: streaming pipeline (Option B) with LoadingOverlay pattern
+### Added (PRD Producer — feature/prd-producer)
+- **`/prd` route** — R&D-only pipeline to transform a saved One-Pager into a structured engineering PRD
+- **4-agent pipeline**: OnePagerAnalystAgent → PRDArchitectAgent (human gate) → PRDWriterAgent → PRDQAAgent
+- **Streaming API** (`POST /api/pipeline/prd/start`) — NDJSON event stream with `agent_start/done`, `human_gate`, `section_done`, `pipeline_done` events; 30-min human gate with poll-and-resume
+- **Status + Approve endpoints** (`GET/POST /api/pipeline/prd/[run_id]/status|approve`) — skeleton review and approval flow
+- **Export endpoint** (`GET /api/pipeline/prd/[prd_id]/export?format=docx|html`) — DOCX (Arial, US Letter, 1" margins) and HTML export
+- **3 new Postgres tables**: `pipeline_runs`, `prd_documents`, `prd_frames` (migration: `lib/db-migrations/002-prd-tables.sql`)
+- **YAML-driven section config** (`config/prd-sections.yaml`) — 8 PRD sections with prompts editable without code changes
+- **R&D email gate** — `isRDEmail()` in middleware; `ALLOWED_RD_EMAILS` env var restricts `/prd` and `/api/pipeline/prd` routes
+- **4 UI screens**: Document Picker, Pipeline Progress overlay, Skeleton Review form, PRD Viewer with QA score panel
+- **PRD document generator** (`lib/prd-document-generator.ts`) — `generatePRDDocx` and `generatePRDHtml`
+- **63 new tests** across agents, API routes, and components (3 AI-dependent skipped by default)
 
 ---
 

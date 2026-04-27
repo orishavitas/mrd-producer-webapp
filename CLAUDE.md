@@ -1,14 +1,14 @@
 # CLAUDE.md
 
-**Version: 1.2.0** — Brand token migration complete. Barlow fonts, green accent #009966, IBM Plex gone.
-**In development (feature/prd-producer):** PRD Producer — 4-agent MRD→PRD transformation pipeline.
+**Version: 1.3.0** — PRD Producer live. Feature-gate allowlist system. Header renamed "Documentation Center".
 
-Two production tools:
+Three production tools:
 1. **Main MRD Producer** (`/mrd`) — AI-powered 12-section MRD via Gemini Search grounding.
 2. **One-Pager Generator** (`/one-pager`) — 7-section product spec, competitor scraper, feature chips, photo picker. **LIVE on main.**
+3. **PRD Producer** (`/prd`) — 4-agent pipeline transforms saved One-Pager into structured PRD. Human gate at Agent 2. Streaming UX. DOCX/HTML/PDF export. **LIVE on main (Alpha, allowlist-gated).**
 
-Upcoming:
-3. **PRD Producer** (`/prd`) — 4-agent chain transforms saved MRD into structured PRD. Human gate at Agent 2. Streaming UX. DOCX/HTML/PDF export. Design docs: `docs/prd-pipeline/`.
+In progress:
+4. **Documents Library** — unified dashboard view, One-Pager + PRD docs, tabs, DOCX/HTML download. Plan: `docs/superpowers/plans/2026-04-27-documents-library.md`.
 
 Architecture, directory tree, agent inventory, provider table: `docs/ARCHITECTURE.md`
 Code examples (agent, research, provider chain): `docs/QUICK_START.md`
@@ -83,6 +83,15 @@ Single source of truth: `styles/tokens/compulocks.css`
 
 ---
 
+## Feature Gate System
+
+`config/allowlist.txt` — editable per-user feature allowlist. Format: `email : 1 2 3 4 5`
+- `1` = mrd-generator, `2` = one-pager, `3` = brief-helper, `4` = one-pager-beta, `5` = prd-producer
+- `lib/feature-gate.ts` — `getFeaturesForEmail(email)` returns `Set<FeatureKey>`, `hasFeature(email, key)` boolean
+- Env var `ALLOWED_RD_EMAILS` takes precedence over file (for Vercel production)
+- Dashboard only shows tools the user is allowed — no redirect, just hidden
+
 ## Document Export
 
 `lib/document-generator.ts` — `docx` for Word, print-ready HTML for PDF. Arial font, US Letter, 1" margins.
+`lib/prd-document-generator.ts` — PRD-specific DOCX + HTML export (Arial, US Letter, 1" margins).

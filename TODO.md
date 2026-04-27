@@ -42,6 +42,19 @@ Released as v1.3.0 (2026-04-23). All 15 implementation tasks done. Pending: merg
 - [ ] Task 5.3 — Run setup-sheet endpoint
 - [ ] Task 5.4 — Run RAG backfill endpoint
 
+## Documents Library (next up)
+
+Plan: `docs/superpowers/plans/2026-04-27-documents-library.md`
+Spec: `docs/superpowers/specs/2026-04-27-documents-library-design.md`
+
+- [ ] Task 1 — Add `listPRDDocuments` to `lib/prd-db.ts`
+- [ ] Task 2 — Add `LibraryDocument` type + mapper functions to `lib/db.ts`
+- [ ] Task 3 — `GET /api/documents/[id]/export` — One-Pager download by ID
+- [ ] Task 4 — `DELETE /api/pipeline/prd/[prd_id]/delete` + `softDeletePRDDocument`
+- [ ] Task 5 — Upgrade `DocumentsTable` with tabs + DOCX/HTML download buttons
+- [ ] Task 6 — Wire dashboard to fetch both sources, unified `LibraryDocument[]`
+- [ ] Task 7 — Final verification + push
+
 ## Future
 
 - Dark mode brand color variants for green tokens
