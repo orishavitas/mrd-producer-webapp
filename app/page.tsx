@@ -1,5 +1,4 @@
-import { redirect } from 'next/navigation';
-import { auth } from '@/lib/auth';
+
 import { listDocumentsWithCreator, DocumentWithCreator } from '@/lib/db';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
@@ -46,7 +45,7 @@ export default async function DashboardPage() {
         <div className="container" style={{ maxWidth: '900px', padding: '2rem 1.5rem' }}>
           <header style={{ marginBottom: '2rem' }}>
             <h1 style={{ fontSize: '1.6rem', fontWeight: 700, marginBottom: '0.25rem' }}>
-              Welcome{session?.user?.name ? `, ${session.user.name.split(' ')[0]}` : ''}
+              Welcome
             </h1>
             <p style={{ color: 'var(--muted)', fontSize: '0.95rem' }}>
               Choose a tool to get started.
