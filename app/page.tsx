@@ -61,12 +61,13 @@ export default async function DashboardPage() {
 
   let libraryDocs: LibraryDocument[] = [];
   try {
-    const [opDocs, prdDocs] = await Promise.all([
-      isRDViewer ? listAllDocumentsWithCreator() : listDocumentsWithCreator(email),
-      hasPRD || isRDViewer
-        ? isRDViewer ? listAllPRDDocuments() : listPRDDocuments(email)
-        : Promise.resolve([]),
-    ]);
+    const opDocs = await (isRDViewer ? listAllDocumentsWithCreator() : listDocumentsWithCreator(email));
+    const prdDocs = await (hasPRD || isRDViewer
+      ? (isRDViewer ? listAllPRDDocuments() : listPRDDocuments(email)).catch((err) => {
+          console.error('[dashboard] PRD docs unavailable:', err instanceof Error ? err.message : err);
+          return [];
+        })
+      : Promise.resolve([]));
     libraryDocs = [
       ...opDocs
         .filter((d) => d.tool_type === 'one-pager')
