@@ -1,0 +1,10 @@
+/*
+ * Design Kit — Entry Point
+ * Import this file to get all design-kit tokens and components.
+ *
+ * Usage:
+ *   import 'styles/design-kit/index.css';
+ */
+
+@import './tokens.css';
+@import './components.css';

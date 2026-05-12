@@ -33,6 +33,7 @@ function OnePagerContent() {
   const [publishGatePending, setPublishGatePending] = useState<'docx' | 'html' | 'pdf' | null>(null);
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [featureLayout, setFeatureLayout] = useState<'sideBySide' | 'stacked'>('sideBySide');
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -204,7 +205,9 @@ function OnePagerContent() {
 
       {/* Document Metadata */}
       <div className={styles.section}>
-        <label className={styles.sectionLabel}>Document Info</label>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel}>Document Info</span>
+        </div>
         <div className={styles.fieldRow}>
           <div className={styles.field}>
             <label className={styles.fieldLabel}>Product Name</label>
@@ -240,26 +243,41 @@ function OnePagerContent() {
       </div>
 
       {/* Section 1: Description */}
-      <TextFieldWithExpand
-        label="1. Product Description"
-        value={state.description}
-        onChange={(v) => dispatch({ type: 'SET_DESCRIPTION', payload: v })}
-        placeholder="Describe your product concept..."
-        field="description"
-      />
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionNum}>1</span>
+          <span className={styles.sectionLabel}>Product Description</span>
+        </div>
+        <TextFieldWithExpand
+          label=""
+          value={state.description}
+          onChange={(v) => dispatch({ type: 'SET_DESCRIPTION', payload: v })}
+          placeholder="Describe your product concept..."
+          field="description"
+        />
+      </div>
 
       {/* Section 2: Goal */}
-      <TextFieldWithExpand
-        label="2. Goal"
-        value={state.goal}
-        onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
-        placeholder="What is the goal of this product?"
-        field="goal"
-      />
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionNum}>2</span>
+          <span className={styles.sectionLabel}>Goal</span>
+        </div>
+        <TextFieldWithExpand
+          label=""
+          value={state.goal}
+          onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
+          placeholder="What is the goal of this product?"
+          field="goal"
+        />
+      </div>
 
       {/* Section 3: Where */}
       <div className={styles.section}>
-        <label className={styles.sectionLabel}>3. Where (Environment & Industry)</label>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionNum}>3</span>
+          <span className={styles.sectionLabel}>Where (Environment &amp; Industry)</span>
+        </div>
         {config ? (
           <>
             <CheckboxGroup
@@ -281,27 +299,37 @@ function OnePagerContent() {
       </div>
 
       {/* Section 4: Who */}
-      <DynamicRoleSelector
-        selectedIndustries={state.context.industries}
-        selectedRoles={state.audience.predefined}
-        customRoles={state.audience.custom}
-        onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
-        onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
-        onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
-      />
+      <div className={styles.sectionCard}>
+        <DynamicRoleSelector
+          selectedIndustries={state.context.industries}
+          selectedRoles={state.audience.predefined}
+          customRoles={state.audience.custom}
+          onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
+          onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
+          onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
+        />
+      </div>
 
       {/* Use Cases */}
-      <TextFieldWithExpand
-        label="Use Cases"
-        value={state.useCases}
-        onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
-        placeholder="Describe how the device will be used in practice..."
-        field="useCases"
-      />
+      <div className={styles.section}>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionLabel}>Use Cases</span>
+        </div>
+        <TextFieldWithExpand
+          label=""
+          value={state.useCases}
+          onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
+          placeholder="Describe how the device will be used in practice..."
+          field="useCases"
+        />
+      </div>
 
       {/* Section 5: Features */}
       <div className={styles.section}>
-        <label className={styles.sectionLabel}>5. Features</label>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionNum}>5</span>
+          <span className={styles.sectionLabel}>Features</span>
+        </div>
         <FeatureSelector
           categories={config?.standardFeatures ?? []}
           mustHave={state.features.mustHave}
@@ -323,7 +351,10 @@ function OnePagerContent() {
 
       {/* Section 6: Commercials */}
       <div className={styles.section}>
-        <label className={styles.sectionLabel}>6. Commercials</label>
+        <div className={styles.sectionHeader}>
+          <span className={styles.sectionNum}>6</span>
+          <span className={styles.sectionLabel}>Commercials</span>
+        </div>
         <div className={styles.fieldRow}>
           <div className={styles.field}>
             <label className={styles.fieldLabel}>MOQ</label>
@@ -349,26 +380,28 @@ function OnePagerContent() {
       </div>
 
       {/* Section 7: Competitors */}
-      <CompetitorInput
-        competitors={state.competitors}
-        onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
-        onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
-        onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
-        onCandidates={(url, candidates) =>
-          dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
-        }
-        renderPhotoPicker={(comp) =>
-          comp.status === 'done' ? (
-            <PhotoPicker
-              candidates={comp.candidatePhotos ?? []}
-              selected={comp.photoUrls}
-              onSelect={(photoUrl) =>
-                dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
-              }
-            />
-          ) : null
-        }
-      />
+      <div className={styles.sectionCard}>
+        <CompetitorInput
+          competitors={state.competitors}
+          onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
+          onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
+          onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
+          onCandidates={(url, candidates) =>
+            dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
+          }
+          renderPhotoPicker={(comp) =>
+            comp.status === 'done' ? (
+              <PhotoPicker
+                candidates={comp.candidatePhotos ?? []}
+                selected={comp.photoUrls}
+                onSelect={(photoUrl) =>
+                  dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
+                }
+              />
+            ) : null
+          }
+        />
+      </div>
 
       {/* Publish gate modal */}
       {publishGatePending !== null && (
@@ -415,6 +448,14 @@ function OnePagerContent() {
         >
           &#8635;
         </button>
+        <button
+          className={styles.previewToggleBtn}
+          onClick={() => setPreviewOpen((v) => !v)}
+          data-open={previewOpen ? 'true' : 'false'}
+          title={previewOpen ? 'Hide preview' : 'Show preview'}
+        >
+          {previewOpen ? '✕ Preview' : '▶ Preview'}
+        </button>
       </div>
       <div className={styles.barRight}>
         <button
@@ -459,7 +500,7 @@ function OnePagerContent() {
     </div>
   );
 
-  return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} />;
+  return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} previewOpen={previewOpen} />;
 }
 
 export default function OnePagerPage() {

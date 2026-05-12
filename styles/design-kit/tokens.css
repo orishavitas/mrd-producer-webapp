@@ -1,0 +1,120 @@
+/*
+ * Design Kit — Tokens
+ * Compulocks M3 Expressive · Brand Language 2025
+ * Prefix: --dk-*
+ *
+ * Import via styles/design-kit/index.css
+ */
+
+:root {
+  /* ── Brand colors ──────────────────────────────────────────── */
+  --dk-primary:           #1D1F4A;
+  --dk-on-primary:        #FFFFFF;
+  --dk-secondary:         #243469;
+  --dk-on-secondary:      #FFFFFF;
+  --dk-accent:            #009966;
+  --dk-accent-hover:      #007a52;
+  --dk-accent-soft:       rgba(0, 153, 102, 0.12);
+  --dk-accent-on:         #FFFFFF;
+
+  /* ── Surfaces ─────────────────────────────────────────────── */
+  --dk-bg:                #F4F4F8;
+  --dk-surface:           #FFFFFF;
+  --dk-surface-raised:    #FFFFFF;
+  --dk-surface-variant:   #E8E9EE;
+  --dk-on-surface:        #1A1B1F;
+  --dk-on-surface-2:      #3D3E47;
+  --dk-on-surface-3:      #5A5C70;
+  --dk-muted:             #8A8C9C;
+
+  /* ── Borders ──────────────────────────────────────────────── */
+  --dk-outline:           #D9DAE2;
+  --dk-outline-strong:    #9799AA;
+
+  /* ── State ────────────────────────────────────────────────── */
+  --dk-error:             #BA1A1A;
+  --dk-error-surface:     #FFDAD6;
+  --dk-success:           #009966;
+  --dk-success-surface:   rgba(0, 153, 102, 0.10);
+
+  /* ── Type scale (Barlow / Barlow Condensed) ───────────────── */
+  --dk-font-body:         var(--font-barlow, 'Barlow', sans-serif);
+  --dk-font-display:      var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+
+  --dk-text-xs:           0.6875rem;   /* 11px */
+  --dk-text-sm:           0.8125rem;   /* 13px */
+  --dk-text-base:         0.875rem;    /* 14px */
+  --dk-text-md:           1rem;        /* 16px */
+  --dk-text-lg:           1.125rem;    /* 18px */
+  --dk-text-xl:           1.375rem;    /* 22px */
+  --dk-text-2xl:          1.75rem;     /* 28px */
+  --dk-text-3xl:          2.25rem;     /* 36px */
+
+  /* ── Spacing (4px grid) ───────────────────────────────────── */
+  --dk-space-1:   0.25rem;    /* 4px  */
+  --dk-space-2:   0.5rem;     /* 8px  */
+  --dk-space-3:   0.75rem;    /* 12px */
+  --dk-space-4:   1rem;       /* 16px */
+  --dk-space-5:   1.25rem;    /* 20px */
+  --dk-space-6:   1.5rem;     /* 24px */
+  --dk-space-8:   2rem;       /* 32px */
+  --dk-space-10:  2.5rem;     /* 40px */
+  --dk-space-12:  3rem;       /* 48px */
+  --dk-space-16:  4rem;       /* 64px */
+
+  /* ── Shape radii ──────────────────────────────────────────── */
+  --dk-radius-xs:   4px;
+  --dk-radius-sm:   8px;
+  --dk-radius-md:   12px;
+  --dk-radius-lg:   16px;
+  --dk-radius-xl:   20px;
+  --dk-radius-2xl:  28px;
+  --dk-radius-full: 9999px;
+
+  /* ── Component heights (8dp grid) ────────────────────────── */
+  --dk-height-chip:    2rem;      /* 32px */
+  --dk-height-input:   2.5rem;    /* 40px */
+  --dk-height-btn:     2.25rem;   /* 36px */
+  --dk-height-btn-sm:  1.75rem;   /* 28px */
+  --dk-height-topbar:  3.5rem;    /* 56px */
+
+  /* ── Shadows ──────────────────────────────────────────────── */
+  --dk-shadow-1: 0 1px 3px rgba(29, 31, 74, 0.08), 0 1px 2px rgba(29, 31, 74, 0.06);
+  --dk-shadow-2: 0 4px 12px rgba(29, 31, 74, 0.10), 0 2px 4px rgba(29, 31, 74, 0.06);
+  --dk-shadow-3: 0 8px 24px rgba(29, 31, 74, 0.12), 0 4px 8px rgba(29, 31, 74, 0.08);
+
+  /* ── Transitions ──────────────────────────────────────────── */
+  --dk-ease:         cubic-bezier(0.2, 0, 0, 1);
+  --dk-duration-sm:  120ms;
+  --dk-duration-md:  200ms;
+  --dk-duration-lg:  300ms;
+}
+
+/* ── Dark mode ──────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --dk-primary:           #B8C3FF;
+    --dk-on-primary:        #0A0D35;
+    --dk-secondary:         #B8C4F0;
+    --dk-on-secondary:      #0E1740;
+    --dk-accent:            #1db274;
+    --dk-accent-hover:      #17a065;
+    --dk-accent-soft:       rgba(29, 178, 116, 0.15);
+
+    --dk-bg:                #111217;
+    --dk-surface:           #1A1B1F;
+    --dk-surface-raised:    #22232A;
+    --dk-surface-variant:   #1E2030;
+    --dk-on-surface:        #E3E2EB;
+    --dk-on-surface-2:      #C6C5D0;
+    --dk-on-surface-3:      #9799AA;
+    --dk-muted:             #6B6D7C;
+
+    --dk-outline:           #404255;
+    --dk-outline-strong:    #8F8FA3;
+
+    --dk-shadow-1: 0 1px 3px rgba(0,0,0,0.30);
+    --dk-shadow-2: 0 4px 12px rgba(0,0,0,0.40);
+    --dk-shadow-3: 0 8px 24px rgba(0,0,0,0.55);
+  }
+}

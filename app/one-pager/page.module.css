@@ -5,13 +5,13 @@
 .toolbar {
   margin-bottom: 1.5rem;
   padding-bottom: 1rem;
-  border-bottom: 2px solid var(--op-primary);
+  border-bottom: 3px solid var(--op-accent, #009966);
 }
 
 .pageTitle {
   font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-  font-size: 28px;
-  font-weight: 500;
+  font-size: 22px;
+  font-weight: 600;
   text-transform: capitalize;
   color: var(--brand-primary, #1D1F4A);
   letter-spacing: 0.04em;
@@ -131,7 +131,53 @@
 }
 
 .section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 1rem;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid var(--op-outline, #D9DAE2);
+  box-shadow: var(--op-shadow-sm);
+  padding: 1.25rem 1.5rem 1.5rem;
+}
+
+/* TextFieldWithExpand inside a card: collapse its bottom margin */
+.section > :last-child {
+  margin-bottom: 0;
+}
+
+/* Card wrapper for components that own their own label (DynamicRoleSelector, CompetitorInput) */
+.sectionCard {
+  margin-bottom: 1rem;
+  background: #FFFFFF;
+  border-radius: 20px;
+  border: 1px solid var(--op-outline, #D9DAE2);
+  box-shadow: var(--op-shadow-sm);
+  padding: 0.25rem 1rem 1rem;
+}
+
+.sectionCard > :last-child {
+  margin-bottom: 0;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.sectionNum {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  background: var(--op-accent, #009966);
+  color: #FFFFFF;
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
 }
 
 .sectionLabel {
@@ -142,7 +188,7 @@
   color: var(--op-primary);
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  margin-bottom: 0.75rem;
+  margin: 0;
 }
 
 .fieldRow {
@@ -166,30 +212,63 @@
   font-size: 0.8125rem;
   font-weight: 500;
   font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface);
+  color: var(--op-on-surface-variant, #5A5C70);
 }
 
 /* M3 outlined text field */
 .textInput {
   height: var(--op-input-height);
   padding: 0 0.75rem;
-  border: 1.5px solid var(--op-outline);
-  border-radius: var(--op-radius-s);
+  border: 1.5px solid var(--op-outline, #D9DAE2);
+  border-radius: 10px;
   font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   background: var(--op-surface);
   color: var(--op-on-surface);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, box-shadow 0.15s;
 }
 
 .textInput:focus {
   outline: none;
   border-color: var(--op-secondary);
-  box-shadow: 0 0 0 2px rgba(36, 52, 105, 0.15);
+  box-shadow: 0 0 0 3px rgba(36, 52, 105, 0.12);
 }
 
 .loading {
   color: var(--op-outline-strong);
   font-size: 0.8125rem;
   font-style: italic;
+}
+
+/* Preview toggle button (in action bar) */
+.previewToggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  height: var(--op-btn-height);
+  padding: 0 0.875rem;
+  border-radius: var(--op-radius-full);
+  border: 1.5px solid var(--op-outline, #D9DAE2);
+  background: transparent;
+  color: var(--op-on-surface-variant, #45464F);
+  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.previewToggleBtn:hover {
+  border-color: var(--op-accent, #009966);
+  color: var(--op-accent, #009966);
+  background: var(--op-accent-soft, rgba(0,153,102,0.06));
+}
+
+.previewToggleBtn[data-open="true"] {
+  background: var(--op-accent-soft, rgba(0,153,102,0.10));
+  border-color: var(--op-accent, #009966);
+  color: var(--op-accent, #009966);
 }
