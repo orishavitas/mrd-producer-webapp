@@ -73,8 +73,8 @@ export default async function DashboardPage() {
         .map(toLibraryDocument),
       ...prdDocs.map(toPRDLibraryDocument),
     ].sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
-  } catch {
-    // DB not configured — show empty state
+  } catch (err) {
+    console.error('[dashboard] Failed to load library docs:', err instanceof Error ? err.message : err);
   }
 
   const tools = ALL_TOOLS.filter((t) => features.has(t.feature));
