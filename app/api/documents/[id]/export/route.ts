@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { getDocument } from '@/lib/db';
 import { generateOnePagerDocx, generateOnePagerHtml, type OnePagerData } from '@/lib/one-pager-export';
+import { hasFeature } from '@/lib/feature-gate';
 
 export const dynamic = 'force-dynamic';
 
@@ -21,7 +22,9 @@ export async function GET(
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  if (doc.user_id !== session.user.email) {
+  const isOwner = doc.user_id === session.user.email;
+  const canViewAll = hasFeature(session.user.email, 'rd-viewer');
+  if (!isOwner && !canViewAll) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
