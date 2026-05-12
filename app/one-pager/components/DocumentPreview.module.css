@@ -15,6 +15,11 @@
   border-bottom: 2px solid var(--op-primary, #1D1F4A);
 }
 
+/* M3 chrome override */
+.chrome[data-design="m3"] {
+  border-bottom: 3px solid #009966;
+}
+
 .chromeLabel {
   font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
   font-size: 28px;
@@ -28,8 +33,47 @@
   text-overflow: ellipsis;
 }
 
+/* M3 chrome label override */
+.chromeLabel[data-design="m3"] {
+  font-size: 22px;
+  color: #1D1F4A;
+}
+
 .chromeLogo {
   display: none;
+}
+
+/* ── Design toggle segmented control ─────────────────────────── */
+.designToggle {
+  display: inline-flex;
+  background: #ECEDF2;
+  border-radius: 9999px;
+  padding: 3px;
+  gap: 2px;
+  margin-left: auto;
+  margin-right: 0.75rem;
+}
+
+.designToggleBtn {
+  height: 26px;
+  padding: 0 12px;
+  border: none;
+  border-radius: 9999px;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  font-family: 'Barlow Condensed', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #5A5C70;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.designToggleBtn[aria-pressed="true"] {
+  background: #fff;
+  color: #1D1F4A;
+  box-shadow: 0 1px 2px rgba(29, 31, 74, 0.06);
 }
 
 /* ── White document card ─────────────────────────────────────── */
@@ -43,6 +87,13 @@
   padding: 2rem 2.5rem 3rem;
   display: flex;
   flex-direction: column;
+}
+
+/* M3 doc override */
+.doc[data-design="m3"] {
+  border-radius: 20px;
+  border: 1px solid #E8E9EE;
+  box-shadow: 0 2px 6px rgba(29, 31, 74, 0.08), 0 1px 2px rgba(29, 31, 74, 0.04);
 }
 
 /* ── Doc header row: title left, logo right ─────────────────── */
@@ -98,6 +149,12 @@
   color: var(--brand-primary, #1D1F4A);
 }
 
+/* M3 content override */
+.content[data-design="m3"] {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
 /* Markdown headings */
 .content h2 {
   font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
@@ -109,6 +166,13 @@
   margin: 1.75rem 0 0.5rem;
   padding-bottom: 0.25rem;
   border-bottom: 1px solid #e0e0e0;
+}
+
+/* M3 markdown h2 override — remove border-bottom (sectionRule div takes over) */
+.content[data-design="m3"] h2 {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.25rem;
 }
 
 .content h3 {
@@ -133,6 +197,10 @@
   font-size: 18px;
   color: var(--brand-primary, #1D1F4A);
   margin-bottom: 2px;
+}
+
+.content[data-design="m3"] li {
+  font-size: 16px;
 }
 
 .content a {
@@ -161,6 +229,21 @@
   border-bottom: 1px solid #e0e0e0;
 }
 
+/* M3 sectionHeading — no border-bottom (sectionRule div takes over) */
+.sectionHeading[data-design="m3"] {
+  border-bottom: none;
+  padding-bottom: 0;
+  margin-bottom: 0.25rem;
+}
+
+/* ── M3 section rule (gradient accent line under headings) ────── */
+.sectionRule {
+  height: 2px;
+  background: linear-gradient(90deg, #009966 0, #009966 40px, #E8E9EE 40px, #E8E9EE 100%);
+  border-radius: 2px;
+  margin-bottom: 0.75rem;
+}
+
 /* ── Feature side-by-side cards ─────────────────────────────── */
 .featureCards {
   display: flex;
@@ -182,6 +265,13 @@
   padding: 1.5rem 1.75rem;
 }
 
+/* M3 featureCard override */
+.featureCard[data-design="m3"] {
+  border-radius: 14px;
+  border: 1px solid #E8E9EE;
+  background: #F4F4F8;
+}
+
 .featureCardLabel {
   font-family: var(--font-barlow, 'Barlow', sans-serif);
   font-size: 13px;
@@ -190,6 +280,13 @@
   letter-spacing: 0.08em;
   color: var(--brand-green-dark, #009966);
   margin-bottom: 0.75rem;
+}
+
+/* M3 featureCardLabel override */
+.featureCardLabel[data-design="m3"] {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: #009966;
 }
 
 .featureCard ul {

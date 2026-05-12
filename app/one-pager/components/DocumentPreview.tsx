@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import styles from './DocumentPreview.module.css';
@@ -11,6 +12,8 @@ interface DocumentPreviewProps {
 }
 
 export default function DocumentPreview({ state, featureLayout = 'sideBySide' }: DocumentPreviewProps) {
+  const [design, setDesign] = useState<'classic' | 'm3'>('m3');
+
   const generateMarkdown = (): string => {
     const parts: string[] = [];
 
@@ -58,8 +61,27 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
   return (
     <div className={styles.container}>
       {/* ── Chrome header (outside the white doc area) ── */}
-      <div className={styles.chrome}>
-        <span className={styles.chromeLabel}>Document Preview</span>
+      <div className={styles.chrome} data-design={design}>
+        <span className={styles.chromeLabel} data-design={design}>Document Preview</span>
+        {/* Design toggle */}
+        <div className={styles.designToggle} role="group" aria-label="Preview design">
+          <button
+            type="button"
+            className={styles.designToggleBtn}
+            aria-pressed={design === 'classic'}
+            onClick={() => setDesign('classic')}
+          >
+            Classic
+          </button>
+          <button
+            type="button"
+            className={styles.designToggleBtn}
+            aria-pressed={design === 'm3'}
+            onClick={() => setDesign('m3')}
+          >
+            M3
+          </button>
+        </div>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
           src="/compulocks-logo.png"
@@ -70,7 +92,7 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
       </div>
 
       {/* ── White document area ── */}
-      <div className={styles.doc}>
+      <div className={styles.doc} data-design={design}>
         {/* Doc header: title left, logo right, split line below */}
         <div className={styles.docHeader}>
           <h1 className={styles.docTitle}>Marketing Requirement Document</h1>
@@ -96,7 +118,7 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
         )}
 
         {/* Body sections via ReactMarkdown */}
-        <div className={styles.content}>
+        <div className={styles.content} data-design={design}>
           <ReactMarkdown remarkPlugins={[remarkGfm]}>
             {generateMarkdown()}
           </ReactMarkdown>
@@ -104,19 +126,20 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
           {/* Features — side-by-side cards */}
           {hasFeatures && (
             <div className={styles.section}>
-              <h2 className={styles.sectionHeading}>Features</h2>
+              <h2 className={styles.sectionHeading} data-design={design}>Features</h2>
+              {design === 'm3' && <div className={styles.sectionRule} />}
               <div className={featureLayout === 'sideBySide' ? styles.featureCards : styles.featureCardsStacked}>
                 {state.features.mustHave.length > 0 && (
-                  <div className={styles.featureCard}>
-                    <div className={styles.featureCardLabel}>Must Have</div>
+                  <div className={styles.featureCard} data-design={design}>
+                    <div className={styles.featureCardLabel} data-design={design}>Must Have</div>
                     <ul>
                       {state.features.mustHave.map((f) => <li key={f}>{f}</li>)}
                     </ul>
                   </div>
                 )}
                 {state.features.niceToHave.length > 0 && (
-                  <div className={styles.featureCard}>
-                    <div className={styles.featureCardLabel}>Nice to Have</div>
+                  <div className={styles.featureCard} data-design={design}>
+                    <div className={styles.featureCardLabel} data-design={design}>Nice to Have</div>
                     <ul>
                       {state.features.niceToHave.map((f) => <li key={f}>{f}</li>)}
                     </ul>
@@ -129,7 +152,8 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
           {/* Competitors */}
           {doneCompetitors.length > 0 && (
             <div className={styles.section}>
-              <h2 className={styles.sectionHeading}>Competitors</h2>
+              <h2 className={styles.sectionHeading} data-design={design}>Competitors</h2>
+              {design === 'm3' && <div className={styles.sectionRule} />}
               {doneCompetitors.map((comp) => (
                 <div key={comp.url} className={styles.competitor}>
                   <h3 className={styles.competitorName}>{comp.brand} — {comp.productName}</h3>
