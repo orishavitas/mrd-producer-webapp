@@ -150,6 +150,7 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
 
         while (Date.now() < deadline) {
           await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
+          controller.enqueue(encode({ type: 'heartbeat' }));
           const fresh = await getPipelineRun(run.id);
 
           if (!fresh) {

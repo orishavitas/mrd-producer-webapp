@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import styles from '../prd.module.css';
 
 export type AgentStep = 'analyst' | 'architect' | 'human_gate' | 'writer' | 'qa' | 'done';
@@ -18,12 +19,24 @@ const STEPS: { key: AgentStep; label: string }[] = [
 
 const ORDER: AgentStep[] = ['analyst', 'architect', 'human_gate', 'writer', 'qa', 'done'];
 
-function getIcon(stepKey: AgentStep, current: AgentStep): string {
+function getIcon(stepKey: AgentStep, current: AgentStep): React.ReactNode {
   const stepIdx = ORDER.indexOf(stepKey);
   const currentIdx = ORDER.indexOf(current);
-  if (current === 'done' || stepIdx < currentIdx) return '✅';
-  if (stepKey === current) return '⏳';
-  return '○';
+  if (current === 'done' || stepIdx < currentIdx) {
+    return <span className={styles.checkDone}>✓</span>;
+  }
+  if (stepKey === current) {
+    return <span className={styles.spinner} />;
+  }
+  return <span className={styles.checkPending} />;
+}
+
+function getItemClass(stepKey: AgentStep, current: AgentStep): string {
+  const stepIdx = ORDER.indexOf(stepKey);
+  const currentIdx = ORDER.indexOf(current);
+  if (current === 'done' || stepIdx < currentIdx) return styles['checklistItem--done'];
+  if (stepKey === current) return styles['checklistItem--active'];
+  return styles['checklistItem--pending'];
 }
 
 export function PipelineOverlay({ currentStep }: Props) {
@@ -31,10 +44,11 @@ export function PipelineOverlay({ currentStep }: Props) {
     <div className={styles.overlay}>
       <div className={styles.overlayCard}>
         <h2 className={styles.overlayTitle}>Generating PRD...</h2>
+        <p className={styles.overlaySubtitle}>This takes about 60–90 seconds</p>
         <ul className={styles.checklist}>
           {STEPS.map((step) => (
-            <li key={step.key} className={styles.checklistItem}>
-              <span className={styles.checklistIcon}>{getIcon(step.key, currentStep)}</span>
+            <li key={step.key} className={`${styles.checklistItem} ${getItemClass(step.key, currentStep)}`}>
+              {getIcon(step.key, currentStep)}
               <span>{step.label}</span>
             </li>
           ))}

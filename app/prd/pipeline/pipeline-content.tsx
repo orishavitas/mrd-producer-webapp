@@ -75,6 +75,8 @@ export function PipelineContent() {
       setRunId(event.run_id as string);
       setSkeleton(event.skeleton as PRDSkeletonSection[]);
       setStep('human_gate');
+    } else if (type === 'approval_confirmed') {
+      setStep('writer');
     } else if (type === 'pipeline_done') {
       router.push(`/prd/${event.prd_document_id}`);
     } else if (type === 'error') {
