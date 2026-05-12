@@ -41,6 +41,13 @@ const ALL_TOOLS = [
     href: '/prd',
     badge: 'Alpha',
   },
+  {
+    feature: 'one-pager-alpha' as const,
+    title: 'One-Pager · M3',
+    description: 'One-Pager with a full M3 design refresh — numbered section headers, card-based preview dashboard, and Material-3 controls.',
+    href: '/one-pager-alpha',
+    badge: 'Alpha',
+  },
 ];
 
 export default async function DashboardPage() {

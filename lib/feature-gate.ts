@@ -6,7 +6,8 @@ export type FeatureKey =
   | 'one-pager'
   | 'brief-helper'
   | 'one-pager-beta'
-  | 'prd-producer';
+  | 'prd-producer'
+  | 'one-pager-alpha';
 
 const FEATURE_MAP: Record<string, FeatureKey> = {
   '1': 'mrd-generator',
@@ -14,6 +15,7 @@ const FEATURE_MAP: Record<string, FeatureKey> = {
   '3': 'brief-helper',
   '4': 'one-pager-beta',
   '5': 'prd-producer',
+  '6': 'one-pager-alpha',
 };
 
 function parseAllowlist(): Map<string, Set<FeatureKey>> {

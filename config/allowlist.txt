@@ -9,6 +9,7 @@
 #   3 = brief-helper    — Brief Helper        (/brief-helper)
 #   4 = one-pager-beta  — One-Pager Beta      (/one-pager-beta)
 #   5 = prd-producer    — PRD Producer        (/prd)          [Alpha]
+#   6 = one-pager-alpha — One-Pager (Alpha)   (/one-pager-alpha) [M3 Redesign]
 #
 # FORMAT:  email : 1 2 3 ...
 #   - Space-separated feature numbers after the colon
@@ -18,8 +19,8 @@
 # ─────────────────────────────────────────────
 
 # ── Admins (all tools) ──────────────────────
-ori@compulocks.com   : 1 2 3 4 5
-danny@compulocks.com : 1 2 3 4 5
+ori@compulocks.com   : 1 2 3 4 5 6
+danny@compulocks.com : 1 2 3 4 5 6
 
 # ── Exceptions (custom access) ──────────────
 shahar@compulocks.com  : 2 4 5

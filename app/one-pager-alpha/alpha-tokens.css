@@ -1,0 +1,72 @@
+/* =========================================================
+   One-Pager Alpha — Design tokens (M3 Compulocks brand)
+   Scoped to .op-alpha to avoid collision with existing tokens.
+   ========================================================= */
+
+.op-alpha {
+  /* Brand palette */
+  --a-brand-primary:      #1D1F4A;
+  --a-brand-secondary:    #243469;
+  --a-brand-green:        #009966;
+  --a-brand-green-light:  #1DB274;
+
+  /* Surfaces */
+  --a-bg:                 #FBFAFD;
+  --a-surface:            #FFFFFF;
+  --a-surface-2:          #F4F4F8;
+  --a-surface-3:          #ECEDF2;
+  --a-on-surface:         #1A1B2A;
+  --a-on-surface-muted:   #5A5C70;
+  --a-on-surface-faint:   #8C8E9F;
+  --a-outline:            #D9DAE2;
+  --a-outline-soft:       #E8E9EE;
+  --a-outline-strong:     #B8BAC8;
+
+  /* State */
+  --a-success-soft:       rgba(0,153,102,0.10);
+  --a-info-soft:          rgba(29,31,74,0.06);
+  --a-warning-soft:       rgba(184,111,0,0.10);
+
+  /* Type scale */
+  --a-fs-xs:   11px;
+  --a-fs-s:    13px;
+  --a-fs-m:    14px;
+  --a-fs-l:    16px;
+  --a-fs-xl:   18px;
+  --a-fs-2xl:  22px;
+  --a-fs-3xl:  28px;
+  --a-fs-4xl:  36px;
+
+  /* Spacing */
+  --a-sp-1: 4px;
+  --a-sp-2: 8px;
+  --a-sp-3: 12px;
+  --a-sp-4: 16px;
+  --a-sp-5: 20px;
+  --a-sp-6: 24px;
+  --a-sp-7: 32px;
+  --a-sp-8: 40px;
+  --a-sp-9: 56px;
+
+  /* Shape */
+  --a-r-xs:   6px;
+  --a-r-s:    10px;
+  --a-r-m:    14px;
+  --a-r-l:    20px;
+  --a-r-xl:   28px;
+  --a-r-pill: 9999px;
+
+  /* Elevation */
+  --a-shadow-1: 0 1px 2px rgba(29,31,74,0.06), 0 1px 1px rgba(29,31,74,0.04);
+  --a-shadow-2: 0 2px 6px rgba(29,31,74,0.08), 0 1px 2px rgba(29,31,74,0.04);
+  --a-shadow-3: 0 8px 24px rgba(29,31,74,0.10), 0 2px 6px rgba(29,31,74,0.06);
+
+  /* Fonts */
+  --a-font-body:    'Barlow', 'Segoe UI', Arial, sans-serif;
+  --a-font-heading: 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif;
+
+  /* Heights */
+  --a-h-input: 40px;
+  --a-h-btn:   36px;
+  --a-h-chip:  30px;
+}
