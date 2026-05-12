@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
     auth().then((session) => {
       if (session?.user?.email) {
         const title = data.productName || 'Untitled One-Pager';
-        createDocument(session.user.email, title, 'one-pager', body as Record<string, unknown>).catch(
+        createDocument(session.user.email, title, 'one-pager', body as Record<string, unknown>, session.user.name ?? undefined, session.user.email).catch(
           (err) => console.error('[export] createDocument failed:', err instanceof Error ? err.message : err)
         );
       }
