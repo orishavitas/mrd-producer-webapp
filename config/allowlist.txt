@@ -14,10 +14,17 @@
 #   - Space-separated feature numbers after the colon
 #   - Lines starting with # are comments
 #   - Blank lines are ignored
+#   - Exact email match beats domain wildcard (*@domain.com) beats global wildcard (*)
 # ─────────────────────────────────────────────
 
+# ── Admins (all tools) ──────────────────────
 ori@compulocks.com   : 1 2 3 4 5
 danny@compulocks.com : 1 2 3 4 5
-shahar@compulocks.com: 2 4 5
-shmuel@compulocks.com: 2 4
+
+# ── Exceptions (custom access) ──────────────
+shahar@compulocks.com  : 2 4 5
+shmuel@compulocks.com  : 2 4
 emanuele@compulocks.com: 2
+
+# ── Everyone else (one-pager only) ──────────
+*                      : 2

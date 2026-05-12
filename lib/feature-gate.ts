@@ -43,8 +43,21 @@ function parseAllowlist(): Map<string, Set<FeatureKey>> {
 
 export function getFeaturesForEmail(email: string | null | undefined): Set<FeatureKey> {
   if (!email) return new Set();
+  const normalized = email.toLowerCase();
   const allowlist = parseAllowlist();
-  return allowlist.get(email.toLowerCase()) ?? new Set();
+
+  // Exact match wins
+  if (allowlist.has(normalized)) return allowlist.get(normalized)!;
+
+  // Domain wildcard: *@domain.com
+  const domain = normalized.split('@')[1];
+  const domainWildcard = domain ? `*@${domain}` : null;
+  if (domainWildcard && allowlist.has(domainWildcard)) return allowlist.get(domainWildcard)!;
+
+  // Global wildcard: *
+  if (allowlist.has('*')) return allowlist.get('*')!;
+
+  return new Set();
 }
 
 export function hasFeature(email: string | null | undefined, feature: FeatureKey): boolean {
