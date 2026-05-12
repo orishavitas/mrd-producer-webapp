@@ -20,4 +20,4 @@ ori@compulocks.com   : 1 2 3 4 5
 danny@compulocks.com : 1 2 3 4 5
 shahar@compulocks.com: 2 4 5
 shmuel@compulocks.com: 2 4
-*@compulocks.com: 2
+emanuele@compulocks.com: 2
