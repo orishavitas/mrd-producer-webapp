@@ -145,6 +145,15 @@ export async function listPRDDocuments(createdBy: string): Promise<PRDDocument[]
   return rows;
 }
 
+export async function listAllPRDDocuments(): Promise<PRDDocument[]> {
+  const { rows } = await sql<PRDDocument>`
+    SELECT * FROM prd_documents
+    WHERE deleted_at IS NULL
+    ORDER BY updated_at DESC
+  `;
+  return rows;
+}
+
 export async function softDeletePRDDocument(id: string): Promise<void> {
   await sql`
     UPDATE prd_documents SET deleted_at = NOW(), updated_at = NOW()

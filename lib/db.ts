@@ -125,6 +125,15 @@ export async function listDocumentsWithCreator(userId: string, toolType?: string
   return rows;
 }
 
+export async function listAllDocumentsWithCreator(): Promise<DocumentWithCreator[]> {
+  const { rows } = await sql<DocumentWithCreator>`
+    SELECT * FROM documents
+    WHERE deleted_at IS NULL
+    ORDER BY updated_at DESC
+  `;
+  return rows;
+}
+
 export async function logViolation(data: ViolationRecord): Promise<void> {
   await sql`
     INSERT INTO guardrail_violations (user_id, user_name, user_email, ip, user_agent, action_type, input_text, violation_type)

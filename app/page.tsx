@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import { listDocumentsWithCreator, toLibraryDocument, toPRDLibraryDocument, type LibraryDocument } from '@/lib/db';
-import { listPRDDocuments } from '@/lib/prd-db';
+import { listDocumentsWithCreator, listAllDocumentsWithCreator, toLibraryDocument, toPRDLibraryDocument, type LibraryDocument } from '@/lib/db';
+import { listPRDDocuments, listAllPRDDocuments } from '@/lib/prd-db';
 import { getFeaturesForEmail } from '@/lib/feature-gate';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
@@ -57,12 +57,15 @@ export default async function DashboardPage() {
   const email = session.user.email;
   const features = getFeaturesForEmail(email);
   const hasPRD = features.has('prd-producer');
+  const isRDViewer = features.has('rd-viewer');
 
   let libraryDocs: LibraryDocument[] = [];
   try {
     const [opDocs, prdDocs] = await Promise.all([
-      listDocumentsWithCreator(email),
-      hasPRD ? listPRDDocuments(email) : Promise.resolve([]),
+      isRDViewer ? listAllDocumentsWithCreator() : listDocumentsWithCreator(email),
+      hasPRD || isRDViewer
+        ? isRDViewer ? listAllPRDDocuments() : listPRDDocuments(email)
+        : Promise.resolve([]),
     ]);
     libraryDocs = [
       ...opDocs
