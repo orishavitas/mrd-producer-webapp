@@ -23,6 +23,25 @@ interface CompetitorInputProps {
   renderPhotoPicker?: (comp: CompetitorEntry) => React.ReactNode;
 }
 
+const IcoLink = () => (
+  <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M10 14a5 5 0 0 0 7 0l3-3a5 5 0 1 0-7-7l-1.5 1.5"/>
+    <path d="M14 10a5 5 0 0 0-7 0l-3 3a5 5 0 1 0 7 7l1.5-1.5"/>
+  </svg>
+);
+
+const IcoSearch = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/>
+  </svg>
+);
+
+const IcoTrash = () => (
+  <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <path d="M3 6h18M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2M6 6v14a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V6"/>
+  </svg>
+);
+
 export default function CompetitorInput({
   competitors,
   onAdd,
@@ -32,14 +51,15 @@ export default function CompetitorInput({
   renderPhotoPicker,
 }: CompetitorInputProps) {
   const [urlInput, setUrlInput] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleConfirm = async () => {
+  const handleScrape = async () => {
     const url = urlInput.trim();
     if (!url) return;
 
     onAdd(url);
     setUrlInput('');
-
+    setIsLoading(true);
     onUpdate(url, { status: 'extracting' });
 
     try {
@@ -59,13 +79,15 @@ export default function CompetitorInput({
       }
     } catch {
       onUpdate(url, { status: 'error' });
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter') {
       e.preventDefault();
-      handleConfirm();
+      handleScrape();
     }
   };
 
@@ -74,57 +96,87 @@ export default function CompetitorInput({
       <label className={styles.label}>7. Competitors</label>
 
       <div className={styles.inputRow}>
-        <input
-          type="url"
-          value={urlInput}
-          onChange={(e) => setUrlInput(e.target.value)}
-          onKeyDown={handleKeyDown}
-          placeholder="Enter competitor product URL..."
-          className={styles.urlInput}
-        />
+        <div className={styles.urlField}>
+          <span className={styles.urlIcon}><IcoLink /></span>
+          <input
+            type="url"
+            value={urlInput}
+            onChange={(e) => setUrlInput(e.target.value)}
+            onKeyDown={handleKeyDown}
+            placeholder="https://competitor.com/product"
+            className={styles.urlInput}
+          />
+        </div>
         <button
-          className={styles.confirmButton}
-          onClick={handleConfirm}
-          disabled={!urlInput.trim()}
-          aria-label="Analyze URL"
+          className={styles.scrapeButton}
+          onClick={handleScrape}
+          disabled={!urlInput.trim() || isLoading}
         >
-          &#10003;
+          <IcoSearch />
+          {isLoading ? 'Scraping…' : 'Scrape'}
         </button>
       </div>
 
       {competitors.length > 0 && (
-        <div className={styles.cardList}>
+        <div className={styles.list}>
           {competitors.map((comp) => (
-            <div key={comp.url} className={styles.card}>
-              {comp.status === 'extracting' && (
-                <div className={styles.extracting}>Analyzing...</div>
-              )}
-              {comp.status === 'error' && (
-                <div className={styles.error}>Failed to extract data</div>
-              )}
-              {comp.status === 'done' && (
-                <>
-                  <div className={styles.cardHeader}>
-                    <strong>{comp.brand}</strong>
-                    {comp.cost && <span className={styles.cost}>{comp.cost}</span>}
+            <div key={comp.url} className={styles.row}>
+              {/* Thumbnail */}
+              <div className={styles.thumb}>
+                {comp.photoUrls?.[0] ? (
+                  <img src={comp.photoUrls[0]} alt={comp.productName} className={styles.thumbImg} />
+                ) : (
+                  <div className={styles.thumbPlaceholder}>
+                    <svg viewBox="0 0 80 60" width="80" height="60">
+                      <defs>
+                        <pattern id={`hatch-${comp.url.slice(-6)}`} width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                          <rect width="3" height="6" fill="currentColor" opacity="0.18"/>
+                        </pattern>
+                      </defs>
+                      <rect width="80" height="60" fill={`url(#hatch-${comp.url.slice(-6)})`}/>
+                    </svg>
                   </div>
-                  <div className={styles.productName}>{comp.productName}</div>
-                  <p className={styles.description}>{comp.description}</p>
-                  <a href={comp.url} target="_blank" rel="noopener noreferrer" className={styles.link}>
-                    View product
-                  </a>
-                  {renderPhotoPicker && renderPhotoPicker(comp)}
-                </>
-              )}
-              {comp.status === 'pending' && (
-                <div className={styles.pending}>Waiting...</div>
-              )}
+                )}
+              </div>
+
+              {/* Body */}
+              <div className={styles.body}>
+                {comp.status === 'extracting' && (
+                  <div className={styles.statusLine}>
+                    <span className={styles.spinner} />
+                    <span className={styles.statusText}>Scraping…</span>
+                  </div>
+                )}
+                {comp.status === 'error' && (
+                  <>
+                    <div className={styles.brand}>Error</div>
+                    <div className={styles.name}>{comp.url}</div>
+                    <div className={styles.meta + ' ' + styles.metaError}>Could not extract data</div>
+                  </>
+                )}
+                {(comp.status === 'done' || comp.status === 'pending') && (
+                  <>
+                    <div className={styles.brand}>{comp.brand || 'Brand'}</div>
+                    <div className={styles.name}>{comp.productName || comp.url}</div>
+                    <div className={styles.meta}>
+                      {comp.cost && <span className={styles.price}>{comp.cost}</span>}
+                      {comp.cost && <span className={styles.dot}>·</span>}
+                      <span className={styles.url}>{comp.url}</span>
+                    </div>
+                  </>
+                )}
+                {comp.status === 'done' && renderPhotoPicker && (
+                  <div className={styles.photoPicker}>{renderPhotoPicker(comp)}</div>
+                )}
+              </div>
+
+              {/* Remove */}
               <button
-                className={styles.removeButton}
+                className={styles.removeBtn}
                 onClick={() => onRemove(comp.url)}
                 aria-label="Remove competitor"
               >
-                x
+                <IcoTrash />
               </button>
             </div>
           ))}
