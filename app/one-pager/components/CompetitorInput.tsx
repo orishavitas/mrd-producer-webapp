@@ -121,6 +121,15 @@ export default function CompetitorInput({
         <div className={styles.list}>
           {competitors.map((comp) => (
             <div key={comp.url} className={styles.row}>
+              {/* Remove — absolute top-left */}
+              <button
+                className={styles.removeBtn}
+                onClick={() => onRemove(comp.url)}
+                aria-label="Remove competitor"
+              >
+                <IcoTrash />
+              </button>
+
               {/* Thumbnail */}
               <div className={styles.thumb}>
                 {comp.photoUrls?.[0] ? (
@@ -169,15 +178,6 @@ export default function CompetitorInput({
                   <div className={styles.photoPicker}>{renderPhotoPicker(comp)}</div>
                 )}
               </div>
-
-              {/* Remove */}
-              <button
-                className={styles.removeBtn}
-                onClick={() => onRemove(comp.url)}
-                aria-label="Remove competitor"
-              >
-                <IcoTrash />
-              </button>
             </div>
           ))}
         </div>

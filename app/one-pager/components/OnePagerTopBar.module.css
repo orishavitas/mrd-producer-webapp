@@ -9,8 +9,6 @@
   color: #fff;
   border-bottom: 3px solid var(--op-accent, #009966);
   flex-shrink: 0;
-  position: sticky;
-  top: 0;
   z-index: 20;
 }
 

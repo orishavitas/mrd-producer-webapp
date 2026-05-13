@@ -199,10 +199,6 @@ function OnePagerContent() {
         <DraftWarningBanner onDismiss={() => setBannerDismissed(true)} />
       )}
 
-      <div className={styles.toolbar}>
-        <h2 className={styles.pageTitle}>One-Pager Generator</h2>
-      </div>
-
       {/* Document Metadata */}
       <div className={styles.formSection}>
         <div className={styles.sectionHead}>

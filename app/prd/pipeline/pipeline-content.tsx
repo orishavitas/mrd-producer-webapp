@@ -45,6 +45,7 @@ export function PipelineContent() {
 
       const decoder = new TextDecoder();
       let buffer = '';
+      let receivedFinalEvent = false;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -58,9 +59,17 @@ export function PipelineContent() {
           if (!line.trim()) continue;
           try {
             const event = JSON.parse(line);
+            if (event.type === 'pipeline_done' || event.type === 'error' || event.type === 'human_gate') {
+              receivedFinalEvent = true;
+            }
             handleEvent(event);
           } catch { /* ignore malformed lines */ }
         }
+      }
+
+      // Stream closed without a terminal event — likely a timeout or server error
+      if (!receivedFinalEvent) {
+        setError('The pipeline connection was interrupted. The AI may still be running — please check back in a minute or try again.');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Pipeline failed');

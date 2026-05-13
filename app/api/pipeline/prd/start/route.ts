@@ -31,6 +31,7 @@ import { PRDQAAgent } from '@/agent/agents/prd/prd-qa-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 
 export const dynamic = 'force-dynamic';
+export const maxDuration = 300;
 
 const POLL_INTERVAL_MS = 3000;
 const APPROVAL_TIMEOUT_MS = 30 * 60 * 1000;
@@ -40,6 +41,36 @@ const APPROVAL_TIMEOUT_MS = 30 * 60 * 1000;
  */
 function encode(obj: unknown): Uint8Array {
   return new TextEncoder().encode(JSON.stringify(obj) + '\n');
+}
+
+/**
+ * Run an async operation while sending heartbeat events every 5s.
+ * Keeps the stream alive during long AI calls.
+ */
+async function withHeartbeat<T>(
+  controller: ReadableStreamDefaultController<Uint8Array>,
+  operation: () => Promise<T>
+): Promise<T> {
+  let done = false;
+  const heartbeatLoop = (async () => {
+    while (!done) {
+      await new Promise((r) => setTimeout(r, 5000));
+      if (!done) {
+        try { controller.enqueue(encode({ type: 'heartbeat' })); } catch { /* stream may be closed */ }
+      }
+    }
+  })();
+
+  try {
+    const result = await operation();
+    done = true;
+    await heartbeatLoop;
+    return result;
+  } catch (err) {
+    done = true;
+    await heartbeatLoop;
+    throw err;
+  }
 }
 
 /**
@@ -115,9 +146,8 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
         // =====================================================================
         controller.enqueue(encode({ type: 'agent_start', agent: 'architect' }));
         const architectAgent = new PRDArchitectAgent();
-        const architectResult = await architectAgent.execute(
-          { summary },
-          context
+        const architectResult = await withHeartbeat(controller, () =>
+          architectAgent.execute({ summary }, context)
         );
 
         if (!architectResult.success || !architectResult.data) {
@@ -183,21 +213,23 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
         // =====================================================================
         controller.enqueue(encode({ type: 'agent_start', agent: 'writer' }));
         const writerAgent = new PRDWriterAgent();
-        const writerResult = await writerAgent.execute(
-          {
-            summary,
-            skeleton: approvedSkeleton,
-            onSectionDone: (frame: { sectionKey: string; content: string }) => {
-              controller.enqueue(
-                encode({
-                  type: 'section_done',
-                  section: frame.sectionKey,
-                  content: frame.content,
-                })
-              );
+        const writerResult = await withHeartbeat(controller, () =>
+          writerAgent.execute(
+            {
+              summary,
+              skeleton: approvedSkeleton,
+              onSectionDone: (frame: { sectionKey: string; content: string }) => {
+                controller.enqueue(
+                  encode({
+                    type: 'section_done',
+                    section: frame.sectionKey,
+                    content: frame.content,
+                  })
+                );
+              },
             },
-          },
-          context
+            context
+          )
         );
 
         if (!writerResult.success || !writerResult.data) {
@@ -212,12 +244,8 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
         // =====================================================================
         controller.enqueue(encode({ type: 'agent_start', agent: 'qa' }));
         const qaAgent = new PRDQAAgent();
-        const qaResult = await qaAgent.execute(
-          {
-            frames,
-            productName: summary.productName,
-          },
-          context
+        const qaResult = await withHeartbeat(controller, () =>
+          qaAgent.execute({ frames, productName: summary.productName }, context)
         );
 
         if (!qaResult.success || !qaResult.data) {

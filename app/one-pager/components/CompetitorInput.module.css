@@ -98,10 +98,11 @@
 }
 
 .row {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 0.625rem 0.75rem;
+  padding: 0.625rem 0.75rem 0.625rem 2.5rem;
   background: var(--op-surface-variant, #E2E2EC);
   border: 1px solid var(--op-outline, #C5C6D0);
   border-radius: var(--op-radius-m, 14px);
@@ -224,24 +225,25 @@
   margin-top: 0.5rem;
 }
 
-/* Remove button */
+/* Remove button — always red, pinned to top-left of the row card */
 .removeBtn {
-  width: 30px;
-  height: 30px;
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  width: 24px;
+  height: 24px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  border: 1.5px solid var(--op-outline, #C5C6D0);
+  border: 1.5px solid var(--op-error, #BA1A1A);
   border-radius: var(--op-radius-full, 9999px);
-  background: transparent;
-  color: var(--op-on-surface-variant, #45464F);
+  background: rgba(186, 26, 26, 0.06);
+  color: var(--op-error, #BA1A1A);
   cursor: pointer;
-  transition: background 0.12s, color 0.12s, border-color 0.12s;
+  transition: background 0.12s;
 }
 
 .removeBtn:hover {
-  background: rgba(186, 26, 26, 0.08);
-  color: var(--op-error, #BA1A1A);
-  border-color: var(--op-error, #BA1A1A);
+  background: rgba(186, 26, 26, 0.16);
 }
