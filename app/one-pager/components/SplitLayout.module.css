@@ -16,8 +16,11 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  border-right: 1px solid var(--op-outline-soft, #E8E9EE);
   background: var(--op-bg, #FBFAFD);
+}
+
+.container[data-preview="open"] .leftPanel {
+  border-right: 1px solid var(--op-outline-soft, #E8E9EE);
 }
 
 /* Action bar — 52px, sits at TOP above scroll area */
@@ -41,21 +44,17 @@
 
 /* ── Right (preview) panel ─────────────────────────────── */
 .rightPanel {
+  display: none;
   background: var(--op-surface-2, #F4F4F8);
-  /* Hidden by default */
   overflow: hidden;
-  width: 0;
-  padding: 0;
   opacity: 0;
   transition:
-    width 280ms cubic-bezier(0.2, 0, 0, 1),
-    opacity 220ms cubic-bezier(0.2, 0, 0, 1),
-    padding 280ms cubic-bezier(0.2, 0, 0, 1);
+    opacity 220ms cubic-bezier(0.2, 0, 0, 1);
 }
 
 .container[data-preview="open"] .rightPanel {
+  display: block;
   overflow-y: auto;
-  width: auto;
   padding: var(--op-sp-6, 24px) var(--op-sp-7, 32px);
   opacity: 1;
 }
@@ -64,19 +63,14 @@
   .container,
   .container[data-preview="open"] {
     grid-template-columns: 1fr;
-    height: auto;
   }
 
-  .leftPanel {
+  .container[data-preview="open"] .leftPanel {
     border-right: none;
     border-bottom: 1px solid var(--op-outline-soft, #E8E9EE);
   }
 
-  .rightPanel,
   .container[data-preview="open"] .rightPanel {
-    overflow-y: auto;
-    width: auto;
     padding: var(--op-sp-6, 24px) var(--op-sp-7, 32px);
-    opacity: 1;
   }
 }
