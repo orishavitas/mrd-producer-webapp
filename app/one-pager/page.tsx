@@ -200,207 +200,262 @@ function OnePagerContent() {
       )}
 
       <div className={styles.toolbar}>
-        <h2 className={styles.pageTitle}>Marketing Requirement Document Producer</h2>
+        <h2 className={styles.pageTitle}>One-Pager Generator</h2>
       </div>
 
       {/* Document Metadata */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Document Info</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <div>
+              <h3 className={styles.sectionTitle}>Document Info</h3>
+            </div>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        <div className={styles.fieldRow}>
+        <div className={styles.card}>
+          <div className={styles.fieldRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>Product Name</label>
+              <input
+                type="text"
+                value={state.productName}
+                onChange={(e) => dispatch({ type: 'SET_PRODUCT_NAME', payload: e.target.value })}
+                placeholder="e.g., Compulocks iPad Enclosure"
+                className={styles.textInput}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>Prepared By</label>
+              <input
+                type="text"
+                value={state.preparedBy}
+                onChange={(e) => dispatch({ type: 'SET_PREPARED_BY', payload: e.target.value })}
+                placeholder="Your name"
+                className={styles.textInput}
+              />
+            </div>
+          </div>
           <div className={styles.field}>
-            <label className={styles.fieldLabel}>Product Name</label>
+            <label className={styles.fieldLabel}>Email</label>
             <input
-              type="text"
-              value={state.productName}
-              onChange={(e) => dispatch({ type: 'SET_PRODUCT_NAME', payload: e.target.value })}
-              placeholder="e.g., Compulocks iPad Enclosure"
+              type="email"
+              value={state.userEmail}
+              onChange={(e) => dispatch({ type: 'SET_USER_EMAIL', payload: e.target.value })}
+              placeholder="your@email.com"
               className={styles.textInput}
             />
           </div>
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>Prepared By</label>
-            <input
-              type="text"
-              value={state.preparedBy}
-              onChange={(e) => dispatch({ type: 'SET_PREPARED_BY', payload: e.target.value })}
-              placeholder="Your name"
-              className={styles.textInput}
-            />
-          </div>
-        </div>
-        <div className={`${styles.field} ${styles.fieldFull}`}>
-          <label className={styles.fieldLabel}>Email</label>
-          <input
-            type="email"
-            value={state.userEmail}
-            onChange={(e) => dispatch({ type: 'SET_USER_EMAIL', payload: e.target.value })}
-            placeholder="your@email.com"
-            className={styles.textInput}
-          />
         </div>
       </div>
 
       {/* Section 1: Description */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>1</span>
-          <span className={styles.sectionLabel}>Product Description</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>01</span>
+            <h3 className={styles.sectionTitle}>Product Description</h3>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        <TextFieldWithExpand
-          label=""
-          value={state.description}
-          onChange={(v) => dispatch({ type: 'SET_DESCRIPTION', payload: v })}
-          placeholder="Describe your product concept..."
-          field="description"
-        />
+        <div className={styles.card}>
+          <TextFieldWithExpand
+            label=""
+            value={state.description}
+            onChange={(v) => dispatch({ type: 'SET_DESCRIPTION', payload: v })}
+            placeholder="Describe your product concept..."
+            field="description"
+          />
+        </div>
       </div>
 
       {/* Section 2: Goal */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>2</span>
-          <span className={styles.sectionLabel}>Goal</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>02</span>
+            <h3 className={styles.sectionTitle}>Goal</h3>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        <TextFieldWithExpand
-          label=""
-          value={state.goal}
-          onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
-          placeholder="What is the goal of this product?"
-          field="goal"
-        />
+        <div className={styles.card}>
+          <TextFieldWithExpand
+            label=""
+            value={state.goal}
+            onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
+            placeholder="What is the goal of this product?"
+            field="goal"
+          />
+        </div>
       </div>
 
       {/* Section 3: Where */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>3</span>
-          <span className={styles.sectionLabel}>Where (Environment &amp; Industry)</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>03</span>
+            <h3 className={styles.sectionTitle}>Where</h3>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        {config ? (
-          <>
-            <CheckboxGroup
-              label="Environment"
-              options={config.environments}
-              selected={state.context.environments}
-              onToggle={(id) => dispatch({ type: 'TOGGLE_ENVIRONMENT', payload: id })}
-            />
-            <CheckboxGroup
-              label="Industry"
-              options={config.industries}
-              selected={state.context.industries}
-              onToggle={(id) => dispatch({ type: 'TOGGLE_INDUSTRY', payload: id })}
-            />
-          </>
-        ) : (
-          <p className={styles.loading}>Loading options...</p>
-        )}
+        <div className={styles.card}>
+          {config ? (
+            <>
+              <CheckboxGroup
+                label="Environment"
+                options={config.environments}
+                selected={state.context.environments}
+                onToggle={(id) => dispatch({ type: 'TOGGLE_ENVIRONMENT', payload: id })}
+              />
+              <CheckboxGroup
+                label="Industry"
+                options={config.industries}
+                selected={state.context.industries}
+                onToggle={(id) => dispatch({ type: 'TOGGLE_INDUSTRY', payload: id })}
+              />
+            </>
+          ) : (
+            <p className={styles.loading}>Loading options…</p>
+          )}
+        </div>
       </div>
 
       {/* Section 4: Who */}
-      <div className={styles.sectionCard}>
-        <DynamicRoleSelector
-          selectedIndustries={state.context.industries}
-          selectedRoles={state.audience.predefined}
-          customRoles={state.audience.custom}
-          onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
-          onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
-          onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
-        />
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>04</span>
+            <h3 className={styles.sectionTitle}>Who</h3>
+          </div>
+          <div className={styles.sectionRule} />
+        </div>
+        <div className={styles.sectionCard}>
+          <DynamicRoleSelector
+            selectedIndustries={state.context.industries}
+            selectedRoles={state.audience.predefined}
+            customRoles={state.audience.custom}
+            onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
+            onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
+            onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
+          />
+        </div>
       </div>
 
       {/* Use Cases */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionLabel}>Use Cases</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <h3 className={styles.sectionTitle}>Use Cases</h3>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        <TextFieldWithExpand
-          label=""
-          value={state.useCases}
-          onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
-          placeholder="Describe how the device will be used in practice..."
-          field="useCases"
-        />
+        <div className={styles.card}>
+          <TextFieldWithExpand
+            label=""
+            value={state.useCases}
+            onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
+            placeholder="Describe how the device will be used in practice…"
+            field="useCases"
+          />
+        </div>
       </div>
 
       {/* Section 5: Features */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>5</span>
-          <span className={styles.sectionLabel}>Features</span>
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>05</span>
+            <h3 className={styles.sectionTitle}>Features</h3>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
-        <FeatureSelector
-          categories={config?.standardFeatures ?? []}
-          mustHave={state.features.mustHave}
-          niceToHave={state.features.niceToHave}
-          onToggle={(label, category) =>
-            dispatch({ type: 'ADD_FEATURE', payload: { category, feature: label } })
-          }
-          onRemove={(label, category) =>
-            dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
-          }
-          onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
-          isAutoFilling={isAutoFilling}
-          customization={state.customization}
-          dispatch={dispatch}
-          layout={featureLayout}
-          onLayoutChange={setFeatureLayout}
-        />
+        <div className={styles.card}>
+          <FeatureSelector
+            categories={config?.standardFeatures ?? []}
+            mustHave={state.features.mustHave}
+            niceToHave={state.features.niceToHave}
+            onToggle={(label, category) =>
+              dispatch({ type: 'ADD_FEATURE', payload: { category, feature: label } })
+            }
+            onRemove={(label, category) =>
+              dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
+            }
+            onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
+            isAutoFilling={isAutoFilling}
+            customization={state.customization}
+            dispatch={dispatch}
+            layout={featureLayout}
+            onLayoutChange={setFeatureLayout}
+          />
+        </div>
       </div>
 
       {/* Section 6: Commercials */}
-      <div className={styles.section}>
-        <div className={styles.sectionHeader}>
-          <span className={styles.sectionNum}>6</span>
-          <span className={styles.sectionLabel}>Commercials</span>
-        </div>
-        <div className={styles.fieldRow}>
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>MOQ</label>
-            <input
-              type="text"
-              value={state.commercials.moq}
-              onChange={(e) => dispatch({ type: 'SET_MOQ', payload: e.target.value })}
-              placeholder="e.g., 1000 units"
-              className={styles.textInput}
-            />
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>06</span>
+            <h3 className={styles.sectionTitle}>Commercials</h3>
           </div>
-          <div className={styles.field}>
-            <label className={styles.fieldLabel}>Target Price</label>
-            <input
-              type="text"
-              value={state.commercials.targetPrice}
-              onChange={(e) => dispatch({ type: 'SET_TARGET_PRICE', payload: e.target.value })}
-              placeholder="e.g., $50-100"
-              className={styles.textInput}
-            />
+          <div className={styles.sectionRule} />
+        </div>
+        <div className={styles.card}>
+          <div className={styles.fieldRow}>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>MOQ</label>
+              <input
+                type="text"
+                value={state.commercials.moq}
+                onChange={(e) => dispatch({ type: 'SET_MOQ', payload: e.target.value })}
+                placeholder="e.g., 1000 units"
+                className={styles.textInput}
+              />
+            </div>
+            <div className={styles.field}>
+              <label className={styles.fieldLabel}>Target Price</label>
+              <input
+                type="text"
+                value={state.commercials.targetPrice}
+                onChange={(e) => dispatch({ type: 'SET_TARGET_PRICE', payload: e.target.value })}
+                placeholder="e.g., $50–100"
+                className={styles.textInput}
+              />
+            </div>
           </div>
         </div>
       </div>
 
       {/* Section 7: Competitors */}
-      <div className={styles.sectionCard}>
-        <CompetitorInput
-          competitors={state.competitors}
-          onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
-          onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
-          onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
-          onCandidates={(url, candidates) =>
-            dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
-          }
-          renderPhotoPicker={(comp) =>
-            comp.status === 'done' ? (
-              <PhotoPicker
-                candidates={comp.candidatePhotos ?? []}
-                selected={comp.photoUrls}
-                onSelect={(photoUrl) =>
-                  dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
-                }
-              />
-            ) : null
-          }
-        />
+      <div className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>07</span>
+            <h3 className={styles.sectionTitle}>Competitors</h3>
+          </div>
+          <div className={styles.sectionRule} />
+        </div>
+        <div className={styles.sectionCard}>
+          <CompetitorInput
+            competitors={state.competitors}
+            onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
+            onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
+            onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
+            onCandidates={(url, candidates) =>
+              dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
+            }
+            renderPhotoPicker={(comp) =>
+              comp.status === 'done' ? (
+                <PhotoPicker
+                  candidates={comp.candidatePhotos ?? []}
+                  selected={comp.photoUrls}
+                  onSelect={(photoUrl) =>
+                    dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
+                  }
+                />
+              ) : null
+            }
+          />
+        </div>
       </div>
 
       {/* Publish gate modal */}

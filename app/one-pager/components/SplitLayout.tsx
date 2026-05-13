@@ -2,6 +2,7 @@
 
 import { ReactNode } from 'react';
 import styles from './SplitLayout.module.css';
+import OnePagerTopBar from './OnePagerTopBar';
 
 interface SplitLayoutProps {
   leftPanel: ReactNode;
@@ -12,25 +13,29 @@ interface SplitLayoutProps {
 
 export default function SplitLayout({ leftPanel, leftBar, rightPanel, previewOpen = false }: SplitLayoutProps) {
   return (
-    <div
-      className={`${styles.container} one-pager-root`}
-      data-preview={previewOpen ? 'open' : 'closed'}
-    >
-      <div className={styles.leftPanel} role="region" aria-label="Input fields">
-        <div className={styles.leftScroll}>
-          {leftPanel}
-        </div>
-        <div className={styles.leftBar}>
-          {leftBar}
-        </div>
-      </div>
+    <div className="one-pager-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
+      <OnePagerTopBar />
       <div
-        className={styles.rightPanel}
-        role="region"
-        aria-label="Document preview"
-        aria-hidden={!previewOpen}
+        className={styles.container}
+        data-preview={previewOpen ? 'open' : 'closed'}
+        style={{ flex: 1, minHeight: 0 }}
       >
-        {rightPanel}
+        <div className={styles.leftPanel} role="region" aria-label="Input fields">
+          <div className={styles.leftScroll}>
+            {leftPanel}
+          </div>
+          <div className={styles.leftBar}>
+            {leftBar}
+          </div>
+        </div>
+        <div
+          className={styles.rightPanel}
+          role="region"
+          aria-label="Document preview"
+          aria-hidden={!previewOpen}
+        >
+          {rightPanel}
+        </div>
       </div>
     </div>
   );

@@ -1,132 +1,145 @@
 /*
  * One-Pager Design Tokens
- * Material 3 Expressive — Compulocks Brand Language 2025
+ * Compulocks Brand · Material-3 Expressive
+ * Source of truth: mrd-redo design system (May 2026)
  *
- * Token naming convention:
- *   --op-{role}   (op = one-pager namespace)
- *
- * Fonts loaded via layout.tsx: --font-barlow, --font-barlow-condensed
+ * All --op-* tokens are scoped to this route.
+ * Global --brand-* vars from compulocks.css are respected here.
  */
 
 :root {
-  /* ── Brand / M3 Tonal Palette ─────────────────────────────── */
-  --op-primary:           #1D1F4A;
+  /* ── Brand palette ──────────────────────────────────────── */
+  --op-primary:           #1D1F4A;   /* brand-primary */
   --op-on-primary:        #FFFFFF;
-  --op-primary-container: #DBE1FF;
-  --op-secondary:         #243469;
+  --op-secondary:         #243469;   /* brand-secondary */
   --op-on-secondary:      #FFFFFF;
-  --op-secondary-container: #DEE1FF;
-
-  /* ── Surface & Neutral ─────────────────────────────────────── */
-  --op-background:        #FDFBFF;
-  --op-surface:           #f2f2f2;
-  --op-surface-variant:   #E2E2EC;
-  --op-on-surface:        #1A1B1F;
-  --op-on-surface-variant:#45464F;
-  --op-outline:           #C5C6D0;
-  --op-outline-strong:    #757780;
-
-  /* ── State colors ──────────────────────────────────────────── */
-  --op-success:           #059669;
-  --op-error:             #BA1A1A;
-  --op-muted:             #45464F;
-
-  /* ── Brand Accent (Compulocks Green) ───────────────────────── */
-  --op-accent:            var(--brand-green-dark, #009966);
+  --op-accent:            #009966;   /* brand-green-dark */
+  --op-accent-light:      #1DB274;   /* brand-green-light */
   --op-accent-hover:      #007a52;
-  --op-accent-soft:       rgba(0, 153, 102, 0.12);
+  --op-accent-soft:       rgba(0, 153, 102, 0.10);
 
-  /* ── Shape (M3 Expressive) ─────────────────────────────────── */
-  --op-radius-xs:   4px;
-  --op-radius-s:    8px;
-  --op-radius-m:    12px;
-  --op-radius-l:    16px;
-  --op-radius-xl:   28px;
-  --op-radius-full: 9999px;
+  /* ── Surfaces ───────────────────────────────────────────── */
+  --op-bg:                #FBFAFD;
+  --op-surface:           #FFFFFF;
+  --op-surface-2:         #F4F4F8;
+  --op-surface-3:         #ECEDF2;
+  --op-on-surface:        #1A1B2A;
+  --op-on-surface-muted:  #5A5C70;
+  --op-on-surface-faint:  #8C8E9F;
+  --op-outline:           #D9DAE2;
+  --op-outline-soft:      #E8E9EE;
+  --op-outline-strong:    #B8BAC8;
 
-  /* ── Card Tokens ───────────────────────────────────────────── */
-  --op-card-radius:       24px;
-  --op-card-padding:      32px;
+  /* ── State ──────────────────────────────────────────────── */
+  --op-success:           #009966;
+  --op-success-soft:      rgba(0, 153, 102, 0.10);
+  --op-error:             #B3261E;
+  --op-warning:           #B86F00;
+  --op-info-soft:         rgba(29, 31, 74, 0.06);
+  --op-muted:             #5A5C70;
 
-  /* ── Chip height & button height (8dp grid) ────────────────── */
-  --op-chip-height:   2rem;    /* 32px */
-  --op-input-height:  2.5rem;  /* 40px */
-  --op-btn-height:    2rem;    /* 32px */
+  /* ── Type scale ─────────────────────────────────────────── */
+  --op-fs-xs:    11px;
+  --op-fs-s:     13px;
+  --op-fs-m:     14px;
+  --op-fs-l:     16px;
+  --op-fs-xl:    18px;
+  --op-fs-2xl:   22px;
+  --op-fs-3xl:   28px;
+  --op-fs-4xl:   36px;
 
-  /* ── Logo ────────────────────────────────────────────────────────── */
-  --op-logo-height: 20px;
+  /* ── Fonts ──────────────────────────────────────────────── */
+  --op-font-body:    var(--font-barlow, 'Barlow', 'Segoe UI', Arial, sans-serif);
+  --op-font-heading: var(--font-barlow-condensed, 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif);
 
-  /* ── Elevation / shadow ────────────────────────────────────── */
-  --op-shadow-sm: 0 1px 3px rgba(29, 31, 74, 0.10);
-  --op-shadow-md: 0 4px 12px rgba(29, 31, 74, 0.14);
+  /* ── Spacing (4px grid) ─────────────────────────────────── */
+  --op-sp-1:  4px;
+  --op-sp-2:  8px;
+  --op-sp-3:  12px;
+  --op-sp-4:  16px;
+  --op-sp-5:  20px;
+  --op-sp-6:  24px;
+  --op-sp-7:  32px;
+  --op-sp-8:  40px;
+  --op-sp-9:  56px;
 
-  /* ── Alias: legacy var names used by FeatureSelector & PhotoPicker ── */
-  --color-primary:        var(--op-primary);
-  --color-secondary:      var(--op-secondary);
-  --color-text:           var(--op-on-surface);
-  --color-muted:          var(--op-muted);
-  --color-border:         var(--op-outline);
-  --color-surface-variant:var(--op-surface-variant);
+  /* ── Shape ──────────────────────────────────────────────── */
+  --op-radius-xs:    6px;
+  --op-radius-s:     10px;
+  --op-radius-m:     14px;
+  --op-radius-l:     20px;
+  --op-radius-xl:    28px;
+  --op-radius-full:  9999px;
+
+  /* ── Elevation ──────────────────────────────────────────── */
+  --op-shadow-1: 0 1px 2px rgba(29, 31, 74, 0.06), 0 1px 1px rgba(29, 31, 74, 0.04);
+  --op-shadow-2: 0 2px 6px rgba(29, 31, 74, 0.08), 0 1px 2px rgba(29, 31, 74, 0.04);
+  --op-shadow-3: 0 8px 24px rgba(29, 31, 74, 0.10), 0 2px 6px rgba(29, 31, 74, 0.06);
+
+  /* ── Component heights ──────────────────────────────────── */
+  --op-h-input:  40px;
+  --op-h-btn:    36px;
+  --op-h-chip:   30px;
+  --op-h-topbar: 56px;
+  --op-h-bar:    64px;
+
+  /* ── Legacy aliases (keep backward compat with chips etc) ── */
+  --op-input-height:  var(--op-h-input);
+  --op-btn-height:    var(--op-h-btn);
+  --op-chip-height:   var(--op-h-chip);
+  --op-shadow-sm:     var(--op-shadow-1);
+  --op-shadow-md:     var(--op-shadow-2);
+  --op-logo-height:   20px;
+
+  /* ── Legacy color aliases (used by sub-components) ─────── */
+  --color-primary:         var(--op-primary);
+  --color-secondary:       var(--op-secondary);
+  --color-text:            var(--op-on-surface);
+  --color-muted:           var(--op-muted);
+  --color-border:          var(--op-outline);
+  --color-surface-variant: var(--op-surface-3);
 }
 
-/* ── Dark mode ─────────────────────────────────────────────────────────── */
+/* ── Dark mode ──────────────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    /* M3 dark tonal palette — Compulocks primary #1D1F4A */
-    --op-primary:           #B8C3FF;   /* lighter for dark bg */
+    --op-bg:                #0E0F1A;
+    --op-surface:           #181A2A;
+    --op-surface-2:         #14162A;
+    --op-surface-3:         #1F2138;
+    --op-on-surface:        #E6E7F2;
+    --op-on-surface-muted:  #A8AABF;
+    --op-on-surface-faint:  #6F7188;
+    --op-outline:           #2C2F48;
+    --op-outline-soft:      #232540;
+    --op-outline-strong:    #3A3D5A;
+
+    --op-primary:           #B8C3FF;
     --op-on-primary:        #0A0D35;
-    --op-primary-container: #292C5E;   /* dark container */
-    --op-secondary:         #B8C4F0;
-    --op-on-secondary:      #0E1740;
-    --op-secondary-container:#293174;
+    --op-secondary:         #DEE1FF;
+    --op-accent:            #1DB274;
+    --op-accent-soft:       rgba(29, 178, 116, 0.16);
+    --op-info-soft:         rgba(184, 195, 255, 0.08);
 
-    /* Dark surfaces */
-    --op-background:        #111217;
-    --op-surface:           #1a1a1a;
-    --op-surface-variant:   #1E2030;
-    --op-on-surface:        #E3E2EB;
-    --op-on-surface-variant:#C6C5D0;
-    --op-outline:           #404255;   /* subtle border on dark */
-    --op-outline-strong:    #8F8FA3;
+    --op-shadow-1: 0 1px 2px rgba(0, 0, 0, 0.45);
+    --op-shadow-2: 0 2px 8px rgba(0, 0, 0, 0.55);
+    --op-shadow-3: 0 8px 28px rgba(0, 0, 0, 0.65);
 
-    /* State */
-    --op-success:           #34D399;
-    --op-error:             #FFB4AB;
-    --op-muted:             #C6C5D0;
-
-    /* Shadows become near-invisible on dark — use subtle glow instead */
-    --op-shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.40);
-    --op-shadow-md: 0 4px 16px rgba(0, 0, 0, 0.55);
-
-    /* Alias sync */
-    --color-primary:        var(--op-primary);
-    --color-secondary:      var(--op-secondary);
-    --color-text:           var(--op-on-surface);
-    --color-muted:          var(--op-muted);
-    --color-border:         var(--op-outline);
-    --color-surface-variant:var(--op-surface-variant);
+    --color-primary:         var(--op-primary);
+    --color-secondary:       var(--op-secondary);
+    --color-text:            var(--op-on-surface);
+    --color-muted:           var(--op-muted);
+    --color-border:          var(--op-outline);
+    --color-surface-variant: var(--op-surface-3);
   }
 }
 
 /*
- * Reset the global button base styles for the one-pager route.
+ * Button reset for the one-pager route.
  * globals.css sets padding/border/background on all buttons which
- * overrides chip appearance. We reset to "nothing" here so each
- * component class has full control.
- */
-.op-reset button,
-button.op-chip-reset {
-  all: unset;
-  cursor: pointer;
-}
-
-/*
- * Scoped button reset: applied via a wrapper div on the one-pager page.
- * Because CSS Modules class names are local, we use a global class
- * on the SplitLayout left panel to scope the reset.
+ * overrides chip appearance. Reset to "nothing" here.
  */
 :global(.one-pager-root) button {
-  /* Reset globals.css button defaults */
   padding: unset;
   font-size: unset;
   font-weight: unset;

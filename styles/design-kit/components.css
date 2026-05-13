@@ -219,37 +219,55 @@
   box-shadow: none;
 }
 
-/* ─── Section Header ──────────────────────────────────────────────── */
+/* ─── Section Header (numbered, with gradient rule) ──────────────── */
 
 .dk-section-header {
   display: flex;
-  align-items: center;
+  flex-direction: column;
   gap: var(--dk-space-3);
   margin-bottom: var(--dk-space-5);
 }
 
+.dk-section-header-row {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--dk-space-4);
+}
+
+/* Big green number — 36px Barlow Condensed */
 .dk-section-num {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.625rem;
-  height: 1.625rem;
-  border-radius: var(--dk-radius-full);
-  background: var(--dk-accent);
-  color: var(--dk-accent-on);
   font-family: var(--dk-font-display);
-  font-size: var(--dk-text-sm);
-  font-weight: 700;
+  font-size: var(--dk-text-3xl);   /* 36px */
+  line-height: 0.9;
+  font-weight: 500;
+  color: var(--dk-accent);
+  letter-spacing: 0.02em;
+  font-feature-settings: "tnum" 1;
   flex-shrink: 0;
 }
 
 .dk-section-title {
   font-family: var(--dk-font-display);
-  font-size: var(--dk-text-sm);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-size: var(--dk-text-xl);    /* 22px */
+  font-weight: 500;
   color: var(--dk-primary);
+  margin: 0;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+/* Green → soft gradient rule */
+.dk-section-rule {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--dk-accent) 0,
+    var(--dk-accent) 56px,
+    var(--dk-outline-soft) 56px,
+    var(--dk-outline-soft) 100%
+  );
+  border-radius: 2px;
 }
 
 /* ─── Topbar ──────────────────────────────────────────────────────── */

@@ -1,274 +1,320 @@
+/* =====================================================
+   One-Pager · Form panel styles
+   Design system: Compulocks M3 (mrd-redo, May 2026)
+   ===================================================== */
+
+/* ---------- Page scaffold ---------- */
 .inputSections {
-  max-width: 600px;
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-7);
 }
 
+/* ---------- Toolbar / page header ---------- */
 .toolbar {
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 3px solid var(--op-accent, #009966);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: var(--op-sp-4);
+  margin-bottom: var(--op-sp-2);
 }
 
 .pageTitle {
-  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
-  font-size: 22px;
-  font-weight: 600;
-  text-transform: capitalize;
-  color: var(--brand-primary, #1D1F4A);
-  letter-spacing: 0.04em;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.exportButtons {
-  display: flex;
-  gap: 0.5rem;
-}
-
-/* M3 pill button — filled */
-.exportButton {
-  height: var(--op-btn-height);
-  padding: 0 1.25rem;
-  background: var(--op-primary);
-  color: var(--op-on-primary);
-  border: none;
-  border-radius: var(--op-radius-full);
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s;
-}
-
-.exportButton:hover:not(:disabled) {
-  background: var(--op-secondary);
-}
-
-.exportButton:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-
-/* M3 pill button — outlined */
-.exportButtonGhost {
-  height: var(--op-btn-height);
-  padding: 0 1.25rem;
-  background: transparent;
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-2xl);
+  font-weight: 500;
   color: var(--op-primary);
-  border: 1.5px solid var(--op-primary);
-  border-radius: var(--op-radius-full);
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  font-size: 0.8125rem;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+  margin: 0;
+  text-transform: capitalize;
+}
+
+/* ---------- Section header (numbered, design-system pattern) ---------- */
+
+/*
+ * .formSection — gap wrapper that holds sectionHead + card(s).
+ * Replaces old .section card — sections are no longer cards themselves;
+ * the card is a child.
+ */
+.formSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-4);
+}
+
+.sectionHead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-3);
+}
+
+.sectionHeadRow {
+  display: flex;
+  align-items: flex-end;
+  gap: var(--op-sp-4);
+}
+
+/* Big green section number — 36px Barlow Condensed */
+.sectionNumber {
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-4xl);     /* 36px */
+  line-height: 0.9;
+  font-weight: 500;
+  color: var(--op-accent);
+  letter-spacing: 0.02em;
+  font-feature-settings: "tnum" 1;
+  flex-shrink: 0;
+}
+
+.sectionTitle {
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-2xl);     /* 22px */
+  font-weight: 500;
+  color: var(--op-primary);
+  margin: 0;
+  text-transform: capitalize;
+  letter-spacing: 0.01em;
+  line-height: 1.1;
+}
+
+.sectionHint {
+  font-size: var(--op-fs-s);
+  color: var(--op-on-surface-muted);
+  margin: 2px 0 0;
+  font-weight: 400;
+}
+
+/* Green → outline gradient rule under the section header */
+.sectionRule {
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    var(--op-accent) 0,
+    var(--op-accent) 56px,
+    var(--op-outline-soft) 56px,
+    var(--op-outline-soft) 100%
+  );
+  border-radius: 2px;
+}
+
+/* ---------- Card ---------- */
+.card {
+  background: var(--op-surface);
+  border: 1px solid var(--op-outline-soft);
+  border-radius: var(--op-radius-l);    /* 20px */
+  box-shadow: var(--op-shadow-1);
+  padding: var(--op-sp-6);
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-4);
+}
+
+/* Card wrapper for components that own their own label/header */
+.sectionCard {
+  background: var(--op-surface);
+  border: 1px solid var(--op-outline-soft);
+  border-radius: var(--op-radius-l);
+  box-shadow: var(--op-shadow-1);
+  padding: var(--op-sp-3) var(--op-sp-6) var(--op-sp-6);
+}
+
+/* Collapse inner component's bottom margin when last child */
+.card > :last-child,
+.sectionCard > :last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- Subhead (small uppercase label inside card) ---------- */
+.subhead {
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs);
   font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
-  cursor: pointer;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
+  color: var(--op-primary);
 }
 
-.exportButtonGhost:hover:not(:disabled) {
-  background: var(--op-primary);
-  color: var(--op-on-primary);
+/* ---------- Field layout ---------- */
+.fieldRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--op-sp-4);
 }
 
-.exportButtonGhost:disabled {
-  opacity: 0.45;
-  cursor: not-allowed;
+@media (max-width: 600px) {
+  .fieldRow { grid-template-columns: 1fr; }
 }
 
-/* Bottom action bar layout */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldFull {
+  margin-top: var(--op-sp-2);
+}
+
+/* M3 field label */
+.fieldLabel {
+  font-size: var(--op-fs-s);
+  font-weight: 500;
+  color: var(--op-on-surface-muted);
+  letter-spacing: 0.01em;
+}
+
+/* M3 outlined text input */
+.textInput {
+  height: var(--op-h-input);
+  padding: 0 var(--op-sp-4);
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);   /* 10px */
+  font-size: var(--op-fs-m);
+  font-family: var(--op-font-body);
+  background: var(--op-surface);
+  color: var(--op-on-surface);
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.textInput::placeholder { color: var(--op-on-surface-faint); }
+
+.textInput:focus {
+  outline: none;
+  border-color: var(--op-primary);
+  box-shadow: 0 0 0 3px rgba(29, 31, 74, 0.10);
+}
+
+/* ---------- Action bar ---------- */
 .barRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   flex: 1;
-  gap: 0.5rem;
+  gap: var(--op-sp-3);
 }
 
 .barLeft {
   display: flex;
   align-items: center;
-  gap: 0.375rem;
+  gap: var(--op-sp-2);
   flex-shrink: 0;
 }
 
 .barRight {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: var(--op-sp-2);
   flex-wrap: wrap;
   justify-content: flex-end;
 }
 
-/* Icon-only pill button (Home / Reset) */
+/* ---------- Buttons ---------- */
+
+/* Shared base */
+.btn {
+  height: var(--op-h-btn);
+  padding: 0 var(--op-sp-4);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--op-sp-2);
+  border-radius: var(--op-radius-full);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-s);
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  cursor: pointer;
+  border: 1.5px solid transparent;
+  background: transparent;
+  color: var(--op-primary);
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.04s;
+}
+.btn:active { transform: translateY(1px); }
+.btn:disabled { opacity: 0.45; cursor: not-allowed; }
+
+/* Filled (primary CTA) */
+.exportButton {
+  composes: btn;
+  background: var(--op-primary);
+  color: #fff;
+  border-color: transparent;
+}
+.exportButton:hover:not(:disabled) { background: var(--op-secondary); }
+
+/* Outlined / ghost */
+.exportButtonGhost {
+  composes: btn;
+  border-color: var(--op-outline);
+  color: var(--op-on-surface);
+}
+.exportButtonGhost:hover:not(:disabled) {
+  border-color: var(--op-primary);
+  background: var(--op-info-soft);
+}
+
+/* Icon-only round button */
 .barIconBtn {
+  width: 32px;
+  height: 32px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
-  height: var(--op-btn-height);
+  border: 1.5px solid var(--op-outline);
   border-radius: var(--op-radius-full);
-  border: 1.5px solid var(--op-outline, #C5C6D0);
   background: transparent;
-  color: var(--op-primary);
-  font-size: 1.1rem;
+  color: var(--op-on-surface-muted);
+  font-size: 1rem;
   line-height: 1;
   cursor: pointer;
   text-decoration: none;
   transition: background 0.15s, color 0.15s, border-color 0.15s;
 }
-
 .barIconBtn:hover {
-  background: var(--op-primary);
-  color: var(--op-on-primary);
+  background: var(--op-info-soft);
+  color: var(--op-primary);
   border-color: var(--op-primary);
 }
 
-.section {
-  margin-bottom: 1rem;
-  background: #FFFFFF;
-  border-radius: 20px;
-  border: 1px solid var(--op-outline, #D9DAE2);
-  box-shadow: var(--op-shadow-sm);
-  padding: 1.25rem 1.5rem 1.5rem;
-}
-
-/* TextFieldWithExpand inside a card: collapse its bottom margin */
-.section > :last-child {
-  margin-bottom: 0;
-}
-
-/* Card wrapper for components that own their own label (DynamicRoleSelector, CompetitorInput) */
-.sectionCard {
-  margin-bottom: 1rem;
-  background: #FFFFFF;
-  border-radius: 20px;
-  border: 1px solid var(--op-outline, #D9DAE2);
-  box-shadow: var(--op-shadow-sm);
-  padding: 0.25rem 1rem 1rem;
-}
-
-.sectionCard > :last-child {
-  margin-bottom: 0;
-}
-
-.sectionHeader {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
-.sectionNum {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 9999px;
-  background: var(--op-accent, #009966);
-  color: #FFFFFF;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  font-size: 0.75rem;
-  font-weight: 700;
-  flex-shrink: 0;
-}
-
-.sectionLabel {
-  display: block;
-  font-weight: 600;
-  font-size: 0.75rem;
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  color: var(--op-primary);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  margin: 0;
-}
-
-.fieldRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.field {
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-.fieldFull {
-  margin-top: var(--op-spacing-xs, 0.5rem);
-}
-
-
-.fieldLabel {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface-variant, #5A5C70);
-}
-
-/* M3 outlined text field */
-.textInput {
-  height: var(--op-input-height);
-  padding: 0 0.75rem;
-  border: 1.5px solid var(--op-outline, #D9DAE2);
-  border-radius: 10px;
-  font-size: 0.875rem;
-  font-family: var(--font-barlow, "Barlow", sans-serif);
-  background: var(--op-surface);
-  color: var(--op-on-surface);
-  transition: border-color 0.15s, box-shadow 0.15s;
-}
-
-.textInput:focus {
-  outline: none;
-  border-color: var(--op-secondary);
-  box-shadow: 0 0 0 3px rgba(36, 52, 105, 0.12);
-}
-
-.loading {
-  color: var(--op-outline-strong);
-  font-size: 0.8125rem;
-  font-style: italic;
-}
-
-/* Preview toggle button (in action bar) */
+/* Preview toggle button */
 .previewToggleBtn {
   display: inline-flex;
   align-items: center;
-  gap: 0.375rem;
-  height: var(--op-btn-height);
-  padding: 0 0.875rem;
+  gap: var(--op-sp-2);
+  height: var(--op-h-btn);
+  padding: 0 var(--op-sp-4);
   border-radius: var(--op-radius-full);
-  border: 1.5px solid var(--op-outline, #D9DAE2);
+  border: 1.5px solid var(--op-outline);
   background: transparent;
-  color: var(--op-on-surface-variant, #45464F);
-  font-family: var(--font-barlow-condensed, "Barlow Condensed", sans-serif);
-  font-size: 0.8125rem;
+  color: var(--op-on-surface-muted);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-s);
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
   transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
-
 .previewToggleBtn:hover {
-  border-color: var(--op-accent, #009966);
-  color: var(--op-accent, #009966);
-  background: var(--op-accent-soft, rgba(0,153,102,0.06));
+  border-color: var(--op-accent);
+  color: var(--op-accent);
+  background: var(--op-accent-soft);
+}
+.previewToggleBtn[data-open="true"] {
+  background: var(--op-accent-soft);
+  border-color: var(--op-accent);
+  color: var(--op-accent);
 }
 
-.previewToggleBtn[data-open="true"] {
-  background: var(--op-accent-soft, rgba(0,153,102,0.10));
-  border-color: var(--op-accent, #009966);
-  color: var(--op-accent, #009966);
+/* ---------- Loading / misc ---------- */
+.loading {
+  color: var(--op-on-surface-faint);
+  font-size: var(--op-fs-s);
+  font-style: italic;
+  padding: var(--op-sp-3) 0;
 }
