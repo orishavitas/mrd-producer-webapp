@@ -12,7 +12,7 @@ interface DocumentsTableProps {
 type TabType = 'all' | 'one-pager' | 'prd';
 
 const TOOL_LABELS: Record<string, string> = {
-  'one-pager': 'MRD Producer',
+  'one-pager': 'MRD',
   prd: 'PRD',
 };
 
@@ -101,7 +101,7 @@ export default function DocumentsTable({ documents, onDelete, currentUserEmail }
                   <td style={{ padding: '0.7rem 0.75rem' }}>
                     <span style={{
                       ...badge, fontSize: '0.72rem', fontWeight: 600,
-                      padding: '0.15rem 0.55rem', borderRadius: '999px',
+                      padding: '0.15rem 0.55rem', borderRadius: '999px', whiteSpace: 'nowrap',
                     }}>
                       {TOOL_LABELS[doc.toolType] ?? doc.toolType}
                     </span>
