@@ -40,11 +40,13 @@ export interface OnePagerState {
   customization: {
     logoFileName: string;        // original filename, empty if none
     logoColors: { mode: 'CMYK' | 'Pantone'; value: string }[];
+    logoSkipped: boolean;
     paint: {
       finish: 'gloss' | 'satin' | 'matte' | 'textured' | '';
-      color: string;             // RAL code for gloss/satin; empty for matte/textured
+      colors: string[];          // RAL codes (gloss/satin multi); or 'Black'/'White' for matte/textured
       description: string;       // free text
     };
+    paintSkipped: boolean;
   };
 
   // Document metadata
@@ -89,8 +91,12 @@ export type OnePagerAction =
   | { type: 'UPDATE_LOGO_COLOR'; payload: { index: number; mode?: 'CMYK' | 'Pantone'; value?: string } }
   | { type: 'REMOVE_LOGO_COLOR'; payload: number }
   | { type: 'SET_PAINT_FINISH'; payload: 'gloss' | 'satin' | 'matte' | 'textured' | '' }
-  | { type: 'SET_PAINT_COLOR'; payload: string }
-  | { type: 'SET_PAINT_DESCRIPTION'; payload: string };
+  | { type: 'ADD_PAINT_COLOR'; payload: string }
+  | { type: 'REMOVE_PAINT_COLOR'; payload: number }
+  | { type: 'TOGGLE_PAINT_COLOR'; payload: string }
+  | { type: 'SET_PAINT_DESCRIPTION'; payload: string }
+  | { type: 'SET_LOGO_SKIPPED'; payload: boolean }
+  | { type: 'SET_PAINT_SKIPPED'; payload: boolean };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -114,7 +120,9 @@ export function createInitialState(): OnePagerState {
     customization: {
       logoFileName: '',
       logoColors: [],
-      paint: { finish: '', color: '', description: '' },
+      logoSkipped: false,
+      paint: { finish: '', colors: [], description: '' },
+      paintSkipped: false,
     },
     productName: '',
     preparedBy: '',
@@ -321,18 +329,71 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_PAINT_FINISH': {
       const finish = action.payload;
-      // Reset color when switching to matte/textured (only black/white allowed there)
-      const color = (finish === 'matte' || finish === 'textured') ? '' : base.customization.paint.color;
-      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, finish, color } } };
+      // Reset colors when switching finish type
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, finish, colors: [] } } };
     }
 
-    case 'SET_PAINT_COLOR':
-      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, color: action.payload } } };
+    case 'ADD_PAINT_COLOR': {
+      const existing = base.customization.paint.colors;
+      if (existing.includes(action.payload)) return state;
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, colors: [...existing, action.payload] } } };
+    }
+
+    case 'REMOVE_PAINT_COLOR':
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, colors: base.customization.paint.colors.filter((_, i) => i !== action.payload) } } };
+
+    case 'TOGGLE_PAINT_COLOR': {
+      const cols = base.customization.paint.colors;
+      const updated = cols.includes(action.payload) ? cols.filter((c) => c !== action.payload) : [...cols, action.payload];
+      return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, colors: updated } } };
+    }
 
     case 'SET_PAINT_DESCRIPTION':
       return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, description: action.payload } } };
 
+    case 'SET_LOGO_SKIPPED':
+      return { ...base, customization: { ...base.customization, logoSkipped: action.payload } };
+
+    case 'SET_PAINT_SKIPPED':
+      return { ...base, customization: { ...base.customization, paintSkipped: action.payload } };
+
     default:
       return state;
   }
+}
+
+export function getCompletionSections(state: OnePagerState): { label: string; done: boolean }[] {
+  const c = state.customization;
+  return [
+    {
+      label: 'Document Info',
+      done: state.productName.trim().length > 0 && state.preparedBy.trim().length > 0 && state.userEmail.trim().length > 0,
+    },
+    {
+      label: 'Product Description',
+      done: (state.description || state.expandedDescription).trim().length > 0,
+    },
+    {
+      label: 'Where (env + industry)',
+      done: state.context.environments.length > 0 && state.context.industries.length > 0,
+    },
+    {
+      label: 'Features (screen/orientation/placement)',
+      done: [...state.features.mustHave, ...state.features.niceToHave].some(
+        (f) => /screen|orientation|placement/i.test(f)
+      ),
+    },
+    {
+      label: 'Logo & Color',
+      done: c.logoSkipped || (c.logoFileName.length > 0 && c.logoColors.length > 0),
+    },
+    {
+      label: 'Paint',
+      done: c.paintSkipped || c.paint.finish.length > 0,
+    },
+    {
+      label: 'MOQ',
+      done: state.commercials.moq.trim().length > 0,
+    },
+  ];
 }

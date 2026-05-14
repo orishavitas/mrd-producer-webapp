@@ -127,58 +127,22 @@
   line-height: 1;
 }
 
-/* Nice-to-have chip — secondary filled */
+/* Nice-to-have chip — accent filled */
 .chipNice {
   display: inline-flex;
   align-items: center;
   height: 2rem;
   padding: 0 1rem;
   border-radius: 9999px;
-  background: var(--op-secondary, #243469);
+  background: var(--op-accent, #009966);
   color: #fff;
-  border: 1.5px solid var(--op-secondary, #243469);
+  border: 1.5px solid var(--op-accent, #009966);
   font-size: 0.875rem;
   font-family: var(--font-barlow, "Barlow", sans-serif);
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
   line-height: 1;
-}
-
-/* Must/Nice assignment popover */
-.popover {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 30;
-  background: var(--op-surface, #FDFBFF);
-  border: 1.5px solid var(--op-outline, #C5C6D0);
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 16px rgba(29, 31, 74, 0.16);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-  min-width: 148px;
-}
-
-.popover button {
-  display: block;
-  width: 100%;
-  padding: 0.625rem 1rem;
-  text-align: left;
-  border: none;
-  background: none;
-  cursor: pointer;
-  font-size: 0.875rem;
-  font-family: var(--font-barlow, "Barlow", sans-serif);
-  color: var(--op-on-surface, #1A1B1F);
-  white-space: nowrap;
-  line-height: 1;
-  transition: background 0.12s;
-}
-
-.popover button:hover {
-  background: var(--op-surface-variant, #E2E2EC);
 }
 
 /* Custom feature input */
@@ -477,4 +441,32 @@
   background: var(--op-primary, #1D1F4A);
   border-color: var(--op-primary, #1D1F4A);
   color: #fff;
+}
+
+/* Skip buttons */
+.skipBtn {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--op-outline, #C5C6D0);
+  background: transparent;
+  color: var(--op-on-surface-muted, #5A5C70);
+  cursor: pointer;
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.skipBtnActive {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 9999px;
+  border: 1.5px solid var(--op-accent, #009966);
+  background: var(--op-accent-soft, rgba(0,153,102,0.1));
+  color: var(--op-accent, #009966);
+  cursor: pointer;
+  font-family: var(--font-barlow-condensed, 'Barlow Condensed', sans-serif);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
 }

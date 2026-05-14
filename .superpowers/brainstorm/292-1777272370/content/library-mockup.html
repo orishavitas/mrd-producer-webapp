@@ -1,0 +1,106 @@
+<h2>Documents Library — Dashboard Upgrade</h2>
+<p class="subtitle">Here's what the upgraded "Recent Documents" section will look like. Does this feel right?</p>
+
+<div class="mockup">
+  <div class="mockup-header">Documentation Center — Dashboard (/ route)</div>
+  <div class="mockup-body" style="background:#0f1117;padding:24px;border-radius:0 0 12px 12px;">
+
+    <!-- Tool cards above (existing) -->
+    <div style="font-size:11px;color:#555;margin-bottom:20px;letter-spacing:0.06em;text-transform:uppercase;">Tools</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:28px;">
+      <div style="background:#1a1d3a;border-radius:10px;padding:12px;font-size:12px;color:#aaa;">MRD Generator<br><span style="color:#555;font-size:10px;">AI</span></div>
+      <div style="background:#1a1d3a;border-radius:10px;padding:12px;font-size:12px;color:#aaa;">One-Pager</div>
+      <div style="background:#1a1d3a;border-radius:10px;padding:12px;font-size:12px;color:#aaa;">Brief Helper</div>
+      <div style="background:#1a1d3a;border-radius:10px;padding:12px;font-size:12px;color:#aaa;">PRD Producer<br><span style="color:#009966;font-size:10px;">Alpha</span></div>
+    </div>
+
+    <!-- Documents section -->
+    <div style="font-size:11px;color:#555;margin-bottom:12px;letter-spacing:0.06em;text-transform:uppercase;">Documents</div>
+
+    <!-- Tab bar -->
+    <div style="display:flex;gap:0;margin-bottom:0;border-bottom:1px solid #1a1d3a;">
+      <div style="padding:7px 16px;font-size:12px;font-weight:600;color:#fff;border-bottom:2px solid #009966;">All</div>
+      <div style="padding:7px 16px;font-size:12px;color:#555;">One-Pager</div>
+      <div style="padding:7px 16px;font-size:12px;color:#555;">One-Pager Beta</div>
+      <div style="padding:7px 16px;font-size:12px;color:#555;">PRD</div>
+    </div>
+
+    <!-- Table -->
+    <div style="background:#13161f;border-radius:0 0 10px 10px;overflow:hidden;">
+      <!-- Header row -->
+      <div style="display:grid;grid-template-columns:1fr 100px 90px 80px 140px;padding:8px 16px;border-bottom:1px solid #1a1d3a;">
+        <span style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;">Title</span>
+        <span style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;">Type</span>
+        <span style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;">Creator</span>
+        <span style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;">Date</span>
+        <span style="font-size:10px;font-weight:600;color:#555;text-transform:uppercase;letter-spacing:0.05em;text-align:right;">Actions</span>
+      </div>
+
+      <!-- Row 1 -->
+      <div style="display:grid;grid-template-columns:1fr 100px 90px 80px 140px;padding:10px 16px;border-bottom:1px solid #1a1d3a;align-items:center;">
+        <span style="font-size:13px;color:#e0e0e0;font-weight:500;">EMV Bracket One-Pager</span>
+        <span style="font-size:11px;"><span style="background:#243469;color:#9bb;padding:2px 8px;border-radius:12px;">One-Pager</span></span>
+        <span style="font-size:12px;color:#666;">Ori S.</span>
+        <span style="font-size:12px;color:#666;">Apr 23</span>
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <a href="#" style="background:#009966;color:#fff;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">DOCX</a>
+          <a href="#" style="background:#243469;color:#9bb;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">HTML</a>
+          <span style="color:#e55;font-size:11px;padding:3px 6px;cursor:pointer;">✕</span>
+        </div>
+      </div>
+
+      <!-- Row 2 -->
+      <div style="display:grid;grid-template-columns:1fr 100px 90px 80px 140px;padding:10px 16px;border-bottom:1px solid #1a1d3a;align-items:center;">
+        <span style="font-size:13px;color:#e0e0e0;font-weight:500;">Kensington Pro Bracket</span>
+        <span style="font-size:11px;"><span style="background:#243469;color:#9bb;padding:2px 8px;border-radius:12px;">One-Pager</span></span>
+        <span style="font-size:12px;color:#666;">Danny K.</span>
+        <span style="font-size:12px;color:#666;">Apr 21</span>
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <a href="#" style="background:#009966;color:#fff;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">DOCX</a>
+          <a href="#" style="background:#243469;color:#9bb;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">HTML</a>
+          <span style="color:#e55;font-size:11px;padding:3px 6px;cursor:pointer;">✕</span>
+        </div>
+      </div>
+
+      <!-- Row 3 — PRD -->
+      <div style="display:grid;grid-template-columns:1fr 100px 90px 80px 140px;padding:10px 16px;border-bottom:1px solid #1a1d3a;align-items:center;">
+        <span style="font-size:13px;color:#e0e0e0;font-weight:500;">EMV Bracket PRD v1</span>
+        <span style="font-size:11px;"><span style="background:#1a2a1a;color:#009966;padding:2px 8px;border-radius:12px;">PRD</span></span>
+        <span style="font-size:12px;color:#666;">Ori S.</span>
+        <span style="font-size:12px;color:#666;">Apr 23</span>
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <a href="#" style="background:#009966;color:#fff;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">DOCX</a>
+          <a href="#" style="background:#243469;color:#9bb;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">HTML</a>
+          <span style="color:#e55;font-size:11px;padding:3px 6px;cursor:pointer;">✕</span>
+        </div>
+      </div>
+
+      <!-- Row 4 — Beta -->
+      <div style="display:grid;grid-template-columns:1fr 100px 90px 80px 140px;padding:10px 16px;align-items:center;">
+        <span style="font-size:13px;color:#e0e0e0;font-weight:500;">Security Bracket Brief</span>
+        <span style="font-size:11px;"><span style="background:#2a1f0a;color:#f5a623;padding:2px 8px;border-radius:12px;">Beta</span></span>
+        <span style="font-size:12px;color:#666;">Ori S.</span>
+        <span style="font-size:12px;color:#666;">Apr 19</span>
+        <div style="display:flex;gap:6px;justify-content:flex-end;">
+          <a href="#" style="background:#009966;color:#fff;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">DOCX</a>
+          <a href="#" style="background:#243469;color:#9bb;padding:3px 10px;border-radius:5px;font-size:11px;font-weight:600;text-decoration:none;" target="_blank">HTML</a>
+          <span style="color:#e55;font-size:11px;padding:3px 6px;cursor:pointer;">✕</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section" style="max-width:680px;margin:20px auto 0;">
+  <p class="subtitle" style="font-size:13px;">DOCX and HTML open in a new tab. ✕ soft-deletes the row. Tabs filter by tool type. PRD documents pulled from <code>prd_documents</code> table and merged with One-Pager docs from <code>documents</code> table.</p>
+  <div class="options" style="margin-top:16px;">
+    <div class="option" data-choice="looks-good" onclick="toggleSelect(this)">
+      <div class="letter">✓</div>
+      <div class="content"><h3>Looks good — build it</h3><p>Design is approved</p></div>
+    </div>
+    <div class="option" data-choice="changes" onclick="toggleSelect(this)">
+      <div class="letter">✎</div>
+      <div class="content"><h3>Needs changes</h3><p>Tell me what to adjust</p></div>
+    </div>
+  </div>
+</div>

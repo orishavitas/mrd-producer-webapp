@@ -50,7 +50,8 @@ export class OnePagerAnalystAgent extends BaseAgent<AnalystInput, OnePagerSummar
     }));
     const customization = (raw.customization ?? {}) as Record<string, unknown>;
     const paint = (customization.paint ?? {}) as Record<string, unknown>;
-    const paintStr = [paint.finish, paint.color].filter(Boolean).join(' / ');
+    const paintColors = ((paint.colors ?? []) as string[]).join(', ');
+    const paintStr = [paint.finish, paintColors].filter(Boolean).join(' / ');
     const logoColors = ((customization.logoColors ?? []) as Record<string, unknown>[]).map(
       (c) => `${String(c.mode ?? '')} ${String(c.value ?? '')}`.trim()
     );

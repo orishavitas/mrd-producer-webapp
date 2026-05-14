@@ -629,7 +629,7 @@ function PreviewPanel({ mode }: { mode: 'cards' | 'paper' }) {
                   <span className="paint-swatch" />
                   <span>
                     <strong>{paint.finish}</strong>
-                    {paint.color ? ` · ${paint.color}` : ''}
+                    {paint.colors?.length ? ` · ${paint.colors.join(', ')}` : ''}
                     {paint.description ? ` — ${paint.description}` : ''}
                   </span>
                 </div>
@@ -838,10 +838,9 @@ function FormPanel({
   const environments = config?.environments ?? [];
   const industries = config?.industries ?? [];
 
-  const paint = state.customization?.paint ?? { finish: '', color: '', description: '' };
-  const setPaint = (patch: Partial<typeof paint>) => {
-    if (patch.finish !== undefined) dispatch({ type: 'SET_PAINT_FINISH', payload: patch.finish as 'gloss' | 'satin' | 'matte' | 'textured' | '' });
-    if (patch.color !== undefined) dispatch({ type: 'SET_PAINT_COLOR', payload: patch.color });
+  const paint = state.customization?.paint ?? { finish: '', colors: [], description: '' };
+  const setPaint = (patch: { finish?: '' | 'gloss' | 'satin' | 'matte' | 'textured'; colors?: string[]; description?: string }) => {
+    if (patch.finish !== undefined) dispatch({ type: 'SET_PAINT_FINISH', payload: patch.finish });
     if (patch.description !== undefined) dispatch({ type: 'SET_PAINT_DESCRIPTION', payload: patch.description });
   };
 
@@ -1232,8 +1231,8 @@ function FormPanel({
           <div className="grid-2 paint-spaced">
             <TextField
               label="Color / RAL"
-              value={paint.color}
-              onChange={(v) => setPaint({ color: v })}
+              value={paint.colors?.[0] ?? ''}
+              onChange={(v) => dispatch({ type: 'TOGGLE_PAINT_COLOR', payload: v })}
               placeholder="e.g. Black, RAL 9005"
             />
             <TextField

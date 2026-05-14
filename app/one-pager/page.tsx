@@ -13,6 +13,7 @@ import PublishGateModal from './components/PublishGateModal';
 import DraftWarningBanner from './components/DraftWarningBanner';
 import type { FeatureCategory } from './components/FeatureSelector';
 import { useCallback, useEffect, useState } from 'react';
+import { getCompletionSections } from './lib/one-pager-state';
 import Link from 'next/link';
 import './one-pager-tokens.css';
 import styles from './page.module.css';
@@ -34,6 +35,20 @@ function OnePagerContent() {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [featureLayout, setFeatureLayout] = useState<'sideBySide' | 'stacked'>('sideBySide');
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
+
+  const completionSections = getCompletionSections(state);
+  const completionDone = completionSections.filter(s => s.done).length;
+  const completionTotal = completionSections.length;
+  const completionPct = Math.round(completionDone / completionTotal * 100);
+
+  useEffect(() => {
+    if (validationErrors && validationErrors.length > 0) {
+      const stillMissing = getCompletionSections(state).filter(s => !s.done).map(s => s.label);
+      if (stillMissing.length === 0) setValidationErrors(null);
+      else setValidationErrors(stillMissing);
+    }
+  }, [state, validationErrors]);
 
   useEffect(() => {
     fetch('/api/one-pager/config')
@@ -79,12 +94,18 @@ function OnePagerContent() {
   }, [state]);
 
   const handleExport = useCallback((format: 'docx' | 'html' | 'pdf') => {
+    const missing = getCompletionSections(state).filter(s => !s.done).map(s => s.label);
+    if (missing.length > 0) {
+      setValidationErrors(missing);
+      return;
+    }
+    setValidationErrors(null);
     if (!state.isPublished) {
       setPublishGatePending(format);
       return;
     }
     runExport(format);
-  }, [state.isPublished, runExport]);
+  }, [state, runExport]);
 
   const handleSaveDraft = useCallback(async () => {
     setIsSaving(true);
@@ -115,6 +136,12 @@ function OnePagerContent() {
   }, [state, dispatch]);
 
   const handlePublish = useCallback(async () => {
+    const missing = getCompletionSections(state).filter(s => !s.done).map(s => s.label);
+    if (missing.length > 0) {
+      setValidationErrors(missing);
+      return;
+    }
+    setValidationErrors(null);
     setIsPublishing(true);
     try {
       // Auto-save first if we don't have a documentId
@@ -197,6 +224,13 @@ function OnePagerContent() {
       {/* Draft warning banner */}
       {!state.isPublished && state.documentId !== null && !bannerDismissed && (
         <DraftWarningBanner onDismiss={() => setBannerDismissed(true)} />
+      )}
+
+      {validationErrors && validationErrors.length > 0 && (
+        <div className={styles.validationBanner}>
+          <strong>Please complete before publishing:</strong>
+          <ul>{validationErrors.map(e => <li key={e}>{e}</li>)}</ul>
+        </div>
       )}
 
       {/* Document Metadata */}
@@ -507,6 +541,12 @@ function OnePagerContent() {
         >
           {previewOpen ? '✕ Preview' : '▶ Preview'}
         </button>
+      </div>
+      <div className={styles.progressWrap}>
+        <div className={styles.progressBar}>
+          <div className={styles.progressFill} style={{ width: `${completionPct}%` }} />
+        </div>
+        <span className={styles.progressLabel}>{completionDone}/{completionTotal}</span>
       </div>
       <div className={styles.barRight}>
         <button

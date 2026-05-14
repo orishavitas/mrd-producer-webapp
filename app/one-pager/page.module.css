@@ -318,3 +318,55 @@
   font-style: italic;
   padding: var(--op-sp-3) 0;
 }
+
+/* ---------- Progress bar ---------- */
+.progressWrap {
+  display: flex;
+  align-items: center;
+  gap: var(--op-sp-2);
+  flex: 1;
+  justify-content: center;
+}
+.progressBar {
+  width: 120px;
+  height: 6px;
+  background: var(--op-outline-soft);
+  border-radius: var(--op-radius-full);
+  overflow: hidden;
+}
+.progressFill {
+  height: 100%;
+  background: var(--op-accent);
+  border-radius: var(--op-radius-full);
+  transition: width 0.3s var(--op-ease);
+}
+.progressLabel {
+  font-size: var(--op-fs-xs);
+  font-weight: 600;
+  color: var(--op-on-surface-muted);
+  white-space: nowrap;
+  font-family: var(--op-font-heading);
+  letter-spacing: 0.05em;
+}
+
+/* ---------- Validation banner ---------- */
+.validationBanner {
+  background: rgba(184, 111, 0, 0.08);
+  border: 1.5px solid rgba(184, 111, 0, 0.3);
+  border-radius: var(--op-radius-s);
+  padding: var(--op-sp-3) var(--op-sp-4);
+  font-size: var(--op-fs-s);
+  color: var(--op-warning, #B86F00);
+}
+.validationBanner strong {
+  display: block;
+  margin-bottom: var(--op-sp-1);
+  font-weight: 600;
+}
+.validationBanner ul {
+  margin: 0;
+  padding-left: var(--op-sp-4);
+}
+.validationBanner li {
+  margin: 2px 0;
+}
