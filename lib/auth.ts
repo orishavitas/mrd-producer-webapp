@@ -1,37 +1,8 @@
+/**
+ * NextAuth entry point — server-only.
+ * Auth secrets live in lib/auth.config.ts, which is never bundled to the client.
+ */
 import NextAuth from 'next-auth';
-import Google from 'next-auth/providers/google';
+import { authConfig } from './auth.config';
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
-  providers: [
-    Google({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
-      authorization: {
-        params: {
-          scope: 'openid email profile https://www.googleapis.com/auth/drive.file',
-          access_type: 'offline',
-          prompt: 'consent',
-        },
-      },
-    }),
-  ],
-  callbacks: {
-    async jwt({ token, account }) {
-      if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
-        // TODO: Add token refresh logic before Drive sync goes live.
-        // Google access tokens expire after 1h. Use refreshToken to obtain a new accessToken.
-        // Reference: https://next-auth.js.org/tutorials/refresh-token-rotation
-      }
-      return token;
-    },
-    async session({ session, token }) {
-      session.accessToken = token.accessToken as string;
-      return session;
-    },
-  },
-  pages: {
-    signIn: '/login',
-  },
-});
+export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);

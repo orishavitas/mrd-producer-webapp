@@ -12,7 +12,7 @@ interface DocumentsTableProps {
 type TabType = 'all' | 'one-pager' | 'prd';
 
 const TOOL_LABELS: Record<string, string> = {
-  'one-pager': 'One-Pager',
+  'one-pager': 'MRD Producer',
   prd: 'PRD',
 };
 
@@ -72,7 +72,7 @@ export default function DocumentsTable({ documents, onDelete, currentUserEmail }
       {/* Tab bar */}
       <div style={{ display: 'flex', borderBottom: '1px solid var(--border)', marginBottom: 0 }}>
         <button style={tabStyle('all')} onClick={() => setActiveTab('all')}>All</button>
-        <button style={tabStyle('one-pager')} onClick={() => setActiveTab('one-pager')}>One-Pager</button>
+        <button style={tabStyle('one-pager')} onClick={() => setActiveTab('one-pager')}>MRD Producer</button>
         {hasPRD && (
           <button style={tabStyle('prd')} onClick={() => setActiveTab('prd')}>PRD</button>
         )}

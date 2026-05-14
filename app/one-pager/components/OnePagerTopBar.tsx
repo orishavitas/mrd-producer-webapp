@@ -20,7 +20,7 @@ export default function OnePagerTopBar() {
         </Link>
         <div className={styles.divider} />
         <span className={styles.product}>
-          <strong>One-Pager</strong> Generator
+          <strong>MRD Producer</strong> · One-Pager
         </span>
       </div>
     </header>

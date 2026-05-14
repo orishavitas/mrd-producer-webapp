@@ -41,11 +41,11 @@ export function PRDContent() {
     <div className={styles.page}>
       <div className={styles.header}>
         <h1 className={styles.title}>PRD Producer</h1>
-        <p className={styles.subtitle}>Select a One-Pager to generate an engineering PRD.</p>
+        <p className={styles.subtitle}>Select an MRD Producer document to generate an engineering PRD.</p>
       </div>
       {docs.length === 0 ? (
         <div className={styles.emptyState}>
-          <p>No saved One-Pager documents found. Create and publish one first.</p>
+          <p>No saved MRD Producer documents found. Create and publish one first.</p>
         </div>
       ) : (
         <div className={styles.grid}>

@@ -20,7 +20,7 @@ export function PipelineContent() {
 
   useEffect(() => {
     if (!documentId) {
-      setError('No document selected. Please go back and select a One-Pager.');
+      setError('No document selected. Please go back and select an MRD Producer document.');
       return;
     }
     if (startedRef.current) return;

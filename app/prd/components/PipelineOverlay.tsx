@@ -10,7 +10,7 @@ interface Props {
 }
 
 const STEPS: { key: AgentStep; label: string }[] = [
-  { key: 'analyst', label: 'Analyzing One-Pager' },
+  { key: 'analyst', label: 'Analyzing MRD Producer doc' },
   { key: 'architect', label: 'Building PRD Skeleton' },
   { key: 'human_gate', label: 'Awaiting your review' },
   { key: 'writer', label: 'Writing PRD sections' },

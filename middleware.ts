@@ -1,4 +1,4 @@
-import { auth } from '@/lib/auth';
+import { auth } from '@/lib/auth.edge';
 import { NextResponse } from 'next/server';
 
 const ALLOWED_DOMAIN = 'compulocks.com';
