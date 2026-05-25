@@ -42,10 +42,7 @@ export function PipelineContent() {
     let buffer = '';
     let receivedFinal = false;
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
+    function processBuffer() {
       const lines = buffer.split('\n');
       buffer = lines.pop() ?? '';
       for (const line of lines) {
@@ -56,6 +53,18 @@ export function PipelineContent() {
           onEvent(event);
         } catch { /* ignore malformed lines */ }
       }
+    }
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) {
+        // Flush decoder and process any remaining buffered data
+        buffer += decoder.decode();
+        if (buffer.trim()) processBuffer();
+        break;
+      }
+      buffer += decoder.decode(value, { stream: true });
+      processBuffer();
     }
     return receivedFinal;
   }
