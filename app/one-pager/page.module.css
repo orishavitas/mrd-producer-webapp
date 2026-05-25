@@ -349,6 +349,55 @@
   letter-spacing: 0.05em;
 }
 
+/* ---------- Textarea ---------- */
+.textareaInput {
+  width: 100%;
+  padding: var(--op-sp-3) var(--op-sp-4);
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);
+  font-size: var(--op-fs-m);
+  font-family: var(--op-font-body);
+  background: var(--op-surface);
+  color: var(--op-on-surface);
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+}
+.textareaInput::placeholder { color: var(--op-on-surface-faint); }
+.textareaInput:focus {
+  outline: none;
+  border-color: var(--op-primary);
+  box-shadow: 0 0 0 3px rgba(29, 31, 74, 0.10);
+}
+
+/* ---------- Version badge ---------- */
+.versionBadge {
+  font-size: var(--op-fs-xs);
+  font-weight: 700;
+  font-family: var(--op-font-heading);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--op-on-surface-muted);
+  background: var(--op-surface-variant, #E2E2EC);
+  border-radius: var(--op-radius-full);
+  padding: 2px 8px;
+  white-space: nowrap;
+}
+
+/* ---------- Admin badge ---------- */
+.adminBadge {
+  font-size: 10px;
+  font-weight: 700;
+  font-family: var(--op-font-heading);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--op-accent);
+  border-radius: var(--op-radius-full);
+  padding: 2px 8px;
+}
+
 /* ---------- Validation banner ---------- */
 .validationBanner {
   background: rgba(184, 111, 0, 0.08);

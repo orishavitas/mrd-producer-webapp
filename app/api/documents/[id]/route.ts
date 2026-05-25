@@ -30,7 +30,26 @@ export async function PATCH(
   const { id } = await params;
   const body = await req.json();
   try {
-    const doc = await updateDocument(id, session.user.email, { content_json: body.contentJson });
+    // Fetch current to snapshot before overwrite
+    const { rows: current } = await sql<Document>`SELECT * FROM documents WHERE id = ${id} AND deleted_at IS NULL`;
+    const existing = current[0];
+    if (!existing || existing.user_id !== session.user.email) {
+      return NextResponse.json({ error: 'Not found or access denied' }, { status: 404 });
+    }
+
+    const history = [...(existing.version_history ?? [])];
+    if (existing.content_json && Object.keys(existing.content_json).length > 0) {
+      history.push({ version: existing.version, saved_at: new Date().toISOString(), content_json: existing.content_json });
+      // Keep only last 20 snapshots
+      if (history.length > 20) history.splice(0, history.length - 20);
+    }
+
+    const newVersion = body.version ?? existing.version;
+    const doc = await updateDocument(id, session.user.email, {
+      content_json: body.contentJson,
+      version: newVersion,
+      version_history: history,
+    });
     return NextResponse.json({ ok: true, document: doc });
   } catch {
     return NextResponse.json({ error: 'Not found or access denied' }, { status: 404 });

@@ -839,7 +839,7 @@ function FormPanel({
   const industries = config?.industries ?? [];
 
   const paint = state.customization?.paint ?? { finish: '', colors: [], description: '' };
-  const setPaint = (patch: { finish?: '' | 'gloss' | 'satin' | 'matte' | 'textured'; colors?: string[]; description?: string }) => {
+  const setPaint = (patch: { finish?: '' | 'gloss' | 'satin' | 'matte' | 'textured' | 'clear'; colors?: string[]; description?: string }) => {
     if (patch.finish !== undefined) dispatch({ type: 'SET_PAINT_FINISH', payload: patch.finish });
     if (patch.description !== undefined) dispatch({ type: 'SET_PAINT_DESCRIPTION', payload: patch.description });
   };

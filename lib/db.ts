@@ -9,6 +9,8 @@ export interface Document {
   drive_file_id: string | null;
   drive_folder: string | null;
   content_json: Record<string, unknown> | null;
+  version: string;
+  version_history: { version: string; saved_at: string; content_json: Record<string, unknown> }[];
   created_at: string;
   updated_at: string;
   deleted_at: string | null;
@@ -73,7 +75,7 @@ export async function createDocument(
 export async function updateDocument(
   id: string,
   userId: string,
-  updates: Partial<Pick<Document, 'title' | 'status' | 'content_json' | 'drive_file_id' | 'drive_folder'>>
+  updates: Partial<Pick<Document, 'title' | 'status' | 'content_json' | 'drive_file_id' | 'drive_folder' | 'version' | 'version_history'>>
 ): Promise<Document> {
   const setClauses: string[] = ['updated_at = NOW()'];
   const values: unknown[] = [];
@@ -84,6 +86,8 @@ export async function updateDocument(
   if (updates.content_json !== undefined) { setClauses.push(`content_json = $${paramIndex++}`); values.push(JSON.stringify(updates.content_json)); }
   if (updates.drive_file_id !== undefined) { setClauses.push(`drive_file_id = $${paramIndex++}`); values.push(updates.drive_file_id); }
   if (updates.drive_folder !== undefined) { setClauses.push(`drive_folder = $${paramIndex++}`); values.push(updates.drive_folder); }
+  if (updates.version !== undefined) { setClauses.push(`version = $${paramIndex++}`); values.push(updates.version); }
+  if (updates.version_history !== undefined) { setClauses.push(`version_history = $${paramIndex++}`); values.push(JSON.stringify(updates.version_history)); }
 
   if (values.length === 0) {
     throw new Error('updateDocument called with no fields to update');

@@ -42,17 +42,25 @@ export interface OnePagerState {
     logoColors: { mode: 'CMYK' | 'Pantone'; value: string }[];
     logoSkipped: boolean;
     paint: {
-      finish: 'gloss' | 'satin' | 'matte' | 'textured' | '';
-      colors: string[];          // RAL codes (gloss/satin multi); or 'Black'/'White' for matte/textured
+      finish: 'gloss' | 'satin' | 'matte' | 'textured' | 'clear' | '';
+      colors: string[];          // RAL codes (gloss/satin multi); or 'Black'/'White' for matte/textured; empty for clear
       description: string;       // free text
     };
     paintSkipped: boolean;
+    material: string;            // optional free text (nice-to-have)
   };
 
   // Document metadata
   productName: string;
   preparedBy: string;
   userEmail: string;   // placeholder — will come from auth later
+
+  // Footnotes — free text at end of document
+  footnotes: string;
+
+  // Version — 0.x = draft, 1.x = published
+  version: string;
+  versionHistory: { version: string; savedAt: number; contentJson: Record<string, unknown> }[];
 
   // Publish flow
   documentId: string | null;
@@ -90,13 +98,18 @@ export type OnePagerAction =
   | { type: 'ADD_LOGO_COLOR'; payload: { mode: 'CMYK' | 'Pantone'; value: string } }
   | { type: 'UPDATE_LOGO_COLOR'; payload: { index: number; mode?: 'CMYK' | 'Pantone'; value?: string } }
   | { type: 'REMOVE_LOGO_COLOR'; payload: number }
-  | { type: 'SET_PAINT_FINISH'; payload: 'gloss' | 'satin' | 'matte' | 'textured' | '' }
+  | { type: 'SET_PAINT_FINISH'; payload: 'gloss' | 'satin' | 'matte' | 'textured' | 'clear' | '' }
   | { type: 'ADD_PAINT_COLOR'; payload: string }
   | { type: 'REMOVE_PAINT_COLOR'; payload: number }
   | { type: 'TOGGLE_PAINT_COLOR'; payload: string }
   | { type: 'SET_PAINT_DESCRIPTION'; payload: string }
   | { type: 'SET_LOGO_SKIPPED'; payload: boolean }
-  | { type: 'SET_PAINT_SKIPPED'; payload: boolean };
+  | { type: 'SET_PAINT_SKIPPED'; payload: boolean }
+  | { type: 'SET_MATERIAL'; payload: string }
+  | { type: 'SET_FOOTNOTES'; payload: string }
+  | { type: 'SET_VERSION'; payload: string }
+  | { type: 'PUSH_VERSION_HISTORY'; payload: { version: string; savedAt: number; contentJson: Record<string, unknown> } }
+  | { type: 'RESTORE_VERSION'; payload: OnePagerState };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -123,7 +136,11 @@ export function createInitialState(): OnePagerState {
       logoSkipped: false,
       paint: { finish: '', colors: [], description: '' },
       paintSkipped: false,
+      material: '',
     },
+    footnotes: '',
+    version: '0.1',
+    versionHistory: [],
     productName: '',
     preparedBy: '',
     userEmail: '',
@@ -329,7 +346,7 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_PAINT_FINISH': {
       const finish = action.payload;
-      // Reset colors when switching finish type
+      // Reset colors when switching finish type; clear has no colors
       return { ...base, customization: { ...base.customization, paint: { ...base.customization.paint, finish, colors: [] } } };
     }
 
@@ -356,6 +373,21 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
 
     case 'SET_PAINT_SKIPPED':
       return { ...base, customization: { ...base.customization, paintSkipped: action.payload } };
+
+    case 'SET_MATERIAL':
+      return { ...base, customization: { ...base.customization, material: action.payload } };
+
+    case 'SET_FOOTNOTES':
+      return { ...base, footnotes: action.payload };
+
+    case 'SET_VERSION':
+      return { ...base, version: action.payload };
+
+    case 'PUSH_VERSION_HISTORY':
+      return { ...base, versionHistory: [...base.versionHistory, action.payload] };
+
+    case 'RESTORE_VERSION':
+      return { ...action.payload, lastUpdated: Date.now() };
 
     default:
       return state;

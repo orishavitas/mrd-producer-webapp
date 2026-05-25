@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.4.0] - 2026-05-14
+
+### Added
+- **Version system** — `version` field in `OnePagerState` + DB: `0.x` = draft (auto-increments on Save Draft), `1.x` = published (bumps on Publish). Version badge shown in top bar.
+- **Version history + rollback (admin-only)** — PATCH `/api/documents/[id]` now snapshots previous content into `version_history` (max 20). New endpoints: `GET /api/documents/[id]/versions`, `POST /api/documents/[id]/rollback`. `VersionHistoryPanel` component shows history table with per-entry Restore button.
+- **Admin gate** — `lib/admin.ts` with `isAdmin(email)`. Configurable via `ADMIN_EMAILS` env var (default: `ori@compulocks.com`). `page.tsx` is now a server component passing `isAdmin` prop to client.
+- **Footnotes field** — free-text textarea at end of One-Pager form, stored in `state.footnotes`.
+- **Material field** — optional free-text input in Product Information section (`state.customization.material`).
+- **Paint "Clear" finish** — new finish option that overrides colors (no RAL/Black/White needed).
+- **DB migration 003** — `lib/db-migrations/003-document-versions.sql` adds `version TEXT DEFAULT '0.1'` and `version_history JSONB DEFAULT '[]'` to `documents` table. Applied to Neon.
+- `lib/admin.ts` — admin detection utility.
+- `app/one-pager/OnePagerClient.tsx` — extracted client-side page logic (was `page.tsx`).
+- `app/one-pager/components/ProductInfoCustomization.tsx` — paint/texture/logo/material sub-section (migrated from FeatureSelector).
+- `app/one-pager/components/VersionHistoryPanel.tsx` — admin-only version history + rollback UI.
+- `DELETE /api/documents/[id]/publish` — unpublish endpoint (was missing; now in publish route).
+
+### Changed
+- **Section 01 renamed** "Product Description" → "Product Information". Contains: Product Description sub-header + textarea, then Paint/Texture/Logo sub-section.
+- **Paint/Logo customization migrated** from Section 05 (`FeatureSelector`) → Section 01 (`ProductInfoCustomization`). `FeatureSelector` no longer takes `customization` or `dispatch` props.
+- **`app/one-pager/page.tsx`** is now a server component (resolves `isAdmin` from session, renders `OnePagerClient`).
+- **Publish route** bumps version to `1.0` on first publish, `1.x` on re-publish; returns `version` in response.
+- **Save Draft** increments draft version (0.1 → 0.2 → ...) and passes new version to API.
+
 ## [Unreleased] - 2026-04-27
 
 ### Added

@@ -1,0 +1,93 @@
+/* VersionHistoryPanel.module.css */
+
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-3);
+}
+
+.currentVer {
+  font-size: var(--op-fs-s);
+  color: var(--op-on-surface-muted);
+  margin: 0;
+}
+
+.hint {
+  font-size: var(--op-fs-s);
+  color: var(--op-on-surface-muted);
+  font-style: italic;
+  margin: 0;
+  padding: var(--op-sp-4) 0;
+}
+
+.error {
+  font-size: var(--op-fs-s);
+  color: var(--op-error, #c62828);
+  margin: 0;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: var(--op-fs-s);
+}
+
+.table th {
+  text-align: left;
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--op-on-surface-muted);
+  padding: 0 0 var(--op-sp-2) 0;
+  border-bottom: 1px solid var(--op-outline-soft);
+}
+
+.table td {
+  padding: var(--op-sp-2) 0;
+  border-bottom: 1px solid var(--op-outline-soft);
+  color: var(--op-on-surface);
+  vertical-align: middle;
+}
+
+.table tr:last-child td {
+  border-bottom: none;
+}
+
+.verCell {
+  font-family: var(--op-font-heading);
+  font-weight: 600;
+  color: var(--op-primary);
+  width: 80px;
+}
+
+.dateCell {
+  color: var(--op-on-surface-muted);
+}
+
+.rollbackBtn {
+  height: 26px;
+  padding: 0 0.75rem;
+  border: 1.5px solid var(--op-outline);
+  border-radius: 999px;
+  background: transparent;
+  font-family: var(--op-font-heading);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--op-primary);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+.rollbackBtn:hover:not(:disabled) {
+  background: var(--op-primary);
+  border-color: var(--op-primary);
+  color: #fff;
+}
+.rollbackBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}

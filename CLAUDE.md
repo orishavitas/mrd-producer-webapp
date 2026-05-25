@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version: 1.3.0** — PRD Producer live. Feature-gate allowlist system. Header renamed "Documentation Center".
+**Version: 1.4.0** — One-Pager restructured: Product Information section, Paint/Texture/Logo migrated from section 05, version system (0.x draft / 1.x published), footnotes, admin rollback.
 
 Three production tools:
 1. **Main MRD Producer** (`/mrd`) — AI-powered 12-section MRD via Gemini Search grounding.
@@ -43,6 +43,7 @@ Tests in `__tests__/` mirroring source. Jest + ts-jest. Path alias `@/*` = proje
 | `ANTHROPIC_API_KEY` | No | Claude fallback |
 | `OPENAI_API_KEY` | No | OpenAI fallback |
 | `USE_MULTI_AGENT` | No | Enable new agent pipeline (default: legacy workflow.ts) |
+| `ADMIN_EMAILS` | No | Comma-separated admin emails for rollback access (default: `ori@compulocks.com`) |
 
 Deployed to Vercel. Set env vars in Vercel dashboard. CI/CD: `.github/workflows/deploy.yml`.
 
@@ -61,6 +62,24 @@ Single source of truth: `styles/tokens/compulocks.css`
 
 ---
 
+## One-Pager Generator — Version System
+
+- `version` field in state: `"0.x"` = draft, `"1.x"` = published. Displayed as badge in top bar.
+- Save Draft increments `0.x` minor (0.1 → 0.2 → ...). Publish bumps to `1.0`; re-publish increments `1.x`.
+- PATCH `/api/documents/[id]` now snapshots current content into `version_history` before overwriting (max 20 entries).
+- Rollback: admin-only. `GET /api/documents/[id]/versions` lists history. `POST /api/documents/[id]/rollback` restores a snapshot.
+- Admin detection: `lib/admin.ts` checks `ADMIN_EMAILS` env var (default: `ori@compulocks.com`).
+- `page.tsx` is now a **server component** that reads auth and passes `isAdmin` prop to `OnePagerClient`.
+- DB migration: `lib/db-migrations/003-document-versions.sql` — adds `version TEXT DEFAULT '0.1'` and `version_history JSONB DEFAULT '[]'` to `documents`. **Already applied to Neon.**
+
+## One-Pager Generator — Section Structure (v1.4.0)
+
+- **Section 01 "Product Information"** — replaces old "Product Description". Contains:
+  - Sub-header "Product Description" + textarea
+  - Sub-section "Paint, Texture & Logo": paint finish (gloss/satin/matte/textured/**clear**), RAL codes or Black/White, notes; Logo upload + CMYK/Pantone colors; Material (optional free text)
+- **Section 05 "Features"** — `FeatureSelector` no longer contains paint/logo customization (migrated to 01)
+- **Footnotes** section at end of form — free text textarea, stored in `state.footnotes`
+
 ## One-Pager Generator — Gotchas
 
 - **API route must be dynamic**: `/api/one-pager/config` needs `export const dynamic = 'force-dynamic'` — without it Next.js bakes YAML at build time.
@@ -72,6 +91,10 @@ Single source of truth: `styles/tokens/compulocks.css`
 - **Popover anchoring**: Need `position: relative` on the `chipWrapper` div wrapping trigger + popover — otherwise popovers escape to page bottom.
 - **Logo in DOCX**: `ImageRun` in `Header` paragraph, `TabStopType.RIGHT` for flush-right. Pass `fs.readFileSync` result as `Buffer`.
 - **Logo in HTML export**: Base64-encode buffer, embed as `data:image/png;base64,...` in `<img src>`.
+- **page.tsx split**: `page.tsx` is now a server component (no `'use client'`). All client logic lives in `OnePagerClient.tsx`. Never add hooks to `page.tsx`.
+- **Paint "clear" finish**: No colors needed. Overrides other finishes. Added to `SET_PAINT_FINISH` action payload union and `OnePagerState.customization.paint.finish` type. Also update `one-pager-alpha/page.tsx` if touching the paint type.
+- **Version history snapshots on PATCH**: The `PATCH /api/documents/[id]` route reads the existing doc, pushes old content to `version_history`, then writes new content. Keep snapshot logic there — don't duplicate in client.
+- **`RESTORE_VERSION` action**: Takes a full `OnePagerState` as payload and replaces current state entirely (sets `lastUpdated: Date.now()`). Used by rollback flow.
 
 **Key One-Pager files:**
 - Tokens: `app/one-pager/one-pager-tokens.css`
@@ -80,6 +103,11 @@ Single source of truth: `styles/tokens/compulocks.css`
 - State: `app/one-pager/lib/one-pager-state.ts`, `one-pager-context.tsx`
 - Export: `app/api/one-pager/export/route.ts`
 - Components: `app/one-pager/components/`
+- **NEW** Client entry point: `app/one-pager/OnePagerClient.tsx` (page.tsx is now a server component that resolves admin flag)
+- **NEW** Product info customization: `app/one-pager/components/ProductInfoCustomization.tsx` (paint/logo/material)
+- **NEW** Version history panel: `app/one-pager/components/VersionHistoryPanel.tsx` (admin-only)
+- **NEW** Admin helper: `lib/admin.ts` — `isAdmin(email)`, configurable via `ADMIN_EMAILS` env var
+- **NEW** Version API: `app/api/documents/[id]/versions/route.ts`, `app/api/documents/[id]/rollback/route.ts`
 
 ---
 

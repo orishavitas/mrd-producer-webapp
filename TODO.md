@@ -60,8 +60,26 @@ Spec: `docs/superpowers/specs/2026-04-27-documents-library-design.md`
 > ALTER TABLE prd_documents ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
 > ```
 
+## One-Pager v1.4.0 — Ready to Deploy ✅
+
+Built 2026-05-14. DB migration applied. **Needs commit + push.**
+
+- [x] Section 01 renamed "Product Information", sub-header "Product Description"
+- [x] Paint/Texture/Logo migrated from Section 05 → Section 01 (ProductInfoCustomization)
+- [x] "Clear" paint finish option (overrides colors)
+- [x] Material field (optional free text)
+- [x] Footnotes section (end of form)
+- [x] Version system: 0.x draft / 1.x published, badge in bar, auto-increment on save
+- [x] Version history: PATCH snapshots old content, max 20 entries
+- [x] Rollback API + VersionHistoryPanel (admin-only)
+- [x] Admin gate: lib/admin.ts, ADMIN_EMAILS env var, server component prop
+- [x] DB migration 003 applied to Neon
+- [ ] **NEXT: commit + git push to deploy to Vercel**
+
 ## Future
 
 - Dark mode brand color variants for green tokens
 - Add slogan "DISPLAY. SECURE. ENGAGE." to appropriate UI locations
 - Phase 6: RAG analytics dashboard, embedding refresh cron
+- Export: render footnotes + material in DOCX/HTML export
+- One-Pager: track-changes diff view (show what changed between versions)
