@@ -23,18 +23,12 @@ import {
   createPRDDocument,
   getPipelineRun,
 } from '@/lib/prd-db';
-import type { PRDSkeleton } from '@/agent/agents/prd/types';
 import { OnePagerAnalystAgent } from '@/agent/agents/prd/one-pager-analyst-agent';
 import { PRDArchitectAgent } from '@/agent/agents/prd/prd-architect-agent';
-import { PRDWriterAgent } from '@/agent/agents/prd/prd-writer-agent';
-import { PRDQAAgent } from '@/agent/agents/prd/prd-qa-agent';
 import { createExecutionContext } from '@/agent/core/execution-context';
 
 export const dynamic = 'force-dynamic';
-export const maxDuration = 300;
-
-const POLL_INTERVAL_MS = 3000;
-const APPROVAL_TIMEOUT_MS = 30 * 60 * 1000;
+export const maxDuration = 120; // Phase 1 only: analyst + architect (~1-2 min)
 
 /**
  * Encode object as NDJSON line (JSON + newline).
@@ -158,125 +152,19 @@ export async function POST(req: NextRequest): Promise<NextResponse | Response> {
         controller.enqueue(encode({ type: 'agent_done', agent: 'architect' }));
 
         // =====================================================================
-        // Save skeleton and emit human_gate event
+        // Save skeleton, emit human_gate, close stream.
+        // Phase 2 (Writer + QA) is triggered by POST /[run_id]/resume
+        // after the user approves, avoiding a 30-min held connection.
         // =====================================================================
         await updatePipelineRunStatus(run.id, 'awaiting_approval', {
           skeleton_json: skeleton,
+          agent_progress: { summary },
         });
         controller.enqueue(
           encode({
             type: 'human_gate',
             run_id: run.id,
             skeleton,
-          })
-        );
-
-        // =====================================================================
-        // Poll until approved or timeout (30 minutes)
-        // =====================================================================
-        const deadline = Date.now() + APPROVAL_TIMEOUT_MS;
-        let approvedSkeleton = skeleton;
-        let wasApproved = false;
-
-        while (Date.now() < deadline) {
-          await new Promise((r) => setTimeout(r, POLL_INTERVAL_MS));
-          controller.enqueue(encode({ type: 'heartbeat' }));
-          const fresh = await getPipelineRun(run.id);
-
-          if (!fresh) {
-            throw new Error('Pipeline run not found during polling');
-          }
-
-          if (fresh.status === 'approved') {
-            approvedSkeleton = (fresh.skeleton_json as PRDSkeleton) ?? skeleton;
-            wasApproved = true;
-            controller.enqueue(
-              encode({
-                type: 'approval_confirmed',
-                run_id: run.id,
-              })
-            );
-            break;
-          }
-
-          if (fresh.status === 'failed') {
-            throw new Error('Pipeline run marked as failed');
-          }
-        }
-
-        if (!wasApproved) {
-          throw new Error('Pipeline approval timeout (30 minutes)');
-        }
-
-        // =====================================================================
-        // Agent 3: PRDWriterAgent
-        // =====================================================================
-        controller.enqueue(encode({ type: 'agent_start', agent: 'writer' }));
-        const writerAgent = new PRDWriterAgent();
-        const writerResult = await withHeartbeat(controller, () =>
-          writerAgent.execute(
-            {
-              summary,
-              skeleton: approvedSkeleton,
-              onSectionDone: (frame: { sectionKey: string; content: string }) => {
-                controller.enqueue(
-                  encode({
-                    type: 'section_done',
-                    section: frame.sectionKey,
-                    content: frame.content,
-                  })
-                );
-              },
-            },
-            context
-          )
-        );
-
-        if (!writerResult.success || !writerResult.data) {
-          throw new Error(writerResult.error || 'Writer agent failed');
-        }
-
-        const frames = writerResult.data;
-        controller.enqueue(encode({ type: 'agent_done', agent: 'writer' }));
-
-        // =====================================================================
-        // Agent 4: PRDQAAgent
-        // =====================================================================
-        controller.enqueue(encode({ type: 'agent_start', agent: 'qa' }));
-        const qaAgent = new PRDQAAgent();
-        const qaResult = await withHeartbeat(controller, () =>
-          qaAgent.execute({ frames, productName: summary.productName }, context)
-        );
-
-        if (!qaResult.success || !qaResult.data) {
-          throw new Error(qaResult.error || 'QA agent failed');
-        }
-
-        const qaReport = qaResult.data;
-        controller.enqueue(encode({ type: 'agent_done', agent: 'qa' }));
-
-        // =====================================================================
-        // Save to database
-        // =====================================================================
-        const prdDoc = await createPRDDocument(
-          run.id,
-          documentId,
-          summary.productName,
-          userEmail,
-          qaReport.score,
-          qaReport.suggestions
-        );
-        await savePRDFrames(prdDoc.id, frames);
-        await updatePipelineRunStatus(run.id, 'completed');
-
-        // =====================================================================
-        // Emit completion event
-        // =====================================================================
-        controller.enqueue(
-          encode({
-            type: 'pipeline_done',
-            prd_document_id: prdDoc.id,
-            qa_score: qaReport.score,
           })
         );
         controller.close();

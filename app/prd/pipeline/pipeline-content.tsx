@@ -29,8 +29,40 @@ export function PipelineContent() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [documentId]);
 
+  /** Consume a streaming NDJSON response, calling onEvent for each parsed line. */
+  async function consumeStream(
+    res: Response,
+    onEvent: (event: Record<string, unknown>) => void,
+    terminalEvents: string[]
+  ): Promise<boolean> {
+    const reader = res.body?.getReader();
+    if (!reader) throw new Error('No response stream');
+
+    const decoder = new TextDecoder();
+    let buffer = '';
+    let receivedFinal = false;
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop() ?? '';
+      for (const line of lines) {
+        if (!line.trim()) continue;
+        try {
+          const event = JSON.parse(line);
+          if (terminalEvents.includes(event.type)) receivedFinal = true;
+          onEvent(event);
+        } catch { /* ignore malformed lines */ }
+      }
+    }
+    return receivedFinal;
+  }
+
   async function startPipeline(docId: string) {
     try {
+      // ── Phase 1: Analyst + Architect (closes at human_gate) ──────────────
       const res = await fetch('/api/pipeline/prd/start', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -40,43 +72,36 @@ export function PipelineContent() {
       const rid = res.headers.get('X-Run-Id');
       if (rid) setRunId(rid);
 
-      const reader = res.body?.getReader();
-      if (!reader) throw new Error('No response stream');
-
-      const decoder = new TextDecoder();
-      let buffer = '';
-      let receivedFinalEvent = false;
-
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-
-        buffer += decoder.decode(value, { stream: true });
-        const lines = buffer.split('\n');
-        buffer = lines.pop() ?? '';
-
-        for (const line of lines) {
-          if (!line.trim()) continue;
-          try {
-            const event = JSON.parse(line);
-            if (event.type === 'pipeline_done' || event.type === 'error' || event.type === 'human_gate') {
-              receivedFinalEvent = true;
-            }
-            handleEvent(event);
-          } catch { /* ignore malformed lines */ }
-        }
+      const gotGate = await consumeStream(res, handlePhase1Event, ['human_gate', 'error']);
+      if (!gotGate) {
+        setError('Phase 1 ended unexpectedly. Please try again.');
       }
-
-      // Stream closed without a terminal event — likely a timeout or server error
-      if (!receivedFinalEvent) {
-        setError('The pipeline connection was interrupted. The AI may still be running — please check back in a minute or try again.');
-      }
+      // human_gate handler sets step → 'human_gate'; user then approves via handleApprove
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Pipeline failed');
     }
   }
 
-  function handleEvent(event: Record<string, unknown>) {
+  async function resumePipeline(rid: string) {
+    try {
+      // ── Phase 2: Writer + QA (triggered after approval) ──────────────────
+      const res = await fetch(`/api/pipeline/prd/${rid}/resume`, { method: 'POST' });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error ?? `Resume failed (${res.status})`);
+        return;
+      }
+
+      const gotDone = await consumeStream(res, handlePhase2Event, ['pipeline_done', 'error']);
+      if (!gotDone) {
+        setError('The pipeline connection was interrupted. The AI may still be running — please check back in a minute or try again.');
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Pipeline phase 2 failed');
+    }
+  }
+
+  function handlePhase1Event(event: Record<string, unknown>) {
     const type = event.type as string;
     if (type === 'agent_start') {
       setStep(event.agent as AgentStep);
@@ -84,8 +109,15 @@ export function PipelineContent() {
       setRunId(event.run_id as string);
       setSkeleton(event.skeleton as PRDSkeletonSection[]);
       setStep('human_gate');
-    } else if (type === 'approval_confirmed') {
-      setStep('writer');
+    } else if (type === 'error') {
+      setError(event.message as string);
+    }
+  }
+
+  function handlePhase2Event(event: Record<string, unknown>) {
+    const type = event.type as string;
+    if (type === 'agent_start') {
+      setStep(event.agent as AgentStep);
     } else if (type === 'pipeline_done') {
       router.push(`/prd/${event.prd_document_id}`);
     } else if (type === 'error') {
@@ -96,6 +128,7 @@ export function PipelineContent() {
   async function handleApprove(editedSkeleton: PRDSkeletonSection[]) {
     if (!runId) return;
     try {
+      // Save approved skeleton to DB
       const res = await fetch(`/api/pipeline/prd/${runId}/approve`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -106,7 +139,9 @@ export function PipelineContent() {
         setError(data.error ?? `Approval failed (${res.status})`);
         return;
       }
+      // Open Phase 2 stream
       setStep('writer');
+      await resumePipeline(runId);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Approval failed');
     }

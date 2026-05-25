@@ -1,7 +1,7 @@
 # Graph Report - C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp  (2026-05-25)
 
 ## Corpus Check
-- 240 files · ~724,904 words
+- 240 files · ~725,676 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
