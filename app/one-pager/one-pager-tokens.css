@@ -38,30 +38,37 @@
   --op-info-soft:         rgba(29, 31, 74, 0.06);
   --op-muted:             #5A5C70;
 
-  /* ── Type scale ─────────────────────────────────────────── */
-  --op-fs-xs:    11px;
-  --op-fs-s:     13px;
-  --op-fs-m:     14px;
-  --op-fs-l:     16px;
-  --op-fs-xl:    18px;
-  --op-fs-2xl:   22px;
-  --op-fs-3xl:   28px;
-  --op-fs-4xl:   36px;
+  /* ── Type scale — fluid (clamp: mobile → ultrawide) ────────
+   *   Formula: clamp(min, preferred-vw, max)
+   *   Tuned for 375px (phone) → 2560px (29" WQHD ultrawide).
+   *   preferred-vw is set so the size lands on the midpoint
+   *   (~1280px) naturally and continues growing to max.
+   * ─────────────────────────────────────────────────────── */
+  --op-fs-xs:   clamp(10px,  0.65vw, 12px);   /* labels, chips, badges      */
+  --op-fs-s:    clamp(12px,  0.75vw, 14px);   /* secondary text, hints      */
+  --op-fs-m:    clamp(13px,  0.85vw, 15px);   /* body, inputs               */
+  --op-fs-l:    clamp(14px,  1.00vw, 17px);   /* emphasized body            */
+  --op-fs-xl:   clamp(16px,  1.15vw, 20px);   /* card subheads              */
+  --op-fs-2xl:  clamp(18px,  1.45vw, 24px);   /* section titles             */
+  --op-fs-3xl:  clamp(22px,  1.85vw, 30px);   /* page/panel headings        */
+  --op-fs-4xl:  clamp(28px,  2.50vw, 40px);   /* hero / doc preview h1      */
 
   /* ── Fonts ──────────────────────────────────────────────── */
   --op-font-body:    var(--font-barlow, 'Barlow', 'Segoe UI', Arial, sans-serif);
   --op-font-heading: var(--font-barlow-condensed, 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif);
 
-  /* ── Spacing (4px grid) ─────────────────────────────────── */
-  --op-sp-1:  4px;
-  --op-sp-2:  8px;
-  --op-sp-3:  12px;
-  --op-sp-4:  16px;
-  --op-sp-5:  20px;
-  --op-sp-6:  24px;
-  --op-sp-7:  32px;
-  --op-sp-8:  40px;
-  --op-sp-9:  56px;
+  /* ── Spacing — fluid (4px base grid, scales with viewport) ─
+   *   Same clamp approach: tight on mobile, breathes on large
+   * ─────────────────────────────────────────────────────── */
+  --op-sp-1:  clamp(3px,   0.25vw,  5px);
+  --op-sp-2:  clamp(6px,   0.50vw,  10px);
+  --op-sp-3:  clamp(10px,  0.75vw,  14px);
+  --op-sp-4:  clamp(14px,  1.00vw,  20px);
+  --op-sp-5:  clamp(18px,  1.30vw,  26px);
+  --op-sp-6:  clamp(20px,  1.60vw,  32px);
+  --op-sp-7:  clamp(26px,  2.10vw,  44px);
+  --op-sp-8:  clamp(32px,  2.70vw,  56px);
+  --op-sp-9:  clamp(44px,  3.80vw,  80px);
 
   /* ── Shape ──────────────────────────────────────────────── */
   --op-radius-xs:    6px;
@@ -76,12 +83,12 @@
   --op-shadow-2: 0 2px 6px rgba(29, 31, 74, 0.08), 0 1px 2px rgba(29, 31, 74, 0.04);
   --op-shadow-3: 0 8px 24px rgba(29, 31, 74, 0.10), 0 2px 6px rgba(29, 31, 74, 0.06);
 
-  /* ── Component heights ──────────────────────────────────── */
-  --op-h-input:  40px;
-  --op-h-btn:    36px;
-  --op-h-chip:   30px;
-  --op-h-topbar: 56px;
-  --op-h-bar:    64px;
+  /* ── Component heights — fluid ─────────────────────────── */
+  --op-h-input:  clamp(36px, 2.60vw, 48px);
+  --op-h-btn:    clamp(32px, 2.30vw, 44px);
+  --op-h-chip:   clamp(26px, 1.90vw, 36px);
+  --op-h-topbar: clamp(48px, 3.50vw, 68px);
+  --op-h-bar:    clamp(56px, 4.00vw, 76px);
 
   /* ── Legacy aliases (keep backward compat with chips etc) ── */
   --op-input-height:  var(--op-h-input);
