@@ -45,10 +45,11 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
       parts.push('## Use Cases', '', state.useCases, '');
     }
 
-    if (state.commercials.moq || state.commercials.targetPrice) {
+    if (state.commercials.moq || state.commercials.targetPrice || state.numberOfSamples) {
       parts.push('## Commercials');
       if (state.commercials.moq) parts.push('', `**MOQ:** ${state.commercials.moq}`);
       if (state.commercials.targetPrice) parts.push('', `**Target Price:** ${state.commercials.targetPrice}`);
+      if (state.numberOfSamples) parts.push('', `**Number of Samples:** ${state.numberOfSamples}`);
       parts.push('');
     }
 
@@ -109,11 +110,13 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
         <hr className={styles.docDivider} />
 
         {/* Metadata */}
-        {(state.productName || state.preparedBy || state.userEmail) && (
+        {(state.productName || state.preparedBy || state.userEmail || state.customerName || state.compatibleDevices) && (
           <div className={styles.meta}>
             {state.productName && <span><strong>Product:</strong> {state.productName}</span>}
             {state.preparedBy && <span><strong>Prepared by:</strong> {state.preparedBy}</span>}
             {state.userEmail && <span><strong>Contact:</strong> {state.userEmail}</span>}
+            {state.customerName && !state.customerNameSkipped && <span><strong>Customer:</strong> {state.customerName}</span>}
+            {state.compatibleDevices && !state.compatibleDevicesSkipped && <span><strong>Compatible Devices:</strong> {state.compatibleDevices}</span>}
           </div>
         )}
 
@@ -170,6 +173,36 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
                   <p className={styles.body}><a href={comp.url}>View product</a></p>
                 </div>
               ))}
+            </div>
+          )}
+
+          {/* Reference Photos (Section 08) */}
+          {(state.referencePhotos?.length > 0 || state.additionalNotes) && !state.skippedSections?.['referencePhotos'] && (
+            <div className={styles.section}>
+              <h2 className={styles.sectionHeading} data-design={design}>Reference Photos</h2>
+              {design === 'm3' && <div className={styles.sectionRule} />}
+              {state.referencePhotos?.map((photo) => (
+                <figure key={photo.id} style={{ margin: '0 0 12px' }}>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={photo.url}
+                    alt="Reference photo"
+                    style={{ maxWidth: '100%', maxHeight: '220px', objectFit: 'contain', borderRadius: '6px', display: 'block' }}
+                    onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                  />
+                  {photo.notes && (
+                    <figcaption className={styles.body} style={{ marginTop: '4px', color: 'var(--op-on-surface-muted)' }}>
+                      {photo.notes}
+                    </figcaption>
+                  )}
+                </figure>
+              ))}
+              {state.additionalNotes && (
+                <>
+                  <h3 className={styles.competitorName}>Additional Notes</h3>
+                  <p className={styles.body}>{state.additionalNotes}</p>
+                </>
+              )}
             </div>
           )}
         </div>

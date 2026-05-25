@@ -28,6 +28,12 @@ export interface CompetitorEntry {
   photoUrls: string[];
 }
 
+export interface ReferencePhotoEntry {
+  id: string;
+  url: string;
+  notes: string;
+}
+
 export interface OnePagerData {
   description: string;
   goal: string;
@@ -53,6 +59,17 @@ export interface OnePagerData {
   preparedBy?: string;
   userEmail?: string;
   featureLayout?: 'sideBySide' | 'stacked';
+  // Feature 4 — new fields
+  compatibleDevices?: string;
+  customerName?: string;
+  compatibleDevicesSkipped?: boolean;
+  customerNameSkipped?: boolean;
+  numberOfSamples?: string;
+  // Section 08 — Reference Photos
+  referencePhotos?: ReferencePhotoEntry[];
+  additionalNotes?: string;
+  // Section skip map
+  skippedSections?: Record<string, boolean>;
 }
 
 const BRAND = {
@@ -182,7 +199,9 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
   if (data.productName) children.push(labelValue('Product', data.productName));
   if (data.preparedBy) children.push(labelValue('Prepared By', data.preparedBy));
   if (data.userEmail) children.push(labelValue('Contact', data.userEmail));
-  if (data.productName || data.preparedBy || data.userEmail) {
+  if (data.customerName && !data.customerNameSkipped) children.push(labelValue('Customer', data.customerName));
+  if (data.compatibleDevices && !data.compatibleDevicesSkipped) children.push(labelValue('Compatible Devices', data.compatibleDevices));
+  if (data.productName || data.preparedBy || data.userEmail || (data.customerName && !data.customerNameSkipped) || (data.compatibleDevices && !data.compatibleDevicesSkipped)) {
     children.push(new Paragraph({ spacing: { after: 120 } }));
   }
 
@@ -256,6 +275,7 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
   const commercialItems: Paragraph[] = [];
   if (data.commercials.moq) commercialItems.push(labelValue('MOQ', data.commercials.moq));
   if (data.commercials.targetPrice) commercialItems.push(labelValue('Target Price', data.commercials.targetPrice));
+  if (data.numberOfSamples) commercialItems.push(labelValue('Number of Samples', data.numberOfSamples));
   if (commercialItems.length > 0) {
     addSection('Commercials', commercialItems);
   }
@@ -333,6 +353,84 @@ async function buildDocxChildren(data: OnePagerData): Promise<Paragraph[]> {
       );
     }
     addSection('Competitors', compItems);
+  }
+
+  // Section 08 — Reference Photos
+  const refPhotos = (data.referencePhotos ?? []).filter(p => p.url);
+  const isRefSkipped = data.skippedSections?.['referencePhotos'];
+  if (!isRefSkipped && (refPhotos.length > 0 || data.additionalNotes)) {
+    const refItems: Paragraph[] = [];
+    for (const photo of refPhotos) {
+      try {
+        let imgData: Buffer;
+        let imgType: 'jpg' | 'png' | 'gif' | 'bmp' = 'jpg';
+        if (photo.url.startsWith('data:')) {
+          const mime = photo.url.split(';')[0].split('/')[1];
+          if (mime === 'png') imgType = 'png';
+          else if (mime === 'gif') imgType = 'gif';
+          else if (mime === 'bmp') imgType = 'bmp';
+          const base64 = photo.url.split(',')[1];
+          imgData = Buffer.from(base64, 'base64');
+        } else {
+          const lowerUrl = photo.url.toLowerCase();
+          if (lowerUrl.includes('.png')) imgType = 'png';
+          else if (lowerUrl.includes('.gif')) imgType = 'gif';
+          else if (lowerUrl.includes('.bmp')) imgType = 'bmp';
+          const imgRes = await fetch(photo.url);
+          imgData = Buffer.from(await imgRes.arrayBuffer());
+        }
+        refItems.push(
+          new Paragraph({
+            children: [
+              new ImageRun({
+                type: imgType,
+                data: imgData,
+                transformation: { width: 240, height: 160 },
+              }),
+            ],
+            spacing: { after: 60 },
+          })
+        );
+      } catch {
+        // skip photo if fetch/decode fails
+      }
+      if (photo.notes) {
+        refItems.push(
+          new Paragraph({
+            children: [
+              new TextRun({
+                text: photo.notes,
+                font: BRAND.fonts.body,
+                size: BRAND.sizes.small,
+                color: BRAND.colors.muted,
+                italics: true,
+              }),
+            ],
+            spacing: { after: 80 },
+          })
+        );
+      }
+    }
+    if (data.additionalNotes) {
+      refItems.push(
+        new Paragraph({
+          children: [
+            new TextRun({
+              text: 'Additional Notes',
+              font: BRAND.fonts.heading,
+              size: BRAND.sizes.heading3,
+              bold: true,
+              color: BRAND.colors.highlight,
+            }),
+          ],
+          spacing: { before: 120, after: 60 },
+        })
+      );
+      refItems.push(textPara(data.additionalNotes));
+    }
+    if (refItems.length > 0) {
+      addSection('Reference Photos', refItems);
+    }
   }
 
   return children;
@@ -600,10 +698,12 @@ export function generateOnePagerHtml(data: OnePagerData): string {
   <h1>Marketing Requirement Document</h1>
   ${logoSrc ? `<img src="${logoSrc}" alt="Compulocks" class="doc-logo">` : ''}
 </div>
-${(data.productName || data.preparedBy || data.userEmail) ? `<div class="doc-meta">
+${(data.productName || data.preparedBy || data.userEmail || (data.customerName && !data.customerNameSkipped) || (data.compatibleDevices && !data.compatibleDevicesSkipped)) ? `<div class="doc-meta">
   ${data.productName ? `<p><span class="label">Product:</span> ${data.productName}</p>` : ''}
   ${data.preparedBy ? `<p><span class="label">Prepared By:</span> ${data.preparedBy}</p>` : ''}
   ${data.userEmail ? `<p><span class="label">Contact:</span> <a href="mailto:${data.userEmail}">${data.userEmail}</a></p>` : ''}
+  ${(data.customerName && !data.customerNameSkipped) ? `<p><span class="label">Customer:</span> ${data.customerName}</p>` : ''}
+  ${(data.compatibleDevices && !data.compatibleDevicesSkipped) ? `<p><span class="label">Compatible Devices:</span> ${data.compatibleDevices}</p>` : ''}
 </div>` : ''}
 `;
 
@@ -670,11 +770,12 @@ ${(data.productName || data.preparedBy || data.userEmail) ? `<div class="doc-met
     }
   }
 
-  const hasCommercials = data.commercials.moq || data.commercials.targetPrice;
+  const hasCommercials = data.commercials.moq || data.commercials.targetPrice || data.numberOfSamples;
   if (hasCommercials) {
     html += '<h2>Commercials</h2>\n';
     if (data.commercials.moq) html += `<p><span class="label">MOQ:</span> ${esc(data.commercials.moq)}</p>\n`;
     if (data.commercials.targetPrice) html += `<p><span class="label">Target Price:</span> ${esc(data.commercials.targetPrice)}</p>\n`;
+    if (data.numberOfSamples) html += `<p><span class="label">Number of Samples:</span> ${esc(data.numberOfSamples)}</p>\n`;
   }
 
   const doneCompetitors = data.competitors.filter((c) => c.status === 'done');
@@ -692,6 +793,22 @@ ${(data.productName || data.preparedBy || data.userEmail) ? `<div class="doc-met
       if (comp.cost) html += `<p><span class="label">Price:</span> ${esc(comp.cost)}</p>\n`;
       if (comp.description) html += `<p>${esc(comp.description)}</p>\n`;
       html += `<p><a href="${esc(comp.url)}" target="_blank">View product</a></p>\n`;
+    }
+  }
+
+  // Section 08 — Reference Photos
+  const refPhotosHtml = (data.referencePhotos ?? []).filter(p => p.url);
+  const isRefSkippedHtml = data.skippedSections?.['referencePhotos'];
+  if (!isRefSkippedHtml && (refPhotosHtml.length > 0 || data.additionalNotes)) {
+    html += '<h2>Reference Photos</h2>\n';
+    for (const photo of refPhotosHtml) {
+      html += `<figure style="margin:0 0 12px">\n`;
+      html += `<img src="${esc(photo.url)}" alt="Reference photo" style="max-width:100%;max-height:220px;object-fit:contain;border-radius:4px;display:block">\n`;
+      if (photo.notes) html += `<figcaption style="font-size:10pt;color:#666;margin-top:4px">${esc(photo.notes)}</figcaption>\n`;
+      html += `</figure>\n`;
+    }
+    if (data.additionalNotes) {
+      html += `<h3>Additional Notes</h3>\n<p>${esc(data.additionalNotes)}</p>\n`;
     }
   }
 

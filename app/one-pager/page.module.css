@@ -398,6 +398,50 @@
   padding: 2px 8px;
 }
 
+/* ---------- Skip / Not Relevant toggle ---------- */
+.skipBtn {
+  height: 22px;
+  padding: 0 var(--op-sp-3);
+  border-radius: var(--op-radius-full);
+  border: 1.5px solid var(--op-outline);
+  background: transparent;
+  color: var(--op-on-surface-muted);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+  margin-left: auto;
+  align-self: center;
+}
+.skipBtn:hover {
+  border-color: var(--op-warning, #B86F00);
+  color: var(--op-warning, #B86F00);
+}
+.skipBtnActive {
+  composes: skipBtn;
+  background: rgba(0, 153, 102, 0.1);
+  border-color: var(--op-accent);
+  color: var(--op-accent);
+}
+.skipBtnActive:hover {
+  background: rgba(0, 153, 102, 0.18);
+  border-color: var(--op-accent);
+  color: var(--op-accent);
+}
+
+/* Field header row — for fields with inline "Not relevant" toggle */
+.fieldHeaderRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--op-sp-2);
+}
+
 /* ---------- Validation banner ---------- */
 .validationBanner {
   background: rgba(184, 111, 0, 0.08);

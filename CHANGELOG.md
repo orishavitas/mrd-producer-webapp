@@ -1,5 +1,28 @@
 # Changelog
 
+## [1.5.0] - 2026-05-25
+
+### Added
+- **Section 08 — Reference Photos** — new section with per-photo upload (via `PhotoPicker`) + notes field; Additional Notes sub-section at the bottom; `ReferencePhotosSection` component.
+- **Section Navigation** — sticky horizontal pill bar (`SectionNavMenu`) at top of left scroll area; IntersectionObserver tracks active section; skipped sections dimmed.
+- **MissingInfoWidget** — persistent completion badge (replaces old progress bar) with floating panel listing all 13 sections, done/skip status, per-section "Not Relevant" checkbox.
+- **Major version scheme** — Publish now bumps major version (`0.x→1.0`, `1.x→2.0`, etc.) via `bumpMajorVersion` in publish route; Save Draft stays minor-bump (`bumpMinorVersion`).
+- **Compatible Devices field** — new Document Info field with N/A toggle; stored in `state.compatibleDevices` / `state.compatibleDevicesSkipped`.
+- **Customer Name field** — new Document Info field with N/A toggle; stored in `state.customerName` / `state.customerNameSkipped`.
+- **Number of Samples field** — new Commercials field; stored in `state.numberOfSamples`.
+- **Section-level "Not relevant" toggles** — Goal, Where, Who, Use Cases, Features, Competitors, Reference Photos all get N/A buttons via `skippedSections` state map; sections collapse when marked N/A; nav pill dims.
+- `app/one-pager/components/ReferencePhotosSection.tsx` + `.module.css` — photo list with per-photo notes.
+- `app/one-pager/components/SectionNavMenu.tsx` + `.module.css` — sticky section nav.
+- `app/one-pager/components/MissingInfoWidget.tsx` + `.module.css` — completion widget.
+
+### Changed
+- **`OnePagerData` interface** (export lib) — extended with `compatibleDevices`, `customerName`, `numberOfSamples`, `referencePhotos`, `additionalNotes`, `skippedSections`.
+- **DOCX export** — meta block adds Customer + Compatible Devices; Commercials adds Number of Samples; Section 08 Reference Photos with embedded images + notes + Additional Notes.
+- **HTML export** — same additions as DOCX.
+- **`DocumentPreview`** — meta row shows Customer + Compatible Devices; Commercials shows Number of Samples; Reference Photos section with figure/figcaption per photo.
+- **Publish route** — replaced minor-bump with `bumpMajorVersion`; snapshots content into `version_history` on every publish.
+- **`getCompletionSections`** — expanded from 9 → 13 sections; all sections now carry `key` + `skippable` fields.
+
 ## [1.4.0] - 2026-05-14
 
 ### Added

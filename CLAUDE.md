@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-**Version: 1.4.0** — One-Pager restructured: Product Information section, Paint/Texture/Logo migrated from section 05, version system (0.x draft / 1.x published), footnotes, admin rollback.
+**Version: 1.5.0** — One-Pager v1.5: Section 08 Reference Photos, sticky section nav, MissingInfoWidget completion badge, major version scheme (publish bumps major), Compatible Devices/Customer Name/Number of Samples fields, per-section N/A toggles.
 
 Three production tools:
 1. **Main MRD Producer** (`/mrd`) — AI-powered 12-section MRD via Gemini Search grounding.

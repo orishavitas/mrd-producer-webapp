@@ -60,9 +60,9 @@ Spec: `docs/superpowers/specs/2026-04-27-documents-library-design.md`
 > ALTER TABLE prd_documents ADD COLUMN IF NOT EXISTS deleted_at timestamptz;
 > ```
 
-## One-Pager v1.4.0 — Ready to Deploy ✅
+## One-Pager v1.4.0 — DEPLOYED ✅
 
-Built 2026-05-14. DB migration applied. **Needs commit + push.**
+Built 2026-05-14. Committed + pushed 2026-05-25. Auto-deployed to Vercel via CI.
 
 - [x] Section 01 renamed "Product Information", sub-header "Product Description"
 - [x] Paint/Texture/Logo migrated from Section 05 → Section 01 (ProductInfoCustomization)
@@ -74,7 +74,22 @@ Built 2026-05-14. DB migration applied. **Needs commit + push.**
 - [x] Rollback API + VersionHistoryPanel (admin-only)
 - [x] Admin gate: lib/admin.ts, ADMIN_EMAILS env var, server component prop
 - [x] DB migration 003 applied to Neon
-- [ ] **NEXT: commit + git push to deploy to Vercel**
+- [x] Committed + pushed to main (commit c353564f, 2026-05-25)
+
+## One-Pager v1.5.0 — COMPLETE ✅
+
+Built 2026-05-25.
+
+- [x] Section 08 — Reference Photos (ReferencePhotosSection component + state)
+- [x] SectionNavMenu — sticky horizontal pill nav with IntersectionObserver
+- [x] MissingInfoWidget — persistent completion badge replaces progress bar
+- [x] Major version scheme — publish bumps major (0.x→1.0, 1.x→2.0)
+- [x] Compatible Devices + Customer Name fields in Document Info (N/A toggles)
+- [x] Number of Samples in Commercials
+- [x] Per-section N/A toggles (Goal, Where, Who, Use Cases, Features, Competitors, Reference Photos)
+- [x] Export: DOCX + HTML updated with all new fields + Section 08
+- [x] DocumentPreview updated with new meta fields + Reference Photos section
+- [x] Build: 0 TypeScript errors
 
 ## Future
 

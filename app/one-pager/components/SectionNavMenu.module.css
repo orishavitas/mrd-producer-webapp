@@ -1,0 +1,77 @@
+.nav {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  background: var(--op-bg, #FBFAFD);
+  padding: var(--op-sp-2) 0 var(--op-sp-2);
+  margin-bottom: var(--op-sp-5);
+  border-bottom: 1px solid var(--op-outline-soft);
+}
+
+.pills {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding-bottom: 2px;
+}
+.pills::-webkit-scrollbar { display: none; }
+
+/* Base pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 28px;
+  padding: 0 var(--op-sp-3);
+  border-radius: var(--op-radius-full);
+  border: 1.5px solid var(--op-outline);
+  background: transparent;
+  color: var(--op-on-surface-muted);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.pill:hover {
+  border-color: var(--op-primary);
+  color: var(--op-primary);
+  background: rgba(29, 31, 74, 0.05);
+}
+
+/* Active pill */
+.pillActive {
+  composes: pill;
+  background: var(--op-primary);
+  color: var(--op-on-primary, #fff);
+  border-color: var(--op-primary);
+}
+.pillActive:hover {
+  background: var(--op-secondary);
+  border-color: var(--op-secondary);
+  color: #fff;
+}
+
+/* Dimmed (skipped section) */
+.pillDimmed {
+  composes: pill;
+  opacity: 0.38;
+}
+.pillDimmed:hover {
+  opacity: 0.6;
+  border-color: var(--op-outline);
+  color: var(--op-on-surface-muted);
+  background: transparent;
+}
+
+/* Section number prefix */
+.pillNumber {
+  font-size: 10px;
+  opacity: 0.7;
+  font-variant-numeric: tabular-nums;
+}

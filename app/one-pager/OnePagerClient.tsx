@@ -14,8 +14,11 @@ import DraftWarningBanner from './components/DraftWarningBanner';
 import type { FeatureCategory } from './components/FeatureSelector';
 import ProductInfoCustomization from './components/ProductInfoCustomization';
 import VersionHistoryPanel from './components/VersionHistoryPanel';
+import ReferencePhotosSection from './components/ReferencePhotosSection';
+import SectionNavMenu from './components/SectionNavMenu';
+import MissingInfoWidget from './components/MissingInfoWidget';
 import { useCallback, useEffect, useState } from 'react';
-import { getCompletionSections, OnePagerState } from './lib/one-pager-state';
+import { getCompletionSections, bumpMinorVersion, OnePagerState, ReferencePhotoEntry } from './lib/one-pager-state';
 import Link from 'next/link';
 import './one-pager-tokens.css';
 import styles from './page.module.css';
@@ -24,14 +27,6 @@ interface ConfigData {
   environments: { id: string; label: string }[];
   industries: { id: string; label: string }[];
   standardFeatures: FeatureCategory[];
-}
-
-function bumpDraftVersion(v: string): string {
-  if (v.startsWith('0.')) {
-    const minor = parseInt(v.split('.')[1] ?? '1', 10);
-    return `0.${minor + 1}`;
-  }
-  return v; // published versions don't auto-bump on save
 }
 
 function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
@@ -118,7 +113,7 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
 
   const handleSaveDraft = useCallback(async () => {
     setIsSaving(true);
-    const nextVersion = bumpDraftVersion(state.version);
+    const nextVersion = bumpMinorVersion(state.version);
     try {
       const title = state.productName || 'Untitled One-Pager';
       if (!state.documentId) {
@@ -237,8 +232,13 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
 
   const isWorking = isExporting !== null || isSaving || isPublishing;
 
+  const skippedSections = state.skippedSections ?? {};
+
   const leftPanel = (
     <div className={styles.inputSections}>
+      {/* Sticky section nav */}
+      <SectionNavMenu skippedSections={skippedSections} />
+
       {/* Draft warning banner */}
       {!state.isPublished && state.documentId !== null && !bannerDismissed && (
         <DraftWarningBanner onDismiss={() => setBannerDismissed(true)} />
@@ -251,13 +251,11 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
         </div>
       )}
 
-      {/* Document Metadata */}
-      <div className={styles.formSection}>
+      {/* Document Info */}
+      <div id="section-documentInfo" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
-            <div>
-              <h3 className={styles.sectionTitle}>Document Info</h3>
-            </div>
+            <h3 className={styles.sectionTitle}>Document Info</h3>
           </div>
           <div className={styles.sectionRule} />
         </div>
@@ -294,11 +292,53 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
               className={styles.textInput}
             />
           </div>
+
+          {/* Compatible Devices */}
+          <div className={styles.fieldHeaderRow}>
+            <label className={styles.fieldLabel}>Compatible Device(s)</label>
+            <button
+              type="button"
+              className={state.compatibleDevicesSkipped ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'SET_COMPATIBLE_DEVICES_SKIPPED', payload: !state.compatibleDevicesSkipped })}
+            >
+              {state.compatibleDevicesSkipped ? '✓ N/A' : 'N/A'}
+            </button>
+          </div>
+          {!state.compatibleDevicesSkipped && (
+            <input
+              type="text"
+              value={state.compatibleDevices ?? ''}
+              onChange={(e) => dispatch({ type: 'SET_COMPATIBLE_DEVICES', payload: e.target.value })}
+              placeholder='e.g., iPad 10th gen, iPad Pro 12.9"'
+              className={styles.textInput}
+            />
+          )}
+
+          {/* Customer Name */}
+          <div className={styles.fieldHeaderRow}>
+            <label className={styles.fieldLabel}>Customer Name</label>
+            <button
+              type="button"
+              className={state.customerNameSkipped ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'SET_CUSTOMER_NAME_SKIPPED', payload: !state.customerNameSkipped })}
+            >
+              {state.customerNameSkipped ? '✓ N/A' : 'N/A'}
+            </button>
+          </div>
+          {!state.customerNameSkipped && (
+            <input
+              type="text"
+              value={state.customerName ?? ''}
+              onChange={(e) => dispatch({ type: 'SET_CUSTOMER_NAME', payload: e.target.value })}
+              placeholder="e.g., Acme Corporation"
+              className={styles.textInput}
+            />
+          )}
         </div>
       </div>
 
-      {/* Section 1: Product Information */}
-      <div className={styles.formSection}>
+      {/* Section 01: Product Information */}
+      <div id="section-productDescription" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>01</span>
@@ -307,7 +347,6 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
           <div className={styles.sectionRule} />
         </div>
         <div className={styles.card}>
-          {/* Sub-header: Product Description */}
           <div className={styles.subhead}>Product Description</div>
           <TextFieldWithExpand
             label=""
@@ -316,8 +355,6 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
             placeholder="Describe your product concept..."
             field="description"
           />
-
-          {/* Sub-section: Paint, Texture & Logo */}
           <ProductInfoCustomization
             customization={state.customization}
             dispatch={dispatch}
@@ -325,127 +362,172 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
         </div>
       </div>
 
-      {/* Section 2: Goal */}
-      <div className={styles.formSection}>
+      {/* Section 02: Goal */}
+      <div id="section-goal" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>02</span>
             <h3 className={styles.sectionTitle}>Goal</h3>
+            <button
+              type="button"
+              className={skippedSections['goal'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'goal' })}
+            >
+              {skippedSections['goal'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.card}>
-          <TextFieldWithExpand
-            label=""
-            value={state.goal}
-            onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
-            placeholder="What is the goal of this product?"
-            field="goal"
-          />
-        </div>
+        {!skippedSections['goal'] && (
+          <div className={styles.card}>
+            <TextFieldWithExpand
+              label=""
+              value={state.goal}
+              onChange={(v) => dispatch({ type: 'SET_GOAL', payload: v })}
+              placeholder="What is the goal of this product?"
+              field="goal"
+            />
+          </div>
+        )}
       </div>
 
-      {/* Section 3: Where */}
-      <div className={styles.formSection}>
+      {/* Section 03: Where */}
+      <div id="section-where" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>03</span>
             <h3 className={styles.sectionTitle}>Where</h3>
+            <button
+              type="button"
+              className={skippedSections['where'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'where' })}
+            >
+              {skippedSections['where'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.card}>
-          {config ? (
-            <>
-              <CheckboxGroup
-                label="Environment"
-                options={config.environments}
-                selected={state.context.environments}
-                onToggle={(id) => dispatch({ type: 'TOGGLE_ENVIRONMENT', payload: id })}
-              />
-              <CheckboxGroup
-                label="Industry"
-                options={config.industries}
-                selected={state.context.industries}
-                onToggle={(id) => dispatch({ type: 'TOGGLE_INDUSTRY', payload: id })}
-              />
-            </>
-          ) : (
-            <p className={styles.loading}>Loading options…</p>
-          )}
-        </div>
+        {!skippedSections['where'] && (
+          <div className={styles.card}>
+            {config ? (
+              <>
+                <CheckboxGroup
+                  label="Environment"
+                  options={config.environments}
+                  selected={state.context.environments}
+                  onToggle={(id) => dispatch({ type: 'TOGGLE_ENVIRONMENT', payload: id })}
+                />
+                <CheckboxGroup
+                  label="Industry"
+                  options={config.industries}
+                  selected={state.context.industries}
+                  onToggle={(id) => dispatch({ type: 'TOGGLE_INDUSTRY', payload: id })}
+                />
+              </>
+            ) : (
+              <p className={styles.loading}>Loading options…</p>
+            )}
+          </div>
+        )}
       </div>
 
-      {/* Section 4: Who */}
-      <div className={styles.formSection}>
+      {/* Section 04: Who */}
+      <div id="section-who" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>04</span>
             <h3 className={styles.sectionTitle}>Who</h3>
+            <button
+              type="button"
+              className={skippedSections['who'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'who' })}
+            >
+              {skippedSections['who'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.sectionCard}>
-          <DynamicRoleSelector
-            selectedIndustries={state.context.industries}
-            selectedRoles={state.audience.predefined}
-            customRoles={state.audience.custom}
-            onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
-            onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
-            onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
-          />
-        </div>
+        {!skippedSections['who'] && (
+          <div className={styles.sectionCard}>
+            <DynamicRoleSelector
+              selectedIndustries={state.context.industries}
+              selectedRoles={state.audience.predefined}
+              customRoles={state.audience.custom}
+              onToggleRole={(role) => dispatch({ type: 'TOGGLE_ROLE', payload: role })}
+              onAddCustom={(role) => dispatch({ type: 'ADD_CUSTOM_ROLE', payload: role })}
+              onRemoveCustom={(role) => dispatch({ type: 'REMOVE_CUSTOM_ROLE', payload: role })}
+            />
+          </div>
+        )}
       </div>
 
       {/* Use Cases */}
-      <div className={styles.formSection}>
+      <div id="section-useCases" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <h3 className={styles.sectionTitle}>Use Cases</h3>
+            <button
+              type="button"
+              className={skippedSections['useCases'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'useCases' })}
+            >
+              {skippedSections['useCases'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.card}>
-          <TextFieldWithExpand
-            label=""
-            value={state.useCases}
-            onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
-            placeholder="Describe how the device will be used in practice…"
-            field="useCases"
-          />
-        </div>
+        {!skippedSections['useCases'] && (
+          <div className={styles.card}>
+            <TextFieldWithExpand
+              label=""
+              value={state.useCases}
+              onChange={(v) => dispatch({ type: 'SET_USE_CASES', payload: v })}
+              placeholder="Describe how the device will be used in practice…"
+              field="useCases"
+            />
+          </div>
+        )}
       </div>
 
-      {/* Section 5: Features */}
-      <div className={styles.formSection}>
+      {/* Section 05: Features */}
+      <div id="section-features" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>05</span>
             <h3 className={styles.sectionTitle}>Features</h3>
+            <button
+              type="button"
+              className={skippedSections['features'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'features' })}
+            >
+              {skippedSections['features'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.card}>
-          <FeatureSelector
-            categories={config?.standardFeatures ?? []}
-            mustHave={state.features.mustHave}
-            niceToHave={state.features.niceToHave}
-            onToggle={(label, category) =>
-              dispatch({ type: 'ADD_FEATURE', payload: { category, feature: label } })
-            }
-            onRemove={(label, category) =>
-              dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
-            }
-            onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
-            isAutoFilling={isAutoFilling}
-            layout={featureLayout}
-            onLayoutChange={setFeatureLayout}
-          />
-        </div>
+        {!skippedSections['features'] && (
+          <div className={styles.card}>
+            <FeatureSelector
+              categories={config?.standardFeatures ?? []}
+              mustHave={state.features.mustHave}
+              niceToHave={state.features.niceToHave}
+              onToggle={(label, category) =>
+                dispatch({ type: 'ADD_FEATURE', payload: { category, feature: label } })
+              }
+              onRemove={(label, category) =>
+                dispatch({ type: 'REMOVE_FEATURE', payload: { category, feature: label } })
+              }
+              onAutoFill={state.description.length >= 20 || state.expandedDescription.length >= 20 ? handleAutoFill : undefined}
+              isAutoFilling={isAutoFilling}
+              layout={featureLayout}
+              onLayoutChange={setFeatureLayout}
+            />
+          </div>
+        )}
       </div>
 
-      {/* Section 6: Commercials */}
-      <div className={styles.formSection}>
+      {/* Section 06: Commercials */}
+      <div id="section-commercials" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>06</span>
@@ -476,44 +558,100 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
               />
             </div>
           </div>
+          <div className={styles.field}>
+            <label className={styles.fieldLabel}>Number of Samples</label>
+            <input
+              type="text"
+              value={state.numberOfSamples ?? ''}
+              onChange={(e) => dispatch({ type: 'SET_NUMBER_OF_SAMPLES', payload: e.target.value })}
+              placeholder="e.g., 5"
+              className={styles.textInput}
+            />
+          </div>
         </div>
       </div>
 
-      {/* Section 7: Competitors */}
-      <div className={styles.formSection}>
+      {/* Section 07: Competitors */}
+      <div id="section-competitors" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <span className={styles.sectionNumber}>07</span>
             <h3 className={styles.sectionTitle}>Competitors</h3>
+            <button
+              type="button"
+              className={skippedSections['competitors'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'competitors' })}
+            >
+              {skippedSections['competitors'] ? '✓ N/A' : 'N/A'}
+            </button>
           </div>
           <div className={styles.sectionRule} />
         </div>
-        <div className={styles.sectionCard}>
-          <CompetitorInput
-            competitors={state.competitors}
-            onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
-            onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
-            onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
-            onCandidates={(url, candidates) =>
-              dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
-            }
-            renderPhotoPicker={(comp) =>
-              comp.status === 'done' ? (
-                <PhotoPicker
-                  candidates={comp.candidatePhotos ?? []}
-                  selected={comp.photoUrls}
-                  onSelect={(photoUrl) =>
-                    dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
-                  }
-                />
-              ) : null
-            }
-          />
+        {!skippedSections['competitors'] && (
+          <div className={styles.sectionCard}>
+            <CompetitorInput
+              competitors={state.competitors}
+              onAdd={(url) => dispatch({ type: 'ADD_COMPETITOR', payload: { url } })}
+              onUpdate={(url, data) => dispatch({ type: 'UPDATE_COMPETITOR', payload: { url, data } })}
+              onRemove={(url) => dispatch({ type: 'REMOVE_COMPETITOR', payload: url })}
+              onCandidates={(url, candidates) =>
+                dispatch({ type: 'SET_COMPETITOR_CANDIDATES', payload: { url, candidatePhotos: candidates } })
+              }
+              renderPhotoPicker={(comp) =>
+                comp.status === 'done' ? (
+                  <PhotoPicker
+                    candidates={comp.candidatePhotos ?? []}
+                    selected={comp.photoUrls}
+                    onSelect={(photoUrl) =>
+                      dispatch({ type: 'TOGGLE_COMPETITOR_PHOTO', payload: { url: comp.url, photoUrl } })
+                    }
+                  />
+                ) : null
+              }
+            />
+          </div>
+        )}
+      </div>
+
+      {/* Section 08: Reference Photos */}
+      <div id="section-referencePhotos" className={styles.formSection}>
+        <div className={styles.sectionHead}>
+          <div className={styles.sectionHeadRow}>
+            <span className={styles.sectionNumber}>08</span>
+            <h3 className={styles.sectionTitle}>Reference Photos</h3>
+            <button
+              type="button"
+              className={skippedSections['referencePhotos'] ? styles.skipBtnActive : styles.skipBtn}
+              onClick={() => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: 'referencePhotos' })}
+            >
+              {skippedSections['referencePhotos'] ? '✓ N/A' : 'N/A'}
+            </button>
+          </div>
+          <div className={styles.sectionRule} />
         </div>
+        {!skippedSections['referencePhotos'] && (
+          <div className={styles.card}>
+            <ReferencePhotosSection
+              photos={state.referencePhotos ?? []}
+              onAdd={(photo: ReferencePhotoEntry) => dispatch({ type: 'ADD_REFERENCE_PHOTO', payload: photo })}
+              onRemove={(id: string) => dispatch({ type: 'REMOVE_REFERENCE_PHOTO', payload: id })}
+              onUpdateNotes={(id: string, notes: string) => dispatch({ type: 'UPDATE_REFERENCE_PHOTO_NOTES', payload: { id, notes } })}
+              onUpdateUrl={(id: string, url: string) => dispatch({ type: 'UPDATE_REFERENCE_PHOTO_URL', payload: { id, url } })}
+            />
+            <div className={styles.subhead} style={{ marginTop: 'var(--op-sp-5)' }}>Additional Notes</div>
+            <textarea
+              value={state.additionalNotes ?? ''}
+              onChange={(e) => dispatch({ type: 'SET_ADDITIONAL_NOTES', payload: e.target.value })}
+              placeholder="Any additional notes, context, or references for these photos…"
+              className={styles.textareaInput}
+              rows={4}
+            />
+          </div>
+        )}
       </div>
 
       {/* Footnotes */}
-      <div className={styles.formSection}>
+      <div id="section-footnotes" className={styles.formSection}>
         <div className={styles.sectionHead}>
           <div className={styles.sectionHeadRow}>
             <h3 className={styles.sectionTitle}>Footnotes</h3>
@@ -604,10 +742,12 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
         </button>
       </div>
       <div className={styles.progressWrap}>
-        <div className={styles.progressBar}>
-          <div className={styles.progressFill} style={{ width: `${completionPct}%` }} />
-        </div>
-        <span className={styles.progressLabel}>{completionDone}/{completionTotal}</span>
+        <MissingInfoWidget
+          sections={completionSections}
+          onToggleSkip={(key) => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: key })}
+          onTogglePaintSkip={() => dispatch({ type: 'SET_PAINT_SKIPPED', payload: !state.customization.paintSkipped })}
+          onToggleLogoSkip={() => dispatch({ type: 'SET_LOGO_SKIPPED', payload: !state.customization.logoSkipped })}
+        />
         <span className={styles.versionBadge} title={state.isPublished ? 'Published' : 'Draft'}>
           v{state.version}
         </span>

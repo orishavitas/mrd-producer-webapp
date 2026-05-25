@@ -10,6 +10,12 @@ export interface CompetitorEntry {
   scrapeTier?: 'basic' | 'standard' | 'deep';
 }
 
+export interface ReferencePhotoEntry {
+  id: string;      // crypto.randomUUID()
+  url: string;     // data: URI or remote URL
+  notes: string;
+}
+
 export interface OnePagerState {
   sessionId: string;
   lastUpdated: number;
@@ -50,6 +56,23 @@ export interface OnePagerState {
     material: string;            // optional free text (nice-to-have)
   };
 
+  // Section 08 — Reference Photos
+  referencePhotos: ReferencePhotoEntry[];
+  additionalNotes: string;
+
+  // Feature 4 — new Document Info fields
+  compatibleDevices: string;
+  customerName: string;
+  compatibleDevicesSkipped: boolean;
+  customerNameSkipped: boolean;
+
+  // Commercials extra
+  numberOfSamples: string;
+
+  // Features 5 & 6 — centralized section skip map
+  // Keys: 'goal' | 'where' | 'who' | 'useCases' | 'features' | 'competitors' | 'referencePhotos'
+  skippedSections: Record<string, boolean>;
+
   // Document metadata
   productName: string;
   preparedBy: string;
@@ -58,7 +81,7 @@ export interface OnePagerState {
   // Footnotes — free text at end of document
   footnotes: string;
 
-  // Version — 0.x = draft, 1.x = published
+  // Version — 0.x = draft, 1.x = first published, 2.x = re-published, etc.
   version: string;
   versionHistory: { version: string; savedAt: number; contentJson: Record<string, unknown> }[];
 
@@ -66,6 +89,8 @@ export interface OnePagerState {
   documentId: string | null;
   isPublished: boolean;
 }
+
+export type CompletionSection = { key: string; label: string; done: boolean; skippable: boolean };
 
 export type OnePagerAction =
   | { type: 'SET_DESCRIPTION'; payload: string }
@@ -109,7 +134,21 @@ export type OnePagerAction =
   | { type: 'SET_FOOTNOTES'; payload: string }
   | { type: 'SET_VERSION'; payload: string }
   | { type: 'PUSH_VERSION_HISTORY'; payload: { version: string; savedAt: number; contentJson: Record<string, unknown> } }
-  | { type: 'RESTORE_VERSION'; payload: OnePagerState };
+  | { type: 'RESTORE_VERSION'; payload: OnePagerState }
+  // Section 08 — Reference Photos
+  | { type: 'ADD_REFERENCE_PHOTO'; payload: ReferencePhotoEntry }
+  | { type: 'REMOVE_REFERENCE_PHOTO'; payload: string }            // id
+  | { type: 'UPDATE_REFERENCE_PHOTO_NOTES'; payload: { id: string; notes: string } }
+  | { type: 'UPDATE_REFERENCE_PHOTO_URL'; payload: { id: string; url: string } }
+  | { type: 'SET_ADDITIONAL_NOTES'; payload: string }
+  // Feature 4 — new fields
+  | { type: 'SET_COMPATIBLE_DEVICES'; payload: string }
+  | { type: 'SET_CUSTOMER_NAME'; payload: string }
+  | { type: 'SET_NUMBER_OF_SAMPLES'; payload: string }
+  | { type: 'SET_COMPATIBLE_DEVICES_SKIPPED'; payload: boolean }
+  | { type: 'SET_CUSTOMER_NAME_SKIPPED'; payload: boolean }
+  // Features 5 & 6 — section skip
+  | { type: 'TOGGLE_SECTION_SKIP'; payload: string };
 
 function generateSessionId(): string {
   return `onepager-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
@@ -138,6 +177,14 @@ export function createInitialState(): OnePagerState {
       paintSkipped: false,
       material: '',
     },
+    referencePhotos: [],
+    additionalNotes: '',
+    compatibleDevices: '',
+    customerName: '',
+    compatibleDevicesSkipped: false,
+    customerNameSkipped: false,
+    numberOfSamples: '',
+    skippedSections: {},
     footnotes: '',
     version: '0.1',
     versionHistory: [],
@@ -389,43 +436,156 @@ export function onePagerReducer(state: OnePagerState, action: OnePagerAction): O
     case 'RESTORE_VERSION':
       return { ...action.payload, lastUpdated: Date.now() };
 
+    // ── Section 08 ──────────────────────────────────────────────────────────
+    case 'ADD_REFERENCE_PHOTO':
+      return { ...base, referencePhotos: [...(base.referencePhotos ?? []), action.payload] };
+
+    case 'REMOVE_REFERENCE_PHOTO':
+      return { ...base, referencePhotos: (base.referencePhotos ?? []).filter((p) => p.id !== action.payload) };
+
+    case 'UPDATE_REFERENCE_PHOTO_NOTES':
+      return {
+        ...base,
+        referencePhotos: (base.referencePhotos ?? []).map((p) =>
+          p.id === action.payload.id ? { ...p, notes: action.payload.notes } : p
+        ),
+      };
+
+    case 'UPDATE_REFERENCE_PHOTO_URL':
+      return {
+        ...base,
+        referencePhotos: (base.referencePhotos ?? []).map((p) =>
+          p.id === action.payload.id ? { ...p, url: action.payload.url } : p
+        ),
+      };
+
+    case 'SET_ADDITIONAL_NOTES':
+      return { ...base, additionalNotes: action.payload };
+
+    // ── Feature 4 ───────────────────────────────────────────────────────────
+    case 'SET_COMPATIBLE_DEVICES':
+      return { ...base, compatibleDevices: action.payload };
+
+    case 'SET_CUSTOMER_NAME':
+      return { ...base, customerName: action.payload };
+
+    case 'SET_NUMBER_OF_SAMPLES':
+      return { ...base, numberOfSamples: action.payload };
+
+    case 'SET_COMPATIBLE_DEVICES_SKIPPED':
+      return { ...base, compatibleDevicesSkipped: action.payload };
+
+    case 'SET_CUSTOMER_NAME_SKIPPED':
+      return { ...base, customerNameSkipped: action.payload };
+
+    // ── Features 5 & 6 ──────────────────────────────────────────────────────
+    case 'TOGGLE_SECTION_SKIP': {
+      const sk = base.skippedSections ?? {};
+      return { ...base, skippedSections: { ...sk, [action.payload]: !sk[action.payload] } };
+    }
+
     default:
       return state;
   }
 }
 
-export function getCompletionSections(state: OnePagerState): { label: string; done: boolean }[] {
+export function getCompletionSections(state: OnePagerState): CompletionSection[] {
   const c = state.customization;
+  const sk = state.skippedSections ?? {};
   return [
     {
+      key: 'documentInfo',
       label: 'Document Info',
-      done: state.productName.trim().length > 0 && state.preparedBy.trim().length > 0 && state.userEmail.trim().length > 0,
+      skippable: false,
+      done: state.productName.trim().length > 0 && state.preparedBy.trim().length > 0,
     },
     {
+      key: 'productDescription',
       label: 'Product Description',
+      skippable: false,
       done: (state.description || state.expandedDescription).trim().length > 0,
     },
     {
-      label: 'Where (env + industry)',
-      done: state.context.environments.length > 0 && state.context.industries.length > 0,
+      key: 'goal',
+      label: 'Goal',
+      skippable: true,
+      done: !!sk['goal'] || (state.goal || state.expandedGoal).trim().length > 0,
     },
     {
-      label: 'Features (screen/orientation/placement)',
-      done: [...state.features.mustHave, ...state.features.niceToHave].some(
+      key: 'where',
+      label: 'Where',
+      skippable: true,
+      done: !!sk['where'] || (state.context.environments.length > 0 && state.context.industries.length > 0),
+    },
+    {
+      key: 'who',
+      label: 'Who',
+      skippable: true,
+      done: !!sk['who'] || [...state.audience.predefined, ...state.audience.custom].length > 0,
+    },
+    {
+      key: 'useCases',
+      label: 'Use Cases',
+      skippable: true,
+      done: !!sk['useCases'] || (state.useCases || state.expandedUseCases).trim().length > 0,
+    },
+    {
+      key: 'features',
+      label: 'Features',
+      skippable: true,
+      done: !!sk['features'] || [...state.features.mustHave, ...state.features.niceToHave].some(
         (f) => /screen|orientation|placement/i.test(f)
       ),
     },
     {
+      key: 'logo',
       label: 'Logo & Color',
-      done: c.logoSkipped || (c.logoFileName.length > 0 && c.logoColors.length > 0),
+      skippable: true,
+      done: c.logoSkipped || !!sk['logo'] || (c.logoFileName.length > 0 && c.logoColors.length > 0),
     },
     {
+      key: 'paint',
       label: 'Paint',
-      done: c.paintSkipped || c.paint.finish.length > 0,
+      skippable: true,
+      done: c.paintSkipped || !!sk['paint'] || c.paint.finish.length > 0,
     },
     {
+      key: 'commercials',
       label: 'MOQ',
-      done: state.commercials.moq.trim().length > 0,
+      skippable: true,
+      done: !!sk['commercials'] || state.commercials.moq.trim().length > 0,
+    },
+    {
+      key: 'competitors',
+      label: 'Competitors',
+      skippable: true,
+      done: !!sk['competitors'] || state.competitors.length > 0,
+    },
+    {
+      key: 'compatibleDevices',
+      label: 'Compatible Devices',
+      skippable: true,
+      done: state.compatibleDevicesSkipped || !!sk['compatibleDevices'] || (state.compatibleDevices ?? '').trim().length > 0,
+    },
+    {
+      key: 'customerName',
+      label: 'Customer Name',
+      skippable: true,
+      done: state.customerNameSkipped || !!sk['customerName'] || (state.customerName ?? '').trim().length > 0,
     },
   ];
+}
+
+/** Save when draft (0.1→0.2) or edit after publish (1.0→1.1, 2.3→2.4 etc.) */
+export function bumpMinorVersion(v: string): string {
+  const parts = v.split('.');
+  const major = parseInt(parts[0] ?? '0', 10);
+  const minor = parseInt(parts[1] ?? '0', 10);
+  return `${major}.${minor + 1}`;
+}
+
+/** Publish: bumps major, resets minor (0.x→1.0, 1.x→2.0, 2.x→3.0) */
+export function bumpMajorVersion(v: string): string {
+  const major = parseInt(v.split('.')[0] ?? '0', 10);
+  return `${major + 1}.0`;
 }

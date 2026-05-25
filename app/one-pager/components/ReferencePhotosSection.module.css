@@ -1,0 +1,205 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-4);
+}
+
+/* ── Photo list ── */
+.photoList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--op-sp-4);
+}
+
+.photoCard {
+  position: relative;
+  background: var(--op-surface-2, #F4F4F8);
+  border: 1px solid var(--op-outline-soft);
+  border-radius: var(--op-radius-m);
+  padding: var(--op-sp-4);
+}
+
+.photoCardInner {
+  display: flex;
+  gap: var(--op-sp-4);
+  align-items: flex-start;
+}
+
+/* Remove button — top-right corner */
+.removeBtn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 24px;
+  height: 24px;
+  border-radius: var(--op-radius-full);
+  border: 1.5px solid var(--op-outline);
+  background: var(--op-surface);
+  color: var(--op-on-surface-muted);
+  font-size: 14px;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  flex-shrink: 0;
+}
+.removeBtn:hover {
+  background: #ffeaea;
+  border-color: #c0392b;
+  color: #c0392b;
+}
+
+/* Thumbnail */
+.thumbWrap {
+  width: 100px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: var(--op-radius-s);
+  overflow: hidden;
+  background: var(--op-surface-3, #ECEDF2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.thumb {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Notes area */
+.notesWrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+  padding-right: var(--op-sp-5); /* room for remove button */
+}
+
+.notesLabel {
+  font-size: var(--op-fs-xs);
+  font-weight: 500;
+  color: var(--op-on-surface-muted);
+  letter-spacing: 0.01em;
+}
+
+.notesTextarea {
+  width: 100%;
+  padding: var(--op-sp-2) var(--op-sp-3);
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);
+  font-size: var(--op-fs-s);
+  font-family: var(--op-font-body);
+  background: var(--op-surface);
+  color: var(--op-on-surface);
+  resize: vertical;
+  min-height: 60px;
+  box-sizing: border-box;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.notesTextarea::placeholder { color: var(--op-on-surface-faint); }
+.notesTextarea:focus {
+  outline: none;
+  border-color: var(--op-primary);
+  box-shadow: 0 0 0 3px rgba(29, 31, 74, 0.10);
+}
+
+.urlInput {
+  width: 100%;
+  height: 32px;
+  padding: 0 var(--op-sp-3);
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-s);
+  font-size: var(--op-fs-xs);
+  font-family: var(--op-font-body);
+  background: var(--op-surface);
+  color: var(--op-on-surface-muted);
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+.urlInput:disabled {
+  background: var(--op-surface-2, #F4F4F8);
+  color: var(--op-on-surface-faint);
+  cursor: not-allowed;
+}
+.urlInput:not(:disabled):focus {
+  outline: none;
+  border-color: var(--op-primary);
+}
+
+/* ── Picker ── */
+.pickerWrap {
+  border: 1.5px solid var(--op-outline);
+  border-radius: var(--op-radius-m);
+  padding: var(--op-sp-4);
+  background: var(--op-surface-2, #F4F4F8);
+}
+
+.pickerHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--op-sp-3);
+}
+
+.pickerTitle {
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-s);
+  font-weight: 600;
+  color: var(--op-primary);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.cancelBtn {
+  height: 26px;
+  padding: 0 var(--op-sp-3);
+  border-radius: var(--op-radius-full);
+  border: 1.5px solid var(--op-outline);
+  background: transparent;
+  color: var(--op-on-surface-muted);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+.cancelBtn:hover {
+  border-color: var(--op-primary);
+  color: var(--op-primary);
+}
+
+/* ── Add button ── */
+.addBtn {
+  height: 36px;
+  padding: 0 var(--op-sp-5);
+  border-radius: var(--op-radius-full);
+  border: 1.5px dashed var(--op-outline);
+  background: transparent;
+  color: var(--op-on-surface-muted);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-s);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  align-self: flex-start;
+}
+.addBtn:hover {
+  border-color: var(--op-accent);
+  color: var(--op-accent);
+  background: rgba(0, 153, 102, 0.06);
+}
+
+@media (max-width: 600px) {
+  .photoCardInner { flex-direction: column; }
+  .thumbWrap { width: 100%; height: 160px; }
+  .notesWrap { padding-right: 0; }
+}

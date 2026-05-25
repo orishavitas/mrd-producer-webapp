@@ -9,7 +9,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\jest.config.js",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_jest_config_js",
-      "community": 84,
+      "community": 85,
       "norm_label": "jest.config.js"
     },
     {
@@ -18,7 +18,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\jest.setup.js",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_jest_setup_js",
-      "community": 85,
+      "community": 86,
       "norm_label": "jest.setup.js"
     },
     {
@@ -27,7 +27,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\middleware.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_middleware_ts",
-      "community": 55,
+      "community": 54,
       "norm_label": "middleware.ts"
     },
     {
@@ -36,7 +36,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\middleware.ts",
       "source_location": "L6",
       "id": "middleware_isallowed",
-      "community": 55,
+      "community": 54,
       "norm_label": "isallowed()"
     },
     {
@@ -45,7 +45,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\next-env.d.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_next_env_d_ts",
-      "community": 86,
+      "community": 87,
       "norm_label": "next-env.d.ts"
     },
     {
@@ -54,7 +54,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\next.config.js",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_next_config_js",
-      "community": 87,
+      "community": 88,
       "norm_label": "next.config.js"
     },
     {
@@ -63,7 +63,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\postcss.config.js",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_postcss_config_js",
-      "community": 88,
+      "community": 89,
       "norm_label": "postcss.config.js"
     },
     {
@@ -72,7 +72,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_workflow_ts",
-      "community": 3,
+      "community": 2,
       "norm_label": "workflow.ts"
     },
     {
@@ -81,7 +81,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L63",
       "id": "workflow_executeworkflow",
-      "community": 3,
+      "community": 2,
       "norm_label": "executeworkflow()"
     },
     {
@@ -90,7 +90,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L117",
       "id": "workflow_executestage",
-      "community": 3,
+      "community": 2,
       "norm_label": "executestage()"
     },
     {
@@ -99,7 +99,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L147",
       "id": "workflow_executeparserequest",
-      "community": 3,
+      "community": 2,
       "norm_label": "executeparserequest()"
     },
     {
@@ -108,7 +108,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L214",
       "id": "workflow_executegapanalysis",
-      "community": 3,
+      "community": 2,
       "norm_label": "executegapanalysis()"
     },
     {
@@ -117,7 +117,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L257",
       "id": "workflow_executeclarify",
-      "community": 3,
+      "community": 2,
       "norm_label": "executeclarify()"
     },
     {
@@ -126,7 +126,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L296",
       "id": "workflow_executeresearch",
-      "community": 3,
+      "community": 2,
       "norm_label": "executeresearch()"
     },
     {
@@ -135,7 +135,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L382",
       "id": "workflow_getmockresearchresults",
-      "community": 3,
+      "community": 2,
       "norm_label": "getmockresearchresults()"
     },
     {
@@ -144,7 +144,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L396",
       "id": "workflow_executegeneratemrd",
-      "community": 3,
+      "community": 2,
       "norm_label": "executegeneratemrd()"
     },
     {
@@ -153,7 +153,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L456",
       "id": "workflow_buildfinalresponse",
-      "community": 3,
+      "community": 2,
       "norm_label": "buildfinalresponse()"
     },
     {
@@ -162,7 +162,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L484",
       "id": "workflow_executemultiagentworkflow",
-      "community": 3,
+      "community": 2,
       "norm_label": "executemultiagentworkflow()"
     },
     {
@@ -171,7 +171,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L536",
       "id": "workflow_extractproductname",
-      "community": 3,
+      "community": 2,
       "norm_label": "extractproductname()"
     },
     {
@@ -180,7 +180,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L542",
       "id": "workflow_inferproductcategory",
-      "community": 3,
+      "community": 2,
       "norm_label": "inferproductcategory()"
     },
     {
@@ -189,7 +189,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L553",
       "id": "workflow_infertargetmarkets",
-      "community": 3,
+      "community": 2,
       "norm_label": "infertargetmarkets()"
     },
     {
@@ -198,7 +198,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L567",
       "id": "workflow_extractusecases",
-      "community": 3,
+      "community": 2,
       "norm_label": "extractusecases()"
     },
     {
@@ -207,7 +207,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L580",
       "id": "workflow_extracttargetprice",
-      "community": 3,
+      "community": 2,
       "norm_label": "extracttargetprice()"
     },
     {
@@ -216,7 +216,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\workflow.ts",
       "source_location": "L597",
       "id": "workflow_extracttechnicalrequirements",
-      "community": 3,
+      "community": 2,
       "norm_label": "extracttechnicalrequirements()"
     },
     {
@@ -270,7 +270,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\mrd-generator-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_mrd_generator_agent_ts",
-      "community": 3,
+      "community": 2,
       "norm_label": "mrd-generator-agent.ts"
     },
     {
@@ -279,7 +279,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\mrd-generator-agent.ts",
       "source_location": "L67",
       "id": "mrd_generator_agent_mrdgeneratoragent",
-      "community": 3,
+      "community": 2,
       "norm_label": "mrdgeneratoragent"
     },
     {
@@ -288,7 +288,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\mrd-generator-agent.ts",
       "source_location": "L83",
       "id": "mrd_generator_agent_mrdgeneratoragent_validateinput",
-      "community": 3,
+      "community": 2,
       "norm_label": ".validateinput()"
     },
     {
@@ -297,7 +297,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\mrd-generator-agent.ts",
       "source_location": "L125",
       "id": "mrd_generator_agent_mrdgeneratoragent_executecore",
-      "community": 3,
+      "community": 2,
       "norm_label": ".executecore()"
     },
     {
@@ -405,7 +405,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_brief_batch_extraction_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "batch-extraction-agent.ts"
     },
     {
@@ -414,7 +414,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L110",
       "id": "batch_extraction_agent_batchextractionagent",
-      "community": 2,
+      "community": 1,
       "norm_label": "batchextractionagent"
     },
     {
@@ -423,7 +423,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L129",
       "id": "batch_extraction_agent_batchextractionagent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": ".validateinput()"
     },
     {
@@ -432,7 +432,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L155",
       "id": "batch_extraction_agent_batchextractionagent_executecore",
-      "community": 2,
+      "community": 1,
       "norm_label": ".executecore()"
     },
     {
@@ -441,7 +441,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L231",
       "id": "batch_extraction_agent_batchextractionagent_buildsystemprompt",
-      "community": 2,
+      "community": 1,
       "norm_label": ".buildsystemprompt()"
     },
     {
@@ -450,7 +450,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L279",
       "id": "batch_extraction_agent_batchextractionagent_builduserprompt",
-      "community": 2,
+      "community": 1,
       "norm_label": ".builduserprompt()"
     },
     {
@@ -459,7 +459,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L293",
       "id": "batch_extraction_agent_batchextractionagent_extractfielddata",
-      "community": 2,
+      "community": 1,
       "norm_label": ".extractfielddata()"
     },
     {
@@ -468,7 +468,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L314",
       "id": "batch_extraction_agent_batchextractionagent_extractbulletpoints",
-      "community": 2,
+      "community": 1,
       "norm_label": ".extractbulletpoints()"
     },
     {
@@ -477,7 +477,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L325",
       "id": "batch_extraction_agent_batchextractionagent_extractentities",
-      "community": 2,
+      "community": 1,
       "norm_label": ".extractentities()"
     },
     {
@@ -486,7 +486,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\batch-extraction-agent.ts",
       "source_location": "L362",
       "id": "batch_extraction_agent_batchextractionagent_calculateconfidence",
-      "community": 2,
+      "community": 1,
       "norm_label": ".calculateconfidence()"
     },
     {
@@ -495,7 +495,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_brief_expansion_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "expansion-agent.ts"
     },
     {
@@ -504,7 +504,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L94",
       "id": "expansion_agent_expansionagent",
-      "community": 2,
+      "community": 1,
       "norm_label": "expansionagent"
     },
     {
@@ -513,7 +513,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L109",
       "id": "expansion_agent_expansionagent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": ".validateinput()"
     },
     {
@@ -522,7 +522,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L150",
       "id": "expansion_agent_expansionagent_executecore",
-      "community": 2,
+      "community": 1,
       "norm_label": ".executecore()"
     },
     {
@@ -531,7 +531,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L199",
       "id": "expansion_agent_expansionagent_buildsystemprompt",
-      "community": 2,
+      "community": 1,
       "norm_label": ".buildsystemprompt()"
     },
     {
@@ -540,7 +540,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L229",
       "id": "expansion_agent_expansionagent_builduserprompt",
-      "community": 2,
+      "community": 1,
       "norm_label": ".builduserprompt()"
     },
     {
@@ -549,7 +549,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\expansion-agent.ts",
       "source_location": "L299",
       "id": "expansion_agent_expansionagent_parseresponse",
-      "community": 2,
+      "community": 1,
       "norm_label": ".parseresponse()"
     },
     {
@@ -720,7 +720,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\brief\\types.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_brief_types_ts",
-      "community": 89,
+      "community": 90,
       "norm_label": "types.ts"
     },
     {
@@ -810,7 +810,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\generators\\index.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_generators_index_ts",
-      "community": 90,
+      "community": 91,
       "norm_label": "index.ts"
     },
     {
@@ -1251,7 +1251,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\one-pager-beta\\rag-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_one_pager_beta_rag_agent_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "rag-agent.ts"
     },
     {
@@ -1260,7 +1260,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\one-pager-beta\\rag-agent.ts",
       "source_location": "L31",
       "id": "rag_agent_ragagent",
-      "community": 1,
+      "community": 0,
       "norm_label": "ragagent"
     },
     {
@@ -1269,7 +1269,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\one-pager-beta\\rag-agent.ts",
       "source_location": "L36",
       "id": "rag_agent_ragagent_ingest",
-      "community": 1,
+      "community": 0,
       "norm_label": ".ingest()"
     },
     {
@@ -1278,7 +1278,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\one-pager-beta\\rag-agent.ts",
       "source_location": "L69",
       "id": "rag_agent_ragagent_retrieve",
-      "community": 1,
+      "community": 0,
       "norm_label": ".retrieve()"
     },
     {
@@ -1287,7 +1287,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\one-pager-analyst-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_one_pager_analyst_agent_ts",
-      "community": 33,
+      "community": 32,
       "norm_label": "one-pager-analyst-agent.ts"
     },
     {
@@ -1296,7 +1296,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\one-pager-analyst-agent.ts",
       "source_location": "L19",
       "id": "one_pager_analyst_agent_onepageranalystagent",
-      "community": 33,
+      "community": 32,
       "norm_label": "onepageranalystagent"
     },
     {
@@ -1305,7 +1305,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\one-pager-analyst-agent.ts",
       "source_location": "L26",
       "id": "one_pager_analyst_agent_onepageranalystagent_validateinput",
-      "community": 33,
+      "community": 32,
       "norm_label": ".validateinput()"
     },
     {
@@ -1314,7 +1314,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\one-pager-analyst-agent.ts",
       "source_location": "L33",
       "id": "one_pager_analyst_agent_onepageranalystagent_executecore",
-      "community": 33,
+      "community": 32,
       "norm_label": ".executecore()"
     },
     {
@@ -1323,7 +1323,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\one-pager-analyst-agent.ts",
       "source_location": "L40",
       "id": "one_pager_analyst_agent_onepageranalystagent_normalise",
-      "community": 33,
+      "community": 32,
       "norm_label": ".normalise()"
     },
     {
@@ -1332,7 +1332,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-architect-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_prd_architect_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "prd-architect-agent.ts"
     },
     {
@@ -1341,7 +1341,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-architect-agent.ts",
       "source_location": "L36",
       "id": "prd_architect_agent_prdarchitectagent",
-      "community": 2,
+      "community": 1,
       "norm_label": "prdarchitectagent"
     },
     {
@@ -1350,7 +1350,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-architect-agent.ts",
       "source_location": "L43",
       "id": "prd_architect_agent_prdarchitectagent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": ".validateinput()"
     },
     {
@@ -1359,7 +1359,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-architect-agent.ts",
       "source_location": "L50",
       "id": "prd_architect_agent_prdarchitectagent_executecore",
-      "community": 2,
+      "community": 1,
       "norm_label": ".executecore()"
     },
     {
@@ -1368,7 +1368,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-qa-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_prd_qa_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "prd-qa-agent.ts"
     },
     {
@@ -1377,7 +1377,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-qa-agent.ts",
       "source_location": "L33",
       "id": "prd_qa_agent_prdqaagent",
-      "community": 2,
+      "community": 1,
       "norm_label": "prdqaagent"
     },
     {
@@ -1386,7 +1386,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-qa-agent.ts",
       "source_location": "L40",
       "id": "prd_qa_agent_prdqaagent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": ".validateinput()"
     },
     {
@@ -1395,7 +1395,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-qa-agent.ts",
       "source_location": "L51",
       "id": "prd_qa_agent_prdqaagent_executecore",
-      "community": 2,
+      "community": 1,
       "norm_label": ".executecore()"
     },
     {
@@ -1404,7 +1404,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-writer-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_prd_writer_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "prd-writer-agent.ts"
     },
     {
@@ -1413,7 +1413,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-writer-agent.ts",
       "source_location": "L31",
       "id": "prd_writer_agent_prdwriteragent",
-      "community": 2,
+      "community": 1,
       "norm_label": "prdwriteragent"
     },
     {
@@ -1422,7 +1422,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-writer-agent.ts",
       "source_location": "L41",
       "id": "prd_writer_agent_prdwriteragent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": ".validateinput()"
     },
     {
@@ -1431,7 +1431,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-writer-agent.ts",
       "source_location": "L57",
       "id": "prd_writer_agent_prdwriteragent_builduserprompt",
-      "community": 2,
+      "community": 1,
       "norm_label": ".builduserprompt()"
     },
     {
@@ -1440,7 +1440,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\prd-writer-agent.ts",
       "source_location": "L94",
       "id": "prd_writer_agent_prdwriteragent_executecore",
-      "community": 2,
+      "community": 1,
       "norm_label": ".executecore()"
     },
     {
@@ -1449,7 +1449,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\types.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_types_ts",
-      "community": 91,
+      "community": 92,
       "norm_label": "types.ts"
     },
     {
@@ -1458,7 +1458,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\utils.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_prd_utils_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "utils.ts"
     },
     {
@@ -1467,7 +1467,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\prd\\utils.ts",
       "source_location": "L5",
       "id": "utils_stripmarkdown",
-      "community": 2,
+      "community": 1,
       "norm_label": "stripmarkdown()"
     },
     {
@@ -1602,7 +1602,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\research\\index.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_research_index_ts",
-      "community": 92,
+      "community": 93,
       "norm_label": "index.ts"
     },
     {
@@ -1800,7 +1800,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\agents\\reviewers\\index.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_agents_reviewers_index_ts",
-      "community": 93,
+      "community": 94,
       "norm_label": "index.ts"
     },
     {
@@ -1962,7 +1962,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_core_base_agent_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "base-agent.ts"
     },
     {
@@ -1971,7 +1971,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L46",
       "id": "base_agent_execute",
-      "community": 2,
+      "community": 1,
       "norm_label": "execute()"
     },
     {
@@ -1980,7 +1980,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L127",
       "id": "base_agent_validateinput",
-      "community": 2,
+      "community": 1,
       "norm_label": "validateinput()"
     },
     {
@@ -1989,7 +1989,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L135",
       "id": "base_agent_cleanup",
-      "community": 2,
+      "community": 1,
       "norm_label": "cleanup()"
     },
     {
@@ -1998,7 +1998,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L142",
       "id": "base_agent_executewithtimeout",
-      "community": 2,
+      "community": 1,
       "norm_label": "executewithtimeout()"
     },
     {
@@ -2007,7 +2007,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L180",
       "id": "base_agent_tryfallback",
-      "community": 2,
+      "community": 1,
       "norm_label": "tryfallback()"
     },
     {
@@ -2016,7 +2016,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L245",
       "id": "base_agent_createfallbackcontext",
-      "community": 2,
+      "community": 1,
       "norm_label": "createfallbackcontext()"
     },
     {
@@ -2025,7 +2025,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L258",
       "id": "base_agent_createmetadata",
-      "community": 2,
+      "community": 1,
       "norm_label": "createmetadata()"
     },
     {
@@ -2034,7 +2034,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L271",
       "id": "base_agent_createfailureresult",
-      "community": 2,
+      "community": 1,
       "norm_label": "createfailureresult()"
     },
     {
@@ -2043,7 +2043,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L303",
       "id": "base_agent_executeparallel",
-      "community": 2,
+      "community": 1,
       "norm_label": "executeparallel()"
     },
     {
@@ -2052,7 +2052,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\base-agent.ts",
       "source_location": "L332",
       "id": "base_agent_executesequence",
-      "community": 2,
+      "community": 1,
       "norm_label": "executesequence()"
     },
     {
@@ -2124,7 +2124,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\execution-context.ts",
       "source_location": "L140",
       "id": "execution_context_executioncontextimpl_getprovider",
-      "community": 2,
+      "community": 1,
       "norm_label": ".getprovider()"
     },
     {
@@ -2169,7 +2169,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\agent\\core\\types.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_agent_core_types_ts",
-      "community": 94,
+      "community": 95,
       "norm_label": "types.ts"
     },
     {
@@ -2637,7 +2637,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\layout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_layout_tsx",
-      "community": 56,
+      "community": 55,
       "norm_label": "layout.tsx"
     },
     {
@@ -2646,7 +2646,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\layout.tsx",
       "source_location": "L36",
       "id": "layout_rootlayout",
-      "community": 56,
+      "community": 55,
       "norm_label": "rootlayout()"
     },
     {
@@ -2655,7 +2655,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_page_tsx",
-      "community": 95,
+      "community": 96,
       "norm_label": "page.tsx"
     },
     {
@@ -2664,7 +2664,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\access-denied\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_access_denied_page_tsx",
-      "community": 96,
+      "community": 97,
       "norm_label": "page.tsx"
     },
     {
@@ -2673,7 +2673,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\auth\\[...nextauth]\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_auth_nextauth_route_ts",
-      "community": 97,
+      "community": 98,
       "norm_label": "route.ts"
     },
     {
@@ -2682,7 +2682,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\batch-extract\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_brief_batch_extract_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2691,7 +2691,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\gaps\\route.ts",
       "source_location": "L58",
       "id": "route_validaterequest",
-      "community": 1,
+      "community": 0,
       "norm_label": "validaterequest()"
     },
     {
@@ -2700,7 +2700,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\workflow\\route.ts",
       "source_location": "L25",
       "id": "route_post",
-      "community": 1,
+      "community": 0,
       "norm_label": "post()"
     },
     {
@@ -2709,7 +2709,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\gaps\\route.ts",
       "source_location": "L194",
       "id": "route_options",
-      "community": 1,
+      "community": 0,
       "norm_label": "options()"
     },
     {
@@ -2718,7 +2718,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\expand\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_brief_expand_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2727,7 +2727,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\extract\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_brief_extract_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2736,7 +2736,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\brief\\gaps\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_brief_gaps_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2745,7 +2745,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -2754,7 +2754,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\workflow\\route.ts",
       "source_location": "L83",
       "id": "route_get",
-      "community": 0,
+      "community": 3,
       "norm_label": "get()"
     },
     {
@@ -2790,7 +2790,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\export\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_export_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -2799,7 +2799,34 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
-      "community": 1,
+      "community": 0,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "bumpToPublished()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
+      "source_location": "L5",
+      "id": "route_bumptopublished",
+      "community": 0,
+      "norm_label": "bumptopublished()"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\rollback\\route.ts",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_rollback_route_ts",
+      "community": 0,
+      "norm_label": "route.ts"
+    },
+    {
+      "label": "route.ts",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\versions\\route.ts",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_versions_route_ts",
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -2808,7 +2835,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\download\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_download_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2817,7 +2844,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\drive\\sync\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_drive_sync_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2826,7 +2853,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\generate\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_generate_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2835,7 +2862,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\config\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_config_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -2844,7 +2871,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\expand\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_expand_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2853,7 +2880,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\export\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_export_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2862,7 +2889,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\extract-competitor\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_extract_competitor_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2871,7 +2898,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\suggest-features\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_suggest_features_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2880,7 +2907,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\suggest-features\\route.ts",
       "source_location": "L50",
       "id": "route_builduserprompt",
-      "community": 1,
+      "community": 0,
       "norm_label": "builduserprompt()"
     },
     {
@@ -2889,7 +2916,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\log-document\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_beta_log_document_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2898,7 +2925,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\rag-backfill\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_beta_rag_backfill_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2907,7 +2934,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\rag-backfill\\route.ts",
       "source_location": "L13",
       "id": "route_getsheets",
-      "community": 1,
+      "community": 0,
       "norm_label": "getsheets()"
     },
     {
@@ -2916,7 +2943,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\setup-sheet\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_beta_setup_sheet_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2925,7 +2952,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\suggest-features\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_beta_suggest_features_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2934,7 +2961,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\suggest-features\\route.ts",
       "source_location": "L37",
       "id": "route_buildragcontext",
-      "community": 1,
+      "community": 0,
       "norm_label": "buildragcontext()"
     },
     {
@@ -2943,7 +2970,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager-beta\\wizard-fill\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_one_pager_beta_wizard_fill_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2952,7 +2979,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_pipeline_prd_start_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2961,7 +2988,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
       "source_location": "L42",
       "id": "route_encode",
-      "community": 1,
+      "community": 0,
       "norm_label": "encode()"
     },
     {
@@ -2970,7 +2997,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
       "source_location": "L50",
       "id": "route_withheartbeat",
-      "community": 1,
+      "community": 0,
       "norm_label": "withheartbeat()"
     },
     {
@@ -2979,7 +3006,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\[run_id]\\approve\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_pipeline_prd_run_id_approve_route_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "route.ts"
     },
     {
@@ -2997,7 +3024,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\[run_id]\\export\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_pipeline_prd_run_id_export_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -3006,7 +3033,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\[run_id]\\status\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_pipeline_prd_run_id_status_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -3015,7 +3042,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\workflow\\route.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_workflow_route_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "route.ts"
     },
     {
@@ -3024,7 +3051,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\layout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_layout_tsx",
-      "community": 57,
+      "community": 56,
       "norm_label": "layout.tsx"
     },
     {
@@ -3033,7 +3060,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\layout.tsx",
       "source_location": "L18",
       "id": "layout_briefhelperlayout",
-      "community": 57,
+      "community": 56,
       "norm_label": "briefhelperlayout()"
     },
     {
@@ -3069,7 +3096,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\AIExpansionPanel.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_aiexpansionpanel_tsx",
-      "community": 34,
+      "community": 33,
       "norm_label": "aiexpansionpanel.tsx"
     },
     {
@@ -3078,7 +3105,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\AIExpansionPanel.tsx",
       "source_location": "L85",
       "id": "aiexpansionpanel_sendinitialmessage",
-      "community": 34,
+      "community": 33,
       "norm_label": "sendinitialmessage()"
     },
     {
@@ -3087,7 +3114,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\AIExpansionPanel.tsx",
       "source_location": "L137",
       "id": "aiexpansionpanel_sendmessage",
-      "community": 34,
+      "community": 33,
       "norm_label": "sendmessage()"
     },
     {
@@ -3096,7 +3123,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\AIExpansionPanel.tsx",
       "source_location": "L210",
       "id": "aiexpansionpanel_handlesubmit",
-      "community": 34,
+      "community": 33,
       "norm_label": "handlesubmit()"
     },
     {
@@ -3105,7 +3132,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\AIExpansionPanel.tsx",
       "source_location": "L215",
       "id": "aiexpansionpanel_handleaccept",
-      "community": 34,
+      "community": 33,
       "norm_label": "handleaccept()"
     },
     {
@@ -3204,7 +3231,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\CollapsedFieldCard.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_collapsedfieldcard_tsx",
-      "community": 58,
+      "community": 57,
       "norm_label": "collapsedfieldcard.tsx"
     },
     {
@@ -3213,7 +3240,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\CollapsedFieldCard.tsx",
       "source_location": "L35",
       "id": "collapsedfieldcard_collapsedfieldcard",
-      "community": 58,
+      "community": 57,
       "norm_label": "collapsedfieldcard()"
     },
     {
@@ -3222,7 +3249,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\DocumentPreview.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_documentpreview_tsx",
-      "community": 98,
+      "community": 99,
       "norm_label": "documentpreview.tsx"
     },
     {
@@ -3231,7 +3258,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\FieldStatusBadge.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_fieldstatusbadge_tsx",
-      "community": 59,
+      "community": 58,
       "norm_label": "fieldstatusbadge.tsx"
     },
     {
@@ -3240,7 +3267,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\FieldStatusBadge.tsx",
       "source_location": "L30",
       "id": "fieldstatusbadge_fieldstatusbadge",
-      "community": 59,
+      "community": 58,
       "norm_label": "fieldstatusbadge()"
     },
     {
@@ -3249,7 +3276,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\GapSuggestion.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_gapsuggestion_tsx",
-      "community": 99,
+      "community": 100,
       "norm_label": "gapsuggestion.tsx"
     },
     {
@@ -3258,7 +3285,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\LeftPanel.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_leftpanel_tsx",
-      "community": 60,
+      "community": 59,
       "norm_label": "leftpanel.tsx"
     },
     {
@@ -3267,7 +3294,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\LeftPanel.tsx",
       "source_location": "L42",
       "id": "leftpanel_handleback",
-      "community": 60,
+      "community": 59,
       "norm_label": "handleback()"
     },
     {
@@ -3276,7 +3303,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\LoadingOverlay.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_loadingoverlay_tsx",
-      "community": 61,
+      "community": 60,
       "norm_label": "loadingoverlay.tsx"
     },
     {
@@ -3285,7 +3312,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\LoadingOverlay.tsx",
       "source_location": "L49",
       "id": "loadingoverlay_loadingoverlay",
-      "community": 61,
+      "community": 60,
       "norm_label": "loadingoverlay()"
     },
     {
@@ -3294,7 +3321,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\ProgressIndicator.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_progressindicator_tsx",
-      "community": 100,
+      "community": 101,
       "norm_label": "progressindicator.tsx"
     },
     {
@@ -3303,7 +3330,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\RightPanel.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_rightpanel_tsx",
-      "community": 62,
+      "community": 61,
       "norm_label": "rightpanel.tsx"
     },
     {
@@ -3312,7 +3339,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\RightPanel.tsx",
       "source_location": "L27",
       "id": "rightpanel_rightpanel",
-      "community": 62,
+      "community": 61,
       "norm_label": "rightpanel()"
     },
     {
@@ -3321,7 +3348,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\RightPanelToggle.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_rightpaneltoggle_tsx",
-      "community": 63,
+      "community": 62,
       "norm_label": "rightpaneltoggle.tsx"
     },
     {
@@ -3330,7 +3357,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\RightPanelToggle.tsx",
       "source_location": "L25",
       "id": "rightpaneltoggle_rightpaneltoggle",
-      "community": 63,
+      "community": 62,
       "norm_label": "rightpaneltoggle()"
     },
     {
@@ -3357,7 +3384,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\SplitLayout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_splitlayout_tsx",
-      "community": 64,
+      "community": 63,
       "norm_label": "splitlayout.tsx"
     },
     {
@@ -3366,7 +3393,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\SplitLayout.tsx",
       "source_location": "L33",
       "id": "splitlayout_splitlayout",
-      "community": 64,
+      "community": 63,
       "norm_label": "splitlayout()"
     },
     {
@@ -3375,7 +3402,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\SuggestionsView.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_suggestionsview_tsx",
-      "community": 65,
+      "community": 64,
       "norm_label": "suggestionsview.tsx"
     },
     {
@@ -3384,7 +3411,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\SuggestionsView.tsx",
       "source_location": "L133",
       "id": "suggestionsview_handlefieldclick",
-      "community": 65,
+      "community": 64,
       "norm_label": "handlefieldclick()"
     },
     {
@@ -3393,7 +3420,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\test-page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_components_test_page_tsx",
-      "community": 66,
+      "community": 65,
       "norm_label": "test-page.tsx"
     },
     {
@@ -3402,7 +3429,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\components\\test-page.tsx",
       "source_location": "L28",
       "id": "test_page_handlepause",
-      "community": 66,
+      "community": 65,
       "norm_label": "handlepause()"
     },
     {
@@ -3573,7 +3600,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\layout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_start_layout_tsx",
-      "community": 67,
+      "community": 66,
       "norm_label": "layout.tsx"
     },
     {
@@ -3582,7 +3609,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\layout.tsx",
       "source_location": "L8",
       "id": "layout_briefhelperstartlayout",
-      "community": 67,
+      "community": 66,
       "norm_label": "briefhelperstartlayout()"
     },
     {
@@ -3591,7 +3618,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_start_page_tsx",
-      "community": 36,
+      "community": 35,
       "norm_label": "page.tsx"
     },
     {
@@ -3600,7 +3627,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\page.tsx",
       "source_location": "L45",
       "id": "page_handledescriptionchange",
-      "community": 36,
+      "community": 35,
       "norm_label": "handledescriptionchange()"
     },
     {
@@ -3609,7 +3636,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\page.tsx",
       "source_location": "L50",
       "id": "page_handlecontinue",
-      "community": 36,
+      "community": 35,
       "norm_label": "handlecontinue()"
     },
     {
@@ -3618,7 +3645,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\page.tsx",
       "source_location": "L75",
       "id": "page_handlekeydown",
-      "community": 36,
+      "community": 35,
       "norm_label": "handlekeydown()"
     },
     {
@@ -3627,7 +3654,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\components\\CharacterGrading.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_start_components_charactergrading_tsx",
-      "community": 101,
+      "community": 102,
       "norm_label": "charactergrading.tsx"
     },
     {
@@ -3636,7 +3663,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\components\\DescriptionTextarea.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_start_components_descriptiontextarea_tsx",
-      "community": 68,
+      "community": 67,
       "norm_label": "descriptiontextarea.tsx"
     },
     {
@@ -3645,7 +3672,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\components\\DescriptionTextarea.tsx",
       "source_location": "L51",
       "id": "descriptiontextarea_handlechange",
-      "community": 68,
+      "community": 67,
       "norm_label": "handlechange()"
     },
     {
@@ -3654,7 +3681,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\components\\FutureOptions.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_start_components_futureoptions_tsx",
-      "community": 69,
+      "community": 68,
       "norm_label": "futureoptions.tsx"
     },
     {
@@ -3663,7 +3690,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\start\\components\\FutureOptions.tsx",
       "source_location": "L20",
       "id": "futureoptions_futureoptions",
-      "community": 69,
+      "community": 68,
       "norm_label": "futureoptions()"
     },
     {
@@ -3672,7 +3699,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\test\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_brief_helper_test_page_tsx",
-      "community": 37,
+      "community": 36,
       "norm_label": "page.tsx"
     },
     {
@@ -3681,7 +3708,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\test\\page.tsx",
       "source_location": "L27",
       "id": "page_addlog",
-      "community": 37,
+      "community": 36,
       "norm_label": "addlog()"
     },
     {
@@ -3690,7 +3717,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\test\\page.tsx",
       "source_location": "L32",
       "id": "page_handlepause",
-      "community": 37,
+      "community": 36,
       "norm_label": "handlepause()"
     },
     {
@@ -3699,7 +3726,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\brief-helper\\test\\page.tsx",
       "source_location": "L50",
       "id": "page_handlereset",
-      "community": 37,
+      "community": 36,
       "norm_label": "handlereset()"
     },
     {
@@ -3708,7 +3735,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\DashboardShell.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_components_dashboardshell_tsx",
-      "community": 70,
+      "community": 69,
       "norm_label": "dashboardshell.tsx"
     },
     {
@@ -3717,7 +3744,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\DashboardShell.tsx",
       "source_location": "L15",
       "id": "dashboardshell_handledelete",
-      "community": 70,
+      "community": 69,
       "norm_label": "handledelete()"
     },
     {
@@ -3726,7 +3753,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\DocumentsTable.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_components_documentstable_tsx",
-      "community": 42,
+      "community": 41,
       "norm_label": "documentstable.tsx"
     },
     {
@@ -3735,7 +3762,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\DocumentsTable.tsx",
       "source_location": "L24",
       "id": "documentstable_formatdate",
-      "community": 42,
+      "community": 41,
       "norm_label": "formatdate()"
     },
     {
@@ -3744,7 +3771,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\DocumentsTable.tsx",
       "source_location": "L40",
       "id": "documentstable_handledelete",
-      "community": 42,
+      "community": 41,
       "norm_label": "handledelete()"
     },
     {
@@ -3753,7 +3780,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\ToolCard.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_components_toolcard_tsx",
-      "community": 102,
+      "community": 103,
       "norm_label": "toolcard.tsx"
     },
     {
@@ -3762,7 +3789,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\components\\TopBar.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_components_topbar_tsx",
-      "community": 103,
+      "community": 104,
       "norm_label": "topbar.tsx"
     },
     {
@@ -3771,7 +3798,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\login\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_login_page_tsx",
-      "community": 71,
+      "community": 70,
       "norm_label": "page.tsx"
     },
     {
@@ -3780,7 +3807,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\login\\page.tsx",
       "source_location": "L13",
       "id": "page_async",
-      "community": 71,
+      "community": 70,
       "norm_label": "async()"
     },
     {
@@ -3789,7 +3816,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\mrd\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_mrd_page_tsx",
-      "community": 43,
+      "community": 42,
       "norm_label": "page.tsx"
     },
     {
@@ -3798,7 +3825,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\mrd\\page.tsx",
       "source_location": "L28",
       "id": "page_handlesubmit",
-      "community": 43,
+      "community": 42,
       "norm_label": "handlesubmit()"
     },
     {
@@ -3807,8 +3834,26 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\mrd\\page.tsx",
       "source_location": "L54",
       "id": "page_handleinputchange",
-      "community": 43,
+      "community": 42,
       "norm_label": "handleinputchange()"
+    },
+    {
+      "label": "OnePagerClient.tsx",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\OnePagerClient.tsx",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_onepagerclient_tsx",
+      "community": 71,
+      "norm_label": "onepagerclient.tsx"
+    },
+    {
+      "label": "bumpDraftVersion()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\OnePagerClient.tsx",
+      "source_location": "L29",
+      "id": "onepagerclient_bumpdraftversion",
+      "community": 71,
+      "norm_label": "bumpdraftversion()"
     },
     {
       "label": "page.tsx",
@@ -3816,8 +3861,17 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_page_tsx",
-      "community": 104,
+      "community": 3,
       "norm_label": "page.tsx"
+    },
+    {
+      "label": "OnePagerPage()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\page.tsx",
+      "source_location": "L5",
+      "id": "page_onepagerpage",
+      "community": 3,
+      "norm_label": "onepagerpage()"
     },
     {
       "label": "CheckboxGroup.tsx",
@@ -3834,7 +3888,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\ChipInput.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_chipinput_tsx",
-      "community": 44,
+      "community": 43,
       "norm_label": "chipinput.tsx"
     },
     {
@@ -3843,7 +3897,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\ChipInput.tsx",
       "source_location": "L14",
       "id": "chipinput_chipinput",
-      "community": 44,
+      "community": 43,
       "norm_label": "chipinput()"
     },
     {
@@ -3906,7 +3960,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\DocumentPreview.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_documentpreview_tsx",
-      "community": 45,
+      "community": 44,
       "norm_label": "documentpreview.tsx"
     },
     {
@@ -3915,7 +3969,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\DocumentPreview.tsx",
       "source_location": "L13",
       "id": "documentpreview_generatemarkdown",
-      "community": 45,
+      "community": 44,
       "norm_label": "generatemarkdown()"
     },
     {
@@ -3942,7 +3996,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\DynamicRoleSelector.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_dynamicroleselector_tsx",
-      "community": 38,
+      "community": 37,
       "norm_label": "dynamicroleselector.tsx"
     },
     {
@@ -3951,7 +4005,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\DynamicRoleSelector.tsx",
       "source_location": "L47",
       "id": "dynamicroleselector_handleaddcustom",
-      "community": 38,
+      "community": 37,
       "norm_label": "handleaddcustom()"
     },
     {
@@ -3960,7 +4014,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\DynamicRoleSelector.tsx",
       "source_location": "L55",
       "id": "dynamicroleselector_handlekeydown",
-      "community": 38,
+      "community": 37,
       "norm_label": "handlekeydown()"
     },
     {
@@ -3973,31 +4027,13 @@
       "norm_label": "featureselector.tsx"
     },
     {
-      "label": "setLayout()",
+      "label": "handleChipCycle()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\FeatureSelector.tsx",
-      "source_location": "L43",
-      "id": "featureselector_setlayout",
+      "source_location": "L40",
+      "id": "featureselector_handlechipcycle",
       "community": 30,
-      "norm_label": "setlayout()"
-    },
-    {
-      "label": "handleChipClick()",
-      "file_type": "code",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
-      "source_location": "L38",
-      "id": "featureselector_handlechipclick",
-      "community": 30,
-      "norm_label": "handlechipclick()"
-    },
-    {
-      "label": "handleAddToCategory()",
-      "file_type": "code",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
-      "source_location": "L49",
-      "id": "featureselector_handleaddtocategory",
-      "community": 30,
-      "norm_label": "handleaddtocategory()"
+      "norm_label": "handlechipcycle()"
     },
     {
       "label": "handleCustomKeyDown()",
@@ -4050,7 +4086,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\PhotoPicker.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_photopicker_tsx",
-      "community": 46,
+      "community": 45,
       "norm_label": "photopicker.tsx"
     },
     {
@@ -4059,8 +4095,17 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\PhotoPicker.tsx",
       "source_location": "L19",
       "id": "photopicker_handlefile",
-      "community": 46,
+      "community": 45,
       "norm_label": "handlefile()"
+    },
+    {
+      "label": "ProductInfoCustomization.tsx",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\ProductInfoCustomization.tsx",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_productinfocustomization_tsx",
+      "community": 106,
+      "norm_label": "productinfocustomization.tsx"
     },
     {
       "label": "PublishGateModal.tsx",
@@ -4086,7 +4131,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\SplitLayout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_splitlayout_tsx",
-      "community": 106,
+      "community": 107,
       "norm_label": "splitlayout.tsx"
     },
     {
@@ -4095,7 +4140,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\TextFieldWithExpand.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_textfieldwithexpand_tsx",
-      "community": 39,
+      "community": 38,
       "norm_label": "textfieldwithexpand.tsx"
     },
     {
@@ -4104,7 +4149,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\TextFieldWithExpand.tsx",
       "source_location": "L25",
       "id": "textfieldwithexpand_handleexpand",
-      "community": 39,
+      "community": 38,
       "norm_label": "handleexpand()"
     },
     {
@@ -4113,8 +4158,26 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\TextFieldWithExpand.tsx",
       "source_location": "L47",
       "id": "textfieldwithexpand_handleupdate",
-      "community": 39,
+      "community": 38,
       "norm_label": "handleupdate()"
+    },
+    {
+      "label": "VersionHistoryPanel.tsx",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\VersionHistoryPanel.tsx",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_versionhistorypanel_tsx",
+      "community": 76,
+      "norm_label": "versionhistorypanel.tsx"
+    },
+    {
+      "label": "handleRollback()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\VersionHistoryPanel.tsx",
+      "source_location": "L38",
+      "id": "versionhistorypanel_handlerollback",
+      "community": 76,
+      "norm_label": "handlerollback()"
     },
     {
       "label": "one-pager-context.tsx",
@@ -4122,7 +4185,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-context.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_context_tsx",
-      "community": 3,
+      "community": 2,
       "norm_label": "one-pager-context.tsx"
     },
     {
@@ -4131,7 +4194,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-context.tsx",
       "source_location": "L21",
       "id": "one_pager_context_loadfromstorage",
-      "community": 3,
+      "community": 2,
       "norm_label": "loadfromstorage()"
     },
     {
@@ -4140,7 +4203,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-context.tsx",
       "source_location": "L36",
       "id": "one_pager_context_onepagerprovider",
-      "community": 3,
+      "community": 2,
       "norm_label": "onepagerprovider()"
     },
     {
@@ -4149,7 +4212,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-context.tsx",
       "source_location": "L59",
       "id": "one_pager_context_useonepager",
-      "community": 3,
+      "community": 2,
       "norm_label": "useonepager()"
     },
     {
@@ -4158,7 +4221,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
-      "community": 31,
+      "community": 27,
       "norm_label": "one-pager-state.ts"
     },
     {
@@ -4167,7 +4230,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-state.ts",
       "source_location": "L78",
       "id": "one_pager_state_generatesessionid",
-      "community": 31,
+      "community": 27,
       "norm_label": "generatesessionid()"
     },
     {
@@ -4176,7 +4239,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-state.ts",
       "source_location": "L82",
       "id": "one_pager_state_createinitialstate",
-      "community": 31,
+      "community": 27,
       "norm_label": "createinitialstate()"
     },
     {
@@ -4185,7 +4248,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-state.ts",
       "source_location": "L105",
       "id": "one_pager_state_toggleinarray",
-      "community": 31,
+      "community": 27,
       "norm_label": "toggleinarray()"
     },
     {
@@ -4194,8 +4257,17 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-state.ts",
       "source_location": "L109",
       "id": "one_pager_state_onepagerreducer",
-      "community": 31,
+      "community": 27,
       "norm_label": "onepagerreducer()"
+    },
+    {
+      "label": "getCompletionSections()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
+      "source_location": "L397",
+      "id": "one_pager_state_getcompletionsections",
+      "community": 27,
+      "norm_label": "getcompletionsections()"
     },
     {
       "label": "page.tsx",
@@ -4203,7 +4275,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\[id]\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_id_page_tsx",
-      "community": 76,
+      "community": 77,
       "norm_label": "page.tsx"
     },
     {
@@ -4212,7 +4284,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\[id]\\page.tsx",
       "source_location": "L18",
       "id": "page_onepagerviewpage",
-      "community": 76,
+      "community": 77,
       "norm_label": "onepagerviewpage()"
     },
     {
@@ -4221,7 +4293,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_alpha_page_tsx",
-      "community": 32,
+      "community": 31,
       "norm_label": "page.tsx"
     },
     {
@@ -4230,7 +4302,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L111",
       "id": "page_cls",
-      "community": 32,
+      "community": 31,
       "norm_label": "cls()"
     },
     {
@@ -4239,7 +4311,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L115",
       "id": "page_sectionheader",
-      "community": 32,
+      "community": 31,
       "norm_label": "sectionheader()"
     },
     {
@@ -4248,7 +4320,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L145",
       "id": "page_textfield",
-      "community": 32,
+      "community": 31,
       "norm_label": "textfield()"
     },
     {
@@ -4257,7 +4329,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L179",
       "id": "page_textarea",
-      "community": 32,
+      "community": 31,
       "norm_label": "textarea()"
     },
     {
@@ -4266,7 +4338,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-alpha\\page.tsx",
       "source_location": "L212",
       "id": "page_btn",
-      "community": 32,
+      "community": 31,
       "norm_label": "btn()"
     },
     {
@@ -4275,7 +4347,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_page_tsx",
-      "community": 107,
+      "community": 108,
       "norm_label": "page.tsx"
     },
     {
@@ -4284,7 +4356,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\CheckboxGroup.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_checkboxgroup_tsx",
-      "community": 108,
+      "community": 109,
       "norm_label": "checkboxgroup.tsx"
     },
     {
@@ -4293,7 +4365,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\ChipInput.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_chipinput_tsx",
-      "community": 44,
+      "community": 43,
       "norm_label": "chipinput.tsx"
     },
     {
@@ -4320,7 +4392,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\DocumentPreview.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_documentpreview_tsx",
-      "community": 45,
+      "community": 44,
       "norm_label": "documentpreview.tsx"
     },
     {
@@ -4329,7 +4401,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\DynamicRoleSelector.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_dynamicroleselector_tsx",
-      "community": 38,
+      "community": 37,
       "norm_label": "dynamicroleselector.tsx"
     },
     {
@@ -4342,12 +4414,30 @@
       "norm_label": "featureselector.tsx"
     },
     {
+      "label": "handleChipClick()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
+      "source_location": "L38",
+      "id": "featureselector_handlechipclick",
+      "community": 30,
+      "norm_label": "handlechipclick()"
+    },
+    {
+      "label": "handleAddToCategory()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
+      "source_location": "L49",
+      "id": "featureselector_handleaddtocategory",
+      "community": 30,
+      "norm_label": "handleaddtocategory()"
+    },
+    {
       "label": "PhotoPicker.tsx",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\PhotoPicker.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_photopicker_tsx",
-      "community": 46,
+      "community": 45,
       "norm_label": "photopicker.tsx"
     },
     {
@@ -4356,7 +4446,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\SplitLayout.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_splitlayout_tsx",
-      "community": 109,
+      "community": 110,
       "norm_label": "splitlayout.tsx"
     },
     {
@@ -4365,7 +4455,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\TextFieldWithExpand.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_textfieldwithexpand_tsx",
-      "community": 39,
+      "community": 38,
       "norm_label": "textfieldwithexpand.tsx"
     },
     {
@@ -4374,7 +4464,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-context.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_lib_one_pager_context_tsx",
-      "community": 3,
+      "community": 2,
       "norm_label": "one-pager-context.tsx"
     },
     {
@@ -4383,7 +4473,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\lib\\one-pager-state.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_lib_one_pager_state_ts",
-      "community": 31,
+      "community": 27,
       "norm_label": "one-pager-state.ts"
     },
     {
@@ -4392,7 +4482,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_page_tsx",
-      "community": 47,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -4401,7 +4491,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\pipeline\\page.tsx",
       "source_location": "L5",
       "id": "page_loadingfallback",
-      "community": 47,
+      "community": 46,
       "norm_label": "loadingfallback()"
     },
     {
@@ -4410,7 +4500,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\prd-content.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_prd_content_tsx",
-      "community": 77,
+      "community": 78,
       "norm_label": "prd-content.tsx"
     },
     {
@@ -4419,7 +4509,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\prd-content.tsx",
       "source_location": "L34",
       "id": "prd_content_handlegenerate",
-      "community": 77,
+      "community": 78,
       "norm_label": "handlegenerate()"
     },
     {
@@ -4428,7 +4518,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\DocumentPickerCard.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_components_documentpickercard_tsx",
-      "community": 78,
+      "community": 79,
       "norm_label": "documentpickercard.tsx"
     },
     {
@@ -4437,7 +4527,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\DocumentPickerCard.tsx",
       "source_location": "L13",
       "id": "documentpickercard_documentpickercard",
-      "community": 78,
+      "community": 79,
       "norm_label": "documentpickercard()"
     },
     {
@@ -4446,7 +4536,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PipelineOverlay.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_components_pipelineoverlay_tsx",
-      "community": 48,
+      "community": 47,
       "norm_label": "pipelineoverlay.tsx"
     },
     {
@@ -4455,7 +4545,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PipelineOverlay.tsx",
       "source_location": "L22",
       "id": "pipelineoverlay_geticon",
-      "community": 48,
+      "community": 47,
       "norm_label": "geticon()"
     },
     {
@@ -4464,7 +4554,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PipelineOverlay.tsx",
       "source_location": "L34",
       "id": "pipelineoverlay_getitemclass",
-      "community": 48,
+      "community": 47,
       "norm_label": "getitemclass()"
     },
     {
@@ -4473,7 +4563,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PRDViewer.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_components_prdviewer_tsx",
-      "community": 49,
+      "community": 48,
       "norm_label": "prdviewer.tsx"
     },
     {
@@ -4482,7 +4572,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PRDViewer.tsx",
       "source_location": "L17",
       "id": "prdviewer_formatsectiontitle",
-      "community": 49,
+      "community": 48,
       "norm_label": "formatsectiontitle()"
     },
     {
@@ -4491,7 +4581,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\PRDViewer.tsx",
       "source_location": "L31",
       "id": "prdviewer_handleexport",
-      "community": 49,
+      "community": 48,
       "norm_label": "handleexport()"
     },
     {
@@ -4500,7 +4590,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\QAPanel.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_components_qapanel_tsx",
-      "community": 110,
+      "community": 111,
       "norm_label": "qapanel.tsx"
     },
     {
@@ -4509,7 +4599,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\SkeletonReviewForm.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_components_skeletonreviewform_tsx",
-      "community": 79,
+      "community": 80,
       "norm_label": "skeletonreviewform.tsx"
     },
     {
@@ -4518,7 +4608,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\components\\SkeletonReviewForm.tsx",
       "source_location": "L12",
       "id": "skeletonreviewform_skeletonreviewform",
-      "community": 79,
+      "community": 80,
       "norm_label": "skeletonreviewform()"
     },
     {
@@ -4527,7 +4617,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\pipeline\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_pipeline_page_tsx",
-      "community": 47,
+      "community": 46,
       "norm_label": "page.tsx"
     },
     {
@@ -4572,7 +4662,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\prd\\[prd_id]\\page.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_app_prd_prd_id_page_tsx",
-      "community": 111,
+      "community": 112,
       "norm_label": "page.tsx"
     },
     {
@@ -4581,7 +4671,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\coverage\\lcov-report\\block-navigation.js",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_coverage_lcov_report_block_navigation_js",
-      "community": 35,
+      "community": 34,
       "norm_label": "block-navigation.js"
     },
     {
@@ -4590,7 +4680,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\coverage\\lcov-report\\block-navigation.js",
       "source_location": "L24",
       "id": "block_navigation_toggleclass",
-      "community": 35,
+      "community": 34,
       "norm_label": "toggleclass()"
     },
     {
@@ -4599,7 +4689,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\coverage\\lcov-report\\block-navigation.js",
       "source_location": "L31",
       "id": "block_navigation_makecurrent",
-      "community": 35,
+      "community": 34,
       "norm_label": "makecurrent()"
     },
     {
@@ -4608,7 +4698,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\coverage\\lcov-report\\block-navigation.js",
       "source_location": "L41",
       "id": "block_navigation_gotoprevious",
-      "community": 35,
+      "community": 34,
       "norm_label": "gotoprevious()"
     },
     {
@@ -4617,7 +4707,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\coverage\\lcov-report\\block-navigation.js",
       "source_location": "L52",
       "id": "block_navigation_gotonext",
-      "community": 35,
+      "community": 34,
       "norm_label": "gotonext()"
     },
     {
@@ -4846,12 +4936,48 @@
       "norm_label": "enableui()"
     },
     {
+      "label": "admin.ts",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\admin.ts",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_admin_ts",
+      "community": 3,
+      "norm_label": "admin.ts"
+    },
+    {
+      "label": "isAdmin()",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\admin.ts",
+      "source_location": "L5",
+      "id": "admin_isadmin",
+      "community": 3,
+      "norm_label": "isadmin()"
+    },
+    {
+      "label": "auth.config.ts",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\auth.config.ts",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_auth_config_ts",
+      "community": 113,
+      "norm_label": "auth.config.ts"
+    },
+    {
+      "label": "auth.edge.ts",
+      "file_type": "code",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\auth.edge.ts",
+      "source_location": "L1",
+      "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_auth_edge_ts",
+      "community": 114,
+      "norm_label": "auth.edge.ts"
+    },
+    {
       "label": "auth.ts",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\auth.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_auth_ts",
-      "community": 112,
+      "community": 115,
       "norm_label": "auth.ts"
     },
     {
@@ -4860,7 +4986,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_ban_check_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "ban-check.ts"
     },
     {
@@ -4869,7 +4995,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L4",
       "id": "ban_check_bannedusererror",
-      "community": 1,
+      "community": 0,
       "norm_label": "bannedusererror"
     },
     {
@@ -4878,7 +5004,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L5",
       "id": "ban_check_bannedusererror_constructor",
-      "community": 1,
+      "community": 0,
       "norm_label": ".constructor()"
     },
     {
@@ -4887,7 +5013,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L11",
       "id": "ban_check_assertnotbanned",
-      "community": 1,
+      "community": 0,
       "norm_label": "assertnotbanned()"
     },
     {
@@ -4896,7 +5022,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L16",
       "id": "ban_check_bannedresponse",
-      "community": 1,
+      "community": 0,
       "norm_label": "bannedresponse()"
     },
     {
@@ -4957,7 +5083,7 @@
       "label": "listDocuments()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L33",
+      "source_location": "L35",
       "id": "db_listdocuments",
       "community": 0,
       "norm_label": "listdocuments()"
@@ -4966,7 +5092,7 @@
       "label": "getDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L50",
+      "source_location": "L52",
       "id": "db_getdocument",
       "community": 0,
       "norm_label": "getdocument()"
@@ -4975,7 +5101,7 @@
       "label": "createDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L57",
+      "source_location": "L59",
       "id": "db_createdocument",
       "community": 0,
       "norm_label": "createdocument()"
@@ -4984,7 +5110,7 @@
       "label": "updateDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L73",
+      "source_location": "L75",
       "id": "db_updatedocument",
       "community": 0,
       "norm_label": "updatedocument()"
@@ -4993,7 +5119,7 @@
       "label": "softDeleteDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L104",
+      "source_location": "L108",
       "id": "db_softdeletedocument",
       "community": 0,
       "norm_label": "softdeletedocument()"
@@ -5002,7 +5128,7 @@
       "label": "listDocumentsWithCreator()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L111",
+      "source_location": "L115",
       "id": "db_listdocumentswithcreator",
       "community": 0,
       "norm_label": "listdocumentswithcreator()"
@@ -5011,7 +5137,7 @@
       "label": "listAllDocumentsWithCreator()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L128",
+      "source_location": "L132",
       "id": "db_listalldocumentswithcreator",
       "community": 0,
       "norm_label": "listalldocumentswithcreator()"
@@ -5020,7 +5146,7 @@
       "label": "logViolation()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L137",
+      "source_location": "L141",
       "id": "db_logviolation",
       "community": 0,
       "norm_label": "logviolation()"
@@ -5029,7 +5155,7 @@
       "label": "countViolations()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L144",
+      "source_location": "L148",
       "id": "db_countviolations",
       "community": 0,
       "norm_label": "countviolations()"
@@ -5038,7 +5164,7 @@
       "label": "banUser()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L151",
+      "source_location": "L155",
       "id": "db_banuser",
       "community": 0,
       "norm_label": "banuser()"
@@ -5047,7 +5173,7 @@
       "label": "unbanUser()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L160",
+      "source_location": "L164",
       "id": "db_unbanuser",
       "community": 0,
       "norm_label": "unbanuser()"
@@ -5056,16 +5182,16 @@
       "label": "isUserBanned()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L164",
+      "source_location": "L168",
       "id": "db_isuserbanned",
-      "community": 1,
+      "community": 0,
       "norm_label": "isuserbanned()"
     },
     {
       "label": "toLibraryDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L183",
+      "source_location": "L187",
       "id": "db_tolibrarydocument",
       "community": 0,
       "norm_label": "tolibrarydocument()"
@@ -5074,7 +5200,7 @@
       "label": "toPRDLibraryDocument()",
       "file_type": "code",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L197",
+      "source_location": "L201",
       "id": "db_toprdlibrarydocument",
       "community": 0,
       "norm_label": "toprdlibrarydocument()"
@@ -5157,7 +5283,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\embeddings.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_embeddings_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "embeddings.ts"
     },
     {
@@ -5166,7 +5292,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\embeddings.ts",
       "source_location": "L9",
       "id": "embeddings_embedtext",
-      "community": 1,
+      "community": 0,
       "norm_label": "embedtext()"
     },
     {
@@ -5175,7 +5301,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\feature-gate.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_feature_gate_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "feature-gate.ts"
     },
     {
@@ -5184,7 +5310,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\feature-gate.ts",
       "source_location": "L23",
       "id": "feature_gate_parseallowlist",
-      "community": 0,
+      "community": 3,
       "norm_label": "parseallowlist()"
     },
     {
@@ -5193,7 +5319,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\feature-gate.ts",
       "source_location": "L48",
       "id": "feature_gate_getfeaturesforemail",
-      "community": 0,
+      "community": 3,
       "norm_label": "getfeaturesforemail()"
     },
     {
@@ -5202,7 +5328,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\feature-gate.ts",
       "source_location": "L67",
       "id": "feature_gate_hasfeature",
-      "community": 0,
+      "community": 3,
       "norm_label": "hasfeature()"
     },
     {
@@ -5211,7 +5337,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_gemini_ts",
-      "community": 3,
+      "community": 2,
       "norm_label": "gemini.ts"
     },
     {
@@ -5220,7 +5346,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L16",
       "id": "gemini_getclient",
-      "community": 3,
+      "community": 2,
       "norm_label": "getclient()"
     },
     {
@@ -5229,7 +5355,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L30",
       "id": "gemini_isgeminiavailable",
-      "community": 3,
+      "community": 2,
       "norm_label": "isgeminiavailable()"
     },
     {
@@ -5238,7 +5364,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L60",
       "id": "gemini_generatetext",
-      "community": 3,
+      "community": 2,
       "norm_label": "generatetext()"
     },
     {
@@ -5247,7 +5373,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L98",
       "id": "gemini_generatewithsearch",
-      "community": 3,
+      "community": 2,
       "norm_label": "generatewithsearch()"
     },
     {
@@ -5256,7 +5382,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L143",
       "id": "gemini_extractsources",
-      "community": 3,
+      "community": 2,
       "norm_label": "extractsources()"
     },
     {
@@ -5265,7 +5391,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L197",
       "id": "gemini_extractsearchqueries",
-      "community": 3,
+      "community": 2,
       "norm_label": "extractsearchqueries()"
     },
     {
@@ -5274,7 +5400,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\gemini.ts",
       "source_location": "L225",
       "id": "gemini_conductresearch",
-      "community": 3,
+      "community": 2,
       "norm_label": "conductresearch()"
     },
     {
@@ -5283,7 +5409,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\google-sheets.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_google_sheets_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "google-sheets.ts"
     },
     {
@@ -5292,7 +5418,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\google-sheets.ts",
       "source_location": "L4",
       "id": "google_sheets_getauth",
-      "community": 1,
+      "community": 0,
       "norm_label": "getauth()"
     },
     {
@@ -5301,7 +5427,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\google-sheets.ts",
       "source_location": "L18",
       "id": "google_sheets_getsheet",
-      "community": 1,
+      "community": 0,
       "norm_label": "getsheet()"
     },
     {
@@ -5310,7 +5436,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\google-sheets.ts",
       "source_location": "L37",
       "id": "google_sheets_appendsheetrow",
-      "community": 1,
+      "community": 0,
       "norm_label": "appendsheetrow()"
     },
     {
@@ -5319,7 +5445,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\google-sheets.ts",
       "source_location": "L46",
       "id": "google_sheets_setupsheet",
-      "community": 1,
+      "community": 0,
       "norm_label": "setupsheet()"
     },
     {
@@ -5346,7 +5472,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails-wordlist.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_guardrails_wordlist_ts",
-      "community": 113,
+      "community": 116,
       "norm_label": "guardrails-wordlist.ts"
     },
     {
@@ -5355,7 +5481,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_guardrails_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "guardrails.ts"
     },
     {
@@ -5364,7 +5490,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails.ts",
       "source_location": "L50",
       "id": "guardrails_scan",
-      "community": 1,
+      "community": 0,
       "norm_label": "scan()"
     },
     {
@@ -5373,7 +5499,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails.ts",
       "source_location": "L77",
       "id": "guardrails_checkinput",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkinput()"
     },
     {
@@ -5382,7 +5508,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails.ts",
       "source_location": "L81",
       "id": "guardrails_checkoutput",
-      "community": 1,
+      "community": 0,
       "norm_label": "checkoutput()"
     },
     {
@@ -5391,7 +5517,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\guardrails.ts",
       "source_location": "L85",
       "id": "guardrails_hardensystemprompt",
-      "community": 1,
+      "community": 0,
       "norm_label": "hardensystemprompt()"
     },
     {
@@ -5400,7 +5526,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager-export.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_one_pager_export_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "one-pager-export.ts"
     },
     {
@@ -5409,7 +5535,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager-export.ts",
       "source_location": "L87",
       "id": "one_pager_export_builddocxchildren",
-      "community": 0,
+      "community": 3,
       "norm_label": "builddocxchildren()"
     },
     {
@@ -5418,7 +5544,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager-export.ts",
       "source_location": "L341",
       "id": "one_pager_export_loadlogobuffer",
-      "community": 0,
+      "community": 3,
       "norm_label": "loadlogobuffer()"
     },
     {
@@ -5427,7 +5553,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager-export.ts",
       "source_location": "L350",
       "id": "one_pager_export_generateonepagerdocx",
-      "community": 0,
+      "community": 3,
       "norm_label": "generateonepagerdocx()"
     },
     {
@@ -5436,7 +5562,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager-export.ts",
       "source_location": "L462",
       "id": "one_pager_export_generateonepagerhtml",
-      "community": 0,
+      "community": 3,
       "norm_label": "generateonepagerhtml()"
     },
     {
@@ -5445,7 +5571,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\polyfills.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_polyfills_ts",
-      "community": 114,
+      "community": 117,
       "norm_label": "polyfills.ts"
     },
     {
@@ -5562,7 +5688,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_prd_document_generator_ts",
-      "community": 27,
+      "community": 3,
       "norm_label": "prd-document-generator.ts"
     },
     {
@@ -5571,7 +5697,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L43",
       "id": "prd_document_generator_formatsectiontitle",
-      "community": 27,
+      "community": 3,
       "norm_label": "formatsectiontitle()"
     },
     {
@@ -5580,7 +5706,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L53",
       "id": "prd_document_generator_parseinlineformatting",
-      "community": 27,
+      "community": 3,
       "norm_label": "parseinlineformatting()"
     },
     {
@@ -5589,7 +5715,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L99",
       "id": "prd_document_generator_rendersection",
-      "community": 27,
+      "community": 3,
       "norm_label": "rendersection()"
     },
     {
@@ -5598,7 +5724,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L125",
       "id": "prd_document_generator_generateprddocx",
-      "community": 27,
+      "community": 3,
       "norm_label": "generateprddocx()"
     },
     {
@@ -5607,7 +5733,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L215",
       "id": "prd_document_generator_generateprdhtml",
-      "community": 27,
+      "community": 3,
       "norm_label": "generateprdhtml()"
     },
     {
@@ -5616,7 +5742,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-document-generator.ts",
       "source_location": "L317",
       "id": "prd_document_generator_escapehtml",
-      "community": 27,
+      "community": 3,
       "norm_label": "escapehtml()"
     },
     {
@@ -5625,7 +5751,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-sections-loader.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_prd_sections_loader_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "prd-sections-loader.ts"
     },
     {
@@ -5634,7 +5760,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\prd-sections-loader.ts",
       "source_location": "L19",
       "id": "prd_sections_loader_loadprdsections",
-      "community": 2,
+      "community": 1,
       "norm_label": "loadprdsections()"
     },
     {
@@ -5643,7 +5769,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\rd-email-gate.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_rd_email_gate_ts",
-      "community": 50,
+      "community": 49,
       "norm_label": "rd-email-gate.ts"
     },
     {
@@ -5652,7 +5778,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\rd-email-gate.ts",
       "source_location": "L4",
       "id": "rd_email_gate_loadallowlist",
-      "community": 50,
+      "community": 49,
       "norm_label": "loadallowlist()"
     },
     {
@@ -5661,7 +5787,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\rd-email-gate.ts",
       "source_location": "L23",
       "id": "rd_email_gate_isrdemail",
-      "community": 50,
+      "community": 49,
       "norm_label": "isrdemail()"
     },
     {
@@ -5670,7 +5796,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\sanitize.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_sanitize_ts",
-      "community": 1,
+      "community": 0,
       "norm_label": "sanitize.ts"
     },
     {
@@ -5679,7 +5805,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\sanitize.ts",
       "source_location": "L44",
       "id": "sanitize_sanitizeinput",
-      "community": 1,
+      "community": 0,
       "norm_label": "sanitizeinput()"
     },
     {
@@ -5688,7 +5814,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\sanitize.ts",
       "source_location": "L89",
       "id": "sanitize_sanitizeobject",
-      "community": 1,
+      "community": 0,
       "norm_label": "sanitizeobject()"
     },
     {
@@ -5697,7 +5823,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\sanitize.ts",
       "source_location": "L120",
       "id": "sanitize_sanitizeclarifications",
-      "community": 1,
+      "community": 0,
       "norm_label": "sanitizeclarifications()"
     },
     {
@@ -5706,7 +5832,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\sanitize.ts",
       "source_location": "L148",
       "id": "sanitize_sanitizemrdinput",
-      "community": 1,
+      "community": 0,
       "norm_label": "sanitizemrdinput()"
     },
     {
@@ -5715,7 +5841,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\schemas.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_schemas_ts",
-      "community": 3,
+      "community": 2,
       "norm_label": "schemas.ts"
     },
     {
@@ -5724,7 +5850,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\schemas.ts",
       "source_location": "L67",
       "id": "schemas_generaterequestid",
-      "community": 3,
+      "community": 2,
       "norm_label": "generaterequestid()"
     },
     {
@@ -5733,7 +5859,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\schemas.ts",
       "source_location": "L346",
       "id": "schemas_createinitialstate",
-      "community": 3,
+      "community": 2,
       "norm_label": "createinitialstate()"
     },
     {
@@ -5742,7 +5868,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_one_pager_config_loader_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "config-loader.ts"
     },
     {
@@ -5751,7 +5877,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L29",
       "id": "config_loader_loadindustryrolesconfig",
-      "community": 0,
+      "community": 3,
       "norm_label": "loadindustryrolesconfig()"
     },
     {
@@ -5760,7 +5886,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L47",
       "id": "config_loader_getenvironments",
-      "community": 0,
+      "community": 3,
       "norm_label": "getenvironments()"
     },
     {
@@ -5769,7 +5895,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L51",
       "id": "config_loader_getindustries",
-      "community": 0,
+      "community": 3,
       "norm_label": "getindustries()"
     },
     {
@@ -5778,7 +5904,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L56",
       "id": "config_loader_getrolesforindustries",
-      "community": 0,
+      "community": 3,
       "norm_label": "getrolesforindustries()"
     },
     {
@@ -5787,7 +5913,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\one-pager\\config-loader.ts",
       "source_location": "L85",
       "id": "config_loader_loadstandardfeatures",
-      "community": 0,
+      "community": 3,
       "norm_label": "loadstandardfeatures()"
     },
     {
@@ -6120,7 +6246,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\providers\\types.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_providers_types_ts",
-      "community": 115,
+      "community": 118,
       "norm_label": "types.ts"
     },
     {
@@ -6318,7 +6444,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\scraper\\types.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_scraper_types_ts",
-      "community": 51,
+      "community": 50,
       "norm_label": "types.ts"
     },
     {
@@ -6327,7 +6453,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\scraper\\types.ts",
       "source_location": "L93",
       "id": "types_scrapererror",
-      "community": 51,
+      "community": 50,
       "norm_label": "scrapererror"
     },
     {
@@ -6336,7 +6462,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\scraper\\types.ts",
       "source_location": "L94",
       "id": "types_scrapererror_constructor",
-      "community": 51,
+      "community": 50,
       "norm_label": ".constructor()"
     },
     {
@@ -6471,7 +6597,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\mrd_generator.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_skills_mrd_generator_ts",
-      "community": 3,
+      "community": 2,
       "norm_label": "mrd_generator.ts"
     },
     {
@@ -6480,7 +6606,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\mrd_generator.ts",
       "source_location": "L154",
       "id": "mrd_generator_generatemrd",
-      "community": 3,
+      "community": 2,
       "norm_label": "generatemrd()"
     },
     {
@@ -6489,7 +6615,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\mrd_generator.ts",
       "source_location": "L172",
       "id": "mrd_generator_generateaimrd",
-      "community": 3,
+      "community": 2,
       "norm_label": "generateaimrd()"
     },
     {
@@ -6498,7 +6624,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\mrd_generator.ts",
       "source_location": "L238",
       "id": "mrd_generator_generatetemplatemrd",
-      "community": 3,
+      "community": 2,
       "norm_label": "generatetemplatemrd()"
     },
     {
@@ -6507,7 +6633,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\web_search.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_skills_web_search_ts",
-      "community": 40,
+      "community": 39,
       "norm_label": "web_search.ts"
     },
     {
@@ -6516,7 +6642,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\web_search.ts",
       "source_location": "L22",
       "id": "web_search_issearchavailable",
-      "community": 40,
+      "community": 39,
       "norm_label": "issearchavailable()"
     },
     {
@@ -6525,7 +6651,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\web_search.ts",
       "source_location": "L34",
       "id": "web_search_searchweb",
-      "community": 40,
+      "community": 39,
       "norm_label": "searchweb()"
     },
     {
@@ -6534,7 +6660,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\skills\\web_search.ts",
       "source_location": "L84",
       "id": "web_search_getmockresults",
-      "community": 40,
+      "community": 39,
       "norm_label": "getmockresults()"
     },
     {
@@ -6543,7 +6669,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\types\\next-auth.d.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_types_next_auth_d_ts",
-      "community": 116,
+      "community": 119,
       "norm_label": "next-auth.d.ts"
     },
     {
@@ -6552,7 +6678,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\parser-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_parser_agent_test_ts",
-      "community": 117,
+      "community": 120,
       "norm_label": "parser-agent.test.ts"
     },
     {
@@ -6561,7 +6687,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\brief\\batch-extraction-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_brief_batch_extraction_agent_test_ts",
-      "community": 118,
+      "community": 121,
       "norm_label": "batch-extraction-agent.test.ts"
     },
     {
@@ -6570,7 +6696,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\brief\\expansion-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_brief_expansion_agent_test_ts",
-      "community": 119,
+      "community": 122,
       "norm_label": "expansion-agent.test.ts"
     },
     {
@@ -6579,7 +6705,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\brief\\gap-detection-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_brief_gap_detection_agent_test_ts",
-      "community": 120,
+      "community": 123,
       "norm_label": "gap-detection-agent.test.ts"
     },
     {
@@ -6588,7 +6714,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\brief\\text-extraction-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_brief_text_extraction_agent_test_ts",
-      "community": 121,
+      "community": 124,
       "norm_label": "text-extraction-agent.test.ts"
     },
     {
@@ -6597,7 +6723,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\agents\\generators\\market-section-generator.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_agents_generators_market_section_generator_test_ts",
-      "community": 122,
+      "community": 125,
       "norm_label": "market-section-generator.test.ts"
     },
     {
@@ -6642,7 +6768,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agent\\patterns\\ensemble-merger.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agent_patterns_ensemble_merger_test_ts",
-      "community": 123,
+      "community": 126,
       "norm_label": "ensemble-merger.test.ts"
     },
     {
@@ -6651,7 +6777,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agents\\prd\\one-pager-analyst-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agents_prd_one_pager_analyst_agent_test_ts",
-      "community": 124,
+      "community": 127,
       "norm_label": "one-pager-analyst-agent.test.ts"
     },
     {
@@ -6660,7 +6786,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agents\\prd\\prd-architect-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agents_prd_prd_architect_agent_test_ts",
-      "community": 125,
+      "community": 128,
       "norm_label": "prd-architect-agent.test.ts"
     },
     {
@@ -6669,7 +6795,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agents\\prd\\prd-qa-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agents_prd_prd_qa_agent_test_ts",
-      "community": 126,
+      "community": 129,
       "norm_label": "prd-qa-agent.test.ts"
     },
     {
@@ -6678,7 +6804,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\agents\\prd\\prd-writer-agent.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_agents_prd_prd_writer_agent_test_ts",
-      "community": 127,
+      "community": 130,
       "norm_label": "prd-writer-agent.test.ts"
     },
     {
@@ -6687,7 +6813,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\api\\documents\\export.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_api_documents_export_test_ts",
-      "community": 128,
+      "community": 131,
       "norm_label": "export.test.ts"
     },
     {
@@ -6696,7 +6822,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\api\\pipeline\\prd\\approve.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_api_pipeline_prd_approve_test_ts",
-      "community": 129,
+      "community": 132,
       "norm_label": "approve.test.ts"
     },
     {
@@ -6705,7 +6831,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\api\\pipeline\\prd\\delete.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_api_pipeline_prd_delete_test_ts",
-      "community": 130,
+      "community": 133,
       "norm_label": "delete.test.ts"
     },
     {
@@ -6714,7 +6840,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\api\\pipeline\\prd\\start.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_api_pipeline_prd_start_test_ts",
-      "community": 131,
+      "community": 134,
       "norm_label": "start.test.ts"
     },
     {
@@ -6723,7 +6849,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\api\\brief\\batch-extract.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_api_brief_batch_extract_test_ts",
-      "community": 80,
+      "community": 81,
       "norm_label": "batch-extract.test.ts"
     },
     {
@@ -6732,7 +6858,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\api\\brief\\batch-extract.test.ts",
       "source_location": "L20",
       "id": "batch_extract_test_createmockrequest",
-      "community": 80,
+      "community": 81,
       "norm_label": "createmockrequest()"
     },
     {
@@ -6741,7 +6867,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\CollapsedFieldCard.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_brief_helper_components_collapsedfieldcard_test_tsx",
-      "community": 52,
+      "community": 51,
       "norm_label": "collapsedfieldcard.test.tsx"
     },
     {
@@ -6750,7 +6876,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\CollapsedFieldCard.test.tsx",
       "source_location": "L17",
       "id": "collapsedfieldcard_test_createmockstate",
-      "community": 52,
+      "community": 51,
       "norm_label": "createmockstate()"
     },
     {
@@ -6759,7 +6885,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\CollapsedFieldCard.test.tsx",
       "source_location": "L88",
       "id": "collapsedfieldcard_test_testwrapper",
-      "community": 52,
+      "community": 51,
       "norm_label": "testwrapper()"
     },
     {
@@ -6768,7 +6894,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\DocumentPreview.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_brief_helper_components_documentpreview_test_tsx",
-      "community": 53,
+      "community": 52,
       "norm_label": "documentpreview.test.tsx"
     },
     {
@@ -6777,7 +6903,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\DocumentPreview.test.tsx",
       "source_location": "L17",
       "id": "documentpreview_test_createmockstate",
-      "community": 53,
+      "community": 52,
       "norm_label": "createmockstate()"
     },
     {
@@ -6786,7 +6912,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\DocumentPreview.test.tsx",
       "source_location": "L88",
       "id": "documentpreview_test_testwrapper",
-      "community": 53,
+      "community": 52,
       "norm_label": "testwrapper()"
     },
     {
@@ -6795,7 +6921,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\LoadingOverlay.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_brief_helper_components_loadingoverlay_test_tsx",
-      "community": 132,
+      "community": 135,
       "norm_label": "loadingoverlay.test.tsx"
     },
     {
@@ -6804,7 +6930,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\SuggestionsView.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_brief_helper_components_suggestionsview_test_tsx",
-      "community": 54,
+      "community": 53,
       "norm_label": "suggestionsview.test.tsx"
     },
     {
@@ -6813,7 +6939,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\SuggestionsView.test.tsx",
       "source_location": "L17",
       "id": "suggestionsview_test_createmockstate",
-      "community": 54,
+      "community": 53,
       "norm_label": "createmockstate()"
     },
     {
@@ -6822,7 +6948,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\components\\SuggestionsView.test.tsx",
       "source_location": "L88",
       "id": "suggestionsview_test_testwrapper",
-      "community": 54,
+      "community": 53,
       "norm_label": "testwrapper()"
     },
     {
@@ -6831,7 +6957,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\lib\\brief-state.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_brief_helper_lib_brief_state_test_ts",
-      "community": 81,
+      "community": 82,
       "norm_label": "brief-state.test.ts"
     },
     {
@@ -6840,7 +6966,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\brief-helper\\lib\\brief-state.test.ts",
       "source_location": "L677",
       "id": "brief_state_test_sleep",
-      "community": 81,
+      "community": 82,
       "norm_label": "sleep()"
     },
     {
@@ -6849,7 +6975,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\app\\one-pager\\lib\\one-pager-state.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_app_one_pager_lib_one_pager_state_test_ts",
-      "community": 133,
+      "community": 136,
       "norm_label": "one-pager-state.test.ts"
     },
     {
@@ -6858,7 +6984,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\components\\DocumentsTable.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_components_documentstable_test_tsx",
-      "community": 134,
+      "community": 137,
       "norm_label": "documentstable.test.tsx"
     },
     {
@@ -6867,7 +6993,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\components\\prd\\PRDViewer.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_components_prd_prdviewer_test_tsx",
-      "community": 135,
+      "community": 138,
       "norm_label": "prdviewer.test.tsx"
     },
     {
@@ -6876,7 +7002,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\components\\prd\\QAPanel.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_components_prd_qapanel_test_tsx",
-      "community": 136,
+      "community": 139,
       "norm_label": "qapanel.test.tsx"
     },
     {
@@ -6885,7 +7011,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\components\\prd\\SkeletonReviewForm.test.tsx",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_components_prd_skeletonreviewform_test_tsx",
-      "community": 137,
+      "community": 140,
       "norm_label": "skeletonreviewform.test.tsx"
     },
     {
@@ -6894,7 +7020,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\library-documents.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_library_documents_test_ts",
-      "community": 138,
+      "community": 141,
       "norm_label": "library-documents.test.ts"
     },
     {
@@ -6903,7 +7029,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\prd-db.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_prd_db_test_ts",
-      "community": 139,
+      "community": 142,
       "norm_label": "prd-db.test.ts"
     },
     {
@@ -6912,7 +7038,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\prd-sections-loader.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_prd_sections_loader_test_ts",
-      "community": 140,
+      "community": 143,
       "norm_label": "prd-sections-loader.test.ts"
     },
     {
@@ -6921,7 +7047,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\sanitize.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_sanitize_test_ts",
-      "community": 141,
+      "community": 144,
       "norm_label": "sanitize.test.ts"
     },
     {
@@ -6930,7 +7056,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\one-pager\\config-loader.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_one_pager_config_loader_test_ts",
-      "community": 142,
+      "community": 145,
       "norm_label": "config-loader.test.ts"
     },
     {
@@ -6939,7 +7065,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\one-pager\\one-pager-state.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_one_pager_one_pager_state_test_ts",
-      "community": 143,
+      "community": 146,
       "norm_label": "one-pager-state.test.ts"
     },
     {
@@ -6948,7 +7074,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\gemini-provider.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_providers_gemini_provider_test_ts",
-      "community": 144,
+      "community": 147,
       "norm_label": "gemini-provider.test.ts"
     },
     {
@@ -6957,7 +7083,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_providers_provider_chain_test_ts",
-      "community": 2,
+      "community": 1,
       "norm_label": "provider-chain.test.ts"
     },
     {
@@ -6966,7 +7092,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L13",
       "id": "provider_chain_test_mockprovider",
-      "community": 2,
+      "community": 1,
       "norm_label": "mockprovider"
     },
     {
@@ -6975,7 +7101,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L14",
       "id": "provider_chain_test_mockprovider_constructor",
-      "community": 2,
+      "community": 1,
       "norm_label": ".constructor()"
     },
     {
@@ -6984,7 +7110,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L28",
       "id": "provider_chain_test_mockprovider_isavailable",
-      "community": 2,
+      "community": 1,
       "norm_label": ".isavailable()"
     },
     {
@@ -6993,7 +7119,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L32",
       "id": "provider_chain_test_mockprovider_setavailable",
-      "community": 2,
+      "community": 1,
       "norm_label": ".setavailable()"
     },
     {
@@ -7002,7 +7128,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\providers\\provider-chain.test.ts",
       "source_location": "L36",
       "id": "provider_chain_test_mockprovider_generatetext",
-      "community": 2,
+      "community": 1,
       "norm_label": ".generatetext()"
     },
     {
@@ -7011,7 +7137,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\scraper\\photo-filter.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_scraper_photo_filter_test_ts",
-      "community": 82,
+      "community": 83,
       "norm_label": "photo-filter.test.ts"
     },
     {
@@ -7020,7 +7146,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\scraper\\photo-filter.test.ts",
       "source_location": "L21",
       "id": "photo_filter_test_makeimage",
-      "community": 82,
+      "community": 83,
       "norm_label": "makeimage()"
     },
     {
@@ -7029,7 +7155,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\scraper\\scraper-service.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_scraper_scraper_service_test_ts",
-      "community": 145,
+      "community": 148,
       "norm_label": "scraper-service.test.ts"
     },
     {
@@ -7038,7 +7164,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\scraper\\tier1-fetch.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_lib_scraper_tier1_fetch_test_ts",
-      "community": 0,
+      "community": 3,
       "norm_label": "tier1-fetch.test.ts"
     },
     {
@@ -7047,7 +7173,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\lib\\scraper\\tier1-fetch.test.ts",
       "source_location": "L72",
       "id": "tier1_fetch_test_load",
-      "community": 0,
+      "community": 3,
       "norm_label": "load()"
     },
     {
@@ -7056,7 +7182,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\middleware\\prd-gate.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_middleware_prd_gate_test_ts",
-      "community": 146,
+      "community": 149,
       "norm_label": "prd-gate.test.ts"
     },
     {
@@ -7065,7 +7191,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\mocks\\agent-mocks.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_mocks_agent_mocks_ts",
-      "community": 41,
+      "community": 40,
       "norm_label": "agent-mocks.ts"
     },
     {
@@ -7074,7 +7200,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\mocks\\agent-mocks.ts",
       "source_location": "L11",
       "id": "agent_mocks_createmockprovider",
-      "community": 41,
+      "community": 40,
       "norm_label": "createmockprovider()"
     },
     {
@@ -7083,7 +7209,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\mocks\\agent-mocks.ts",
       "source_location": "L43",
       "id": "agent_mocks_createmockexecutioncontext",
-      "community": 41,
+      "community": 40,
       "norm_label": "createmockexecutioncontext()"
     },
     {
@@ -7092,7 +7218,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\mocks\\agent-mocks.ts",
       "source_location": "L70",
       "id": "agent_mocks_getmockcontextlogs",
-      "community": 41,
+      "community": 40,
       "norm_label": "getmockcontextlogs()"
     },
     {
@@ -7101,7 +7227,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\skills\\gap_analyzer.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_skills_gap_analyzer_test_ts",
-      "community": 83,
+      "community": 84,
       "norm_label": "gap_analyzer.test.ts"
     },
     {
@@ -7110,7 +7236,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\skills\\gap_analyzer.test.ts",
       "source_location": "L6",
       "id": "gap_analyzer_test_createrequestdata",
-      "community": 83,
+      "community": 84,
       "norm_label": "createrequestdata()"
     },
     {
@@ -7119,7 +7245,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\skills\\mrd_generator.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_skills_mrd_generator_test_ts",
-      "community": 147,
+      "community": 150,
       "norm_label": "mrd_generator.test.ts"
     },
     {
@@ -7128,7 +7254,7 @@
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\__tests__\\skills\\web_search.test.ts",
       "source_location": "L1",
       "id": "c_users_orishavit_documents_github_mrd_producer_webapp_tests_skills_web_search_test_ts",
-      "community": 148,
+      "community": 151,
       "norm_label": "web_search.test.ts"
     }
   ],
@@ -12825,12 +12951,36 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
-      "source_location": "L5",
+      "source_location": "L14",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
       "_tgt": "route_post",
       "source": "route_post",
       "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
+      "source_location": "L24",
+      "weight": 1.0,
+      "_src": "route_post",
+      "_tgt": "route_bumptopublished",
+      "source": "route_post",
+      "target": "route_bumptopublished",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\rollback\\route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_rollback_route_ts",
+      "_tgt": "route_post",
+      "source": "route_post",
+      "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_rollback_route_ts",
       "confidence_score": 1.0
     },
     {
@@ -13077,6 +13227,18 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
+      "source_location": "L78",
+      "weight": 1.0,
+      "_src": "route_post",
+      "_tgt": "db_getdocument",
+      "source": "route_post",
+      "target": "db_getdocument"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
       "source_location": "L14",
       "weight": 1.0,
@@ -13084,6 +13246,18 @@
       "_tgt": "db_updatedocument",
       "source": "route_post",
       "target": "db_updatedocument"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\rollback\\route.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "route_post",
+      "_tgt": "admin_isadmin",
+      "source": "route_post",
+      "target": "admin_isadmin"
     },
     {
       "relation": "calls",
@@ -13342,18 +13516,6 @@
       "confidence": "INFERRED",
       "confidence_score": 0.8,
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
-      "source_location": "L78",
-      "weight": 1.0,
-      "_src": "route_post",
-      "_tgt": "db_getdocument",
-      "source": "route_post",
-      "target": "db_getdocument"
-    },
-    {
-      "relation": "calls",
-      "confidence": "INFERRED",
-      "confidence_score": 0.8,
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\start\\route.ts",
       "source_location": "L83",
       "weight": 1.0,
       "_src": "route_post",
@@ -13455,6 +13617,18 @@
       "_tgt": "route_get",
       "source": "route_get",
       "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_export_route_ts",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\versions\\route.ts",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_versions_route_ts",
+      "_tgt": "route_get",
+      "source": "route_get",
+      "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_versions_route_ts",
       "confidence_score": 1.0
     },
     {
@@ -13569,6 +13743,18 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\versions\\route.ts",
+      "source_location": "L13",
+      "weight": 1.0,
+      "_src": "route_get",
+      "_tgt": "admin_isadmin",
+      "source": "route_get",
+      "target": "admin_isadmin"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\one-pager\\config\\route.ts",
       "source_location": "L13",
       "weight": 1.0,
@@ -13677,7 +13863,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\route.ts",
-      "source_location": "L40",
+      "source_location": "L59",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_route_ts",
       "_tgt": "route_delete",
@@ -13696,6 +13882,18 @@
       "_tgt": "db_updatedocument",
       "source": "route_patch",
       "target": "db_updatedocument"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
+      "source_location": "L32",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
+      "_tgt": "route_delete",
+      "source": "route_delete",
+      "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -13725,6 +13923,18 @@
       "relation": "calls",
       "confidence": "INFERRED",
       "confidence_score": 0.8,
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
+      "source_location": "L41",
+      "weight": 1.0,
+      "_src": "route_delete",
+      "_tgt": "db_updatedocument",
+      "source": "route_delete",
+      "target": "db_updatedocument"
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\pipeline\\prd\\[run_id]\\delete\\route.ts",
       "source_location": "L17",
       "weight": 1.0,
@@ -13744,6 +13954,18 @@
       "_tgt": "prd_db_softdeleteprddocument",
       "source": "route_delete",
       "target": "prd_db_softdeleteprddocument"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\api\\documents\\[id]\\publish\\route.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
+      "_tgt": "route_bumptopublished",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_api_documents_id_publish_route_ts",
+      "target": "route_bumptopublished",
+      "confidence_score": 1.0
     },
     {
       "relation": "contains",
@@ -14660,6 +14882,42 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\OnePagerClient.tsx",
+      "source_location": "L29",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_onepagerclient_tsx",
+      "_tgt": "onepagerclient_bumpdraftversion",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_onepagerclient_tsx",
+      "target": "onepagerclient_bumpdraftversion",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\page.tsx",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_page_tsx",
+      "_tgt": "page_onepagerpage",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_page_tsx",
+      "target": "page_onepagerpage",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "calls",
+      "confidence": "INFERRED",
+      "confidence_score": 0.8,
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\page.tsx",
+      "source_location": "L7",
+      "weight": 1.0,
+      "_src": "page_onepagerpage",
+      "_tgt": "admin_isadmin",
+      "source": "page_onepagerpage",
+      "target": "admin_isadmin"
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\ChipInput.tsx",
       "source_location": "L14",
       "weight": 1.0,
@@ -14877,72 +15135,24 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\FeatureSelector.tsx",
-      "source_location": "L43",
+      "source_location": "L40",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "_tgt": "featureselector_setlayout",
+      "_tgt": "featureselector_handlechipcycle",
       "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "target": "featureselector_setlayout",
+      "target": "featureselector_handlechipcycle",
       "confidence_score": 1.0
     },
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\FeatureSelector.tsx",
-      "source_location": "L50",
-      "weight": 1.0,
-      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "_tgt": "featureselector_handlechipclick",
-      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "target": "featureselector_handlechipclick",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\FeatureSelector.tsx",
-      "source_location": "L61",
-      "weight": 1.0,
-      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "_tgt": "featureselector_handleaddtocategory",
-      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
-      "target": "featureselector_handleaddtocategory",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\FeatureSelector.tsx",
-      "source_location": "L66",
+      "source_location": "L54",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
       "_tgt": "featureselector_handlecustomkeydown",
       "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_featureselector_tsx",
       "target": "featureselector_handlecustomkeydown",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
-      "source_location": "L38",
-      "weight": 1.0,
-      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
-      "_tgt": "featureselector_handlechipclick",
-      "source": "featureselector_handlechipclick",
-      "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
-      "confidence_score": 1.0
-    },
-    {
-      "relation": "contains",
-      "confidence": "EXTRACTED",
-      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
-      "source_location": "L49",
-      "weight": 1.0,
-      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
-      "_tgt": "featureselector_handleaddtocategory",
-      "source": "featureselector_handleaddtocategory",
-      "target": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
       "confidence_score": 1.0
     },
     {
@@ -15068,6 +15278,18 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\components\\VersionHistoryPanel.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_versionhistorypanel_tsx",
+      "_tgt": "versionhistorypanel_handlerollback",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_components_versionhistorypanel_tsx",
+      "target": "versionhistorypanel_handlerollback",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-context.tsx",
       "source_location": "L27",
       "weight": 1.0,
@@ -15153,7 +15375,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
-      "source_location": "L95",
+      "source_location": "L114",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
       "_tgt": "one_pager_state_generatesessionid",
@@ -15165,7 +15387,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
-      "source_location": "L99",
+      "source_location": "L118",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
       "_tgt": "one_pager_state_createinitialstate",
@@ -15177,7 +15399,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
-      "source_location": "L127",
+      "source_location": "L152",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
       "_tgt": "one_pager_state_toggleinarray",
@@ -15189,12 +15411,24 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
-      "source_location": "L131",
+      "source_location": "L156",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
       "_tgt": "one_pager_state_onepagerreducer",
       "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
       "target": "one_pager_state_onepagerreducer",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager\\lib\\one-pager-state.ts",
+      "source_location": "L397",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
+      "_tgt": "one_pager_state_getcompletionsections",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_lib_one_pager_state_ts",
+      "target": "one_pager_state_getcompletionsections",
       "confidence_score": 1.0
     },
     {
@@ -15351,6 +15585,30 @@
       "_tgt": "competitorinput_handleconfirm",
       "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_competitorinput_tsx",
       "target": "competitorinput_handleconfirm",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
+      "source_location": "L38",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
+      "_tgt": "featureselector_handlechipclick",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
+      "target": "featureselector_handlechipclick",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\app\\one-pager-beta\\components\\FeatureSelector.tsx",
+      "source_location": "L49",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
+      "_tgt": "featureselector_handleaddtocategory",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_app_one_pager_beta_components_featureselector_tsx",
+      "target": "featureselector_handleaddtocategory",
       "confidence_score": 1.0
     },
     {
@@ -16136,6 +16394,18 @@
     {
       "relation": "contains",
       "confidence": "EXTRACTED",
+      "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\admin.ts",
+      "source_location": "L5",
+      "weight": 1.0,
+      "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_admin_ts",
+      "_tgt": "admin_isadmin",
+      "source": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_admin_ts",
+      "target": "admin_isadmin",
+      "confidence_score": 1.0
+    },
+    {
+      "relation": "contains",
+      "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\ban-check.ts",
       "source_location": "L4",
       "weight": 1.0,
@@ -16353,7 +16623,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L33",
+      "source_location": "L35",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_listdocuments",
@@ -16365,7 +16635,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L50",
+      "source_location": "L52",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_getdocument",
@@ -16377,7 +16647,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L57",
+      "source_location": "L59",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_createdocument",
@@ -16389,7 +16659,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L73",
+      "source_location": "L75",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_updatedocument",
@@ -16401,7 +16671,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L104",
+      "source_location": "L108",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_softdeletedocument",
@@ -16413,7 +16683,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L111",
+      "source_location": "L115",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_listdocumentswithcreator",
@@ -16425,7 +16695,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L128",
+      "source_location": "L132",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_listalldocumentswithcreator",
@@ -16437,7 +16707,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L137",
+      "source_location": "L141",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_logviolation",
@@ -16449,7 +16719,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L144",
+      "source_location": "L148",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_countviolations",
@@ -16461,7 +16731,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L151",
+      "source_location": "L155",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_banuser",
@@ -16473,7 +16743,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L160",
+      "source_location": "L164",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_unbanuser",
@@ -16485,7 +16755,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L164",
+      "source_location": "L168",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_isuserbanned",
@@ -16497,7 +16767,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L183",
+      "source_location": "L187",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_tolibrarydocument",
@@ -16509,7 +16779,7 @@
       "relation": "contains",
       "confidence": "EXTRACTED",
       "source_file": "C:\\Users\\OriShavit\\Documents\\GitHub\\mrd-producer-webapp\\lib\\db.ts",
-      "source_location": "L197",
+      "source_location": "L201",
       "weight": 1.0,
       "_src": "c_users_orishavit_documents_github_mrd_producer_webapp_lib_db_ts",
       "_tgt": "db_toprdlibrarydocument",
