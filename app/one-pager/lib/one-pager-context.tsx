@@ -46,10 +46,12 @@ export function OnePagerProvider({ children, readOnly, initialState }: OnePagerP
     onePagerReducer,
     null,
     () => {
-      const base = loadFromStorage() ?? createInitialState();
       if (initialState) {
-        return { ...base, ...initialState };
+        // When loading a specific document (docId flow), ignore sessionStorage
+        // so we get clean hydration from the DB document.
+        return { ...createInitialState(), ...initialState };
       }
+      const base = loadFromStorage() ?? createInitialState();
       return base;
     }
   );

@@ -798,9 +798,35 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
   return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} previewOpen={previewOpen} />;
 }
 
-export default function OnePagerClient({ isAdmin }: { isAdmin: boolean }) {
+export default function OnePagerClient({ isAdmin, docId }: { isAdmin: boolean; docId: string | null }) {
+  const [initialState, setInitialState] = useState<Partial<OnePagerState> | null>(null);
+  const [loading, setLoading] = useState(!!docId);
+
+  useEffect(() => {
+    if (!docId) return;
+    // Clear any stale sessionStorage draft so the DB document takes precedence
+    try { sessionStorage.removeItem('one-pager-state'); } catch { /* ignore */ }
+    fetch(`/api/documents/${docId}`)
+      .then((r) => r.json())
+      .then((data) => {
+        if (data.document?.content_json) {
+          setInitialState(data.document.content_json as Partial<OnePagerState>);
+        }
+      })
+      .catch(console.error)
+      .finally(() => setLoading(false));
+  }, [docId]);
+
+  if (loading) {
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', height: '100vh', color: 'var(--op-on-surface-muted)' }}>
+        Loading document…
+      </div>
+    );
+  }
+
   return (
-    <OnePagerProvider>
+    <OnePagerProvider initialState={initialState}>
       <OnePagerContent isAdmin={isAdmin} />
     </OnePagerProvider>
   );

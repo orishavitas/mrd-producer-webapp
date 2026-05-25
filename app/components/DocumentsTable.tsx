@@ -16,6 +16,11 @@ const TOOL_LABELS: Record<string, string> = {
   prd: 'PRD',
 };
 
+const STATUS_BADGE: Record<string, { label: string; background: string; color: string }> = {
+  draft:    { label: 'Draft',     background: 'rgba(184,111,0,0.12)', color: '#B86F00' },
+  complete: { label: 'Published', background: 'rgba(0,153,102,0.12)', color: '#009966' },
+};
+
 const BADGE_STYLES: Record<string, { background: string; color: string }> = {
   'one-pager': { background: 'var(--brand-highlight)', color: '#9bb' },
   prd: { background: '#1a2a1a', color: 'var(--brand-green-dark)' },
@@ -83,7 +88,7 @@ export default function DocumentsTable({ documents, onDelete, currentUserEmail }
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.9rem' }}>
           <thead>
             <tr style={{ borderBottom: '1px solid var(--border)' }}>
-              {['Title', 'Type', 'Creator', 'Updated', ''].map((h) => (
+              {['Title', 'Type', 'Status', 'Creator', 'Updated', ''].map((h) => (
                 <th key={h} style={{
                   textAlign: 'left', padding: '0.6rem 0.75rem', fontWeight: 600,
                   color: 'var(--muted)', fontSize: '0.75rem',
@@ -94,16 +99,34 @@ export default function DocumentsTable({ documents, onDelete, currentUserEmail }
           </thead>
           <tbody>
             {filtered.map((doc) => {
-              const badge = BADGE_STYLES[doc.toolType] ?? { background: 'var(--border)', color: 'var(--muted)' };
+              const typeBadge = BADGE_STYLES[doc.toolType] ?? { background: 'var(--border)', color: 'var(--muted)' };
+              const statusBadge = STATUS_BADGE[doc.status] ?? STATUS_BADGE.draft;
+              const isDraft = doc.status === 'draft';
               return (
                 <tr key={doc.id} style={{ borderBottom: '1px solid var(--border)' }}>
-                  <td style={{ padding: '0.7rem 0.75rem', fontWeight: 500 }}>{doc.title}</td>
+                  <td style={{ padding: '0.7rem 0.75rem', fontWeight: 500 }}>
+                    {doc.editUrl ? (
+                      <a href={doc.editUrl} style={{ color: 'inherit', textDecoration: 'none' }}
+                         onMouseOver={(e) => (e.currentTarget.style.textDecoration = 'underline')}
+                         onMouseOut={(e) => (e.currentTarget.style.textDecoration = 'none')}>
+                        {doc.title}
+                      </a>
+                    ) : doc.title}
+                  </td>
                   <td style={{ padding: '0.7rem 0.75rem' }}>
                     <span style={{
-                      ...badge, fontSize: '0.72rem', fontWeight: 600,
+                      ...typeBadge, fontSize: '0.72rem', fontWeight: 600,
                       padding: '0.15rem 0.55rem', borderRadius: '999px', whiteSpace: 'nowrap',
                     }}>
                       {TOOL_LABELS[doc.toolType] ?? doc.toolType}
+                    </span>
+                  </td>
+                  <td style={{ padding: '0.7rem 0.75rem' }}>
+                    <span style={{
+                      ...statusBadge, fontSize: '0.72rem', fontWeight: 600,
+                      padding: '0.15rem 0.55rem', borderRadius: '999px', whiteSpace: 'nowrap',
+                    }}>
+                      {statusBadge.label}
                     </span>
                   </td>
                   <td style={{ padding: '0.7rem 0.75rem', color: 'var(--muted)', fontSize: '0.85rem' }}>
@@ -121,26 +144,42 @@ export default function DocumentsTable({ documents, onDelete, currentUserEmail }
                   </td>
                   <td style={{ padding: '0.7rem 0.75rem', textAlign: 'right' }}>
                     <div style={{ display: 'flex', gap: '0.4rem', justifyContent: 'flex-end', alignItems: 'center' }}>
-                      <a
-                        href={`${doc.exportBaseUrl}?format=docx`}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          background: 'var(--brand-green-dark)', color: '#fff',
-                          padding: '0.2rem 0.6rem', borderRadius: '4px',
-                          fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none',
-                        }}
-                      >DOCX</a>
-                      <a
-                        href={`${doc.exportBaseUrl}?format=html`}
-                        target="_blank"
-                        rel="noreferrer"
-                        style={{
-                          background: 'var(--brand-highlight)', color: '#9bb',
-                          padding: '0.2rem 0.6rem', borderRadius: '4px',
-                          fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none',
-                        }}
-                      >HTML</a>
+                      {doc.editUrl && (
+                        <a
+                          href={doc.editUrl}
+                          style={{
+                            background: isDraft ? 'rgba(184,111,0,0.12)' : 'var(--brand-highlight)',
+                            color: isDraft ? '#B86F00' : '#9bb',
+                            padding: '0.2rem 0.6rem', borderRadius: '4px',
+                            fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none',
+                            border: isDraft ? '1px solid rgba(184,111,0,0.4)' : 'none',
+                          }}
+                        >{isDraft ? 'Continue' : 'Open'}</a>
+                      )}
+                      {!isDraft && (
+                        <>
+                          <a
+                            href={`${doc.exportBaseUrl}?format=docx`}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              background: 'var(--brand-green-dark)', color: '#fff',
+                              padding: '0.2rem 0.6rem', borderRadius: '4px',
+                              fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none',
+                            }}
+                          >DOCX</a>
+                          <a
+                            href={`${doc.exportBaseUrl}?format=html`}
+                            target="_blank"
+                            rel="noreferrer"
+                            style={{
+                              background: 'var(--brand-highlight)', color: '#9bb',
+                              padding: '0.2rem 0.6rem', borderRadius: '4px',
+                              fontSize: '0.75rem', fontWeight: 600, textDecoration: 'none',
+                            }}
+                          >HTML</a>
+                        </>
+                      )}
                       <button
                         onClick={() => handleDelete(doc)}
                         disabled={deletingId === doc.id}
