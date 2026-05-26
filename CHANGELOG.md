@@ -1,5 +1,16 @@
 # Changelog
 
+## [1.6.0] - 2026-05-26
+
+### Added
+- One-Pager top bar redesign with a compact 52px identity/progress/action layout, progress ring status panel, export dropdown, overflow menu, and floating preview FAB.
+- Responsive preview mode choice for narrow viewports, including split view and form-posted HTML preview in a new tab.
+- Focused regression coverage for the section nav, top bar controls, preview FAB, and form-encoded One-Pager export.
+
+### Changed
+- Section navigation now clips to active section plus adjacent labeled pills, while non-neighbor sections collapse to numbered circles with completion and skipped states.
+- One-Pager split layout now supports vertical and horizontal preview modes with the preview panel rendered only when open.
+
 ## [1.5.0] - 2026-05-25
 
 ### Added

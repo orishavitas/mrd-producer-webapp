@@ -1,52 +1,57 @@
-/* Top app bar — design system (mrd-redo, May 2026) */
 .topBar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  height: var(--op-h-topbar, 56px);
-  padding: 0 var(--op-sp-5, 20px);
+  height: var(--op-h-topbar, 52px);
+  padding: 0 var(--op-sp-4, 16px);
   background: var(--op-primary, #1D1F4A);
   color: #fff;
   border-bottom: 3px solid var(--op-accent, #009966);
   flex-shrink: 0;
   z-index: 20;
+  gap: 8px;
 }
 
 .left {
   display: flex;
   align-items: center;
-  gap: var(--op-sp-5, 20px);
-}
-
-.logoLink {
-  display: flex;
-  align-items: center;
-  text-decoration: none;
+  gap: 12px;
+  flex-shrink: 0;
 }
 
 .logo {
   display: block;
-  height: 22px;
+  height: 20px;
   width: auto;
   filter: brightness(0) invert(1);
 }
 
 .divider {
   width: 1px;
-  height: 22px;
+  height: 20px;
   background: rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
 }
 
 .product {
   font-family: var(--op-font-heading, 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif);
-  font-weight: 500;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.10em;
   font-size: var(--op-fs-s, 13px);
   color: rgba(255, 255, 255, 0.92);
+  white-space: nowrap;
 }
 
-.product strong {
-  color: #fff;
-  letter-spacing: 0.06em;
+.center {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
 }

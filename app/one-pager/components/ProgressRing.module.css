@@ -1,0 +1,138 @@
+.wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.ringBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ringBtn:hover { opacity: 0.85; }
+
+.svg {
+  width: 34px;
+  height: 34px;
+}
+
+.track {
+  fill: none;
+  stroke: rgba(255, 255, 255, 0.16);
+  stroke-width: 3.5;
+}
+
+.fill {
+  fill: none;
+  stroke: var(--op-accent, #009966);
+  stroke-width: 3.5;
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 50% 50%;
+  transition: stroke-dashoffset 0.4s var(--op-ease, ease);
+}
+
+.pctText {
+  fill: #fff;
+  font-size: 9px;
+  font-weight: 700;
+  font-family: var(--op-font-heading);
+}
+
+.verBadge {
+  font-size: var(--op-fs-xs, 11px);
+  font-weight: 700;
+  font-family: var(--op-font-heading);
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.68);
+  background: rgba(255, 255, 255, 0.12);
+  border-radius: var(--op-radius-full, 9999px);
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--op-primary, #1D1F4A);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 12px;
+  padding: 10px 12px;
+  min-width: 210px;
+  z-index: 100;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.panelTitle {
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.36);
+  margin-bottom: 8px;
+  font-family: var(--op-font-heading);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 4px 0;
+}
+
+.rowLabel,
+.rowLabelDone {
+  font-size: 11px;
+  font-family: var(--op-font-body);
+}
+
+.rowLabel {
+  color: rgba(255, 255, 255, 0.68);
+}
+
+.rowLabelDone {
+  color: var(--op-accent-light, #1DB274);
+}
+
+.panelDivider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.10);
+  margin: 6px 0;
+}
+
+.naBtn {
+  height: 18px;
+  padding: 0 7px;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px solid rgba(255, 255, 255, 0.24);
+  background: transparent;
+  color: rgba(255, 255, 255, 0.52);
+  font-size: 9px;
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  font-family: var(--op-font-heading);
+  white-space: nowrap;
+}
+.naBtn:hover {
+  border-color: rgba(255, 255, 255, 0.52);
+  color: rgba(255, 255, 255, 0.82);
+}
+
+.naBtnActive {
+  composes: naBtn;
+  background: rgba(0, 153, 102, 0.2);
+  border-color: var(--op-accent, #009966);
+  color: var(--op-accent-light, #1DB274);
+}

@@ -1,0 +1,100 @@
+.container {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  pointer-events: none;
+}
+
+.fab,
+.prompt {
+  pointer-events: auto;
+}
+
+.fab {
+  height: 40px;
+  padding: 0 18px;
+  border-radius: var(--op-radius-full, 9999px);
+  border: none;
+  background: var(--op-accent, #009966);
+  color: #fff;
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-s, 13px);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(0, 153, 102, 0.4);
+}
+.fab:hover { background: var(--op-accent-hover, #007a52); }
+.fab[aria-pressed="true"] {
+  background: var(--op-on-surface-muted, #5A5C70);
+  box-shadow: none;
+}
+
+.prompt {
+  background: var(--op-surface, #fff);
+  border: 1px solid var(--op-outline, #D9DAE2);
+  border-radius: 12px;
+  padding: 14px 16px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  min-width: 220px;
+}
+
+.promptTitle {
+  font-size: var(--op-fs-s, 13px);
+  color: var(--op-on-surface, #1A1B2A);
+  margin-bottom: 10px;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.promptBtns {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.promptBtn,
+.promptBtnSecondary {
+  flex: 1;
+  min-height: 32px;
+  border-radius: var(--op-radius-full, 9999px);
+  font-family: var(--op-font-heading);
+  font-size: var(--op-fs-xs, 11px);
+  font-weight: 700;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.promptBtn {
+  border: none;
+  background: var(--op-accent, #009966);
+  color: #fff;
+}
+.promptBtn:hover { background: var(--op-accent-hover, #007a52); }
+
+.promptBtnSecondary {
+  background: transparent;
+  border: 1.5px solid var(--op-outline, #D9DAE2);
+  color: var(--op-on-surface, #1A1B2A);
+}
+.promptBtnSecondary:hover {
+  border-color: var(--op-primary, #1D1F4A);
+  background: var(--op-info-soft, rgba(29, 31, 74, 0.06));
+}
+
+.promptForget {
+  display: block;
+  width: 100%;
+  border: none;
+  background: none;
+  font-size: var(--op-fs-xs, 11px);
+  color: var(--op-on-surface-faint, #8C8E9F);
+  cursor: pointer;
+  text-align: center;
+  padding: 2px 0;
+}
