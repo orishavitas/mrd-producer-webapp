@@ -5,17 +5,17 @@ import type { CompletionSection } from '../lib/one-pager-state';
 import styles from './SectionNavMenu.module.css';
 
 const NAV_SECTIONS = [
-  { key: 'documentInfo', label: 'Doc Info', number: null },
+  { key: 'documentInfo', label: 'Doc Info', number: 'DI' },
   { key: 'productDescription', label: 'Product', number: '01' },
   { key: 'goal', label: 'Goal', number: '02' },
   { key: 'where', label: 'Where', number: '03' },
   { key: 'who', label: 'Who', number: '04' },
-  { key: 'useCases', label: 'Use Cases', number: null },
+  { key: 'useCases', label: 'Use Cases', number: 'UC' },
   { key: 'features', label: 'Features', number: '05' },
   { key: 'commercials', label: 'Commercials', number: '06' },
   { key: 'competitors', label: 'Competitors', number: '07' },
   { key: 'referencePhotos', label: 'Photos', number: '08' },
-  { key: 'footnotes', label: 'Notes', number: null },
+  { key: 'footnotes', label: 'Notes', number: 'FN' },
 ] as const;
 
 interface SectionNavMenuProps {
@@ -87,7 +87,7 @@ export default function SectionNavMenu({ skippedSections, completionSections }: 
                 aria-label={`Go to section ${label}`}
               >
                 <span className={styles.circTooltip}>{label}</span>
-                {number ?? '-'}
+                {number}
               </button>
             );
           }

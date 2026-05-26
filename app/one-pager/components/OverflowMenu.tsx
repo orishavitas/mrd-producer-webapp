@@ -48,7 +48,11 @@ export default function OverflowMenu({
         aria-expanded={open}
         aria-haspopup="menu"
       >
-        ...
+        <svg width="16" height="12" viewBox="0 0 16 12" fill="none" aria-hidden="true">
+          <rect y="0" width="16" height="2" rx="1" fill="currentColor"/>
+          <rect y="5" width="16" height="2" rx="1" fill="currentColor"/>
+          <rect y="10" width="16" height="2" rx="1" fill="currentColor"/>
+        </svg>
       </button>
 
       {open && (

@@ -93,17 +93,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: var(--size-chip, 30px);
-  height: var(--size-chip, 30px);
+  width: 28px;
+  height: 28px;
+  min-width: 28px;
+  padding: 0;
   border-radius: 50%;
   border: 1.5px solid var(--op-outline);
   background: transparent;
   color: var(--op-on-surface-muted);
   font-family: var(--op-font-heading);
-  font-size: var(--op-fs-xs);
+  font-size: 10px;
   font-weight: var(--font-weight-medium, 500);
+  line-height: 1;
   cursor: pointer;
   flex-shrink: 0;
+  box-sizing: border-box;
   transition: border-color var(--duration-fast, 120ms), color var(--duration-fast, 120ms), background var(--duration-fast, 120ms);
 }
 .circ:hover {

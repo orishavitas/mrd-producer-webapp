@@ -4,15 +4,20 @@
 }
 
 .trigger {
-  width: var(--size-icon-btn, 32px);
-  height: var(--size-icon-btn, 32px);
+  width: 32px;
+  height: 32px;
+  min-width: 32px;
+  padding: 0;
   border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.22);
   background: transparent;
   color: rgba(255, 255, 255, 0.88);
-  font-size: var(--op-fs-m, 15px);
-  font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
   transition: border-color var(--duration-fast, 120ms), color var(--duration-fast, 120ms);
 }
 .trigger:hover {

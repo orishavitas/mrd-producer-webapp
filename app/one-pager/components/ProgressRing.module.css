@@ -9,14 +9,17 @@
 .ringBtn {
   width: 34px;
   height: 34px;
+  min-width: 34px;
+  padding: 0;
   border-radius: 50%;
   border: none;
   background: transparent;
   cursor: pointer;
-  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  box-sizing: border-box;
+  flex-shrink: 0;
 }
 .ringBtn:hover { opacity: 0.85; }
 
