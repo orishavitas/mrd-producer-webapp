@@ -8,13 +8,13 @@
   border-bottom: 3px solid var(--op-accent, #009966);
   flex-shrink: 0;
   z-index: 20;
-  gap: 8px;
+  gap: var(--op-sp-2);
 }
 
 .left {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: var(--op-sp-3);
   flex-shrink: 0;
 }
 
@@ -34,10 +34,11 @@
 
 .product {
   font-family: var(--op-font-heading, 'Barlow Condensed', 'Arial Narrow', Arial, sans-serif);
-  font-weight: 700;
+  font-weight: var(--font-weight-medium, 500);
   text-transform: uppercase;
   font-size: var(--op-fs-s, 13px);
   color: rgba(255, 255, 255, 0.92);
+  letter-spacing: 0.06em;
   white-space: nowrap;
 }
 
@@ -46,12 +47,12 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: var(--op-sp-2);
 }
 
 .right {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: var(--op-sp-2);
   flex-shrink: 0;
 }

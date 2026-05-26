@@ -1,12 +1,12 @@
 .container {
   position: absolute;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--op-sp-5);
+  right: var(--op-sp-5);
   z-index: 30;
   display: flex;
   flex-direction: column;
   align-items: flex-end;
-  gap: 8px;
+  gap: var(--op-sp-2);
   pointer-events: none;
 }
 
@@ -16,18 +16,20 @@
 }
 
 .fab {
-  height: 40px;
-  padding: 0 18px;
+  height: var(--op-h-btn, 36px);
+  padding: 0 var(--op-sp-5);
   border-radius: var(--op-radius-full, 9999px);
   border: none;
   background: var(--op-accent, #009966);
   color: #fff;
   font-family: var(--op-font-heading);
   font-size: var(--op-fs-s, 13px);
-  font-weight: 700;
+  font-weight: var(--font-weight-medium, 500);
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
-  box-shadow: 0 4px 16px rgba(0, 153, 102, 0.4);
+  box-shadow: var(--shadow-md, 0 4px 12px rgba(29,31,74,0.14));
+  transition: background var(--duration-fast, 120ms), box-shadow var(--duration-fast, 120ms);
 }
 .fab:hover { background: var(--op-accent-hover, #007a52); }
 .fab[aria-pressed="true"] {
@@ -38,36 +40,39 @@
 .prompt {
   background: var(--op-surface, #fff);
   border: 1px solid var(--op-outline, #D9DAE2);
-  border-radius: 12px;
-  padding: 14px 16px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.14);
+  border-radius: var(--border-radius-lg, 12px);
+  padding: var(--op-sp-3) var(--op-sp-4);
+  box-shadow: var(--op-shadow-3);
   min-width: 220px;
 }
 
 .promptTitle {
   font-size: var(--op-fs-s, 13px);
   color: var(--op-on-surface, #1A1B2A);
-  margin-bottom: 10px;
-  font-weight: 600;
+  margin-bottom: var(--op-sp-3);
+  font-weight: var(--font-weight-medium, 500);
+  font-family: var(--op-font-body);
   line-height: 1.4;
 }
 
 .promptBtns {
   display: flex;
-  gap: 8px;
-  margin-bottom: 8px;
+  gap: var(--op-sp-2);
+  margin-bottom: var(--op-sp-2);
 }
 
 .promptBtn,
 .promptBtnSecondary {
   flex: 1;
-  min-height: 32px;
+  min-height: var(--size-button-sm, 28px);
   border-radius: var(--op-radius-full, 9999px);
   font-family: var(--op-font-heading);
   font-size: var(--op-fs-xs, 11px);
-  font-weight: 700;
+  font-weight: var(--font-weight-medium, 500);
   text-transform: uppercase;
+  letter-spacing: 0.06em;
   cursor: pointer;
+  transition: background var(--duration-fast, 120ms), border-color var(--duration-fast, 120ms);
 }
 
 .promptBtn {
@@ -93,8 +98,9 @@
   border: none;
   background: none;
   font-size: var(--op-fs-xs, 11px);
+  font-family: var(--op-font-body);
   color: var(--op-on-surface-faint, #8C8E9F);
   cursor: pointer;
   text-align: center;
-  padding: 2px 0;
+  padding: var(--op-sp-1) 0;
 }

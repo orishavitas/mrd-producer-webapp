@@ -4,15 +4,16 @@
 }
 
 .trigger {
-  width: 32px;
-  height: 32px;
+  width: var(--size-icon-btn, 32px);
+  height: var(--size-icon-btn, 32px);
   border-radius: 50%;
   border: 1.5px solid rgba(255, 255, 255, 0.22);
   background: transparent;
   color: rgba(255, 255, 255, 0.88);
-  font-size: 16px;
-  font-weight: 700;
+  font-size: var(--op-fs-m, 15px);
+  font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
+  transition: border-color var(--duration-fast, 120ms), color var(--duration-fast, 120ms);
 }
 .trigger:hover {
   border-color: rgba(255, 255, 255, 0.52);
@@ -21,14 +22,14 @@
 
 .menu {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + var(--op-sp-2));
   right: 0;
   min-width: 160px;
-  padding: 6px;
-  border-radius: 10px;
+  padding: var(--op-sp-2);
+  border-radius: var(--border-radius-lg, 12px);
   border: 1px solid var(--op-outline, #D9DAE2);
   background: var(--op-surface, #fff);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.16);
+  box-shadow: var(--op-shadow-3);
   z-index: 110;
 }
 
@@ -38,9 +39,9 @@
   align-items: center;
   width: 100%;
   min-height: 32px;
-  padding: 0 10px;
+  padding: 0 var(--op-sp-3);
   border: none;
-  border-radius: 7px;
+  border-radius: var(--border-radius-md, 8px);
   background: transparent;
   color: var(--op-on-surface, #1A1B2A);
   font-family: var(--op-font-body);
@@ -49,6 +50,7 @@
   text-align: left;
   text-decoration: none;
   box-sizing: border-box;
+  transition: background var(--duration-fast, 120ms);
 }
 .item:hover,
 .linkItem:hover {

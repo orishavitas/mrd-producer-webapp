@@ -10,7 +10,7 @@
 
 .pills {
   display: flex;
-  gap: 6px;
+  gap: var(--op-sp-2);
   overflow-x: auto;
   scrollbar-width: none;
   padding-bottom: 2px;
@@ -21,8 +21,8 @@
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
-  height: 28px;
+  gap: var(--op-sp-1);
+  height: var(--size-chip, 30px);
   padding: 0 var(--op-sp-3);
   border-radius: var(--op-radius-full);
   border: 1.5px solid var(--op-outline);
@@ -30,18 +30,18 @@
   color: var(--op-on-surface-muted);
   font-family: var(--op-font-heading);
   font-size: var(--op-fs-xs);
-  font-weight: 600;
-  letter-spacing: 0.05em;
+  font-weight: var(--font-weight-medium, 500);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: background var(--duration-fast, 120ms), border-color var(--duration-fast, 120ms), color var(--duration-fast, 120ms);
   flex-shrink: 0;
 }
 .pill:hover {
   border-color: var(--op-primary);
   color: var(--op-primary);
-  background: rgba(29, 31, 74, 0.05);
+  background: var(--op-info-soft, rgba(29, 31, 74, 0.06));
 }
 
 /* Active pill */
@@ -93,18 +93,18 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--size-chip, 30px);
+  height: var(--size-chip, 30px);
   border-radius: 50%;
   border: 1.5px solid var(--op-outline);
   background: transparent;
   color: var(--op-on-surface-muted);
   font-family: var(--op-font-heading);
   font-size: var(--op-fs-xs);
-  font-weight: 700;
+  font-weight: var(--font-weight-medium, 500);
   cursor: pointer;
   flex-shrink: 0;
-  transition: border-color 0.15s, color 0.15s, background 0.15s;
+  transition: border-color var(--duration-fast, 120ms), color var(--duration-fast, 120ms), background var(--duration-fast, 120ms);
 }
 .circ:hover {
   border-color: var(--op-primary);
@@ -133,20 +133,21 @@
 .circTooltip {
   display: none;
   position: absolute;
-  top: 34px;
+  top: calc(100% + var(--op-sp-1));
   left: 50%;
   transform: translateX(-50%);
   background: var(--op-primary);
   color: #fff;
-  font-size: 10px;
-  font-weight: 600;
-  padding: 3px 8px;
-  border-radius: 5px;
+  font-size: var(--op-fs-xs, 11px);
+  font-weight: var(--font-weight-medium, 500);
+  padding: var(--op-sp-1) var(--op-sp-2);
+  border-radius: var(--border-radius-sm, 6px);
   white-space: nowrap;
   pointer-events: none;
   z-index: 20;
   font-family: var(--op-font-heading);
   text-transform: capitalize;
+  letter-spacing: 0.04em;
 }
 .circTooltip::before {
   content: '';
