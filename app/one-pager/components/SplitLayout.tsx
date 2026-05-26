@@ -1,41 +1,53 @@
 'use client';
 
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styles from './SplitLayout.module.css';
-import OnePagerTopBar from './OnePagerTopBar';
 
 interface SplitLayoutProps {
   leftPanel: ReactNode;
-  leftBar: ReactNode;
   rightPanel: ReactNode;
   previewOpen?: boolean;
+  splitDirection?: 'horizontal' | 'vertical';
+  topBar?: ReactNode;
+  fabSlot?: ReactNode;
 }
 
-export default function SplitLayout({ leftPanel, leftBar, rightPanel, previewOpen = false }: SplitLayoutProps) {
+export default function SplitLayout({
+  leftPanel,
+  rightPanel,
+  previewOpen = false,
+  splitDirection = 'vertical',
+  topBar,
+  fabSlot,
+}: SplitLayoutProps) {
   return (
     <div className="one-pager-root" style={{ display: 'flex', flexDirection: 'column', height: '100vh', overflow: 'hidden' }}>
-      <OnePagerTopBar />
+      {topBar}
       <div
-        className={styles.container}
+        className={splitDirection === 'horizontal' ? styles.containerH : styles.container}
         data-preview={previewOpen ? 'open' : 'closed'}
         style={{ flex: 1, minHeight: 0 }}
       >
-        <div className={styles.leftPanel} role="region" aria-label="Input fields">
+        <div
+          className={splitDirection === 'horizontal' ? styles.leftPanelH : styles.leftPanel}
+          role="region"
+          aria-label="Input fields"
+          style={{ position: 'relative' }}
+        >
           <div className={styles.leftScroll}>
             {leftPanel}
           </div>
-          <div className={styles.leftBar}>
-            {leftBar}
+          {fabSlot}
+        </div>
+        {previewOpen && (
+          <div
+            className={splitDirection === 'horizontal' ? styles.rightPanelH : styles.rightPanel}
+            role="region"
+            aria-label="Document preview"
+          >
+            {rightPanel}
           </div>
-        </div>
-        <div
-          className={styles.rightPanel}
-          role="region"
-          aria-label="Document preview"
-          aria-hidden={!previewOpen}
-        >
-          {rightPanel}
-        </div>
+        )}
       </div>
     </div>
   );

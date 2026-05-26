@@ -187,128 +187,35 @@
   box-shadow: 0 0 0 3px rgba(29, 31, 74, 0.10);
 }
 
-/* ---------- Action bar ---------- */
-.barRow {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  width: 100%;
+.leftPanelShell {
+  position: relative;
   flex: 1;
-  gap: var(--op-sp-3);
-}
-
-.barLeft {
+  min-height: 0;
   display: flex;
-  align-items: center;
-  gap: var(--op-sp-2);
-  flex-shrink: 0;
+  flex-direction: column;
 }
 
-.barRight {
-  display: flex;
-  align-items: center;
-  gap: var(--op-sp-2);
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
-/* ---------- Buttons ---------- */
-
-/* Shared base */
-.btn {
-  height: var(--op-h-btn);
-  padding: 0 var(--op-sp-4);
-  display: inline-flex;
-  align-items: center;
-  gap: var(--op-sp-2);
-  border-radius: var(--op-radius-full);
-  font-family: var(--op-font-heading);
-  font-size: var(--op-fs-s);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
-  cursor: pointer;
-  border: 1.5px solid transparent;
-  background: transparent;
-  color: var(--op-primary);
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s, border-color 0.15s, transform 0.04s;
-}
-.btn:active { transform: translateY(1px); }
-.btn:disabled { opacity: 0.45; cursor: not-allowed; }
-
-/* Filled (primary CTA) */
-.exportButton {
-  composes: btn;
-  background: var(--op-primary);
-  color: #fff;
-  border-color: transparent;
-}
-.exportButton:hover:not(:disabled) { background: var(--op-secondary); }
-
-/* Outlined / ghost */
-.exportButtonGhost {
-  composes: btn;
-  border-color: var(--op-outline);
-  color: var(--op-on-surface);
-}
-.exportButtonGhost:hover:not(:disabled) {
-  border-color: var(--op-primary);
-  background: var(--op-info-soft);
-}
-
-/* Icon-only round button */
-.barIconBtn {
-  width: 32px;
+.saveBtn {
   height: 32px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border: 1.5px solid var(--op-outline);
-  border-radius: var(--op-radius-full);
+  padding: 0 14px;
+  border-radius: var(--op-radius-full, 9999px);
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
   background: transparent;
-  color: var(--op-on-surface-muted);
-  font-size: 1rem;
-  line-height: 1;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background 0.15s, color 0.15s, border-color 0.15s;
-}
-.barIconBtn:hover {
-  background: var(--op-info-soft);
-  color: var(--op-primary);
-  border-color: var(--op-primary);
-}
-
-/* Preview toggle button */
-.previewToggleBtn {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--op-sp-2);
-  height: var(--op-h-btn);
-  padding: 0 var(--op-sp-4);
-  border-radius: var(--op-radius-full);
-  border: 1.5px solid var(--op-outline);
-  background: transparent;
-  color: var(--op-on-surface-muted);
+  color: rgba(255, 255, 255, 0.85);
   font-family: var(--op-font-heading);
-  font-size: var(--op-fs-s);
-  font-weight: 600;
-  letter-spacing: 0.08em;
+  font-size: var(--op-fs-xs, 11px);
+  font-weight: 700;
   text-transform: uppercase;
   cursor: pointer;
   white-space: nowrap;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
-.previewToggleBtn:hover {
-  border-color: var(--op-accent);
-  color: var(--op-accent);
-  background: var(--op-accent-soft);
+.saveBtn:hover:not(:disabled) {
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
 }
-.previewToggleBtn[data-open="true"] {
-  background: var(--op-accent-soft);
-  border-color: var(--op-accent);
-  color: var(--op-accent);
+.saveBtn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
 }
 
 /* ---------- Loading / misc ---------- */
@@ -317,36 +224,6 @@
   font-size: var(--op-fs-s);
   font-style: italic;
   padding: var(--op-sp-3) 0;
-}
-
-/* ---------- Progress bar ---------- */
-.progressWrap {
-  display: flex;
-  align-items: center;
-  gap: var(--op-sp-2);
-  flex: 1;
-  justify-content: center;
-}
-.progressBar {
-  width: 120px;
-  height: 6px;
-  background: var(--op-outline-soft);
-  border-radius: var(--op-radius-full);
-  overflow: hidden;
-}
-.progressFill {
-  height: 100%;
-  background: var(--op-accent);
-  border-radius: var(--op-radius-full);
-  transition: width 0.3s var(--op-ease);
-}
-.progressLabel {
-  font-size: var(--op-fs-xs);
-  font-weight: 600;
-  color: var(--op-on-surface-muted);
-  white-space: nowrap;
-  font-family: var(--op-font-heading);
-  letter-spacing: 0.05em;
 }
 
 /* ---------- Textarea ---------- */
@@ -369,20 +246,6 @@
   outline: none;
   border-color: var(--op-primary);
   box-shadow: 0 0 0 3px rgba(29, 31, 74, 0.10);
-}
-
-/* ---------- Version badge ---------- */
-.versionBadge {
-  font-size: var(--op-fs-xs);
-  font-weight: 700;
-  font-family: var(--op-font-heading);
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--op-on-surface-muted);
-  background: var(--op-surface-variant, #E2E2EC);
-  border-radius: var(--op-radius-full);
-  padding: 2px 8px;
-  white-space: nowrap;
 }
 
 /* ---------- Admin badge ---------- */

@@ -16,10 +16,13 @@ import ProductInfoCustomization from './components/ProductInfoCustomization';
 import VersionHistoryPanel from './components/VersionHistoryPanel';
 import ReferencePhotosSection from './components/ReferencePhotosSection';
 import SectionNavMenu from './components/SectionNavMenu';
-import MissingInfoWidget from './components/MissingInfoWidget';
+import OnePagerTopBar from './components/OnePagerTopBar';
+import ProgressRing from './components/ProgressRing';
+import ExportMenu from './components/ExportMenu';
+import OverflowMenu from './components/OverflowMenu';
+import PreviewFab from './components/PreviewFab';
 import { useCallback, useEffect, useState } from 'react';
 import { getCompletionSections, bumpMinorVersion, OnePagerState, ReferencePhotoEntry } from './lib/one-pager-state';
-import Link from 'next/link';
 import './one-pager-tokens.css';
 import styles from './page.module.css';
 
@@ -40,11 +43,9 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
   const [bannerDismissed, setBannerDismissed] = useState(false);
   const [featureLayout, setFeatureLayout] = useState<'sideBySide' | 'stacked'>('sideBySide');
   const [previewOpen, setPreviewOpen] = useState(false);
+  const [splitDirection, setSplitDirection] = useState<'horizontal' | 'vertical'>('vertical');
   const [validationErrors, setValidationErrors] = useState<string[] | null>(null);
   const completionSections = getCompletionSections(state);
-  const completionDone = completionSections.filter(s => s.done).length;
-  const completionTotal = completionSections.length;
-  const completionPct = Math.round(completionDone / completionTotal * 100);
 
   useEffect(() => {
     if (validationErrors && validationErrors.length > 0) {
@@ -95,7 +96,7 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
     } finally {
       setIsExporting(null);
     }
-  }, [state]);
+  }, [state, featureLayout]);
 
   const handleExport = useCallback((format: 'docx' | 'html' | 'pdf') => {
     const missing = getCompletionSections(state).filter(s => !s.done).map(s => s.label);
@@ -237,7 +238,10 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
   const leftPanel = (
     <div className={styles.inputSections}>
       {/* Sticky section nav */}
-      <SectionNavMenu skippedSections={skippedSections} />
+      <SectionNavMenu
+        skippedSections={skippedSections}
+        completionSections={completionSections}
+      />
 
       {/* Draft warning banner */}
       {!state.isPublished && state.documentId !== null && !bannerDismissed && (
@@ -671,7 +675,7 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
 
       {/* Version History (admin only) */}
       {isAdmin && state.documentId && (
-        <div className={styles.formSection}>
+        <div className={styles.formSection} data-section="versionHistory">
           <div className={styles.sectionHead}>
             <div className={styles.sectionHeadRow}>
               <h3 className={styles.sectionTitle}>Version History</h3>
@@ -719,83 +723,80 @@ function OnePagerContent({ isAdmin }: { isAdmin: boolean }) {
     }
   }, [reset]);
 
-  const leftBar = (
-    <div className={styles.barRow}>
-      <div className={styles.barLeft}>
-        <Link href="/" className={styles.barIconBtn} title="Home">
-          &#8962;
-        </Link>
+  const handlePreviewToggle = useCallback(() => {
+    setSplitDirection(window.innerWidth < 1024 ? 'horizontal' : 'vertical');
+    setPreviewOpen((value) => !value);
+  }, []);
+
+  const getStateJson = useCallback(
+    () => JSON.stringify({ ...state, featureLayout }),
+    [state, featureLayout]
+  );
+
+  const centerSlot = (
+    <ProgressRing
+      sections={completionSections}
+      skippedSections={skippedSections}
+      version={state.version}
+      isPublished={state.isPublished}
+      onToggleSkip={(key) => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: key })}
+      onTogglePaintSkip={() => dispatch({ type: 'SET_PAINT_SKIPPED', payload: !state.customization.paintSkipped })}
+      onToggleLogoSkip={() => dispatch({ type: 'SET_LOGO_SKIPPED', payload: !state.customization.logoSkipped })}
+      paintSkipped={state.customization.paintSkipped}
+      logoSkipped={state.customization.logoSkipped}
+    />
+  );
+
+  const rightSlot = (
+    <>
+      {!state.isPublished && (
         <button
-          className={styles.barIconBtn}
-          onClick={handleReset}
-          title="Reset form"
-        >
-          &#8635;
-        </button>
-        <button
-          className={styles.previewToggleBtn}
-          onClick={() => setPreviewOpen((v) => !v)}
-          data-open={previewOpen ? 'true' : 'false'}
-          title={previewOpen ? 'Hide preview' : 'Show preview'}
-        >
-          {previewOpen ? '✕ Preview' : '▶ Preview'}
-        </button>
-      </div>
-      <div className={styles.progressWrap}>
-        <MissingInfoWidget
-          sections={completionSections}
-          onToggleSkip={(key) => dispatch({ type: 'TOGGLE_SECTION_SKIP', payload: key })}
-          onTogglePaintSkip={() => dispatch({ type: 'SET_PAINT_SKIPPED', payload: !state.customization.paintSkipped })}
-          onToggleLogoSkip={() => dispatch({ type: 'SET_LOGO_SKIPPED', payload: !state.customization.logoSkipped })}
-        />
-        <span className={styles.versionBadge} title={state.isPublished ? 'Published' : 'Draft'}>
-          v{state.version}
-        </span>
-      </div>
-      <div className={styles.barRight}>
-        <button
-          className={styles.exportButtonGhost}
+          className={styles.saveBtn}
           onClick={handleSaveDraft}
           disabled={isWorking}
         >
-          {isSaving ? 'Saving...' : 'Save Draft'}
+          {isSaving ? 'Saving...' : 'Save'}
         </button>
-        {state.isPublished ? (
-          <button
-            className={styles.exportButtonGhost}
-            onClick={handleUnpublish}
-            disabled={isWorking}
-          >
-            Unpublish
-          </button>
-        ) : (
-          <button
-            className={styles.exportButtonGhost}
-            onClick={handlePublish}
-            disabled={isWorking}
-          >
-            {isPublishing ? 'Publishing...' : 'Publish'}
-          </button>
-        )}
-        <button
-          className={styles.exportButton}
-          onClick={() => handleExport('docx')}
-          disabled={isWorking}
-        >
-          {isExporting === 'docx' ? 'Exporting...' : 'Download DOCX'}
-        </button>
-        <button
-          className={styles.exportButtonGhost}
-          onClick={() => handleExport('pdf')}
-          disabled={isWorking}
-        >
-          {isExporting === 'pdf' ? 'Preparing...' : 'Print / PDF'}
-        </button>
-      </div>
-    </div>
+      )}
+      <ExportMenu
+        onExport={handleExport}
+        onPublish={handlePublish}
+        onUnpublish={handleUnpublish}
+        isPublished={state.isPublished}
+        isWorking={isWorking}
+        exportingFormat={isExporting}
+        isPublishing={isPublishing}
+      />
+      <OverflowMenu
+        onReset={handleReset}
+        isAdmin={isAdmin}
+        documentId={state.documentId}
+        onShowVersionHistory={() => {
+          const el = document.querySelector('[data-section="versionHistory"]');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }}
+      />
+    </>
   );
 
-  return <SplitLayout leftPanel={leftPanel} leftBar={leftBar} rightPanel={rightPanel} previewOpen={previewOpen} />;
+  const fab = (
+    <PreviewFab
+      previewOpen={previewOpen}
+      onToggle={handlePreviewToggle}
+      getStateJson={getStateJson}
+    />
+  );
+
+  return (
+    <SplitLayout
+      leftPanel={leftPanel}
+      rightPanel={rightPanel}
+      previewOpen={previewOpen}
+      splitDirection={splitDirection}
+      topBar={<OnePagerTopBar centerSlot={centerSlot} rightSlot={rightSlot} />}
+      fabSlot={fab}
+    />
+  );
 }
 
 export default function OnePagerClient({ isAdmin, docId }: { isAdmin: boolean; docId: string | null }) {

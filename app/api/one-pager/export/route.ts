@@ -5,9 +5,22 @@ import { generateOnePagerDocx, generateOnePagerHtml, type OnePagerData } from '@
 
 export async function POST(request: NextRequest) {
   try {
-    const body = await request.json();
+    let body: Record<string, unknown>;
+    const contentType = request.headers.get('content-type') ?? '';
+
+    if (contentType.includes('application/x-www-form-urlencoded')) {
+      const formData = await request.formData();
+      const jsonStr = formData.get('__json__');
+      if (!jsonStr || typeof jsonStr !== 'string') {
+        return NextResponse.json({ error: 'Missing __json__ field' }, { status: 400 });
+      }
+      body = JSON.parse(jsonStr) as Record<string, unknown>;
+    } else {
+      body = await request.json();
+    }
+
     const format = new URL(request.url).searchParams.get('format') || 'docx';
-    const data: OnePagerData = body;
+    const data: OnePagerData = body as unknown as OnePagerData;
 
     // Save to documents table (fire-and-forget — never blocks the export response)
     auth().then((session) => {
