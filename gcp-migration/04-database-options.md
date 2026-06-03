@@ -61,7 +61,7 @@ CREATE TABLE documents (
 gcloud sql instances create mrd-producer-db \
   --database-version=POSTGRES_15 \
   --tier=db-f1-micro \
-  --region=europe-west1 \
+  --region=us-central1 \
   --storage-auto-increase \
   --backup \
   --backup-start-time=02:00
@@ -84,7 +84,7 @@ gcloud sql users create app_user \
 ```bash
 # First, install and run Cloud SQL Auth Proxy locally:
 # Download: https://cloud.google.com/sql/docs/postgres/connect-auth-proxy#install
-./cloud-sql-proxy YOUR_PROJECT_ID:europe-west1:mrd-producer-db &
+./cloud-sql-proxy compulocks-mrd-prod:us-central1:mrd-producer-db &
 
 # Then run the schema (proxy listens on 127.0.0.1:5432 by default):
 psql "host=127.0.0.1 port=5432 dbname=mrd_producer user=app_user" \
@@ -115,7 +115,7 @@ Cloud Run has built-in support for Cloud SQL connections via Unix socket — no 
 
 Add to your `gcloud run deploy` command:
 ```bash
---add-cloudsql-instances=YOUR_PROJECT_ID:europe-west1:mrd-producer-db
+--add-cloudsql-instances=compulocks-mrd-prod:us-central1:mrd-producer-db
 ```
 
 For Cloud Run, the `pg` Node.js package requires the socket path as the `host` config field, not as a URL query parameter.
@@ -128,7 +128,7 @@ const pool = new Pool({
   user: 'app_user',
   password: process.env.DB_PASSWORD,
   database: 'mrd_producer',
-  host: '/cloudsql/YOUR_PROJECT_ID:europe-west1:mrd-producer-db',
+  host: '/cloudsql/compulocks-mrd-prod:us-central1:mrd-producer-db',
 });
 ```
 
@@ -137,8 +137,8 @@ const pool = new Pool({
 ### Grant Cloud Run access to Cloud SQL
 
 ```bash
-PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)")
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
+PROJECT_NUMBER=$(gcloud projects describe compulocks-mrd-prod --format="value(projectNumber)")
+gcloud projects add-iam-policy-binding compulocks-mrd-prod \
   --member="serviceAccount:${PROJECT_NUMBER}-compute@developer.gserviceaccount.com" \
   --role="roles/cloudsql.client"
 ```

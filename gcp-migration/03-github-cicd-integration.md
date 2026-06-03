@@ -50,13 +50,13 @@ Add these secrets in: GitHub repo → Settings → Secrets and variables → Act
 
 ### For GCP deployment:
 
-| Secret | How to get it |
-|--------|--------------|
-| `GCP_PROJECT_ID` | Your GCP project ID (e.g. `compulocks-mrd-producer-prod`) |
-| `GCP_REGION` | e.g. `europe-west1` |
-| `GCP_ARTIFACT_REGISTRY` | e.g. `europe-west1-docker.pkg.dev` |
-| `WIF_PROVIDER` | Workload Identity Federation provider resource name (see below) |
-| `WIF_SERVICE_ACCOUNT` | Service account email used by GitHub Actions |
+| Secret | Value |
+|--------|-------|
+| `GCP_PROJECT_ID` | `compulocks-mrd-prod` |
+| `GCP_REGION` | `us-central1` |
+| `GCP_ARTIFACT_REGISTRY` | `us-central1-docker.pkg.dev` |
+| `WIF_PROVIDER` | WIF provider resource name (from Step 2 below) |
+| `WIF_SERVICE_ACCOUNT` | `github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com` |
 
 ### Keep these existing secrets (for Vercel PR previews):
 - `VERCEL_TOKEN`
@@ -76,42 +76,46 @@ WIF lets GitHub Actions authenticate to GCP without storing a service account ke
 ```bash
 # Create a service account for GitHub Actions
 gcloud iam service-accounts create github-actions-deploy \
+  --project=compulocks-mrd-prod \
   --display-name="GitHub Actions Deploy"
 
-# Grant it the roles it needs
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+# Grant required roles
+gcloud projects add-iam-policy-binding compulocks-mrd-prod \
+  --member="serviceAccount:github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com" \
   --role="roles/run.admin"
 
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding compulocks-mrd-prod \
+  --member="serviceAccount:github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com" \
   --role="roles/artifactregistry.writer"
 
-gcloud projects add-iam-policy-binding YOUR_PROJECT_ID \
-  --member="serviceAccount:github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com" \
+gcloud projects add-iam-policy-binding compulocks-mrd-prod \
+  --member="serviceAccount:github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com" \
   --role="roles/iam.serviceAccountUser"
 
 # Create the WIF pool
 gcloud iam workload-identity-pools create github-pool \
+  --project=compulocks-mrd-prod \
   --location=global \
   --display-name="GitHub Actions Pool"
 
 # Create the WIF provider
 gcloud iam workload-identity-pools providers create-oidc github-provider \
+  --project=compulocks-mrd-prod \
   --location=global \
   --workload-identity-pool=github-pool \
   --display-name="GitHub Provider" \
   --attribute-mapping="google.subject=assertion.sub,attribute.repository=assertion.repository" \
   --issuer-uri="https://token.actions.githubusercontent.com"
 
-# Get your project number (needed for the binding command below)
-# YOUR_PROJECT_NUMBER=$(gcloud projects describe YOUR_PROJECT_ID --format="value(projectNumber)")
+# Get your project number
+PROJECT_NUMBER=$(gcloud projects describe compulocks-mrd-prod --format="value(projectNumber)")
 
-# Bind the service account to the GitHub repo
+# Bind the service account to the GitHub repo (replace YOUR_GITHUB_ORG)
 gcloud iam service-accounts add-iam-policy-binding \
-  github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com \
+  github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com \
+  --project=compulocks-mrd-prod \
   --role="roles/iam.workloadIdentityUser" \
-  --member="principalSet://iam.googleapis.com/projects/YOUR_PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_ORG/mrd-producer-webapp"
+  --member="principalSet://iam.googleapis.com/projects/${PROJECT_NUMBER}/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_GITHUB_ORG/mrd-producer-webapp"
 ```
 
 After running the commands above, retrieve the values to add as GitHub secrets:
@@ -119,13 +123,14 @@ After running the commands above, retrieve the values to add as GitHub secrets:
 ```bash
 # Get the WIF provider resource name
 gcloud iam workload-identity-pools providers describe github-provider \
+  --project=compulocks-mrd-prod \
   --location=global \
   --workload-identity-pool=github-pool \
   --format="value(name)"
 # Save this output as WIF_PROVIDER in GitHub secrets
 
-# The service account email to save as WIF_SERVICE_ACCOUNT:
-echo "github-actions-deploy@YOUR_PROJECT_ID.iam.gserviceaccount.com"
+# WIF_SERVICE_ACCOUNT value:
+echo "github-actions-deploy@compulocks-mrd-prod.iam.gserviceaccount.com"
 ```
 
 Save the WIF provider name as `WIF_PROVIDER` and the service account email as `WIF_SERVICE_ACCOUNT` in GitHub repo secrets.

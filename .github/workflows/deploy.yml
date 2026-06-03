@@ -11,10 +11,13 @@ env:
   VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
 jobs:
-  # ── Deploy to Vercel production (main branch) ─────────────────────────
-  deploy-vercel:
+  # ── Build + deploy to GCP Cloud Run (main branch only) ────────────────
+  deploy-gcp:
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # Required for Workload Identity Federation
 
     steps:
       - uses: actions/checkout@v4
@@ -26,11 +29,44 @@ jobs:
 
       - run: npm ci
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel
+      - name: Lint
+        run: npm run lint --if-present
+        continue-on-error: true
 
-      - name: Deploy to Vercel Production
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Build
+        run: npm run build
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_SEARCH_ENGINE_ID: ${{ secrets.GOOGLE_SEARCH_ENGINE_ID }}
+
+      - name: Authenticate to GCP
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: ${{ secrets.WIF_PROVIDER }}
+          service_account: ${{ secrets.WIF_SERVICE_ACCOUNT }}
+
+      - name: Configure Docker for Artifact Registry
+        run: gcloud auth configure-docker ${{ secrets.GCP_ARTIFACT_REGISTRY }} --quiet
+
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:${{ github.sha }} \
+            -t ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:latest \
+            .
+
+      - name: Push to Artifact Registry
+        run: |
+          docker push ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:${{ github.sha }}
+          docker push ${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy mrd-producer \
+            --image=${{ secrets.GCP_ARTIFACT_REGISTRY }}/${{ secrets.GCP_PROJECT_ID }}/mrd-producer/app:${{ github.sha }} \
+            --platform=managed \
+            --region=${{ secrets.GCP_REGION }} \
+            --allow-unauthenticated
 
   # ── PR preview via Vercel (pull requests only) ────────────────────────
   preview-vercel:
@@ -47,14 +83,14 @@ jobs:
 
       - run: npm ci
 
+      - name: Build
+        run: npm run build
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
+          GOOGLE_SEARCH_ENGINE_ID: ${{ secrets.GOOGLE_SEARCH_ENGINE_ID }}
+
       - name: Install Vercel CLI
         run: npm install -g vercel
 
       - name: Deploy to Vercel Preview
         run: vercel deploy --token=${{ secrets.VERCEL_TOKEN }}
-
-  # ── GCP Cloud Run deploy (disabled until GCP is provisioned) ──────────
-  # Uncomment and configure GitHub secrets when GCP migration is ready:
-  # WIF_PROVIDER, WIF_SERVICE_ACCOUNT, GCP_PROJECT_ID, GCP_REGION, GCP_ARTIFACT_REGISTRY
-  # deploy-gcp:
-  #   if: false  # placeholder
