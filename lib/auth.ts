@@ -11,8 +11,9 @@ import { authConfig } from './auth.config';
 
 const nextAuth = NextAuth(authConfig);
 
-const bypassAllowed =
-  process.env.BYPASS_AUTH === 'true' && process.env.NODE_ENV !== 'production';
+// BYPASS_AUTH=true enables the stub. No NODE_ENV guard — Cloud Run always runs
+// NODE_ENV=production. The env var itself is the gate; never set it on Vercel production.
+const bypassAllowed = process.env.BYPASS_AUTH === 'true';
 
 const STUB_SESSION = {
   // Synthetic non-admin identity — NOT a real user, NOT in ADMIN_EMAILS
