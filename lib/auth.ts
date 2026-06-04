@@ -11,16 +11,23 @@ import { authConfig } from './auth.config';
 
 const nextAuth = NextAuth(authConfig);
 
+const bypassAllowed =
+  process.env.BYPASS_AUTH === 'true' && process.env.NODE_ENV !== 'production';
+
 const STUB_SESSION = {
-  user: { email: 'ori@compulocks.com', name: 'Ori Shavit', image: null },
+  // Synthetic non-admin identity — NOT a real user, NOT in ADMIN_EMAILS
+  user: { email: 'staging-bypass@compulocks.com', name: 'Staging User', image: null },
   expires: '2099-01-01T00:00:00.000Z',
   accessToken: null,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const stubAuth = async (..._args: any[]) => STUB_SESSION as any;
+const stubAuth = async (..._args: any[]) => {
+  console.warn('[auth] BYPASS_AUTH active — returning stub session. Remove before production.');
+  return STUB_SESSION as any;
+};
 
 export const handlers = nextAuth.handlers;
 export const signIn = nextAuth.signIn;
 export const signOut = nextAuth.signOut;
-export const auth = process.env.BYPASS_AUTH === 'true' ? stubAuth : nextAuth.auth;
+export const auth = bypassAllowed ? stubAuth : nextAuth.auth;
