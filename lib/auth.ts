@@ -11,6 +11,10 @@ import { authConfig } from './auth.config';
 
 const nextAuth = NextAuth(authConfig);
 
+// BYPASS_AUTH=true required to enable stub. Never set this on Vercel production.
+// GCP: set via Secret Manager → Cloud Run env, restricted to the staging service.
+const bypassAllowed = process.env.BYPASS_AUTH === 'true';
+
 const STUB_SESSION = {
   user: { email: 'ori@compulocks.com', name: 'Ori Shavit', image: null },
   expires: '2099-01-01T00:00:00.000Z',
@@ -23,5 +27,4 @@ const stubAuth = async (..._args: any[]) => STUB_SESSION as any;
 export const handlers = nextAuth.handlers;
 export const signIn = nextAuth.signIn;
 export const signOut = nextAuth.signOut;
-// GCP mode: always use stub. Replace with `nextAuth.auth` when restoring OAuth.
-export const auth = stubAuth;
+export const auth = bypassAllowed ? stubAuth : nextAuth.auth;
