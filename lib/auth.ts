@@ -1,8 +1,26 @@
 /**
  * NextAuth entry point — server-only.
  * Auth secrets live in lib/auth.config.ts, which is never bundled to the client.
+ *
+ * BYPASS_AUTH=true skips OAuth entirely and returns a stub session.
+ * Used for GCP staging when OAuth credentials are not yet configured.
+ * Remove before production go-live.
  */
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 
-export const { handlers, signIn, signOut, auth } = NextAuth(authConfig);
+const nextAuth = NextAuth(authConfig);
+
+const STUB_SESSION = {
+  user: { email: 'ori@compulocks.com', name: 'Ori Shavit', image: null },
+  expires: '2099-01-01T00:00:00.000Z',
+  accessToken: null,
+};
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const stubAuth = async (..._args: any[]) => STUB_SESSION as any;
+
+export const handlers = nextAuth.handlers;
+export const signIn = nextAuth.signIn;
+export const signOut = nextAuth.signOut;
+export const auth = process.env.BYPASS_AUTH === 'true' ? stubAuth : nextAuth.auth;
