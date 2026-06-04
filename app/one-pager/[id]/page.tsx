@@ -22,9 +22,10 @@ export default async function OnePagerViewPage({ params }: { params: Promise<{ i
   const { id } = await params;
 
   // Fetch document server-side via internal API
-  const baseUrl = process.env.NEXTAUTH_URL || process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'http://localhost:3000';
+  const baseUrl = process.env.NEXTAUTH_URL
+    ?? (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+    ?? (process.env.CLOUD_RUN_URL ? process.env.CLOUD_RUN_URL : null)
+    ?? 'http://localhost:3000';
 
   let docData: DocumentResponse;
   try {

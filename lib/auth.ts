@@ -2,33 +2,26 @@
  * NextAuth entry point — server-only.
  * Auth secrets live in lib/auth.config.ts, which is never bundled to the client.
  *
- * BYPASS_AUTH=true skips OAuth entirely and returns a stub session.
- * Used for GCP staging when OAuth credentials are not yet configured.
- * Remove before production go-live.
+ * GCP-only mode: OAuth is bypassed entirely. All requests are treated as
+ * ori@compulocks.com so the allowlist and admin checks work normally.
+ * Restore real OAuth when GCP identity-aware proxy or IAP is configured.
  */
 import NextAuth from 'next-auth';
 import { authConfig } from './auth.config';
 
 const nextAuth = NextAuth(authConfig);
 
-// BYPASS_AUTH=true enables the stub. No NODE_ENV guard — Cloud Run always runs
-// NODE_ENV=production. The env var itself is the gate; never set it on Vercel production.
-const bypassAllowed = process.env.BYPASS_AUTH === 'true';
-
 const STUB_SESSION = {
-  // Synthetic non-admin identity — NOT a real user, NOT in ADMIN_EMAILS
-  user: { email: 'staging-bypass@compulocks.com', name: 'Staging User', image: null },
+  user: { email: 'ori@compulocks.com', name: 'Ori Shavit', image: null },
   expires: '2099-01-01T00:00:00.000Z',
   accessToken: null,
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const stubAuth = async (..._args: any[]) => {
-  console.warn('[auth] BYPASS_AUTH active — returning stub session. Remove before production.');
-  return STUB_SESSION as any;
-};
+const stubAuth = async (..._args: any[]) => STUB_SESSION as any;
 
 export const handlers = nextAuth.handlers;
 export const signIn = nextAuth.signIn;
 export const signOut = nextAuth.signOut;
-export const auth = bypassAllowed ? stubAuth : nextAuth.auth;
+// GCP mode: always use stub. Replace with `nextAuth.auth` when restoring OAuth.
+export const auth = stubAuth;

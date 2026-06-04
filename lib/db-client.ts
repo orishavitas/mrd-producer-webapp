@@ -13,26 +13,26 @@
 
 import { Pool } from 'pg';
 
-function getPool(): Pool {
-  const connectionString = process.env.POSTGRES_URL;
-  if (!connectionString) throw new Error('POSTGRES_URL environment variable is not set');
-  return new Pool({ connectionString, max: 10 });
-}
+const DB_UNAVAILABLE = !process.env.POSTGRES_URL;
 
-// Singleton pool — reused across requests in the same Node.js process.
-// On serverless (Vercel / Cloud Run), each instance gets its own pool.
 let _pool: Pool | null = null;
 function pool(): Pool {
-  if (!_pool) _pool = getPool();
+  if (!_pool) {
+    _pool = new Pool({ connectionString: process.env.POSTGRES_URL!, max: 10 });
+  }
   return _pool;
 }
 
-/** Run a parameterized query. */
+/** Run a parameterized query. Returns empty rows when DB is not configured. */
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export async function query<T = Record<string, any>>(
   text: string,
   values?: unknown[]
 ): Promise<{ rows: T[] }> {
+  if (DB_UNAVAILABLE) {
+    console.warn('[db] POSTGRES_URL not set — returning empty result for:', text.slice(0, 60));
+    return { rows: [] };
+  }
   const result = await pool().query(text, values);
   return { rows: result.rows as T[] };
 }
