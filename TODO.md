@@ -91,6 +91,24 @@ Built 2026-05-25.
 - [x] DocumentPreview updated with new meta fields + Reference Photos section
 - [x] Build: 0 TypeScript errors
 
+## GCP Migration (2026-07-08 session)
+
+Log: `gcp-migration/06-2026-07-08-session-log.md`. IAM audit trail: `gcp-migration/IAM-CHANGE-LOG.md`.
+
+- [x] Feature allowlist moved from `config/allowlist.txt` to Postgres (`allowlist` table, migration 004)
+- [x] Wildcard `*` access removed — invite-only from here on
+- [x] Admin UI + API for managing allowlist (`/admin/allowlist`)
+- [x] IAM fixed (self-granted, user-authorized): serviceusage.serviceUsageAdmin, storage.admin, logging.viewer
+- [x] Plaintext secrets (`AUTH_SECRET`, `GOOGLE_API_KEY`, `POSTGRES_URL`) moved to Secret Manager
+- [x] Built + deployed current `main` to Cloud Run via `gcloud builds submit` (self-created staging bucket)
+- [x] Found + fixed production bug: quoted `POSTGRES_URL` secret caused `EAI_AGAIN` DNS errors on every DB route
+- [x] Verified end-to-end on live Cloud Run: `/`, `/one-pager`, `/admin/allowlist`, `/api/documents`, `/api/admin/allowlist` all 200
+- [ ] Create real GCP OAuth 2.0 client (Console-only, human step) — currently running on `BYPASS_AUTH=true`
+- [ ] Set up Workload Identity Federation + GitHub secrets — CI/CD has never successfully deployed, still manual
+- [ ] **GCS document storage migration** — designed (bucket layout, filename convention, envelope shape all decided — see session log for details), NOT implemented. Next step: write formal spec to `docs/superpowers/specs/`, get user confirmation, then `writing-plans`. Do not re-ask decisions already made — they're recorded in the session log.
+- [ ] Cloud SQL — dropped from plan mid-session; `gcp-migration/scripts/06-run-when-unblocked.sh` still has stale Cloud SQL steps that need trimming/replacing
+- [ ] Decommission Neon / cut over Vercel prod — explicitly deferred until Cloud Run has proven stable and (if pursued) GCS migration is complete
+
 ## Future
 
 - Dark mode brand color variants for green tokens

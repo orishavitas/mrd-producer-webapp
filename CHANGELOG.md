@@ -1,5 +1,48 @@
 # Changelog
 
+## [GCP] - 2026-07-08
+
+### Added
+- `allowlist` Postgres table (`lib/db-migrations/004-allowlist.sql`) — feature allowlist moved off the file baked into the Docker image, since Cloud Run's immutable containers meant an admin UI editing `config/allowlist.txt` could never persist
+- Admin UI + API at `/admin/allowlist` for adding/removing guest access without a redeploy (`app/admin/allowlist/`, `app/api/admin/allowlist/`)
+- `gcp-migration/IAM-CHANGE-LOG.md` — audit trail of IAM roles self-granted this session, each explicitly authorized
+- `gcp-migration/06-2026-07-08-session-log.md` — full session record: what was fixed, what's still open, decisions already made for the next session
+
+### Changed
+- `config/allowlist.txt` — wildcard `*` access removed (invite-only going forward); file now serves only as a local-dev fallback when Postgres is unreachable
+- `lib/feature-gate.ts` — now async, reads from Postgres with a 30s cache instead of `fs.readFileSync`
+- `.github/workflows/deploy.yml` — `gcloud run deploy` step now actually wires `POSTGRES_URL`/`AUTH_SECRET`/`GOOGLE_CLIENT_ID`/`GOOGLE_CLIENT_SECRET`/`GOOGLE_API_KEY` via `--set-secrets`; previously deployed with zero env vars configured
+- Cloud Run service `mrd-producer`: plaintext `AUTH_SECRET`/`GOOGLE_API_KEY`/`POSTGRES_URL` moved to Secret Manager; deployed current `main` (was 5 weeks stale)
+
+### Fixed
+- Production 500 on every DB-backed route (`/api/documents`, `/api/admin/allowlist`) — root cause was a literal double-quote character in the `POSTGRES_URL` Secret Manager secret (carried over verbatim from `.env.local`'s bash-style quoting), which made `pg` try to resolve a garbage hostname (`getaddrinfo EAI_AGAIN base`). Fixed by re-creating the secret with quotes stripped; verified on an isolated 0%-traffic revision before cutting production over.
+
+### Discovered
+- The IAP blocker recorded in the 2026-06-04 entry below was already resolved by the time this session started — the live service had no IAP annotation and served the app publicly. Memory wasn't updated when it was fixed.
+- CI/CD (`deploy-gcp` job) had failed on every single run since 2026-06-04 — `WIF_PROVIDER`/`WIF_SERVICE_ACCOUNT`/`GCP_PROJECT_ID`/`GCP_REGION`/`GCP_ARTIFACT_REGISTRY` were never set as GitHub secrets. Every prior Cloud Run update was a manual `gcloud run deploy`, not CI/CD.
+- `ori@compulocks.com` had `run.admin`/`secretmanager.admin`/etc. but zero `serviceusage.*` or Cloud Storage permissions, blocking `gcloud builds submit` entirely until self-granted (with explicit authorization) mid-session.
+- Cloud SQL was dropped from the migration plan partway through in favor of GCS-based JSON document storage for One-Pager/PRD (design decided, not yet implemented — see session log).
+
+## [GCP] - 2026-06-04
+
+### Added
+- `gcp-migration/` — 5-doc IT onboarding set (01-architecture-overview, 02-gcp-setup-guide, 03-github-cicd-integration, 04-database-options, 05-google-services-integration)
+- `.superpowers/gcp-migration-plan.html` — live migration tracker with session progress, IAM blocker callout, all commands pre-filled for project `r-and-d-489319` / `us-central1`
+- `.superpowers/gcp-roles-guide.html` — IAM roles guide for GCP org admin (Option A: Editor+SecurityAdmin, Option B: 7 least-privilege roles, console nav steps, docs links)
+
+### Changed
+- `.github/workflows/deploy.yml` — replaced Vercel production job with GCP Cloud Run deploy job (WIF auth, Artifact Registry push, `gcloud run deploy`); PR previews via Vercel unchanged
+- `gcp-migration/02-gcp-setup-guide.md` — updated to `us-central1`, `r-and-d-489319`, real project number `269404192985`
+- `gcp-migration/03-github-cicd-integration.md` — updated to real project ID/region/SA email; WIF setup commands pre-filled
+- `gcp-migration/04-database-options.md` — updated region to `us-central1`
+
+### Discovered
+- GCP project `r-and-d-489319` already has `mrd-producer` Cloud Run service deployed (by danny@compulocks.com on 2026-04-26, last updated by ori today at 09:52)
+- Cloud Build trigger `04ad2523` wired to repo — CI/CD already partially set up
+- Running service has critical issues: IAP blocking all traffic, `NEXTAUTH_SECRET=supersecret123456` hardcoded, no POSTGRES_URL/OAuth secrets, port 8080 vs Dockerfile 3080
+- `lib/db-client.ts` already uses `pg` package — no code change needed for Cloud SQL migration
+- `ori@compulocks.com` has `run.admin` on the existing service (confirmed via test update) but lacks Artifact Registry/IAM/Secret Manager admin
+
 ## [1.6.0] - 2026-05-26
 
 ### Added

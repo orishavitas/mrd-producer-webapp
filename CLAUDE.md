@@ -2,6 +2,8 @@
 
 **Version: 1.5.0** — One-Pager v1.5: Section 08 Reference Photos, sticky section nav, MissingInfoWidget completion badge, major version scheme (publish bumps major), Compatible Devices/Customer Name/Number of Samples fields, per-section N/A toggles.
 
+**GCP deployment: live and verified (2026-07-08)** — Cloud Run running current `main`, feature allowlist moved to Postgres with an admin UI. Real OAuth, CI/CD, and a planned GCS document-storage migration are still open — see the Deployment section below.
+
 Three production tools:
 1. **Main MRD Producer** (`/mrd`) — AI-powered 12-section MRD via Gemini Search grounding.
 2. **One-Pager Generator** (`/one-pager`) — 7-section product spec, competitor scraper, feature chips, photo picker. **LIVE on main.**
@@ -12,6 +14,17 @@ In progress:
 
 Architecture, directory tree, agent inventory, provider table: `docs/ARCHITECTURE.md`
 Code examples (agent, research, provider chain): `docs/QUICK_START.md`
+
+---
+
+## Deployment — dual target (Vercel prod + GCP Cloud Run)
+
+**Vercel** remains production. **GCP Cloud Run** (`mrd-producer`, project `r-and-d-489319`, `us-central1`) is live and verified working as of 2026-07-08, but running with `BYPASS_AUTH=true` (no real OAuth yet) and manual deploys only (CI/CD via GitHub Actions has never succeeded — see `gcp-migration/06-2026-07-08-session-log.md`).
+
+- Both targets currently point at the **same Neon Postgres** — no data divergence yet.
+- Feature allowlist is **Postgres-backed**, not the `config/allowlist.txt` file (that file is a local-dev-only fallback now). Manage access via `/admin/allowlist` (admin-only UI) instead of editing the file — editing the file has no effect once deployed, since it's baked into the Docker image at build time.
+- **GCS-based document storage is designed but not implemented.** A future session will move One-Pager/PRD documents (not the allowlist) off Postgres onto versioned JSON in Cloud Storage. Full design decisions are recorded in `gcp-migration/06-2026-07-08-session-log.md` under "Next session" — read that before re-deriving the design from scratch.
+- IAM changes on the GCP project are logged in `gcp-migration/IAM-CHANGE-LOG.md`.
 
 ---
 
@@ -113,10 +126,11 @@ Single source of truth: `styles/tokens/compulocks.css`
 
 ## Feature Gate System
 
-`config/allowlist.txt` — editable per-user feature allowlist. Format: `email : 1 2 3 4 5`
-- `1` = mrd-generator, `2` = one-pager, `3` = brief-helper, `4` = one-pager-beta, `5` = prd-producer
-- `lib/feature-gate.ts` — `getFeaturesForEmail(email)` returns `Set<FeatureKey>`, `hasFeature(email, key)` boolean
-- Env var `ALLOWED_RD_EMAILS` takes precedence over file (for Vercel production)
+**Source of truth is Postgres (`allowlist` table, migration `004-allowlist.sql`), not a file.** `config/allowlist.txt` is a local-dev-only fallback used when `POSTGRES_URL` isn't set — editing it has no effect on any deployed environment, since Cloud Run bakes it into the image at build time.
+- `1` = mrd-generator, `2` = one-pager, `3` = brief-helper, `4` = one-pager-beta, `5` = prd-producer, `6` = one-pager-alpha, `7` = rd-viewer
+- `lib/feature-gate.ts` — `getFeaturesForEmail(email)` and `hasFeature(email, key)` are now **async** (query Postgres, 30s in-memory cache). Every call site must `await`.
+- **Invite-only — no wildcard.** There is no `*` fallback anymore; every user must have an explicit row.
+- Manage access via `/admin/allowlist` (admin-only page + `GET/POST /api/admin/allowlist`, `DELETE /api/admin/allowlist/[email]`) — not by editing the file.
 - Dashboard only shows tools the user is allowed — no redirect, just hidden
 
 ## Document Export
