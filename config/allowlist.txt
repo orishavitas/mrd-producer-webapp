@@ -1,6 +1,11 @@
 # ─────────────────────────────────────────────
 #  Documentation Center — Feature Allowlist
 #  Admins: ori@compulocks.com, danny@compulocks.com
+#
+#  SOURCE OF TRUTH IS NOW POSTGRES (see lib/db-migrations/004-allowlist.sql
+#  and lib/feature-gate.ts). Manage access via /admin/allowlist in the app.
+#  This file is READ-ONLY FALLBACK for local dev without POSTGRES_URL set —
+#  editing it has no effect once the app is deployed with a database.
 # ─────────────────────────────────────────────
 #
 # FEATURES
@@ -17,6 +22,7 @@
 #   - Lines starting with # are comments
 #   - Blank lines are ignored
 #   - Exact email match beats domain wildcard (*@domain.com) beats global wildcard (*)
+#   - Invite-only: no `*` wildcard — every user must be explicitly listed
 # ─────────────────────────────────────────────
 
 # ── Admins (all tools) ──────────────────────
@@ -28,6 +34,3 @@ shahar@compulocks.com : 2 4 5 7
 chloe@compulocks.com  : 2 7
 shmuel@compulocks.com  : 2 4
 emanuele@compulocks.com: 2
-
-# ── Everyone else (one-pager only) ──────────
-*                      : 2

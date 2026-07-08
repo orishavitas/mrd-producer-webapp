@@ -55,7 +55,7 @@ export default async function DashboardPage() {
   if (!session?.user?.email) redirect('/login');
 
   const email = session.user.email;
-  const features = getFeaturesForEmail(email);
+  const features = await getFeaturesForEmail(email);
   const hasPRD = features.has('prd-producer');
   const isRDViewer = features.has('rd-viewer');
 

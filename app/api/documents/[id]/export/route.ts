@@ -23,7 +23,7 @@ export async function GET(
   }
 
   const isOwner = doc.user_id === session.user.email;
-  const canViewAll = hasFeature(session.user.email, 'rd-viewer');
+  const canViewAll = await hasFeature(session.user.email, 'rd-viewer');
   if (!isOwner && !canViewAll) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
