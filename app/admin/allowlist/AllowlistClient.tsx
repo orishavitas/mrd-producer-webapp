@@ -10,6 +10,7 @@ const FEATURE_OPTIONS: { num: number; label: string }[] = [
   { num: 5, label: 'PRD Producer' },
   { num: 6, label: 'One-Pager Alpha' },
   { num: 7, label: 'R&D Viewer' },
+  { num: 8, label: 'Commentor' },
 ];
 
 interface Entry {

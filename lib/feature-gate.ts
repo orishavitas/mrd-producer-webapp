@@ -9,7 +9,8 @@ export type FeatureKey =
   | 'one-pager-beta'
   | 'prd-producer'
   | 'one-pager-alpha'
-  | 'rd-viewer';
+  | 'rd-viewer'
+  | 'commentor';
 
 export const FEATURE_MAP: Record<string, FeatureKey> = {
   '1': 'mrd-generator',
@@ -19,6 +20,7 @@ export const FEATURE_MAP: Record<string, FeatureKey> = {
   '5': 'prd-producer',
   '6': 'one-pager-alpha',
   '7': 'rd-viewer',
+  '8': 'commentor',
 };
 
 const FEATURE_NUMBERS: Record<FeatureKey, string> = Object.fromEntries(
