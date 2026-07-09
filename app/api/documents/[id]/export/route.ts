@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { getDocument } from '@/lib/db';
+import { getDocumentEnvelope } from '@/lib/gcs/documents';
 import { generateOnePagerDocx, generateOnePagerHtml, type OnePagerData } from '@/lib/one-pager-export';
 import { hasFeature } from '@/lib/feature-gate';
 
@@ -16,21 +16,21 @@ export async function GET(
   }
 
   const { id } = await params;
-  const doc = await getDocument(id);
+  const doc = await getDocumentEnvelope('one-pager', id);
 
-  if (!doc) {
+  if (!doc || doc.deletedAt) {
     return NextResponse.json({ error: 'Not found' }, { status: 404 });
   }
 
-  const isOwner = doc.user_id === session.user.email;
+  const isOwner = doc.userId === session.user.email;
   const canViewAll = await hasFeature(session.user.email, 'rd-viewer');
   if (!isOwner && !canViewAll) {
     return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
   }
 
   const format = request.nextUrl.searchParams.get('format') ?? 'docx';
-  const data = doc.content_json as unknown as OnePagerData;
-  const title = doc.title || 'one-pager';
+  const data = doc.contentJson as unknown as OnePagerData;
+  const title = doc.productName || 'one-pager';
 
   if (format === 'html') {
     const html = generateOnePagerHtml(data);

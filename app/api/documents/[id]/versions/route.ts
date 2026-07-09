@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { sql } from '@/lib/db-client';
-import { Document } from '@/lib/db';
+import { getDocumentEnvelope } from '@/lib/gcs/documents';
 import { isAdmin } from '@/lib/admin';
 
 export async function GET(
@@ -13,8 +12,8 @@ export async function GET(
   if (!isAdmin(session.user.email)) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
 
   const { id } = await params;
-  const { rows } = await sql<Document>`SELECT version, version_history FROM documents WHERE id = ${id} AND deleted_at IS NULL`;
-  if (!rows[0]) return NextResponse.json({ error: 'Not found' }, { status: 404 });
+  const doc = await getDocumentEnvelope('one-pager', id);
+  if (!doc || doc.deletedAt) return NextResponse.json({ error: 'Not found' }, { status: 404 });
 
-  return NextResponse.json({ version: rows[0].version, history: rows[0].version_history ?? [] });
+  return NextResponse.json({ version: doc.version, history: doc.versionHistory ?? [] });
 }
