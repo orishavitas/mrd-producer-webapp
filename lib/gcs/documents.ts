@@ -78,6 +78,18 @@ export async function createDocumentEnvelope(params: {
   return envelope;
 }
 
+/**
+ * Writes an envelope to GCS preserving its existing `id` (unlike
+ * `createDocumentEnvelope`, which always mints a fresh UUID). Used by the
+ * one-time Postgres -> GCS migration script so migrated documents keep the
+ * same id/links they had in Postgres.
+ */
+export async function writeMigratedEnvelope(envelope: DocumentEnvelope): Promise<void> {
+  const bucket = getStorageClient().bucket(getBucketName());
+  const file = bucket.file(objectPath(envelope.toolType, envelope.id));
+  await file.save(JSON.stringify(envelope), { contentType: 'application/json' });
+}
+
 export async function saveDocumentEnvelope(envelope: DocumentEnvelope): Promise<DocumentEnvelope> {
   const bucket = getStorageClient().bucket(getBucketName());
   const file = bucket.file(objectPath(envelope.toolType, envelope.id));
