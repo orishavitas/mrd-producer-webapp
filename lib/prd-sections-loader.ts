@@ -26,3 +26,29 @@ export function loadPRDSections(): PRDSectionConfig[] {
   cached = parsed.sections.sort((a, b) => a.order - b.order);
   return cached;
 }
+
+export interface PRDSectionV2Config {
+  key: string;
+  title: string;
+  order: number;
+  type: 'text' | 'requirements';
+  onePagerSkipKey: string | null;
+  systemPrompt: string;
+}
+
+interface YAMLConfigV2 {
+  sections: PRDSectionV2Config[];
+}
+
+let cachedV2: PRDSectionV2Config[] | null = null;
+
+export function loadPRDSectionsV2(): PRDSectionV2Config[] {
+  if (cachedV2) return cachedV2;
+
+  const filePath = path.join(process.cwd(), 'config', 'prd-sections-v2.yaml');
+  const raw = fs.readFileSync(filePath, 'utf-8');
+  const parsed = yaml.load(raw) as YAMLConfigV2;
+
+  cachedV2 = parsed.sections.sort((a, b) => a.order - b.order);
+  return cachedV2;
+}

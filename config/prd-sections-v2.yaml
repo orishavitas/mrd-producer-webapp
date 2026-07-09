@@ -1,0 +1,103 @@
+sections:
+  - key: overview
+    title: "1. Overview"
+    order: 1
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      You are a product manager writing an engineering PRD for Compulocks, a hardware security company.
+      Write a concise product overview (2-3 paragraphs) describing what the product is, what problem it
+      solves, and the context for building it. Plain text, no markdown headers or bullets.
+
+  - key: goals
+    title: "2. Goals"
+    order: 2
+    type: text
+    onePagerSkipKey: goal
+    systemPrompt: >
+      Write a "Goals" section as a numbered list of 4-7 concrete, measurable, testable goals.
+      One goal per line, no bullet symbols — the renderer adds numbering.
+
+  - key: design_scope
+    title: "3. Design Scope"
+    order: 3
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write a "Design Scope" section with two clearly labeled parts: "In scope" and "Out of scope",
+      each a short bullet list. Base scope on the product's features and customization details.
+
+  - key: target_environments
+    title: "4. Target Environments and Use Cases"
+    order: 4
+    type: text
+    onePagerSkipKey: where
+    systemPrompt: >
+      Write a "Target Environments and Use Cases" section: primary market/industries, core use case(s),
+      and target user/audience. Plain text, short paragraphs or a brief list.
+
+  - key: requirements
+    title: "5. Requirements"
+    order: 5
+    type: requirements
+    onePagerSkipKey: features
+    systemPrompt: >
+      Generate a requirements table. Each must-have feature becomes a row with priority "Must";
+      each nice-to-have feature becomes a row with priority "Nice to have". Assign a short category
+      per row (e.g. "Device & Electrical", "Mounting & Orientation", "Enclosure & Environmental",
+      "Security", "Serviceability") based on the feature's meaning. IDs are FR-1, FR-2, ... in order.
+
+  - key: acceptance_criteria
+    title: "6. Engineering Acceptance Criteria"
+    order: 6
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write "Engineering Acceptance Criteria" as a numbered list of 5-8 specific, testable criteria
+      that define when the design is complete, derived from the goals and must-have features.
+
+  - key: assumptions
+    title: "7. Assumptions and Dependencies"
+    order: 7
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write "Assumptions and Dependencies" as a numbered list: key assumptions the design relies on,
+      and external dependencies (suppliers, standards, other products) to resolve before design lock.
+
+  - key: commercial_parameters
+    title: "8. Commercial Parameters"
+    order: 8
+    type: text
+    onePagerSkipKey: commercials
+    systemPrompt: >
+      Write "Commercial Parameters" as a short numbered list covering MOQ, target price
+      (or "not applicable" if none given), and number of samples.
+
+  - key: open_questions
+    title: "9. Open Questions"
+    order: 9
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write "Open Questions (Remaining)" as a numbered list of unresolved items that block
+      design lock — missing dimensions, unconfirmed certifications, unspecified details.
+      If nothing is obviously unresolved, list general due-diligence questions for this product type.
+
+  - key: success_criteria
+    title: "10. Success Criteria"
+    order: 10
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write "Success Criteria" as a numbered list of 2-4 criteria describing what success looks like
+      for this program (e.g. sample approval, field performance, customer sign-off).
+
+  - key: references
+    title: "11. References"
+    order: 11
+    type: text
+    onePagerSkipKey: null
+    systemPrompt: >
+      Write a single "References" line: "Source One-Pager: {{productName}}, prepared by {{preparedBy}}."
+      Return only this line, substituting the actual values — no extra commentary.
