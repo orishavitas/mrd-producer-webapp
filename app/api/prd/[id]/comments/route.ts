@@ -4,7 +4,7 @@ import { hasFeature } from '@/lib/feature-gate';
 import { getDocumentEnvelope, saveDocumentEnvelope } from '@/lib/gcs/documents';
 import { PRDDocument, PRDComment } from '@/agent/agents/prd/prd-document-types';
 
-async function canAccessComments(email: string): Promise<boolean> {
+export async function canAccessComments(email: string): Promise<boolean> {
   return (
     (await hasFeature(email, 'commentor')) ||
     (await hasFeature(email, 'prd-producer')) ||

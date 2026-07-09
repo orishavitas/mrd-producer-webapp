@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { hasFeature } from '@/lib/feature-gate';
 import { getDocumentEnvelope, saveDocumentEnvelope } from '@/lib/gcs/documents';
 import { PRDDocument } from '@/agent/agents/prd/prd-document-types';
+import { canAccessComments } from '@/app/api/prd/[id]/comments/route';
 
 export async function PATCH(
   req: NextRequest,
@@ -11,11 +11,9 @@ export async function PATCH(
   const session = await auth();
   if (!session?.user?.email) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
-  const hasAccess =
-    (await hasFeature(session.user.email, 'commentor')) ||
-    (await hasFeature(session.user.email, 'prd-producer')) ||
-    (await hasFeature(session.user.email, 'rd-viewer'));
-  if (!hasAccess) return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  if (!(await canAccessComments(session.user.email))) {
+    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+  }
 
   const { id, commentId } = await params;
   const { resolved } = await req.json();

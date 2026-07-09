@@ -108,4 +108,27 @@ describe('PATCH /api/prd/[id]/comments/[commentId]', () => {
     const res = await PATCH(req, { params: Promise.resolve({ id: 'prd-1', commentId: 'c1' }) });
     expect(res.status).toBe(403);
   });
+
+  it('lets the document owner resolve someone else\'s comment even when not the author', async () => {
+    // Session user (mocked at module level, see top of file) is 'reviewer@compulocks.com'.
+    // Here doc.userId is set to that same email (the requester IS the document owner),
+    // while the target comment's author is a different email ('owner@compulocks.com').
+    // This exercises the isDocOwner branch of the `isAuthor || isDocOwner` check
+    // specifically — the OR branch not covered by the two tests above.
+    const ownerNotAuthorEnvelope = {
+      ...envelopeWithComments,
+      userId: 'reviewer@compulocks.com',
+      contentJson: {
+        ...envelopeWithComments.contentJson,
+        comments: [{ ...envelopeWithComments.contentJson.comments[0], author: 'owner@compulocks.com' }],
+      },
+    };
+    mockGetDocumentEnvelope.mockResolvedValue(ownerNotAuthorEnvelope);
+    const req = new NextRequest('http://localhost/api/prd/prd-1/comments/c1', {
+      method: 'PATCH',
+      body: JSON.stringify({ resolved: true }),
+    });
+    const res = await PATCH(req, { params: Promise.resolve({ id: 'prd-1', commentId: 'c1' }) });
+    expect(res.status).toBe(200);
+  });
 });
