@@ -29,6 +29,7 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [justSaved, setJustSaved] = useState(false);
+  const [exporting, setExporting] = useState<'docx' | 'html' | 'pdf' | null>(null);
 
   function updateSection(updated: PRDSection) {
     setDoc((prev) => ({ ...prev, sections: prev.sections.map((s) => (s.key === updated.key ? updated : s)) }));
@@ -54,6 +55,40 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
       setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
       setSaving(false);
+    }
+  }
+
+  async function runExport(format: 'docx' | 'html' | 'pdf') {
+    setExporting(format);
+    setError(null);
+    try {
+      const response = await fetch(`/api/prd/${initialDocument.id}/export?format=${format}`);
+      if (!response.ok) throw new Error('Export failed');
+
+      if (format === 'pdf') {
+        const data = await response.json();
+        const printWindow = window.open('', '_blank');
+        if (printWindow) {
+          printWindow.document.write(data.html);
+          printWindow.document.close();
+          printWindow.focus();
+          setTimeout(() => printWindow.print(), 500);
+        }
+      } else {
+        const blob = await response.blob();
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `prd-${initialDocument.id}.${format}`;
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        window.URL.revokeObjectURL(url);
+      }
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Export failed');
+    } finally {
+      setExporting(null);
     }
   }
 
@@ -92,6 +127,17 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
         <button type="button" onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
         {justSaved && <span className="save-confirmation">Saved</span>}
         <button type="button" onClick={publish} disabled={publishing}>{publishing ? 'Publishing...' : 'Publish'}</button>
+      </div>
+      <div className="export-actions">
+        <button type="button" onClick={() => runExport('docx')} disabled={exporting !== null}>
+          {exporting === 'docx' ? 'Exporting...' : 'Export DOCX'}
+        </button>
+        <button type="button" onClick={() => runExport('html')} disabled={exporting !== null}>
+          {exporting === 'html' ? 'Exporting...' : 'Export HTML'}
+        </button>
+        <button type="button" onClick={() => runExport('pdf')} disabled={exporting !== null}>
+          {exporting === 'pdf' ? 'Exporting...' : 'Export PDF'}
+        </button>
       </div>
     </div>
   );
