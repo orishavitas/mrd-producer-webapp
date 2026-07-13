@@ -22,8 +22,8 @@ const prdDoc: LibraryDocument = {
   creatorName: null,
   creatorEmail: 'ori@compulocks.com',
   updatedAt: '2026-04-23T11:00:00Z',
-  exportBaseUrl: '/api/pipeline/prd/prd-1/export',
-  deleteUrl: '/api/pipeline/prd/prd-1/delete',
+  exportBaseUrl: '/api/prd/prd-1/export',
+  deleteUrl: '/api/prd/prd-1',
   deleteMethod: 'DELETE',
 };
 

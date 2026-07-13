@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation';
 import { auth } from '@/lib/auth';
-import { listDocumentsWithCreator, listAllDocumentsWithCreator, toLibraryDocument, toPRDLibraryDocument, type LibraryDocument } from '@/lib/db';
-import { listPRDDocuments, listAllPRDDocuments } from '@/lib/prd-db';
+import { listDocumentsWithCreator, listAllDocumentsWithCreator, toLibraryDocument, type LibraryDocument } from '@/lib/db';
+import { listDocumentEnvelopes, toPRDLibraryDocument } from '@/lib/gcs/documents';
 import { getFeaturesForEmail } from '@/lib/feature-gate';
 import TopBar from './components/TopBar';
 import ToolCard from './components/ToolCard';
@@ -63,7 +63,7 @@ export default async function DashboardPage() {
   try {
     const opDocs = await (isRDViewer ? listAllDocumentsWithCreator() : listDocumentsWithCreator(email));
     const prdDocs = await (hasPRD || isRDViewer
-      ? (isRDViewer ? listAllPRDDocuments() : listPRDDocuments(email)).catch((err) => {
+      ? listDocumentEnvelopes('prd', isRDViewer ? undefined : email).catch((err) => {
           console.error('[dashboard] PRD docs unavailable:', err instanceof Error ? err.message : err);
           return [];
         })

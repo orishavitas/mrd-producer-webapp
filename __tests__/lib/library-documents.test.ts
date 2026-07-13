@@ -1,6 +1,7 @@
-import { toLibraryDocument, toPRDLibraryDocument } from '@/lib/db';
+import { toLibraryDocument } from '@/lib/db';
 import type { DocumentWithCreator } from '@/lib/db';
-import type { PRDDocument } from '@/lib/prd-db';
+import { toPRDLibraryDocument } from '@/lib/gcs/documents';
+import type { DocumentEnvelope } from '@/lib/gcs/documents';
 
 describe('toLibraryDocument', () => {
   const base: DocumentWithCreator = {
@@ -30,26 +31,48 @@ describe('toLibraryDocument', () => {
   });
 });
 
-describe('toPRDLibraryDocument', () => {
-  const prd: PRDDocument = {
+describe('toPRDLibraryDocument (GCS)', () => {
+  const draftEnvelope: DocumentEnvelope = {
     id: 'prd-1',
-    run_id: 'run-1',
-    source_document_id: 'doc-1',
-    product_name: 'EMV PRD v1',
-    qa_score: 85,
-    qa_suggestions: [],
-    created_by: 'ori@compulocks.com',
-    created_at: '2026-04-23T10:00:00Z',
-    updated_at: '2026-04-23T10:00:00Z',
+    toolType: 'prd',
+    productName: 'EMV PRD v1',
+    userId: 'ori@compulocks.com',
+    creatorName: 'Ori Shavit',
+    creatorEmail: 'ori@compulocks.com',
+    status: 'draft',
+    version: '0.1',
+    contentJson: {},
+    versionHistory: [],
+    driveFolderId: null,
+    deletedAt: null,
+    createdAt: '2026-04-23T10:00:00Z',
+    updatedAt: '2026-04-23T10:00:00Z',
   };
 
-  it('maps a PRD document to LibraryDocument', () => {
-    const result = toPRDLibraryDocument(prd);
+  it('maps a draft PRD envelope to LibraryDocument', () => {
+    const result = toPRDLibraryDocument(draftEnvelope);
     expect(result.id).toBe('prd-1');
     expect(result.toolType).toBe('prd');
     expect(result.title).toBe('EMV PRD v1');
-    expect(result.exportBaseUrl).toBe('/api/pipeline/prd/prd-1/export');
-    expect(result.deleteUrl).toBe('/api/pipeline/prd/prd-1/delete');
+    expect(result.status).toBe('draft');
+    expect(result.creatorName).toBe('Ori Shavit');
+    expect(result.creatorEmail).toBe('ori@compulocks.com');
+    expect(result.editUrl).toBe('/prd/prd-1');
+    expect(result.exportBaseUrl).toBe('/api/prd/prd-1/export');
+    expect(result.deleteUrl).toBe('/api/prd/prd-1');
     expect(result.deleteMethod).toBe('DELETE');
+  });
+
+  it('maps a published PRD envelope status to "complete"', () => {
+    const published: DocumentEnvelope = { ...draftEnvelope, status: 'published', version: '1.0' };
+    const result = toPRDLibraryDocument(published);
+    expect(result.status).toBe('complete');
+  });
+
+  it('falls back to null creator fields when the envelope has none', () => {
+    const noCreator: DocumentEnvelope = { ...draftEnvelope, creatorName: null, creatorEmail: null };
+    const result = toPRDLibraryDocument(noCreator);
+    expect(result.creatorName).toBeNull();
+    expect(result.creatorEmail).toBeNull();
   });
 });

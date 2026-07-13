@@ -202,18 +202,3 @@ export function toLibraryDocument(doc: DocumentWithCreator): LibraryDocument {
   };
 }
 
-export function toPRDLibraryDocument(doc: import('@/lib/prd-db').PRDDocument): LibraryDocument {
-  return {
-    id: doc.id,
-    title: doc.product_name,
-    toolType: 'prd',
-    status: 'complete',
-    creatorName: null,
-    creatorEmail: doc.created_by,
-    updatedAt: doc.updated_at,
-    editUrl: null,
-    exportBaseUrl: `/api/pipeline/prd/${doc.id}/export`,
-    deleteUrl: `/api/pipeline/prd/${doc.id}/delete`,
-    deleteMethod: 'DELETE',
-  };
-}

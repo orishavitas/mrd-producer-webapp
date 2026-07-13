@@ -65,3 +65,22 @@ export async function PATCH(
 
   return NextResponse.json({ document: updated });
 }
+
+export async function DELETE(
+  _req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const session = await auth();
+  if (!session?.user?.email) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  const { id } = await params;
+  const existing = await getDocumentEnvelope('prd', id);
+  if (!existing || existing.userId !== session.user.email) {
+    return NextResponse.json({ error: 'Failed to delete document' }, { status: 500 });
+  }
+
+  await saveDocumentEnvelope({ ...existing, deletedAt: new Date().toISOString() });
+  return new NextResponse(null, { status: 204 });
+}

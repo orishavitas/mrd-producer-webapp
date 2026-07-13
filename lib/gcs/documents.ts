@@ -1,5 +1,6 @@
 import { randomUUID } from 'crypto';
 import { getStorageClient } from '@/lib/gcs/gcs-client';
+import type { LibraryDocument } from '@/lib/db';
 
 function getBucketName(): string {
   const name = process.env.GCS_BUCKET_NAME;
@@ -133,4 +134,31 @@ export async function listDocumentEnvelopes(
     if (!userId || envelope.userId === userId) envelopes.push(envelope);
   }
   return envelopes.sort((a, b) => b.updatedAt.localeCompare(a.updatedAt));
+}
+
+/**
+ * Maps a GCS `DocumentEnvelope` (toolType='prd') to the dashboard's
+ * `LibraryDocument` shape (see `lib/db.ts`). Replaces the old
+ * `toPRDLibraryDocument` in `lib/db.ts`, which read from the now-deleted
+ * Postgres `prd_documents` table — PRD documents live in GCS now, alongside
+ * One-Pager documents, both behind the same `DocumentEnvelope` type.
+ *
+ * `status: 'draft'` maps to `'draft'` and `'published'` maps to `'complete'`
+ * to match `LibraryDocument['status']`, which predates the GCS envelope's
+ * own draft/published vocabulary.
+ */
+export function toPRDLibraryDocument(doc: DocumentEnvelope): LibraryDocument {
+  return {
+    id: doc.id,
+    title: doc.productName,
+    toolType: 'prd',
+    status: doc.status === 'published' ? 'complete' : 'draft',
+    creatorName: doc.creatorName,
+    creatorEmail: doc.creatorEmail,
+    updatedAt: doc.updatedAt,
+    editUrl: `/prd/${doc.id}`,
+    exportBaseUrl: `/api/prd/${doc.id}/export`,
+    deleteUrl: `/api/prd/${doc.id}`,
+    deleteMethod: 'DELETE',
+  };
 }
