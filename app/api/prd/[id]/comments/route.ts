@@ -1,16 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-import { hasFeature } from '@/lib/feature-gate';
+import { canAccessComments } from '@/lib/prd-access';
 import { getDocumentEnvelope, saveDocumentEnvelope } from '@/lib/gcs/documents';
 import { PRDDocument, PRDComment } from '@/agent/agents/prd/prd-document-types';
-
-export async function canAccessComments(email: string): Promise<boolean> {
-  return (
-    (await hasFeature(email, 'commentor')) ||
-    (await hasFeature(email, 'prd-producer')) ||
-    (await hasFeature(email, 'rd-viewer'))
-  );
-}
 
 export async function GET(
   _req: NextRequest,

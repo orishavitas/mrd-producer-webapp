@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
 import { getDocumentEnvelope, saveDocumentEnvelope } from '@/lib/gcs/documents';
 import { PRDDocument } from '@/agent/agents/prd/prd-document-types';
-import { canAccessComments } from '@/app/api/prd/[id]/comments/route';
+import { canAccessComments } from '@/lib/prd-access';
 
 export async function PATCH(
   req: NextRequest,

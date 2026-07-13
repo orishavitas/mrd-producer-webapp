@@ -3,7 +3,7 @@ import { auth } from '@/lib/auth';
 import { getDocumentEnvelope } from '@/lib/gcs/documents';
 import { generatePRDDocxV2, generatePRDHtmlV2 } from '@/lib/prd-document-generator';
 import { PRDDocument } from '@/agent/agents/prd/prd-document-types';
-import { canAccessComments } from '@/app/api/prd/[id]/comments/route';
+import { canAccessComments } from '@/lib/prd-access';
 
 /**
  * GET /api/prd/[id]/export?format=docx|html|pdf
