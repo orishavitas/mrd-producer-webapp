@@ -10,6 +10,14 @@ interface DocumentEnvelopeLike {
   contentJson: PRDDocument;
 }
 
+// Shape of the raw envelope returned by the publish API — contentJson is untyped JSON
+// on the wire, matching lib/gcs/documents.ts's DocumentEnvelope.contentJson.
+interface RawDocumentEnvelope {
+  id: string;
+  version: string;
+  contentJson: Record<string, unknown>;
+}
+
 interface Props {
   initialDocument: DocumentEnvelopeLike;
   currentUserEmail: string;
@@ -20,6 +28,7 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
   const [saving, setSaving] = useState(false);
   const [publishing, setPublishing] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [justSaved, setJustSaved] = useState(false);
 
   function updateSection(updated: PRDSection) {
     setDoc((prev) => ({ ...prev, sections: prev.sections.map((s) => (s.key === updated.key ? updated : s)) }));
@@ -39,6 +48,8 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
         body: JSON.stringify({ sections: doc.sections }),
       });
       if (!res.ok) throw new Error('Save failed');
+      setJustSaved(true);
+      setTimeout(() => setJustSaved(false), 2000);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Save failed');
     } finally {
@@ -53,8 +64,8 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
       await save();
       const res = await fetch(`/api/prd/${initialDocument.id}/publish`, { method: 'POST' });
       if (!res.ok) throw new Error('Publish failed');
-      const data = await res.json();
-      setDoc(data.document.contentJson);
+      const data = (await res.json()) as { document: RawDocumentEnvelope };
+      setDoc(data.document.contentJson as unknown as PRDDocument);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Publish failed');
     } finally {
@@ -79,6 +90,7 @@ export default function PRDReviewClient({ initialDocument, currentUserEmail }: P
       ))}
       <div className="actions">
         <button type="button" onClick={save} disabled={saving}>{saving ? 'Saving...' : 'Save'}</button>
+        {justSaved && <span className="save-confirmation">Saved</span>}
         <button type="button" onClick={publish} disabled={publishing}>{publishing ? 'Publishing...' : 'Publish'}</button>
       </div>
     </div>
