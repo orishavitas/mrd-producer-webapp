@@ -17,6 +17,8 @@ export function PRDContent() {
   const searchParams = useSearchParams();
   const [docs, setDocs] = useState<OnePagerDoc[]>([]);
   const [loading, setLoading] = useState(true);
+  const [generatingId, setGeneratingId] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     fetch('/api/documents?tool_type=one-pager')
@@ -31,11 +33,29 @@ export function PRDContent() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [searchParams]);
 
-  function handleGenerate(documentId: string) {
-    router.push(`/prd/pipeline?documentId=${documentId}`);
+  async function handleGenerate(onePagerId: string) {
+    setGeneratingId(onePagerId);
+    setError(null);
+    try {
+      const res = await fetch('/api/prd/generate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ onePagerId }),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error || 'PRD generation failed');
+      }
+      const data = await res.json();
+      router.push(`/prd/${data.document.id}`);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'PRD generation failed');
+      setGeneratingId(null);
+    }
   }
 
   if (loading) return <div className={styles.page}><p>Loading...</p></div>;
+  if (generatingId) return <div className={styles.page}><p>Generating PRD...</p></div>;
 
   return (
     <div className={styles.page}>
@@ -43,6 +63,7 @@ export function PRDContent() {
         <h1 className={styles.title}>PRD Producer</h1>
         <p className={styles.subtitle}>Select an MRD Producer document to generate an engineering PRD.</p>
       </div>
+      {error && <p className={styles.subtitle} style={{ color: 'red' }}>{error}</p>}
       {docs.length === 0 ? (
         <div className={styles.emptyState}>
           <p>No saved MRD Producer documents found. Create and publish one first.</p>
