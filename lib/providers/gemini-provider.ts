@@ -16,8 +16,12 @@ import {
 
 /**
  * Default model to use for Gemini requests.
+ *
+ * gemini-2.5-pro has zero free-tier quota on this project (RESOURCE_EXHAUSTED
+ * until billing is linked in AI Studio). gemini-2.5-flash has real free-tier
+ * quota (5 RPM / 250K TPM / 20 RPD) and is confirmed working.
  */
-const DEFAULT_MODEL = 'gemini-2.5-pro';
+const DEFAULT_MODEL = 'gemini-2.5-flash';
 
 /**
  * Gemini provider implementation.

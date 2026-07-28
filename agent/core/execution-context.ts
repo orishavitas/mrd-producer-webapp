@@ -158,7 +158,9 @@ export class ExecutionContextImpl implements ExecutionContext {
     // Fall back to default
     const defaultProvider = this.providerChain.getDefault();
     if (!defaultProvider) {
-      throw new Error('No AI provider available');
+      throw new Error(
+        'No AI provider available: set GOOGLE_API_KEY (Gemini) or OPENAI_API_KEY (OpenAI) in the environment'
+      );
     }
     return defaultProvider;
   }

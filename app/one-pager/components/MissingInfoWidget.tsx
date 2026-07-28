@@ -91,19 +91,19 @@ export default function MissingInfoWidget({
                 </span>
 
                 {/* Not relevant checkbox */}
-                {section.skippable && !section.done && (
+                {section.skippable && (
                   <label className={styles.skipLabel}>
                     <input
                       type="checkbox"
                       className={styles.skipCheck}
-                      checked={false}
+                      checked={section.skipped}
                       onChange={() => handleSkipToggle(section.key)}
                       aria-label={`Mark ${section.label} as not relevant`}
                     />
                     <span className={styles.skipText}>N/A</span>
                   </label>
                 )}
-                {section.skippable && section.done && (
+                {!section.skippable && section.done && (
                   <span className={styles.doneChip}>done</span>
                 )}
               </li>

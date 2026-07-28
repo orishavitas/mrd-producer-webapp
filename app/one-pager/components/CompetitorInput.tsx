@@ -10,6 +10,7 @@ interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
+  errorMessage?: string;
   photoUrls: string[];
   candidatePhotos?: string[];
 }
@@ -75,10 +76,10 @@ export default function CompetitorInput({
           onCandidates(url, data.data.candidatePhotos ?? []);
         }
       } else {
-        onUpdate(url, { status: 'error' });
+        onUpdate(url, { status: 'error', errorMessage: data.error ?? 'Unknown error' });
       }
-    } catch {
-      onUpdate(url, { status: 'error' });
+    } catch (err) {
+      onUpdate(url, { status: 'error', errorMessage: err instanceof Error ? err.message : 'Network error' });
     } finally {
       setIsLoading(false);
     }
@@ -160,7 +161,9 @@ export default function CompetitorInput({
                   <>
                     <div className={styles.brand}>Error</div>
                     <div className={styles.name}>{comp.url}</div>
-                    <div className={styles.meta + ' ' + styles.metaError}>Could not extract data</div>
+                    <div className={styles.meta + ' ' + styles.metaError}>
+                      {comp.errorMessage || 'Could not extract data'}
+                    </div>
                   </>
                 )}
                 {(comp.status === 'done' || comp.status === 'pending') && (

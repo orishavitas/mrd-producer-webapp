@@ -57,7 +57,7 @@ export default function DocumentPreview({ state, featureLayout = 'sideBySide' }:
   };
 
   const doneCompetitors = state.competitors.filter((c) => c.status === 'done');
-  const hasFeatures = state.features.mustHave.length > 0 || state.features.niceToHave.length > 0;
+  const hasFeatures = (state.features.mustHave.length > 0 || state.features.niceToHave.length > 0) && !state.skippedSections?.['features'];
 
   return (
     <div className={styles.container}>

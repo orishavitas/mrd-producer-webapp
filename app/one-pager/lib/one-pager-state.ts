@@ -5,6 +5,7 @@ export interface CompetitorEntry {
   description: string;
   cost: string;
   status: 'pending' | 'extracting' | 'done' | 'error';
+  errorMessage?: string;
   photoUrls: string[];
   candidatePhotos?: string[];
   scrapeTier?: 'basic' | 'standard' | 'deep';
@@ -90,7 +91,7 @@ export interface OnePagerState {
   isPublished: boolean;
 }
 
-export type CompletionSection = { key: string; label: string; done: boolean; skippable: boolean };
+export type CompletionSection = { key: string; label: string; done: boolean; skippable: boolean; skipped: boolean };
 
 export type OnePagerAction =
   | { type: 'SET_DESCRIPTION'; payload: string }
@@ -497,80 +498,91 @@ export function getCompletionSections(state: OnePagerState): CompletionSection[]
       key: 'documentInfo',
       label: 'Document Info',
       skippable: false,
+      skipped: false,
       done: state.productName.trim().length > 0 && state.preparedBy.trim().length > 0,
     },
     {
       key: 'productDescription',
       label: 'Product Description',
       skippable: false,
+      skipped: false,
       done: (state.description || state.expandedDescription).trim().length > 0,
     },
     {
       key: 'goal',
       label: 'Goal',
       skippable: true,
+      skipped: !!sk['goal'],
       done: !!sk['goal'] || (state.goal || state.expandedGoal).trim().length > 0,
     },
     {
       key: 'where',
       label: 'Where',
       skippable: true,
+      skipped: !!sk['where'],
       done: !!sk['where'] || (state.context.environments.length > 0 && state.context.industries.length > 0),
     },
     {
       key: 'who',
       label: 'Who',
       skippable: true,
+      skipped: !!sk['who'],
       done: !!sk['who'] || [...state.audience.predefined, ...state.audience.custom].length > 0,
     },
     {
       key: 'useCases',
       label: 'Use Cases',
       skippable: true,
+      skipped: !!sk['useCases'],
       done: !!sk['useCases'] || (state.useCases || state.expandedUseCases).trim().length > 0,
     },
     {
       key: 'features',
       label: 'Features',
       skippable: true,
-      done: !!sk['features'] || [...state.features.mustHave, ...state.features.niceToHave].some(
-        (f) => /screen|orientation|placement/i.test(f)
-      ),
+      skipped: !!sk['features'],
+      done: !!sk['features'] || [...state.features.mustHave, ...state.features.niceToHave].length > 0,
     },
     {
       key: 'logo',
       label: 'Logo & Color',
       skippable: true,
+      skipped: c.logoSkipped || !!sk['logo'],
       done: c.logoSkipped || !!sk['logo'] || (c.logoFileName.length > 0 && c.logoColors.length > 0),
     },
     {
       key: 'paint',
       label: 'Paint',
       skippable: true,
+      skipped: c.paintSkipped || !!sk['paint'],
       done: c.paintSkipped || !!sk['paint'] || c.paint.finish.length > 0,
     },
     {
       key: 'commercials',
       label: 'MOQ',
       skippable: true,
+      skipped: !!sk['commercials'],
       done: !!sk['commercials'] || state.commercials.moq.trim().length > 0,
     },
     {
       key: 'competitors',
       label: 'Competitors',
       skippable: true,
+      skipped: !!sk['competitors'],
       done: !!sk['competitors'] || state.competitors.length > 0,
     },
     {
       key: 'compatibleDevices',
       label: 'Compatible Devices',
       skippable: true,
+      skipped: state.compatibleDevicesSkipped || !!sk['compatibleDevices'],
       done: state.compatibleDevicesSkipped || !!sk['compatibleDevices'] || (state.compatibleDevices ?? '').trim().length > 0,
     },
     {
       key: 'customerName',
       label: 'Customer Name',
       skippable: true,
+      skipped: state.customerNameSkipped || !!sk['customerName'],
       done: state.customerNameSkipped || !!sk['customerName'] || (state.customerName ?? '').trim().length > 0,
     },
   ];
