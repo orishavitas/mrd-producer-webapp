@@ -7,9 +7,11 @@ const onePager: LibraryDocument = {
   id: 'doc-1',
   title: 'EMV Bracket',
   toolType: 'one-pager',
+  status: 'complete',
   creatorName: 'Ori Shavit',
   creatorEmail: 'ori@compulocks.com',
   updatedAt: '2026-04-23T10:00:00Z',
+  editUrl: null,
   exportBaseUrl: '/api/documents/doc-1/export',
   deleteUrl: '/api/documents/doc-1',
   deleteMethod: 'DELETE',
@@ -19,9 +21,11 @@ const prdDoc: LibraryDocument = {
   id: 'prd-1',
   title: 'EMV PRD v1',
   toolType: 'prd',
+  status: 'complete',
   creatorName: null,
   creatorEmail: 'ori@compulocks.com',
   updatedAt: '2026-04-23T11:00:00Z',
+  editUrl: null,
   exportBaseUrl: '/api/prd/prd-1/export',
   deleteUrl: '/api/prd/prd-1',
   deleteMethod: 'DELETE',
@@ -34,11 +38,11 @@ describe('DocumentsTable', () => {
     expect(screen.getByText('EMV PRD v1')).toBeTruthy();
   });
 
-  it('filters to One-Pager tab', () => {
+  it('filters to MRD Producer tab', () => {
     render(<DocumentsTable documents={[onePager, prdDoc]} onDelete={jest.fn()} currentUserEmail="ori@compulocks.com" />);
-    // Click the tab button (first match is the tab, second is the badge)
-    const onePagerButtons = screen.getAllByText('One-Pager');
-    fireEvent.click(onePagerButtons[0]);
+    // Click the tab button
+    const onePagerButton = screen.getByText('MRD Producer');
+    fireEvent.click(onePagerButton);
     expect(screen.getByText('EMV Bracket')).toBeTruthy();
     expect(screen.queryByText('EMV PRD v1')).toBeNull();
   });
