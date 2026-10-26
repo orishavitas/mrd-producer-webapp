@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCP IAM Roles — MRD Producer Migration</title>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;1,300&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0a0c10;
+      --surface: #111318;
+      --surface-2: #181c24;
+      --border: #1e2330;
+      --border-bright: #2a3145;
+      --text: #c8d0e0;
+      --text-dim: #6b7a99;
+      --text-bright: #e8edf5;
+      --accent: #3b82f6;
+      --accent-glow: rgba(59,130,246,0.15);
+      --accent-dim: #1d4ed8;
+      --green: #22c55e;
+      --green-dim: rgba(34,197,94,0.12);
+      --amber: #f59e0b;
+      --amber-dim: rgba(245,158,11,0.1);
+      --red: #ef4444;
+      --mono: 'IBM Plex Mono', monospace;
+      --sans: 'IBM Plex Sans', sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--sans);
+      font-weight: 300;
+      line-height: 1.7;
+      min-height: 100vh;
+      padding: 0 0 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 0 40px;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      top: -60px; left: -60px;
+      width: 320px; height: 320px;
+      background: radial-gradient(circle, rgba(59,130,246,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    header::after {
+      content: '';
+      position: absolute;
+      bottom: -40px; right: 10%;
+      width: 200px; height: 200px;
+      background: radial-gradient(circle, rgba(34,197,94,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 0 32px; }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--accent-glow);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 4px;
+      padding: 4px 10px;
+      margin-bottom: 20px;
+    }
+    .badge::before { content: '▸'; font-size: 9px; }
+
+    h1 {
+      font-family: var(--mono);
+      font-size: clamp(22px, 3vw, 30px);
+      font-weight: 600;
+      color: var(--text-bright);
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 12px;
+    }
+    h1 span { color: var(--accent); }
+
+    .subtitle {
+      font-size: 15px;
+      color: var(--text-dim);
+      font-weight: 300;
+      max-width: 560px;
+    }
+
+    .meta-row {
+      display: flex;
+      gap: 32px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+    .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .meta-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .meta-value {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--text-bright);
+      background: var(--surface-2);
+      border: 1px solid var(--border-bright);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+
+    /* ── Main content ── */
+    main { padding-top: 48px; }
+
+    /* ── Option toggle ── */
+    .option-toggle {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .option-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 20px 24px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .option-card.recommended {
+      border-color: var(--accent-dim);
+      background: linear-gradient(135deg, var(--surface) 0%, rgba(29,78,216,0.08) 100%);
+    }
+    .option-card.recommended::before {
+      content: 'RECOMMENDED';
+      position: absolute;
+      top: -1px; right: 16px;
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--accent);
+      background: var(--bg);
+      padding: 3px 8px;
+      border: 1px solid var(--accent-dim);
+      border-top: none;
+      border-radius: 0 0 4px 4px;
+    }
+
+    .option-title {
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+    }
+    .option-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+    .option-roles {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .role-chip {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--text-dim);
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      padding: 2px 7px;
+    }
+
+    /* ── Section heading ── */
+    .section-label {
+      font-family: var(--mono);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Steps ── */
+    .steps { display: flex; flex-direction: column; gap: 0; margin-bottom: 48px; }
+
+    .step {
+      display: grid;
+      grid-template-columns: 52px 1fr;
+      gap: 0;
+      position: relative;
+    }
+    .step:not(:last-child) .step-line {
+      position: absolute;
+      left: 25px;
+      top: 52px;
+      bottom: 0;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .step-num-col {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 16px;
+    }
+    .step-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--mono);
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-dim);
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .step-body {
+      padding: 16px 0 32px 16px;
+    }
+    .step-title {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 6px;
+    }
+    .step-desc {
+      font-size: 13px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      max-width: 600px;
+    }
+
+    /* ── Role cards ── */
+    .roles-grid { display: flex; flex-direction: column; gap: 8px; }
+
+    .role-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 20px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 12px;
+      align-items: start;
+      transition: border-color 0.15s;
+    }
+    .role-card:hover { border-color: var(--border-bright); }
+
+    .role-card-left { min-width: 0; }
+
+    .role-name {
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      margin-bottom: 4px;
+      word-break: break-all;
+    }
+    .role-title {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 4px;
+    }
+    .role-desc {
+      font-size: 12px;
+      color: var(--text-dim);
+      line-height: 1.5;
+    }
+
+    .role-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-family: var(--mono);
+      font-size: 11px;
+      color: var(--accent);
+      text-decoration: none;
+      background: var(--accent-glow);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 4px;
+      padding: 5px 10px;
+      white-space: nowrap;
+      transition: background 0.15s, border-color 0.15s;
+      flex-shrink: 0;
+    }
+    .role-link:hover {
+      background: rgba(59,130,246,0.25);
+      border-color: rgba(59,130,246,0.4);
+    }
+    .role-link svg {
+      width: 10px; height: 10px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    /* ── Nav path helper ── */
+    .nav-path {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 14px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .nav-path span { color: var(--text-bright); }
+    .nav-path .sep { color: var(--border-bright); }
+
+    /* ── Code block ── */
+    .code-block {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-left: 3px solid var(--accent-dim);
+      border-radius: 6px;
+      padding: 16px 18px;
+      font-family: var(--mono);
+      font-size: 12px;
+      color: var(--text);
+      line-height: 1.8;
+      overflow-x: auto;
+      margin-top: 12px;
+      position: relative;
+    }
+    .code-block .comment { color: var(--text-dim); font-style: italic; }
+    .code-block .cmd { color: var(--green); }
+    .code-block .flag { color: var(--amber); }
+    .code-block .val { color: #93c5fd; }
+
+    /* ── Warning / info boxes ── */
+    .info-box {
+      display: flex;
+      gap: 12px;
+      background: var(--amber-dim);
+      border: 1px solid rgba(245,158,11,0.2);
+      border-radius: 6px;
+      padding: 14px 16px;
+      margin-top: 12px;
+    }
+    .info-box .icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .info-box p { font-size: 12px; color: var(--text-dim); line-height: 1.6; }
+    .info-box p strong { color: var(--amber); font-weight: 600; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 64px;
+      border-top: 1px solid var(--border);
+      padding-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: gap;
+      gap: 16px;
+    }
+    footer p { font-size: 12px; color: var(--text-dim); }
+    .footer-badge {
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 4px 10px;
+    }
+
+    @media (max-width: 600px) {
+      .option-toggle { grid-template-columns: 1fr; }
+      .role-card { grid-template-columns: 1fr; }
+      .step { grid-template-columns: 40px 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="container">
+    <div class="badge">GCP Migration · IAM Setup Guide</div>
+    <h1>Grant IAM Roles for<br><span>mrd-producer-webapp</span> Deployment</h1>
+    <p class="subtitle">Step-by-step instructions for a GCP admin to grant the permissions required to deploy the MRD Producer app to Cloud Run.</p>
+    <div class="meta-row">
+      <div class="meta-item">
+        <span class="meta-label">Project</span>
+        <span class="meta-value">r-and-d-489319</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">User to Grant</span>
+        <span class="meta-value">ori@compulocks.com</span>
+      </div>
+      <div class="meta-item">
+        <span class="meta-label">Project Number</span>
+        <span class="meta-value">269404192985</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+
+    <!-- Option A vs B -->
+    <div style="margin-top: 48px; margin-bottom: 32px;">
+      <div class="section-label">Choose your approach</div>
+      <div class="option-toggle">
+        <div class="option-card recommended">
+          <div class="option-title">Option A — Two broad roles</div>
+          <div class="option-desc">Faster to grant. Editor covers all resource creation; Security Admin covers IAM management.</div>
+          <div class="option-roles">
+            <span class="role-chip">roles/editor</span>
+            <span class="role-chip">roles/iam.securityAdmin</span>
+          </div>
+        </div>
+        <div class="option-card">
+          <div class="option-title">Option B — Least privilege</div>
+          <div class="option-desc">Tighter security. Grant only the specific roles each service requires.</div>
+          <div class="option-roles">
+            <span class="role-chip">roles/artifactregistry.admin</span>
+            <span class="role-chip">roles/run.admin</span>
+            <span class="role-chip">roles/secretmanager.admin</span>
+            <span class="role-chip">roles/cloudsql.admin</span>
+            <span class="role-chip">roles/iam.serviceAccountAdmin</span>
+            <span class="role-chip">roles/iam.workloadIdentityPoolAdmin</span>
+            <span class="role-chip">roles/resourcemanager.projectIamAdmin</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Steps -->
+    <div class="section-label">Step-by-step instructions</div>
+    <div class="steps">
+
+      <!-- Step 1 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">1</div></div>
+        <div class="step-body">
+          <div class="step-title">Open IAM in the GCP Console</div>
+          <div class="step-desc">Navigate to the IAM page for the correct project.</div>
+          <div class="nav-path">
+            console.cloud.google.com
+            <span class="sep">→</span>
+            <span>Select project: r-and-d-489319</span>
+            <span class="sep">→</span>
+            <span>IAM & Admin</span>
+            <span class="sep">→</span>
+            <span>IAM</span>
+          </div>
+          <div class="info-box">
+            <div class="icon">⚠</div>
+            <p><strong>Verify the project:</strong> Confirm "R And D" appears in the project selector at the top of the page before making any changes.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">2</div></div>
+        <div class="step-body">
+          <div class="step-title">Find or add the user</div>
+          <div class="step-desc">Search for <code style="font-family:var(--mono);font-size:12px;color:var(--accent)">ori@compulocks.com</code> in the principals list. If the user already appears, click the pencil (edit) icon. If not, click <strong style="color:var(--text-bright)">Grant Access</strong> at the top and enter the email.</div>
+        </div>
+      </div>
+
+      <!-- Step 3 — Option A -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">3</div></div>
+        <div class="step-body">
+          <div class="step-title">Add roles — Option A (recommended)</div>
+          <div class="step-desc">Add both roles below. This is the fastest path and covers all deployment needs.</div>
+          <div class="roles-grid">
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/editor</div>
+                <div class="role-title">Editor</div>
+                <div class="role-desc">Grants read and write access to all GCP services — creates Cloud Run services, Cloud SQL instances, Artifact Registry repositories, Secret Manager secrets, and more. Does not grant the ability to manage IAM itself.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/iam/docs/understanding-roles#editor" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/iam.securityAdmin</div>
+                <div class="role-title">Security Admin</div>
+                <div class="role-desc">Grants the ability to get and set IAM policies. Required to create service accounts for GitHub Actions and bind them to Workload Identity Federation — neither of which Editor alone can do.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/iam/docs/understanding-roles#iam.securityAdmin" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 3 — Option B -->
+      <div class="step">
+        <div class="step-line"></div>
+        <div class="step-num-col"><div class="step-num">—</div></div>
+        <div class="step-body">
+          <div class="step-title">Add roles — Option B (least privilege)</div>
+          <div class="step-desc">Grant only the specific roles required. More secure, but more to configure.</div>
+          <div class="roles-grid">
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/artifactregistry.admin</div>
+                <div class="role-title">Artifact Registry Administrator</div>
+                <div class="role-desc">Create and manage Docker image repositories. Required to push the app's container image that Cloud Run will run.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/artifact-registry/docs/access-control#roles" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/run.admin</div>
+                <div class="role-title">Cloud Run Admin</div>
+                <div class="role-desc">Deploy, update, and manage Cloud Run services. Required to deploy the containerized Next.js app and configure traffic, secrets, and Cloud SQL connections.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/run/docs/reference/iam/roles" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/secretmanager.admin</div>
+                <div class="role-title">Secret Manager Admin</div>
+                <div class="role-desc">Create and manage secrets (API keys, database credentials, OAuth secrets). All environment variables move from Vercel to Secret Manager during migration.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/secret-manager/docs/access-control" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/cloudsql.admin</div>
+                <div class="role-title">Cloud SQL Admin</div>
+                <div class="role-desc">Create and manage Cloud SQL instances and databases. Required to set up the PostgreSQL database that replaces Vercel Postgres.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/sql/docs/postgres/iam-roles" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/iam.serviceAccountAdmin</div>
+                <div class="role-title">Service Account Admin</div>
+                <div class="role-desc">Create and manage service accounts. Required to create the dedicated GitHub Actions service account used to deploy from CI/CD to Cloud Run.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/iam/docs/understanding-roles#iam.serviceAccountAdmin" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/iam.workloadIdentityPoolAdmin</div>
+                <div class="role-title">Workload Identity Pool Admin</div>
+                <div class="role-desc">Create and manage Workload Identity Federation pools and providers. Required to set up keyless authentication between GitHub Actions and GCP — eliminates the need to store long-lived service account keys in GitHub secrets.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/iam/docs/manage-workload-identity-pools-providers" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+            <div class="role-card">
+              <div class="role-card-left">
+                <div class="role-name">roles/resourcemanager.projectIamAdmin</div>
+                <div class="role-title">Project IAM Admin</div>
+                <div class="role-desc">Grant IAM roles to service accounts within this project. Required to give the GitHub Actions service account the roles it needs (Cloud Run Admin, Artifact Registry Writer) and to grant Cloud Run access to Secret Manager and Cloud SQL.</div>
+              </div>
+              <a class="role-link" href="https://cloud.google.com/iam/docs/understanding-roles#resourcemanager.projectIamAdmin" target="_blank">
+                Docs
+                <svg viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+              </a>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- Step 4 -->
+      <div class="step">
+        <div class="step-num-col"><div class="step-num">4</div></div>
+        <div class="step-body">
+          <div class="step-title">Save and verify</div>
+          <div class="step-desc">Click <strong style="color:var(--text-bright)">Save</strong> in the console. IAM changes propagate within ~60 seconds. To verify from the terminal:</div>
+          <div class="code-block">
+<span class="comment"># Verify the roles were granted</span>
+<span class="cmd">gcloud</span> projects get-iam-policy <span class="val">r-and-d-489319</span> \
+  --flatten=<span class="val">"bindings[].members"</span> \
+  --format=<span class="val">"table(bindings.role,bindings.members)"</span> \
+  --filter=<span class="val">"bindings.members:ori@compulocks.com"</span>
+          </div>
+          <div class="info-box" style="margin-top:16px; background: var(--green-dim); border-color: rgba(34,197,94,0.2);">
+            <div class="icon">✓</div>
+            <p><strong style="color:var(--green)">Once granted</strong>, return to the terminal and continue from the Artifact Registry step: <code style="font-family:var(--mono);font-size:11px">gcloud artifacts repositories create mrd-producer ...</code></p>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /steps -->
+
+    <footer>
+      <p>Generated for Compulocks R&D · Project <code style="font-family:var(--mono);font-size:11px">r-and-d-489319</code></p>
+      <span class="footer-badge">MRD Producer · GCP Migration 2026</span>
+    </footer>
+
+  </div>
+</main>
+
+</body>
+</html>

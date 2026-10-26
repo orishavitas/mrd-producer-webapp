@@ -1,0 +1,902 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Database Decision Brief — MRD Producer</title>
+  <style>
+    :root {
+      --brand: #1D1F4A;
+      --accent: #009966;
+      --accent-light: #e6f7f2;
+      --warn: #b45309;
+      --warn-bg: #fffbeb;
+      --surface: #f5f5f7;
+      --border: #dde1ea;
+      --code-bg: #1e2030;
+      --code-text: #c0caf5;
+      --text: #1a1a2e;
+      --muted: #5a607a;
+      --red: #dc2626;
+      --red-bg: #fff1f2;
+      --green: #059669;
+      --green-bg: #ecfdf5;
+      --blue: #1d4ed8;
+      --blue-bg: #eff6ff;
+      --radius: 10px;
+      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    header {
+      background: var(--brand);
+      color: white;
+      padding: 40px 48px 36px;
+    }
+    header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 10px;
+    }
+    header h1 {
+      font-size: 30px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 8px;
+    }
+    header .subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.65);
+      max-width: 620px;
+    }
+    header .meta {
+      margin-top: 24px;
+      display: flex;
+      gap: 28px;
+      flex-wrap: wrap;
+    }
+    header .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    header .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.4);
+    }
+    header .meta-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+
+    .container {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 0 32px 80px;
+    }
+
+    /* TOC */
+    .toc {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 36px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px 32px;
+    }
+    .toc-title {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 12px;
+      grid-column: 1 / -1;
+    }
+    .toc a {
+      font-size: 13px;
+      color: var(--brand);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 3px 0;
+    }
+    .toc a:hover { color: var(--accent); }
+    .toc-num {
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 1px 6px;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    /* Sections */
+    .section {
+      margin-top: 48px;
+      scroll-margin-top: 24px;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .section-num {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--brand);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 700;
+      flex-shrink: 0;
+    }
+    .section-title {
+      font-size: 20px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--brand);
+    }
+    .section-lead {
+      font-size: 14px;
+      color: var(--muted);
+      margin-top: 2px;
+    }
+
+    /* Cards */
+    .card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 16px;
+    }
+    .card h3 {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .card p { font-size: 13px; color: var(--muted); line-height: 1.6; margin-bottom: 8px; }
+    .card p:last-child { margin-bottom: 0; }
+
+    /* Constraint cards (load-bearing reasons) */
+    .constraint {
+      background: white;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--brand);
+      border-radius: 0 var(--radius) var(--radius) 0;
+      padding: 16px 20px;
+      margin-bottom: 12px;
+    }
+    .constraint h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--brand);
+      margin-bottom: 6px;
+    }
+    .constraint p { font-size: 13px; color: var(--muted); line-height: 1.55; }
+
+    /* Code */
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 14px 18px;
+      overflow-x: auto;
+      margin: 12px 0;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.7;
+      color: var(--code-text);
+    }
+    .kw { color: #bb9af7; }
+    .str { color: #9ece6a; }
+    .cm { color: #565f89; }
+    .fn { color: #7dcfff; }
+    .num { color: #ff9e64; }
+
+    p code, li code, td code, h4 code {
+      background: #eef0f6;
+      color: #3d4577;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-family: var(--mono);
+    }
+
+    /* Notes */
+    .note {
+      display: flex;
+      gap: 10px;
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin: 12px 0;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .note-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .note-warn { background: var(--warn-bg); border-left: 3px solid var(--warn); color: #7c4a00; }
+    .note-info { background: var(--blue-bg); border-left: 3px solid #3b82f6; color: var(--blue); }
+    .note-good { background: var(--green-bg); border-left: 3px solid var(--green); color: #065f46; }
+    .note-success { background: var(--green-bg); border-left: 3px solid var(--accent); color: #065f46; }
+    .note-blocked { background: var(--red-bg); border-left: 3px solid var(--red); color: var(--red); }
+
+    /* Tables */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin: 12px 0; }
+    th {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    td { border: 1px solid var(--border); padding: 9px 14px; vertical-align: top; line-height: 1.5; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .cell-good { color: var(--green); font-weight: 600; }
+    .cell-bad { color: var(--red); font-weight: 600; }
+    .cell-warn { color: var(--warn); font-weight: 600; }
+    .cell-muted { color: var(--muted); }
+
+    /* Checklist */
+    .checklist { list-style: none; display: flex; flex-direction: column; gap: 7px; margin: 10px 0; }
+    .checklist li { display: flex; align-items: flex-start; gap: 10px; font-size: 13px; color: var(--text); line-height: 1.5; }
+    .checklist li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; font-size: 13px; margin-top: 1px; }
+    .checklist li.x::before { content: '✗'; color: var(--red); }
+    .checklist li.warn::before { content: '⚠'; color: var(--warn); }
+
+    /* Price callout */
+    .price-hero {
+      background: var(--brand);
+      color: white;
+      border-radius: var(--radius);
+      padding: 24px 28px;
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      margin-bottom: 16px;
+    }
+    .price-hero .price-big {
+      font-size: 48px;
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      color: #6ee7b7;
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .price-hero .price-label {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+      margin-top: 4px;
+    }
+    .price-hero .price-desc {
+      font-size: 14px;
+      color: rgba(255,255,255,0.85);
+      line-height: 1.55;
+    }
+
+    /* Grid */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    /* Divider */
+    hr { border: none; border-top: 1px solid var(--border); margin: 40px 0; }
+
+    /* Footer */
+    footer {
+      margin-top: 64px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    @media (max-width: 640px) {
+      .grid-2, .grid-3 { grid-template-columns: 1fr; }
+      .toc { grid-template-columns: 1fr; }
+      header { padding: 28px 20px; }
+      .container { padding: 0 16px 48px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Infrastructure Decision Brief</div>
+  <h1>Why We Use PostgreSQL — and Which Host</h1>
+  <div class="subtitle">A plain-English explanation of every database decision in MRD Producer, grounded in the actual codebase.</div>
+  <div class="meta">
+    <div class="meta-item">
+      <div class="meta-label">Project</div>
+      <div class="meta-value">mrd-producer-webapp</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Current DB host</div>
+      <div class="meta-value">Neon (serverless Postgres)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Target DB host</div>
+      <div class="meta-value">Google Cloud SQL (PostgreSQL 15)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Last updated</div>
+      <div class="meta-value">2026-06-16</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#why-sql"><span class="toc-num">A</span> Why SQL / PostgreSQL?</a>
+    <a href="#why-neon"><span class="toc-num">B</span> Why did we choose Neon?</a>
+    <a href="#why-not-firebase"><span class="toc-num">C</span> Why can't we use Firebase?</a>
+    <a href="#other-options"><span class="toc-num">D</span> What other DB options exist?</a>
+    <a href="#cloud-sql"><span class="toc-num">E</span> How does Cloud SQL help us?</a>
+    <a href="#cost"><span class="toc-num">F</span> What does Cloud SQL cost per run?</a>
+    <a href="#defer-sql"><span class="toc-num">G</span> Can we defer SQL? Can Drive replace it?</a>
+  </div>
+
+  <!-- ── A: WHY SQL ── -->
+  <div class="section" id="why-sql">
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <div>
+        <div class="section-title">Why SQL / PostgreSQL?</div>
+        <div class="section-lead">The app's data model requires relational guarantees. These are not preferences — they are load-bearing.</div>
+      </div>
+    </div>
+
+    <div class="note note-info">
+      <span class="note-icon">ℹ</span>
+      <div>SQL (Structured Query Language) is the language used to talk to relational databases. PostgreSQL is a specific relational database — the most widely used open-source one. The key word is <strong>relational</strong>: data is stored in structured tables that can reference each other with enforced rules.</div>
+    </div>
+
+    <div class="constraint">
+      <h4>1. Four tables that depend on each other</h4>
+      <p>The app has a strict chain: a <strong>Document</strong> (One-Pager) spawns a <strong>Pipeline Run</strong>, which produces a <strong>PRD Document</strong>, which contains up to 12 <strong>PRD Frames</strong> (one per section). Each step references the previous one by ID. PostgreSQL enforces these links — if you try to delete a Document that has an active Pipeline Run, the database blocks it. Without this, deleting a document could leave orphaned pipeline runs and incomplete PRDs with no parent to belong to.</p>
+      <pre><code><span class="cm">-- From lib/db-migrations/002-prd-tables.sql (actual codebase)</span>
+<span class="kw">CREATE TABLE</span> pipeline_runs (
+  source_document_id <span class="fn">UUID</span> <span class="kw">REFERENCES</span> documents(id),   <span class="cm">-- must point to a real document</span>
+  status             <span class="fn">TEXT</span> <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="str">'running'</span>,<span class="str">'awaiting_approval'</span>,<span class="str">'approved'</span>,<span class="str">'completed'</span>,<span class="str">'failed'</span>))
+);
+<span class="kw">CREATE TABLE</span> prd_frames (
+  prd_document_id <span class="fn">UUID</span> <span class="kw">REFERENCES</span> prd_documents(id)  <span class="cm">-- must point to a real PRD</span>
+);</code></pre>
+    </div>
+
+    <div class="constraint">
+      <h4>2. The PRD pipeline is a state machine with enforced values</h4>
+      <p>The 4-agent PRD pipeline (Analyst → Architect → Writer → QA) transitions through exactly five states. The human approval gate at Agent 2 reads this status to decide whether to proceed. PostgreSQL's <code>CHECK</code> constraint rejects any invalid status at write time — a typo or bug can't corrupt the pipeline state. Without this constraint, a crashed agent could write garbage and the human gate would never fire.</p>
+    </div>
+
+    <div class="constraint">
+      <h4>3. Version history requires atomic transactions</h4>
+      <p>Every time a One-Pager is saved, the app does three things in sequence: read the current document, push its content into a version history array, then write the new content. All three must succeed or fail together — if the write fails after the snapshot was pushed, the history would contain a ghost entry. PostgreSQL wraps this in a transaction that rolls back automatically on any failure. This is what makes the admin rollback feature reliable.</p>
+    </div>
+
+    <div class="constraint">
+      <h4>4. Content guardrails use atomic counters</h4>
+      <p>The ban system tracks how many guardrail violations a user has triggered. It uses a PostgreSQL <code>ON CONFLICT</code> upsert — a single atomic operation that either inserts a new ban record or increments the existing count. Without atomicity, two simultaneous violations could both read count=1 and both write count=2, permanently under-counting and missing a ban threshold.</p>
+      <pre><code><span class="cm">-- From lib/db.ts (actual codebase)</span>
+<span class="kw">INSERT INTO</span> banned_users (user_id, violation_count)
+<span class="kw">VALUES</span> ($1, <span class="num">2</span>)
+<span class="kw">ON CONFLICT</span> (user_id) <span class="kw">DO UPDATE SET</span>
+  violation_count = banned_users.violation_count + <span class="num">1</span>;  <span class="cm">-- atomic increment</span></code></pre>
+    </div>
+
+    <div class="constraint">
+      <h4>5. The PRD export reads 12 sections in guaranteed order</h4>
+      <p>Building a DOCX/HTML export requires fetching all 12 PRD sections and assembling them in the correct order. The query sorts by <code>section_order</code> — a column that only makes sense in a relational, ordered result set. The export would silently produce wrong section sequences without this.</p>
+    </div>
+
+    <div class="note note-success">
+      <span class="note-icon">✓</span>
+      <div><strong>Why PostgreSQL specifically?</strong> It's the most capable open-source relational database — supports JSONB (we store document content as structured JSON inside SQL rows), arrays, <code>gen_random_uuid()</code>, full-text search, and the <code>pg</code> npm driver that the codebase already uses. MySQL and SQLite are alternatives but lack JSONB and the <code>ON CONFLICT</code> syntax the codebase relies on.</div>
+    </div>
+  </div>
+
+  <!-- ── B: WHY NEON ── -->
+  <div class="section" id="why-neon">
+    <div class="section-header">
+      <div class="section-num">B</div>
+      <div>
+        <div class="section-title">Why did we choose Neon?</div>
+        <div class="section-lead">Neon was the fastest path from zero to a live PostgreSQL database — ideal for early development.</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🚀 Zero setup</h3>
+        <p>Neon is a serverless PostgreSQL service. Creating a database takes 30 seconds in a browser — no server provisioning, no instance sizing, no connection pooler to configure. For a project starting from scratch, this removes days of infrastructure work.</p>
+      </div>
+      <div class="card">
+        <h3>🔗 Vercel integration</h3>
+        <p>The app was originally deployed on Vercel. Neon has a first-class Vercel integration — one click sets <code>POSTGRES_URL</code> in the Vercel dashboard automatically. The connection string just appears.</p>
+      </div>
+      <div class="card">
+        <h3>💸 Free tier</h3>
+        <p>Neon's free tier covers a small database with no time limit. For R&D tooling with a handful of users, the cost was $0/month during development.</p>
+      </div>
+      <div class="card">
+        <h3>📦 Standard PostgreSQL</h3>
+        <p>Neon is real PostgreSQL — same SQL syntax, same <code>pg</code> npm driver, same migration files. Switching away from Neon to any other PostgreSQL host requires changing exactly one line: the <code>POSTGRES_URL</code> connection string.</p>
+      </div>
+    </div>
+
+    <div class="note note-warn">
+      <span class="note-icon">⚠</span>
+      <div><strong>Why we're moving away from Neon:</strong> The company is migrating all infrastructure to GCP. Neon is a third-party service outside the GCP org — it can't use GCP Secret Manager, VPC networking, Cloud IAM, or Cloud Audit Logs. For a GCP-native deployment, Cloud SQL is the equivalent product that lives inside the org.</div>
+    </div>
+  </div>
+
+  <!-- ── C: WHY NOT FIREBASE ── -->
+  <div class="section" id="why-not-firebase">
+    <div class="section-header">
+      <div class="section-num">C</div>
+      <div>
+        <div class="section-title">Why can't we use Firebase / Firestore?</div>
+        <div class="section-lead">Firebase is a NoSQL document store. The app's data model requires features that NoSQL fundamentally cannot provide.</div>
+      </div>
+    </div>
+
+    <div class="note note-blocked">
+      <span class="note-icon">🚫</span>
+      <div>Firebase/Firestore is a Google product, but it is a <strong>completely different type of database</strong> — NoSQL, document-based, schema-free. Switching to it would not be a configuration change. It would be a rewrite of the entire data layer — approximately 800 lines of query code across <code>lib/db.ts</code>, <code>lib/prd-db.ts</code>, and every API route that touches the database.</div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Requirement</th>
+          <th>PostgreSQL</th>
+          <th>Firebase / Firestore</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Foreign keys (documents → pipeline_runs → prd_documents → prd_frames)</td>
+          <td class="cell-good">✓ Native, enforced at DB level</td>
+          <td class="cell-bad">✗ Does not exist. Must enforce manually in app code.</td>
+        </tr>
+        <tr>
+          <td>Status constraint (pipeline states)</td>
+          <td class="cell-good">✓ CHECK constraint, DB rejects invalid values</td>
+          <td class="cell-bad">✗ No schema constraints. Any value can be written.</td>
+        </tr>
+        <tr>
+          <td>ACID transactions (version history snapshot)</td>
+          <td class="cell-good">✓ Full transaction support, automatic rollback</td>
+          <td class="cell-warn">⚠ Limited transactions (max 500 docs, extra cost per op)</td>
+        </tr>
+        <tr>
+          <td>Atomic upsert (ban counter)</td>
+          <td class="cell-good">✓ ON CONFLICT … DO UPDATE in one round trip</td>
+          <td class="cell-bad">✗ Requires transaction + read + conditional write (3 round trips, race window)</td>
+        </tr>
+        <tr>
+          <td>Ordered cross-collection query (prd_frames by section_order)</td>
+          <td class="cell-good">✓ ORDER BY on any column, single query</td>
+          <td class="cell-bad">✗ No joins across collections. Multiple fetches + manual sort in app code.</td>
+        </tr>
+        <tr>
+          <td>JSONB storage (document content_json)</td>
+          <td class="cell-good">✓ Native JSONB with indexing</td>
+          <td class="cell-warn">⚠ Documents are JSON-like, but no SQL querying into the content</td>
+        </tr>
+        <tr>
+          <td>Soft deletes with timestamp (deleted_at)</td>
+          <td class="cell-good">✓ Simple nullable column</td>
+          <td class="cell-warn">⚠ Possible but requires filtering every query manually</td>
+        </tr>
+        <tr>
+          <td>Existing migration files (001–003)</td>
+          <td class="cell-good">✓ Run as-is on Cloud SQL</td>
+          <td class="cell-bad">✗ All three migrations are PostgreSQL DDL — incompatible</td>
+        </tr>
+        <tr>
+          <td>Code change required to migrate</td>
+          <td class="cell-good">✓ One line — change POSTGRES_URL</td>
+          <td class="cell-bad">✗ Rewrite ~800 lines across 10+ files</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-info">
+      <span class="note-icon">ℹ</span>
+      <div><strong>Firebase is excellent for the right use case</strong> — real-time sync, mobile apps, user-facing feeds. It's the wrong tool here because the app's data is deeply relational: a PRD doesn't make sense without its parent One-Pager, and 12 sections don't make sense without their parent PRD. That hierarchy needs enforcement, not hope.</div>
+    </div>
+  </div>
+
+  <!-- ── D: OTHER OPTIONS ── -->
+  <div class="section" id="other-options">
+    <div class="section-header">
+      <div class="section-num">D</div>
+      <div>
+        <div class="section-title">What other database options exist?</div>
+        <div class="section-lead">A full landscape of alternatives — rated against our actual requirements.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Option</th>
+          <th>Type</th>
+          <th>GCP Native</th>
+          <th>Code change needed</th>
+          <th>Cost</th>
+          <th>Verdict</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Cloud SQL (PostgreSQL)</strong></td>
+          <td>Relational SQL</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-good">Zero — change 1 env var</td>
+          <td>~$9.53/mo</td>
+          <td class="cell-good">✓ Recommended</td>
+        </tr>
+        <tr>
+          <td><strong>Neon</strong> (current)</td>
+          <td>Serverless Postgres</td>
+          <td class="cell-bad">✗ Third-party</td>
+          <td class="cell-good">None (already running)</td>
+          <td>$0–19/mo</td>
+          <td class="cell-warn">Keep for now, migrate to Cloud SQL</td>
+        </tr>
+        <tr>
+          <td><strong>AlloyDB</strong></td>
+          <td>PostgreSQL-compatible</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-good">Zero — PostgreSQL wire protocol</td>
+          <td>~$100+/mo</td>
+          <td class="cell-warn">Overkill — designed for 100k+ QPS workloads</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud Spanner</strong></td>
+          <td>Distributed SQL</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-warn">Minor — Spanner SQL dialect differs slightly</td>
+          <td>~$65/mo minimum</td>
+          <td class="cell-bad">✗ Built for global multi-region scale, not R&D tools</td>
+        </tr>
+        <tr>
+          <td><strong>Firestore / Firebase</strong></td>
+          <td>NoSQL document</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-bad">~800 lines rewritten</td>
+          <td>Pay per read/write</td>
+          <td class="cell-bad">✗ Incompatible data model (see Section C)</td>
+        </tr>
+        <tr>
+          <td><strong>BigQuery</strong></td>
+          <td>Analytical warehouse</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-bad">Full rewrite</td>
+          <td>Pay per query</td>
+          <td class="cell-bad">✗ Read-only analytics, not a transactional DB</td>
+        </tr>
+        <tr>
+          <td><strong>Bigtable</strong></td>
+          <td>NoSQL wide-column</td>
+          <td class="cell-good">✓ Yes</td>
+          <td class="cell-bad">Full rewrite</td>
+          <td>~$65/mo minimum</td>
+          <td class="cell-bad">✗ Designed for IoT/time-series, not document apps</td>
+        </tr>
+        <tr>
+          <td><strong>Supabase</strong></td>
+          <td>Hosted Postgres</td>
+          <td class="cell-bad">✗ Third-party</td>
+          <td class="cell-good">Zero — PostgreSQL</td>
+          <td>$0–25/mo</td>
+          <td class="cell-warn">Good alternative to Neon, but same GCP org problem</td>
+        </tr>
+        <tr>
+          <td><strong>PlanetScale</strong></td>
+          <td>Serverless MySQL</td>
+          <td class="cell-bad">✗ Third-party</td>
+          <td class="cell-warn">Minor — MySQL syntax differs (no ON CONFLICT)</td>
+          <td>$0–39/mo</td>
+          <td class="cell-bad">✗ Wrong SQL dialect, outside GCP org</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-success">
+      <span class="note-icon">✓</span>
+      <div><strong>The short answer:</strong> Among all GCP-native options, only <strong>Cloud SQL</strong> runs standard PostgreSQL at a price appropriate for an internal R&D tool. AlloyDB and Spanner are PostgreSQL-compatible but priced for enterprise scale. Everything else is either the wrong data model or outside the GCP org.</div>
+    </div>
+  </div>
+
+  <!-- ── E: CLOUD SQL ── -->
+  <div class="section" id="cloud-sql">
+    <div class="section-header">
+      <div class="section-num">E</div>
+      <div>
+        <div class="section-title">How does Google Cloud SQL help us?</div>
+        <div class="section-lead">Cloud SQL is the managed PostgreSQL service inside GCP — everything Neon does, but native to the org.</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>🔐 Stays inside the GCP org</h3>
+        <p>Cloud SQL runs inside <code>r-and-d-489319</code> — the same GCP project as Cloud Run. Traffic between the app and the database never leaves Google's private network. No public internet, no external SaaS vendor, no data leaving the org boundary.</p>
+      </div>
+      <div class="card">
+        <h3>🔑 Uses Secret Manager for credentials</h3>
+        <p>The <code>POSTGRES_URL</code> is stored as a GCP Secret Manager secret and injected into Cloud Run at deploy time. No credentials in environment files, no manually updated Vercel dashboard, no secrets visible in CI/CD logs.</p>
+      </div>
+      <div class="card">
+        <h3>🔌 Zero code changes</h3>
+        <p>Cloud SQL speaks standard PostgreSQL. The app uses the <code>pg</code> npm driver. The only change is one environment variable — the connection string switches from Neon's TCP URL to Cloud SQL's Unix socket path. Every query, migration file, and type definition is unchanged.</p>
+        <pre><code><span class="cm"># Before (Neon)</span>
+POSTGRES_URL=postgres://user:pass@neon-host/db
+
+<span class="cm"># After (Cloud SQL) — one line change</span>
+POSTGRES_URL=postgres://user:pass@/db?host=/cloudsql/PROJECT:REGION:INSTANCE</code></pre>
+      </div>
+      <div class="card">
+        <h3>🛡 IAM-controlled access</h3>
+        <p>Cloud SQL access is controlled by GCP IAM roles — the same system that controls everything else in the org. No separate user/password management needed for the Cloud Run service account. Access is granted once via <code>roles/cloudsql.client</code> and managed centrally.</p>
+      </div>
+      <div class="card">
+        <h3>📋 Audit logs</h3>
+        <p>Every database connection and query can be logged to Cloud Audit Logs — the same audit trail used across all GCP services. Compliance, incident response, and access reviews all go through one system.</p>
+      </div>
+      <div class="card">
+        <h3>💾 Automated backups</h3>
+        <p>Cloud SQL takes daily automated backups with point-in-time recovery — configurable retention up to 7 days. No manual <code>pg_dump</code> scripts, no cron jobs, no risk of forgetting to back up before a migration.</p>
+      </div>
+    </div>
+
+    <div class="note note-info">
+      <span class="note-icon">ℹ</span>
+      <div><strong>The Auth Proxy advantage:</strong> Cloud Run connects to Cloud SQL through the <strong>Cloud SQL Auth Proxy</strong> — a sidecar that handles encryption and IAM authentication automatically. The app never needs to manage TLS certificates or rotate database passwords. The connection string uses a Unix socket path instead of a hostname.</div>
+    </div>
+  </div>
+
+  <!-- ── F: COST ── -->
+  <div class="section" id="cost">
+    <div class="section-header">
+      <div class="section-num">F</div>
+      <div>
+        <div class="section-title">What does Cloud SQL cost per run?</div>
+        <div class="section-lead">Prices taken directly from the official Cloud SQL pricing page (us-central1, June 2026).</div>
+      </div>
+    </div>
+
+    <!-- Source rates -->
+    <div class="card" style="margin-bottom:20px;">
+      <h3>📄 Source rates (us-central1)</h3>
+      <table>
+        <thead><tr><th>Component</th><th>Rate</th><th>Monthly equivalent</th></tr></thead>
+        <tbody>
+          <tr><td><code>db-f1-micro</code> (shared, 0.6 GiB RAM)</td><td><strong>$0.0105/hr</strong></td><td>$7.67/mo</td></tr>
+          <tr><td><code>db-g1-small</code> (shared, 1.7 GiB RAM)</td><td>$0.035/hr</td><td>$25.55/mo</td></tr>
+          <tr><td>SSD storage</td><td>$0.000232877/GiB·hr</td><td><strong>$0.170/GiB·mo</strong></td></tr>
+          <tr><td>Backups (used storage)</td><td>$0.000109589/GiB·hr</td><td>$0.080/GiB·mo</td></tr>
+          <tr><td>Network egress (Cloud Run → Cloud SQL, same region, internal)</td><td colspan="2" class="cell-good"><strong>$0.00 — internal VPC traffic is free</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Baseline -->
+    <div class="price-hero">
+      <div>
+        <div class="price-big">$9.53</div>
+        <div class="price-label">per month — flat rate</div>
+      </div>
+      <div class="price-desc">
+        This is the <strong>entire cost</strong> for an R&D team: <code>db-f1-micro</code> instance ($7.67) + 10 GB SSD storage ($1.70) + 2 GB backups ($0.16). No public IP needed — Cloud SQL Auth Proxy uses internal networking. <strong>Per-run cost for every feature is effectively $0.00</strong> — Cloud SQL charges for compute time and storage, not per query.
+      </div>
+    </div>
+
+    <!-- Per-feature table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Feature</th>
+          <th>DB operations per run</th>
+          <th>Data written</th>
+          <th>Cost per run</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>One-Pager: Save Draft</strong></td>
+          <td>1 SELECT + 1 UPDATE (with version snapshot)</td>
+          <td>~15 KB</td>
+          <td class="cell-good">$0.0000000034</td>
+        </tr>
+        <tr>
+          <td><strong>One-Pager: Publish</strong></td>
+          <td>1 SELECT + 1 UPDATE + push to version_history</td>
+          <td>~20 KB</td>
+          <td class="cell-good">$0.0000000046</td>
+        </tr>
+        <tr>
+          <td><strong>One-Pager: Load / Dashboard</strong></td>
+          <td>1–2 SELECTs only</td>
+          <td>0 bytes written</td>
+          <td class="cell-good">$0.00</td>
+        </tr>
+        <tr>
+          <td><strong>One-Pager: Admin Rollback</strong></td>
+          <td>1 SELECT + 1 UPDATE (restore snapshot)</td>
+          <td>~20 KB</td>
+          <td class="cell-good">$0.0000000046</td>
+        </tr>
+        <tr>
+          <td><strong>PRD Pipeline: Full 4-agent run</strong></td>
+          <td>1 INSERT pipeline_run + 5 UPDATEs (status transitions) + 1 INSERT prd_document + 12 INSERT prd_frames</td>
+          <td>~150 KB</td>
+          <td class="cell-good">$0.000000034</td>
+        </tr>
+        <tr>
+          <td><strong>PRD: DOCX / HTML Export</strong></td>
+          <td>3 SELECTs (pipeline_run → prd_document → 12 frames ordered by section_order)</td>
+          <td>0 bytes written</td>
+          <td class="cell-good">$0.00</td>
+        </tr>
+        <tr>
+          <td><strong>Guardrail violation log</strong></td>
+          <td>1 INSERT guardrail_violations + 1 UPSERT banned_users</td>
+          <td>~1 KB</td>
+          <td class="cell-good">$0.0000000002</td>
+        </tr>
+        <tr>
+          <td><strong>Document delete (soft)</strong></td>
+          <td>1 UPDATE (sets deleted_at = NOW())</td>
+          <td>0 bytes net new</td>
+          <td class="cell-good">$0.00</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-info" style="margin-top:16px;">
+      <span class="note-icon">ℹ</span>
+      <div><strong>Why is per-run cost so low?</strong> Cloud SQL bills for the instance running (per second) and storage consumed (per GiB-hour) — not for individual queries or rows written. Once the instance is running, every query is effectively free. The cost model is like renting a server: you pay for it being on, not for what you ask it to do.</div>
+    </div>
+
+    <!-- Storage growth -->
+    <div class="card" style="margin-top:20px;">
+      <h3>📈 The only variable cost: storage growth</h3>
+      <p>Storage is the only number that changes month over month. At current R&D usage it is negligible.</p>
+      <table style="margin-top:10px;">
+        <thead><tr><th>Scenario</th><th>Storage added/mo</th><th>Additional monthly cost</th></tr></thead>
+        <tbody>
+          <tr><td>50 One-Pager saves × 20 KB each</td><td>~1 MB</td><td>$0.00017</td></tr>
+          <tr><td>500 saves/mo × 20 KB</td><td>~10 MB</td><td>$0.0017</td></tr>
+          <tr><td>100 docs with 20 version snapshots × 20 KB</td><td>~40 MB cumulative</td><td>$0.0068</td></tr>
+          <tr><td>Full year of active R&D use</td><td>~500 MB total</td><td>+$0.085/mo by month 12</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Tier comparison -->
+    <div class="card" style="margin-top:16px;">
+      <h3>📊 Instance tier comparison</h3>
+      <table>
+        <thead><tr><th>Tier</th><th>RAM</th><th>Monthly cost</th><th>When to use</th></tr></thead>
+        <tbody>
+          <tr><td><code>db-f1-micro</code></td><td>0.6 GiB</td><td><strong>$9.53/mo</strong></td><td class="cell-good">R&D team, &lt;25 concurrent connections ✅ Start here</td></tr>
+          <tr><td><code>db-g1-small</code></td><td>1.7 GiB</td><td>$27.37/mo</td><td>10–50 concurrent users, if f1-micro shows latency</td></tr>
+          <tr><td>1 vCPU / 3.75 GB</td><td>3.75 GiB</td><td>~$46.50/mo</td><td>Production scale, 50+ users</td></tr>
+          <tr><td>HA <code>db-f1-micro</code></td><td>0.6 GiB</td><td>$18.90/mo</td><td>R&D with failover SLA (automatic standby replica)</td></tr>
+        </tbody>
+      </table>
+      <p style="margin-top:10px;"><em>Note: <code>db-f1-micro</code> and <code>db-g1-small</code> are shared-CPU instances and are not covered by the Cloud SQL SLA. For SLA coverage, use a standard 1-vCPU instance.</em></p>
+    </div>
+  </div>
+
+  <!-- ── G: DEFER SQL / DRIVE ── -->
+  <div class="section" id="defer-sql">
+    <div class="section-header">
+      <div class="section-num">G</div>
+      <div>
+        <div class="section-title">Can we defer SQL? And can Google Drive replace it?</div>
+        <div class="section-lead">Two practical questions came up: do we need Cloud SQL to migrate <em>now</em>, and could a shared Google Drive folder do the job instead?</div>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom:10px;">Q1 — Do we need Cloud SQL to migrate the app to GCP now?</h3>
+    <div class="note note-good">
+      <span class="note-icon">✅</span>
+      <div><strong>No — SQL can be deferred.</strong> The app, secrets, and CI/CD can all move to GCP right now while the database <strong>stays on Neon</strong>. Cloud Run simply points at the existing Neon <code>POSTGRES_URL</code>. Because <code>lib/db-client.ts</code> uses the generic <code>pg</code> driver, this is <strong>zero code change</strong> — the connection string just keeps pointing at Neon instead of switching to Cloud SQL.</div>
+    </div>
+
+    <div class="note note-warn">
+      <span class="note-icon">⚠</span>
+      <div><strong>The caveat:</strong> the database is not a one-time "MRD → PRD" migration step — it is the <strong>live persistence layer</strong>. Every One-Pager and PRD save, load, version snapshot, and rollback goes through it, and the PRD pipeline reads a <em>saved</em> One-Pager from it as input. So keeping Neon means the company's product data <strong>stays outside the GCP org</strong>. "Not required for now" is a <strong>deferral, not an elimination</strong> — to fully consolidate under GCP, Cloud SQL is still the endpoint (see Section E).</div>
+    </div>
+
+    <h3 style="margin:18px 0 10px;">Q2 — Could a shared Google Drive folder replace the database?</h3>
+    <p style="margin-bottom:14px;">Technically possible, but <strong>not a drop-in</strong> — and not recommended for the live data. Drive is a <em>file store</em>, not a query engine. The right move is to split the two roles:</p>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>❌ Drive as the database — don't</h3>
+        <p>The app queries by document ID, filters by user email, reads/writes a <code>version_history</code> JSONB column, and does rollback lookups. To back that with Drive you'd rewrite <code>db-client.ts</code> and every <code>/api/documents/*</code> route to read/write JSON files. Worse, Drive has <strong>no transactions and no row locking</strong> — two people editing the same doc can silently clobber each other. It also breaks the clean <code>pg</code> swap that makes Neon→Cloud SQL easy.</p>
+      </div>
+      <div class="card">
+        <h3>✅ Drive for exported deliverables — yes</h3>
+        <p>The DOCX / HTML / PDF files the generators produce (<code>lib/document-generator.ts</code>, <code>lib/prd-document-generator.ts</code>) are a <strong>natural fit</strong> for a shared Drive folder — the team can grab finished One-Pagers and PRDs without touching the app's data model. The Google Drive integration is already connected. Low risk, no rewrite.</p>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:16px;">
+      <h3>📋 Recommended storage split</h3>
+      <table style="margin-top:10px;">
+        <thead><tr><th>Layer</th><th>Best home</th><th>Why</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Live document data</strong><br><span style="color:var(--muted);">save / load / versions / rollback</span></td><td class="cell-good">Neon now → Cloud SQL later</td><td>Already works, zero code change, real relational queries &amp; transactions</td></tr>
+          <tr><td><strong>Exported files</strong><br><span style="color:var(--muted);">DOCX / PDF / HTML</span></td><td class="cell-good">Google Drive shared folder</td><td>Natural fit, team-friendly, no persistence rewrite</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note note-info" style="margin-top:16px;">
+      <span class="note-icon">ℹ</span>
+      <div><strong>Bottom line:</strong> migrate the app to Cloud Run on Neon today (admin's "no SQL for now" is satisfied), optionally push exports to a shared Drive folder for the team, and keep Cloud SQL as the eventual endpoint once IAM/SQL access is granted — at which point it's still a one-line connection-string change.</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- Summary -->
+  <div class="card" style="border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0;">
+    <h3 style="color: var(--accent);">TL;DR — Executive Summary</h3>
+    <ul class="checklist" style="margin-top:8px;">
+      <li>The app uses <strong>SQL because its data is relational</strong> — 4 tables that reference each other with foreign keys, enforced status constraints, atomic transactions for version history, and ordered queries for PRD export. These are not optional features.</li>
+      <li>We chose <strong>Neon for speed of development</strong> — zero setup, free tier, native Vercel integration. It's standard PostgreSQL, so migrating away requires changing one environment variable.</li>
+      <li><strong>Firebase cannot replace it</strong> — it's a different type of database with no foreign keys, no CHECK constraints, and no SQL. Switching would require rewriting ~800 lines of application code with new failure modes introduced.</li>
+      <li>Among all GCP-native options, <strong>Cloud SQL is the only correct fit</strong> — standard PostgreSQL, right price tier ($9.53/mo), fully inside the GCP org, zero code changes.</li>
+      <li><strong>Per-run cost is effectively $0.00</strong> for every feature. The entire monthly bill is a flat $9.53 for the instance being on.</li>
+      <li><strong>SQL can be deferred</strong> — migrate the app to Cloud Run on the existing Neon DB now (zero code change), and keep Cloud SQL as the eventual GCP-native endpoint. <strong>Google Drive is for exported files, not for the live data</strong> — it has no transactions or queries, so using it as the database would mean an ~800-line rewrite with new failure modes.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <span>MRD Producer — Database Decision Brief — 2026-06-16</span>
+    <span>Prices: Cloud SQL us-central1, June 2026 — verify at cloud.google.com/sql/pricing</span>
+  </footer>
+
+</div>
+</body>
+</html>

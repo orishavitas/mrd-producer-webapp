@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Summary Brief — MRD Producer</title>
+  <style>
+    :root {
+      --brand:  #1D1F4A;
+      --accent: #009966;
+      --green:  #059669;
+      --green-bg: #ecfdf5;
+      --warn:   #b45309;
+      --warn-bg:#fffbeb;
+      --red:    #dc2626;
+      --red-bg: #fff1f2;
+      --blue:   #1d4ed8;
+      --blue-bg:#eff6ff;
+      --purple: #7c3aed;
+      --purple-bg:#f5f3ff;
+      --surface:#f4f5f9;
+      --border: #dde1ea;
+      --text:   #1a1a2e;
+      --muted:  #5a607a;
+      --radius: 10px;
+      --font:   'Inter','Segoe UI',system-ui,sans-serif;
+      --mono:   'JetBrains Mono','Consolas',monospace;
+    }
+    * { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:var(--font); font-size:14px; line-height:1.65; color:var(--text); background:var(--surface); }
+
+    header {
+      background: linear-gradient(135deg, var(--brand) 0%, #243469 100%);
+      color: white; padding: 36px 48px 32px;
+    }
+    header .eyebrow { font-size:10.5px; font-weight:700; letter-spacing:.14em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:10px; }
+    header h1 { font-size:28px; font-weight:700; letter-spacing:-.02em; margin-bottom:8px; }
+    header .sub { font-size:14px; color:rgba(255,255,255,.65); margin-bottom:22px; }
+    .meta { display:flex; gap:24px; flex-wrap:wrap; }
+    .meta-item { display:flex; flex-direction:column; gap:2px; }
+    .meta-label { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.1em; color:rgba(255,255,255,.35); }
+    .meta-value { font-size:12.5px; font-weight:500; color:rgba(255,255,255,.88); }
+
+    .container { max-width:900px; margin:0 auto; padding:32px 20px 56px; }
+
+    /* blocks */
+    .block { background:white; border:1px solid var(--border); border-radius:var(--radius); padding:24px 28px; margin-bottom:20px; }
+    .block-title { font-size:17px; font-weight:700; color:var(--brand); letter-spacing:-.01em; margin-bottom:4px; display:flex; align-items:center; gap:10px; }
+    .block-title .num { background:var(--brand); color:white; font-size:11px; font-weight:700; width:24px; height:24px; border-radius:5px; display:inline-flex; align-items:center; justify-content:center; flex-shrink:0; }
+    .block-lead { font-size:13px; color:var(--muted); margin-bottom:16px; padding-bottom:14px; border-bottom:1px solid var(--border); }
+
+    /* rows */
+    .row { display:flex; gap:12px; margin-bottom:10px; align-items:flex-start; }
+    .row:last-child { margin-bottom:0; }
+    .row-icon { flex-shrink:0; font-size:15px; margin-top:1px; }
+    .row-body { font-size:13.5px; line-height:1.55; }
+    .row-body strong { font-weight:700; }
+
+    /* option cards */
+    .options { display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px; margin-top:14px; }
+    .opt { border-radius:8px; padding:16px 18px; border:2px solid; }
+    .opt-title { font-size:13.5px; font-weight:700; margin-bottom:6px; }
+    .opt-tag { font-size:10px; font-weight:700; text-transform:uppercase; letter-spacing:.08em; margin-bottom:10px; }
+    .opt-list { list-style:none; padding:0; display:flex; flex-direction:column; gap:5px; }
+    .opt-list li { font-size:12.5px; line-height:1.5; display:flex; gap:6px; }
+    .opt-list li::before { flex-shrink:0; font-size:12px; margin-top:1px; }
+    .opt.green  { border-color:var(--green); background:var(--green-bg); }
+    .opt.green .opt-title { color:var(--green); }
+    .opt.green .opt-list li::before { content:'✓'; color:var(--green); font-weight:700; }
+    .opt.warn   { border-color:var(--warn); background:var(--warn-bg); }
+    .opt.warn .opt-title { color:var(--warn); }
+    .opt.warn .opt-list li::before { content:'⚠'; color:var(--warn); }
+    .opt.red    { border-color:var(--red); background:var(--red-bg); }
+    .opt.red .opt-title { color:var(--red); }
+    .opt.red .opt-list li::before { content:'✗'; color:var(--red); font-weight:700; }
+
+    /* loses table */
+    table { width:100%; border-collapse:collapse; font-size:13px; margin-top:12px; }
+    th { background:var(--brand); color:white; text-align:left; padding:8px 11px; font-size:11.5px; }
+    th:first-child { border-radius:5px 0 0 0; } th:last-child { border-radius:0 5px 0 0; }
+    td { padding:8px 11px; border-bottom:1px solid var(--border); vertical-align:top; }
+    tr:last-child td { border-bottom:none; }
+    tr:nth-child(even) td { background:#fafafa; }
+    .g { color:var(--green); font-weight:600; }
+    .r { color:var(--red);   font-weight:600; }
+    .w { color:var(--warn);  font-weight:600; }
+    .m { color:var(--muted); }
+
+    /* callout */
+    .callout { display:flex; gap:10px; border-radius:8px; padding:13px 16px; font-size:13px; line-height:1.55; margin-top:14px; }
+    .callout-icon { flex-shrink:0; font-size:15px; margin-top:1px; }
+    .callout.green  { background:var(--green-bg);  border-left:3px solid var(--green);  color:#065f46; }
+    .callout.warn   { background:var(--warn-bg);   border-left:3px solid var(--warn);   color:#7c4a00; }
+    .callout.red    { background:var(--red-bg);    border-left:3px solid var(--red);    color:#7f1d1d; }
+    .callout.blue   { background:var(--blue-bg);   border-left:3px solid var(--blue);   color:var(--blue); }
+    .callout.purple { background:var(--purple-bg); border-left:3px solid var(--purple); color:#4c1d95; }
+
+    code { font-family:var(--mono); font-size:11.5px; background:#f0f1f5; border:1px solid #d8dce8; border-radius:3px; padding:1px 5px; }
+
+    /* summary box */
+    .summary-box { background:white; border-left:4px solid var(--accent); border-radius:0 var(--radius) var(--radius) 0; padding:22px 26px; margin-top:8px; }
+    .summary-box h3 { font-size:15px; font-weight:700; color:var(--accent); margin-bottom:12px; }
+    .summary-box ul { list-style:none; display:flex; flex-direction:column; gap:9px; }
+    .summary-box li { display:flex; gap:10px; font-size:13.5px; line-height:1.55; }
+    .summary-box li::before { content:'✓'; color:var(--accent); font-weight:700; flex-shrink:0; }
+
+    footer { margin-top:36px; padding-top:14px; border-top:1px solid var(--border); display:flex; justify-content:space-between; font-size:11px; color:var(--muted); }
+
+    @media(max-width:680px){
+      header { padding:24px 16px; }
+      .container { padding:18px 12px 40px; }
+      .options { grid-template-columns:1fr; }
+      .block { padding:18px 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Executive Summary</div>
+  <h1>What We Built, What's Blocking Us, and What We Lose</h1>
+  <div class="sub">A no-nonsense distillation of the system architecture and database decision briefs.</div>
+  <div class="meta">
+    <div class="meta-item"><div class="meta-label">Full details</div><div class="meta-value">system-architecture-brief.html · database-brief.html</div></div>
+    <div class="meta-item"><div class="meta-label">Last updated</div><div class="meta-value">2026-06-16</div></div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 1. What we built -->
+  <div class="block">
+    <div class="block-title"><span class="num">1</span> What we built</div>
+    <div class="block-lead">Two tools, one shared stack.</div>
+
+    <div class="row">
+      <span class="row-icon">📄</span>
+      <div class="row-body"><strong>One-Pager Generator</strong> — A structured product spec form. The user fills it out, AI expands the text, competitors are scraped automatically, and the result is saved, versioned, and exportable as Word/PDF. Admins can roll back to any past version.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">📋</span>
+      <div class="row-body"><strong>PRD Producer</strong> — Takes a saved One-Pager and runs it through a 4-step AI pipeline to produce a full Product Requirements Document. The user reviews and edits the outline halfway through (human gate), then approves it. Output is a structured PRD, exportable as Word/HTML.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🔗</span>
+      <div class="row-body"><strong>The dependency:</strong> PRD reads a saved One-Pager from the database as its starting point. Both tools share the same login system, database, and AI layer.</div>
+    </div>
+  </div>
+
+  <!-- 2. The 6 tech layers -->
+  <div class="block">
+    <div class="block-title"><span class="num">2</span> The 6 tech layers — what each one does</div>
+    <div class="block-lead">Remove any one of these and something breaks. Here's what each piece actually does in plain terms.</div>
+
+    <div class="row">
+      <span class="row-icon">🚀</span>
+      <div class="row-body"><strong>Vercel / Cloud Run — the host.</strong> The platform that runs the app. Vercel is the current host; Cloud Run (Google) is the migration target. Both execute server-side code, serve pages to browsers, and run API functions. A static host (GitHub Pages) cannot run this app — it needs a real server for things like database queries and AI calls.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🔐</span>
+      <div class="row-body"><strong>Google OAuth + NextAuth — the login system.</strong> When a user clicks "Sign in with Google," Google verifies who they are and sends the app a token. NextAuth turns that token into a session cookie. Every document save and every API call is tied to the user's email — this is how the app knows whose documents to show, and who is allowed to use PRD Producer (allowlist-gated).</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🗄</span>
+      <div class="row-body"><strong>Postgres (Neon / Cloud SQL) — the database.</strong> Stores everything that needs to survive a browser refresh: saved One-Pagers, version history, the PRD pipeline's in-progress state, completed PRD documents, and AI-generated embeddings for future search. This is the current migration blocker. See Section 4 for the full breakdown.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🤖</span>
+      <div class="row-body"><strong>Gemini + OpenAI — the AI engine.</strong> Gemini (Google) is the primary AI. It handles text expansion, competitor analysis, feature suggestions, and all 4 PRD pipeline agents. OpenAI is the automatic fallback — if Gemini fails, it takes over. If both are removed, the AI features stop but the save/load/export still works.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">📁</span>
+      <div class="row-body"><strong>Document export layer — the file generator.</strong> Converts in-memory document state into downloadable Word files and print-ready HTML. Runs server-side because it needs to read the Compulocks logo from disk and embed it into the file. Reads the finished content from the database before generating the file.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🖥</span>
+      <div class="row-body"><strong>React + CSS — the UI.</strong> The interactive form, the live preview panel, the pipeline progress screen. All styling uses named color variables from the Compulocks brand token system — no hardcoded colors anywhere. This layer has no external dependencies beyond what's already in the repo.</div>
+    </div>
+  </div>
+
+  <!-- 3. The blocker -->
+  <div class="block">
+    <div class="block-title"><span class="num">3</span> The current blocker</div>
+    <div class="block-lead">One missing IAM permission is preventing the full GCP migration.</div>
+
+    <div class="row">
+      <span class="row-icon">🔴</span>
+      <div class="row-body"><strong>What's blocked:</strong> Creating a Cloud SQL (Google's managed Postgres) instance inside the <code>r-and-d-489319</code> GCP project. The app and all its other infrastructure is ready to migrate. The database is the only remaining piece.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">🔑</span>
+      <div class="row-body"><strong>What's needed:</strong> A GCP org admin grants two IAM roles on the project: <code>roles/cloudsql.admin</code> (to create the database instance) and <code>roles/cloudsql.client</code> (for the app to connect to it). That's the entire ask. Step-by-step guide for the admin: <code>.superpowers/gcp-roles-guide.html</code>.</div>
+    </div>
+    <div class="row">
+      <span class="row-icon">⚠</span>
+      <div class="row-body"><strong>Why IT objects to Neon:</strong> Neon (the current database host) runs on AWS, outside Google's cloud. IT wants all company data inside the GCP org. That's a valid policy — and Cloud SQL is exactly the solution. Neon is a viable interim step while waiting for IAM, but it doesn't satisfy the data-residency requirement.</div>
+    </div>
+  </div>
+
+  <!-- 4. The 3 SQL options -->
+  <div class="block">
+    <div class="block-title"><span class="num">4</span> The 3 SQL options — what each costs</div>
+    <div class="block-lead">There are only three realistic paths. Here they are with no padding.</div>
+
+    <div class="options">
+      <div class="opt green">
+        <div class="opt-tag">Option A</div>
+        <div class="opt-title">Cloud SQL (Google)</div>
+        <ul class="opt-list">
+          <li>IT-approved — data stays inside GCP</li>
+          <li>Zero code changes — one env var</li>
+          <li>$9.53/month flat (f1-micro)</li>
+          <li>Every feature works</li>
+          <li>Blocked on IAM — needs org admin action</li>
+        </ul>
+      </div>
+      <div class="opt warn">
+        <div class="opt-tag">Option B</div>
+        <div class="opt-title">Keep Neon (interim)</div>
+        <ul class="opt-list">
+          <li>Works today — no IAM needed</li>
+          <li>Zero code changes</li>
+          <li>Free tier</li>
+          <li>Every feature works</li>
+          <li>Data stays outside GCP (IT concern remains)</li>
+        </ul>
+      </div>
+      <div class="opt red">
+        <div class="opt-tag">Option C</div>
+        <div class="opt-title">Drop SQL entirely</div>
+        <ul class="opt-list">
+          <li>No database cost</li>
+          <li>Removes IT concern</li>
+          <li>Breaks saving, loading, sharing documents</li>
+          <li>Breaks the entire PRD pipeline</li>
+          <li>Breaks version history and rollback</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="callout purple" style="margin-top:16px;">
+      <span class="callout-icon">💡</span>
+      <div><strong>Recommended path:</strong> Option B now (migrate app to Cloud Run on Neon, unblocked today), then Option A as soon as the IAM roles are granted (flip one env var, full GCP consolidation). Option C is not viable without rebuilding the product from scratch.</div>
+    </div>
+  </div>
+
+  <!-- 5. What dropping SQL actually costs -->
+  <div class="block">
+    <div class="block-title"><span class="num">5</span> What "drop SQL" actually means — feature by feature</div>
+    <div class="block-lead">For anyone who needs to understand the real cost of Option C before making a call.</div>
+
+    <table>
+      <thead>
+        <tr><th>Feature</th><th>One-Pager</th><th>PRD</th><th>What happens</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Save &amp; load documents</strong></td>
+          <td class="r">🔴 Gone</td>
+          <td class="r">🔴 Gone</td>
+          <td>Every browser refresh wipes all work. Nothing persists between sessions.</td>
+        </tr>
+        <tr>
+          <td><strong>Documents dashboard</strong></td>
+          <td class="r">🔴 Gone</td>
+          <td class="r">🔴 Gone</td>
+          <td>No saved documents to list. The main screen after login is empty.</td>
+        </tr>
+        <tr>
+          <td><strong>Version history &amp; rollback</strong></td>
+          <td class="r">🔴 Gone</td>
+          <td class="m">N/A</td>
+          <td>All 20 version snapshots live in a database column. No database, no history.</td>
+        </tr>
+        <tr>
+          <td><strong>Multi-device &amp; sharing</strong></td>
+          <td class="r">🔴 Gone</td>
+          <td class="r">🔴 Gone</td>
+          <td>Work done on one device cannot be opened on another. Sharing with a colleague is impossible.</td>
+        </tr>
+        <tr>
+          <td><strong>PRD pipeline (all 4 agents)</strong></td>
+          <td class="m">N/A</td>
+          <td class="r">🔴 Gone</td>
+          <td>The pipeline runs across two separate server calls with a human action in between. The AI's outline (generated in call 1) is stored in the database so call 2 can read it. Without the database that outline is lost — the pipeline cannot complete.</td>
+        </tr>
+        <tr>
+          <td><strong>PRD export (Word/HTML)</strong></td>
+          <td class="m">N/A</td>
+          <td class="r">🔴 Gone</td>
+          <td>Export reads the 8 saved PRD sections from the database. No database, no file to download.</td>
+        </tr>
+        <tr>
+          <td><strong>AI text expansion</strong></td>
+          <td class="g">✅ Works</td>
+          <td class="g">✅ Works</td>
+          <td>Stateless — calls the AI and returns the result. No database involved.</td>
+        </tr>
+        <tr>
+          <td><strong>Competitor scraping</strong></td>
+          <td class="g">✅ Works</td>
+          <td class="m">N/A</td>
+          <td>Stateless — fetches the URL, returns data. No database involved.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout red" style="margin-top:14px;">
+      <span class="callout-icon">⛔</span>
+      <div><strong>Bottom line on Option C:</strong> Dropping SQL turns both tools into single-session scratch pads that forget everything the moment the tab is closed. The PRD tool stops working entirely — its core mechanism (passing state between two server calls) requires a persistent store by design. The only features that survive are AI text expansion and competitor scraping — the least differentiated parts of the product. Rebuilding without SQL would take an estimated 800+ lines of rewrite and introduce a new class of data-consistency problems.</div>
+    </div>
+  </div>
+
+  <!-- summary box -->
+  <div class="summary-box">
+    <h3>The one-paragraph version</h3>
+    <ul>
+      <li>The app is a Next.js product with two tools (One-Pager + PRD) that share login, database, and AI. Both are feature-complete and live on Vercel today.</li>
+      <li>The GCP migration is mostly done — app, Docker, CI/CD are ready. The only remaining piece is the database: Neon (current, working, outside GCP) needs to move to Cloud SQL (Google-native, $9.53/mo).</li>
+      <li>The blocker is a single IAM permission. One org admin action — grant <code>cloudsql.admin</code> + <code>cloudsql.client</code> — unlocks everything. A guide for the admin is in <code>gcp-roles-guide.html</code>.</li>
+      <li>Dropping SQL entirely is not a viable alternative. It breaks document saving, the PRD pipeline, version history, and export — the core value of both tools. The features that survive without SQL are the ones anyone could build in a weekend.</li>
+      <li>Google Drive can't replace the database. It has no queries, no locking, and no transactions. It belongs as a destination for finished exports, not as the live data store.</li>
+    </ul>
+  </div>
+
+  <footer>
+    <span>MRD Producer — Executive Summary Brief — 2026-06-16</span>
+    <span>Full details: system-architecture-brief.html · database-brief.html</span>
+  </footer>
+
+</div>
+</body>
+</html>

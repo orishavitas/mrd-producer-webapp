@@ -1,0 +1,1252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>System Architecture Brief — One-Pager & PRD Producer</title>
+  <style>
+    :root {
+      --brand:        #1D1F4A;
+      --brand-hi:     #243469;
+      --accent:       #009966;
+      --accent-light: #e6f7f2;
+      --warn:         #b45309;
+      --warn-bg:      #fffbeb;
+      --red:          #dc2626;
+      --red-bg:       #fff1f2;
+      --green:        #059669;
+      --green-bg:     #ecfdf5;
+      --blue:         #1d4ed8;
+      --blue-bg:      #eff6ff;
+      --purple:       #7c3aed;
+      --purple-bg:    #f5f3ff;
+      --orange:       #ea580c;
+      --orange-bg:    #fff7ed;
+      --surface:      #f4f5f9;
+      --border:       #dde1ea;
+      --code-bg:      #1e2030;
+      --code-text:    #c0caf5;
+      --text:         #1a1a2e;
+      --muted:        #5a607a;
+      --radius:       10px;
+      --font:         'Inter', 'Segoe UI', system-ui, sans-serif;
+      --mono:         'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.65;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    /* ── HEADER ── */
+    header {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-hi) 100%);
+      color: white;
+      padding: 44px 52px 40px;
+    }
+    header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+      margin-bottom: 12px;
+    }
+    header h1 {
+      font-size: 32px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+    }
+    header .subtitle {
+      font-size: 15px;
+      color: rgba(255,255,255,0.72);
+      max-width: 680px;
+      line-height: 1.5;
+      margin-bottom: 28px;
+    }
+    .meta { display: flex; flex-wrap: wrap; gap: 24px; }
+    .meta-item { display: flex; flex-direction: column; gap: 3px; }
+    .meta-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); }
+    .meta-value { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.9); }
+
+    /* ── LAYOUT ── */
+    .container { max-width: 1040px; margin: 0 auto; padding: 36px 24px 60px; }
+
+    /* ── TOC ── */
+    .toc {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-bottom: 32px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px 24px;
+    }
+    .toc-title {
+      width: 100%;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+    .toc a {
+      font-size: 12.5px;
+      color: var(--brand);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 3px 0;
+    }
+    .toc a:hover { color: var(--accent); text-decoration: underline; }
+    .toc-num {
+      background: var(--brand);
+      color: white;
+      font-size: 10px;
+      font-weight: 700;
+      width: 18px; height: 18px;
+      border-radius: 4px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 32px;
+      margin-bottom: 24px;
+    }
+    .section-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+      padding-bottom: 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-num {
+      background: var(--brand);
+      color: white;
+      font-size: 13px;
+      font-weight: 700;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .section-title  { font-size: 19px; font-weight: 700; color: var(--brand); letter-spacing: -0.01em; }
+    .section-lead   { font-size: 13.5px; color: var(--muted); margin-top: 4px; line-height: 1.5; }
+
+    /* ── CARDS & GRIDS ── */
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; margin-top: 16px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; margin-top: 16px; }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+    }
+    .card h3 { font-size: 13px; font-weight: 700; margin-bottom: 7px; color: var(--text); }
+    .card p  { font-size: 13px; color: var(--muted); line-height: 1.55; }
+    .card code { font-family: var(--mono); font-size: 11.5px; background: white; border: 1px solid var(--border); border-radius: 3px; padding: 1px 4px; }
+
+    /* ── LAYER PILL CARDS ── */
+    .layer-card {
+      border-radius: 8px;
+      padding: 18px 20px;
+      margin-bottom: 12px;
+      border-left: 4px solid;
+    }
+    .layer-card h3 { font-size: 14px; font-weight: 700; margin-bottom: 5px; }
+    .layer-card p  { font-size: 13px; line-height: 1.55; }
+    .layer-card .role { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 6px; }
+    .layer-card.l-auth   { background: var(--purple-bg); border-color: var(--purple); }
+    .layer-card.l-auth   h3 { color: var(--purple); }
+    .layer-card.l-ai     { background: var(--blue-bg);   border-color: var(--blue); }
+    .layer-card.l-ai     h3 { color: var(--blue); }
+    .layer-card.l-db     { background: var(--green-bg);  border-color: var(--green); }
+    .layer-card.l-db     h3 { color: var(--green); }
+    .layer-card.l-ui     { background: #fdf2ff; border-color: #c026d3; }
+    .layer-card.l-ui     h3 { color: #c026d3; }
+    .layer-card.l-edge   { background: var(--orange-bg); border-color: var(--orange); }
+    .layer-card.l-edge   h3 { color: var(--orange); }
+    .layer-card.l-export { background: #fef2f2; border-color: var(--red); }
+    .layer-card.l-export h3 { color: var(--red); }
+
+    /* ── FLOW DIAGRAM ── */
+    .flow {
+      display: flex;
+      align-items: stretch;
+      gap: 0;
+      margin: 18px 0;
+      overflow-x: auto;
+    }
+    .flow-step {
+      flex: 1;
+      min-width: 110px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 12px;
+      text-align: center;
+      position: relative;
+    }
+    .flow-step:not(:last-child)::after {
+      content: '→';
+      position: absolute;
+      right: -14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 16px;
+      color: var(--muted);
+      z-index: 1;
+    }
+    .flow-step:not(:first-child) { margin-left: 14px; }
+    .flow-step .step-num  { font-size: 10px; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 5px; }
+    .flow-step .step-name { font-size: 12.5px; font-weight: 700; color: var(--brand); margin-bottom: 3px; }
+    .flow-step .step-sub  { font-size: 11px; color: var(--muted); }
+    .flow-step.gate       { background: var(--warn-bg); border-color: var(--warn); }
+    .flow-step.gate .step-name { color: var(--warn); }
+    .flow-step.done       { background: var(--green-bg); border-color: var(--green); }
+    .flow-step.done .step-name { color: var(--green); }
+
+    /* ── COMPARISON TABLE ── */
+    table { width: 100%; border-collapse: collapse; font-size: 13px; margin-top: 14px; }
+    th    { background: var(--brand); color: white; text-align: left; padding: 9px 12px; font-size: 11.5px; font-weight: 600; letter-spacing: 0.03em; }
+    th:first-child { border-radius: 6px 0 0 0; }
+    th:last-child  { border-radius: 0 6px 0 0; }
+    td    { padding: 9px 12px; border-bottom: 1px solid var(--border); vertical-align: top; color: var(--text); }
+    tr:last-child td { border-bottom: none; }
+    tr:nth-child(even) td { background: #fafafa; }
+    .cell-good  { color: var(--green);  font-weight: 600; }
+    .cell-warn  { color: var(--warn);   font-weight: 600; }
+    .cell-bad   { color: var(--red);    font-weight: 600; }
+    .cell-muted { color: var(--muted); }
+
+    /* ── CALLOUT NOTES ── */
+    .note {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      border-radius: 8px;
+      padding: 13px 16px;
+      margin-top: 14px;
+      font-size: 13px;
+      line-height: 1.55;
+    }
+    .note-icon   { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
+    .note-info   { background: var(--blue-bg);   border-left: 3px solid #3b82f6; color: var(--blue); }
+    .note-good   { background: var(--green-bg);  border-left: 3px solid var(--green); color: #065f46; }
+    .note-warn   { background: var(--warn-bg);   border-left: 3px solid var(--warn); color: #7c4a00; }
+    .note-crit   { background: var(--red-bg);    border-left: 3px solid var(--red);  color: #7f1d1d; }
+    .note-purple { background: var(--purple-bg); border-left: 3px solid var(--purple); color: #4c1d95; }
+
+    /* ── INLINE CODE ── */
+    code { font-family: var(--mono); font-size: 11.5px; background: #f0f1f5; border: 1px solid #d8dce8; border-radius: 3px; padding: 1px 5px; }
+    pre  { background: var(--code-bg); border-radius: 8px; padding: 16px; overflow-x: auto; margin-top: 12px; }
+    pre code { background: none; border: none; color: var(--code-text); font-size: 12px; }
+    .cm { color: #565f89; }
+
+    /* ── BADGES ── */
+    .badge {
+      display: inline-block;
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 2px 7px;
+      border-radius: 4px;
+      margin-left: 6px;
+      vertical-align: middle;
+    }
+    .badge-live    { background: var(--green-bg); color: var(--green); border: 1px solid #a7f3d0; }
+    .badge-alpha   { background: var(--warn-bg);  color: var(--warn);  border: 1px solid #fcd34d; }
+    .badge-locked  { background: var(--red-bg);   color: var(--red);   border: 1px solid #fecaca; }
+    .badge-free    { background: var(--purple-bg); color: var(--purple); border: 1px solid #ddd6fe; }
+
+    /* ── LOSE-LOSE BREAKDOWN TABLE ── */
+    .impact-table th { background: #374151; }
+    .impact-table .lose  { color: var(--red);   font-weight: 600; }
+    .impact-table .keep  { color: var(--green); font-weight: 600; }
+    .impact-table .warn  { color: var(--warn);  font-weight: 600; }
+
+    /* ── FOOTER ── */
+    footer {
+      margin-top: 40px;
+      border-top: 1px solid var(--border);
+      padding: 16px 0 0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 720px) {
+      header { padding: 28px 20px; }
+      .container { padding: 20px 14px 40px; }
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .section { padding: 20px 16px; }
+      .flow { flex-direction: column; }
+      .flow-step:not(:last-child)::after { content: '↓'; right: 50%; transform: translateX(50%); bottom: -14px; top: auto; }
+      .flow-step:not(:first-child) { margin-left: 0; margin-top: 14px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Infrastructure & Architecture Brief</div>
+  <h1>System Architecture — One-Pager & PRD Producer</h1>
+  <div class="subtitle">A complete map of every tech layer powering both tools: what each piece does, how they connect, and what happens when any piece changes or is removed.</div>
+  <div class="meta">
+    <div class="meta-item">
+      <div class="meta-label">Tools covered</div>
+      <div class="meta-value">One-Pager Generator · PRD Producer</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Optimal stack</div>
+      <div class="meta-value">Vercel + Neon Postgres + Gemini</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Last updated</div>
+      <div class="meta-value">2026-06-16</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Version</div>
+      <div class="meta-value">mrd-producer-webapp v1.6.0</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <a href="#overview"><span class="toc-num">A</span> System overview — what both tools do</a>
+    <a href="#layers"><span class="toc-num">B</span> Tech layer map — every piece explained</a>
+    <a href="#one-pager-flow"><span class="toc-num">C</span> One-Pager: full data flow</a>
+    <a href="#prd-flow"><span class="toc-num">D</span> PRD Producer: full data flow</a>
+    <a href="#alternatives"><span class="toc-num">E</span> Alternative stacks — what you gain and lose</a>
+    <a href="#db-alternatives"><span class="toc-num">F</span> Database alternatives in detail</a>
+    <a href="#glossary"><span class="toc-num">G</span> Plain-English glossary — what every tech term means</a>
+    <a href="#sql-blocker"><span class="toc-num">H</span> SQL: where it's used & what dropping it costs</a>
+    <a href="#summary"><span class="toc-num">I</span> Decision matrix & recommendation</a>
+  </div>
+
+  <!-- ── A: OVERVIEW ── -->
+  <div class="section" id="overview">
+    <div class="section-header">
+      <div class="section-num">A</div>
+      <div>
+        <div class="section-title">System Overview — What Both Tools Do</div>
+        <div class="section-lead">Two production tools that share the same infrastructure. Understanding their overlap is key to understanding why every layer exists.</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>One-Pager Generator <span class="badge badge-live">Live</span></h3>
+        <p>A structured product spec generator. The user fills a 7-section form (product description, paint/logo, features, competitors, reference photos, etc.). AI expands freeform text, scrapes competitor sites, and suggests features. The result is versioned, saveable, publishable, and exportable as DOCX/HTML/PDF. Admins can roll back to any snapshot.</p>
+        <p style="margin-top:8px;"><strong>Core user loop:</strong> Fill → Save Draft → Publish → Export → (Admin: Rollback)</p>
+      </div>
+      <div class="card">
+        <h3>PRD Producer <span class="badge badge-alpha">Alpha / Allowlist</span></h3>
+        <p>A 4-agent pipeline that transforms a saved One-Pager into a full Product Requirements Document. The user selects a completed One-Pager, watches Agents 1–2 run, reviews and optionally edits the PRD skeleton at a human gate, then Agents 3–4 write and QA-score the full document. Export as DOCX or HTML.</p>
+        <p style="margin-top:8px;"><strong>Core user loop:</strong> Pick One-Pager → Watch pipeline → Review skeleton → Approve → Export PRD</p>
+      </div>
+    </div>
+
+    <div class="note note-purple" style="margin-top:16px;">
+      <span class="note-icon">🔗</span>
+      <div><strong>The dependency chain:</strong> PRD Producer <em>reads</em> a saved One-Pager from the database as its starting point. This means both tools share the same database, auth system, and hosting. A change to any shared layer affects both. This is the single most important fact about the system architecture.</div>
+    </div>
+
+    <div style="margin-top:18px;">
+      <strong style="font-size:13px; display:block; margin-bottom:10px;">Shared infrastructure (used by both tools):</strong>
+      <div class="grid-4">
+        <div class="card"><h3>🔐 Auth</h3><p>Google OAuth → NextAuth. Every save, load, and export is tied to a user email.</p></div>
+        <div class="card"><h3>🗄 Database</h3><p>Neon Postgres. Documents, versions, PRD pipeline runs, embeddings.</p></div>
+        <div class="card"><h3>🤖 AI</h3><p>Gemini (primary) + OpenAI fallback. All generation, analysis, and QA.</p></div>
+        <div class="card"><h3>🚀 Hosting</h3><p>Vercel. Next.js SSR, API routes, serverless functions, CDN.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── B: TECH LAYERS ── -->
+  <div class="section" id="layers">
+    <div class="section-header">
+      <div class="section-num">B</div>
+      <div>
+        <div class="section-title">Tech Layer Map — Every Piece Explained</div>
+        <div class="section-lead">Six distinct layers. Each has a specific role. Remove or replace any one and here is exactly what breaks.</div>
+      </div>
+    </div>
+
+    <!-- Layer 1 -->
+    <div class="layer-card l-edge">
+      <div class="role">Layer 1 — Hosting & Runtime</div>
+      <h3>Vercel + Next.js App Router</h3>
+      <p><strong>What it does:</strong> Hosts the entire application. Vercel compiles the Next.js code, serves SSR pages from edge CDN nodes, runs API route handlers as serverless functions, and handles environment variable injection at deploy time. The App Router provides server components (no JS sent to browser for read-only content), client components (interactive form state), and server actions (direct DB mutations without a separate API call).</p>
+      <p style="margin-top:8px;"><strong>Why it's load-bearing:</strong> The <code>next.config.js output:'standalone'</code> bundle is built specifically for this runtime. API routes like <code>/api/pipeline/prd/start</code> use <code>maxDuration: 120</code> — a Vercel-specific configuration for long-running streaming responses. The SSR rendering of <code>page.tsx</code> server components (e.g. reading <code>isAdmin</code> before sending HTML) only works because Vercel executes server code on every request. A static host (GitHub Pages, Netlify static) cannot run this app.</p>
+      <p style="margin-top:8px;"><strong>What breaks without it:</strong> Every API route, server component, server action, and streaming function stops working. The app becomes a blank page.</p>
+    </div>
+
+    <!-- Layer 2 -->
+    <div class="layer-card l-auth">
+      <div class="role">Layer 2 — Authentication</div>
+      <h3>Google OAuth → NextAuth.js → Feature Gate</h3>
+      <p><strong>What it does:</strong> Three sub-components working together. (1) <strong>Google OAuth</strong> — the user clicks "Sign in with Google", Google verifies their identity and returns their email. (2) <strong>NextAuth.js</strong> (<code>lib/auth.ts</code>) — receives the Google token, creates a signed JWT session cookie, and exposes <code>auth()</code> which every API route calls to verify who is making the request. (3) <strong>Feature Gate</strong> (<code>lib/feature-gate.ts</code>) — checks the user's email against <code>config/allowlist.txt</code> (or the <code>ALLOWED_RD_EMAILS</code> env var) and returns a set of allowed feature keys. The dashboard only shows tools the user is allowed to see.</p>
+      <p style="margin-top:8px;"><strong>Why it's load-bearing:</strong> Every document save, load, version, and pipeline run is keyed to <code>session.user.email</code>. Without auth, anyone could read or overwrite anyone's documents. The PRD pipeline uses the email to check ownership before allowing approval or export. The admin rollback feature checks <code>lib/admin.ts → isAdmin(email)</code>.</p>
+      <p style="margin-top:8px;"><strong>On GCP (stub mode):</strong> <code>BYPASS_AUTH=true</code> skips OAuth entirely and returns a hardcoded stub session (<code>ori@compulocks.com</code>). This is intentional for the Cloud Run migration phase — restore real OAuth once IAP or a custom domain is set up.</p>
+    </div>
+
+    <!-- Layer 3 -->
+    <div class="layer-card l-db">
+      <div class="role">Layer 3 — Database</div>
+      <h3>Neon Postgres — 5 tables, 1 extension</h3>
+      <p><strong>What it does:</strong> Stores everything that persists between sessions. Five tables: <code>documents</code> (One-Pager content + version history), <code>document_embeddings</code> (768-dim pgvector embeddings for semantic search), <code>pipeline_runs</code> (PRD pipeline state machine), <code>prd_documents</code> (completed PRD metadata + QA score), <code>prd_frames</code> (12 individual PRD section texts, ordered). Also stores <code>version</code> and <code>version_history</code> (JSONB array of up to 20 snapshots) on <code>documents</code> for the versioning + rollback system.</p>
+      <p style="margin-top:8px;"><strong>The pgvector extension</strong> (<code>CREATE EXTENSION IF NOT EXISTS vector</code>) enables the 768-dimension vector column for semantic search. Neon enables this automatically; Cloud SQL requires a flag in the GCP console; self-hosted Postgres requires manual installation.</p>
+      <p style="margin-top:8px;"><strong>Why it's load-bearing:</strong> The PRD pipeline is a <em>state machine</em> across multiple HTTP requests. Status transitions (<code>running → awaiting_approval → approved → completed</code>) are enforced by a SQL <code>CHECK</code> constraint. The <code>skeleton_json</code> JSONB column persists the AI-generated skeleton between Agent 2 and the human-gate approval. Without the database, the pipeline state is lost between requests. One-Pager versioning and rollback are entirely JSONB-in-Postgres — no file system, no external store.</p>
+      <p style="margin-top:8px;"><strong>The driver:</strong> <code>lib/db-client.ts</code> uses the generic <code>pg</code> npm package with a <code>Pool</code> (max 10 connections). The connection string is <code>POSTGRES_URL</code>. This works with Neon, Cloud SQL, Supabase, Railway, or a local Postgres — no code changes needed when switching hosts.</p>
+    </div>
+
+    <!-- Layer 4 -->
+    <div class="layer-card l-ai">
+      <div class="role">Layer 4 — AI Provider Chain</div>
+      <h3>Gemini (primary) + OpenAI (fallback) + Provider Chain</h3>
+      <p><strong>What it does:</strong> <code>lib/providers/provider-chain.ts</code> is a priority-ordered fallback system. Gemini is priority 0 (primary); OpenAI is priority 1 (fallback). When an AI call is made, the chain tries Gemini first. If Gemini fails (quota, error, timeout), it automatically retries with OpenAI. The chain also differentiates between regular text generation and <em>search-grounded</em> generation — Gemini supports real-time web search via its grounding API; OpenAI does not, so search queries gracefully fall back to ungrounded text generation.</p>
+      <p style="margin-top:8px;"><strong>What it powers:</strong> (One-Pager) text expansion, feature suggestion, competitor scraping analysis, embedding generation; (PRD) all 4 agents — analyst normalises the One-Pager, architect generates the skeleton, writer writes 8 PRD sections, QA scores and critiques. Embeddings specifically use <code>text-embedding-004</code> (Gemini) to produce 768-dim vectors stored in pgvector.</p>
+      <p style="margin-top:8px;"><strong>Why both keys matter:</strong> Remove <code>GOOGLE_API_KEY</code> and the primary chain breaks — embeddings break completely (OpenAI uses 1536-dim, incompatible with the existing pgvector index). Remove <code>OPENAI_API_KEY</code> and the fallback is gone — a Gemini outage takes the whole tool down.</p>
+    </div>
+
+    <!-- Layer 5 -->
+    <div class="layer-card l-export">
+      <div class="role">Layer 5 — Document Export</div>
+      <h3>docx + HTML/CSS → DOCX / PDF / HTML</h3>
+      <p><strong>What it does:</strong> <code>lib/document-generator.ts</code> (One-Pager) and <code>lib/prd-document-generator.ts</code> (PRD) convert in-memory document state into downloadable files. DOCX uses the <code>docx</code> npm package — building Word-compatible XML in memory with Arial font, US Letter margins, Compulocks logo as a right-aligned <code>ImageRun</code> in the header. HTML export produces a print-ready page with embedded base64 logo (no external URLs needed). PDF is generated by the browser's print dialog from the HTML export. The export API routes (<code>/api/one-pager/export</code>, <code>/api/pipeline/prd/[run_id]/export</code>) run server-side so the user never needs Word installed.</p>
+      <p style="margin-top:8px;"><strong>Why it's serverside:</strong> Reading the Compulocks logo from disk (<code>fs.readFileSync</code>), base64-encoding it, and embedding it in HTML requires Node.js — this cannot run in a browser. This is why export routes are Next.js API routes, not client-side code.</p>
+    </div>
+
+    <!-- Layer 6 -->
+    <div class="layer-card l-ui">
+      <div class="role">Layer 6 — Frontend State & UI</div>
+      <h3>React 18 + useReducer + CSS Modules + Brand Tokens</h3>
+      <p><strong>What it does:</strong> All interactive form state lives in <code>useReducer</code> + Context — no external state library. The One-Pager has a 350-action reducer in <code>app/one-pager/lib/one-pager-state.ts</code>; PRD UI state is in component-local state and polling hooks. CSS Modules scope styles per component; all colors and spacing reference CSS custom properties from <code>styles/tokens/compulocks.css</code> and <code>app/one-pager/one-pager-tokens.css</code> — no hardcoded hex values anywhere. The design system uses Barlow / Barlow Condensed fonts loaded from Google Fonts.</p>
+      <p style="margin-top:8px;"><strong>The server/client split:</strong> <code>page.tsx</code> files are server components — they run on the server, read auth and admin status, then pass those as props to the <code>*Client.tsx</code> client entry point. This means the user never sees a flash of wrong state (e.g. admin controls appearing briefly for non-admins). All hooks, event handlers, and reducers live in client components only.</p>
+    </div>
+  </div>
+
+  <!-- ── C: ONE-PAGER FLOW ── -->
+  <div class="section" id="one-pager-flow">
+    <div class="section-header">
+      <div class="section-num">C</div>
+      <div>
+        <div class="section-title">One-Pager: Full Data Flow</div>
+        <div class="section-lead">How a user action travels through every layer — from browser click to saved document.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:13.5px; margin-bottom:10px;">Core loop: Fill → AI-assist → Save → Publish → Export</h3>
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Step 1</div>
+        <div class="step-name">Browser Form</div>
+        <div class="step-sub">React useReducer state</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">Step 2</div>
+        <div class="step-name">AI Expand</div>
+        <div class="step-sub">Gemini via /api/one-pager/expand</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">Step 3</div>
+        <div class="step-name">Save Draft</div>
+        <div class="step-sub">PATCH /api/documents/[id]</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">Step 4</div>
+        <div class="step-name">Postgres Write</div>
+        <div class="step-sub">documents + version_history</div>
+      </div>
+      <div class="flow-step done">
+        <div class="step-num">Step 5</div>
+        <div class="step-name">Publish / Export</div>
+        <div class="step-sub">version bump → DOCX/HTML</div>
+      </div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px;">
+      <div class="card">
+        <h3>AI-assist calls (Layer 4)</h3>
+        <p><code>/api/one-pager/expand</code> — user clicks "Expand": sends field text to Gemini, streams back a richer version.<br><br>
+        <code>/api/one-pager/extract-competitor</code> — user pastes a URL: tier-1 fetch (Schema.org/OG tags) → tier-2 Playwright headless fallback → Gemini analysis.<br><br>
+        <code>/api/one-pager/suggest-features</code> — Gemini suggests M3 feature chips based on product description + industry.<br><br>
+        <code>lib/embeddings.ts</code> — on save, Gemini <code>text-embedding-004</code> generates a 768-dim vector stored in <code>document_embeddings</code> for future semantic search.</p>
+      </div>
+      <div class="card">
+        <h3>Version system (Layer 3)</h3>
+        <p>Every <code>PATCH /api/documents/[id]</code> call reads the existing document, pushes the old <code>content_json</code> into <code>version_history[]</code> (capped at 20 entries), then writes the new content. The <code>version</code> field follows the scheme: <code>0.x</code> = draft (minor increments on each save), <code>1.0</code> = first publish, <code>1.x</code> = subsequent publishes. Admin rollback uses <code>GET /api/documents/[id]/versions</code> to list history and <code>POST /api/documents/[id]/rollback</code> to restore a snapshot — both gated by <code>lib/admin.ts → isAdmin(email)</code>.</p>
+      </div>
+    </div>
+
+    <div class="note note-info" style="margin-top:14px;">
+      <span class="note-icon">ℹ</span>
+      <div><strong>Competitor scraper tiers:</strong> Tier 1 tries a direct fetch and parses Schema.org / OpenGraph metadata — fast, free, no browser. Tier 2 falls back to a headless Playwright browser for JS-heavy sites. Both tiers feed Gemini for structured extraction. This means competitor analysis works even on single-page apps that don't expose metadata in HTML.</div>
+    </div>
+  </div>
+
+  <!-- ── D: PRD FLOW ── -->
+  <div class="section" id="prd-flow">
+    <div class="section-header">
+      <div class="section-num">D</div>
+      <div>
+        <div class="section-title">PRD Producer: Full Data Flow</div>
+        <div class="section-lead">A 4-agent pipeline split across two HTTP requests with a human gate in the middle. This is why the database is non-negotiable for the PRD tool.</div>
+      </div>
+    </div>
+
+    <div class="flow">
+      <div class="flow-step">
+        <div class="step-num">Phase 1 · Agent 1</div>
+        <div class="step-name">Analyst</div>
+        <div class="step-sub">Normalises One-Pager → structured summary</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">Phase 1 · Agent 2</div>
+        <div class="step-name">Architect</div>
+        <div class="step-sub">Generates PRD skeleton (8 sections + strategies)</div>
+      </div>
+      <div class="flow-step gate">
+        <div class="step-num">Human Gate</div>
+        <div class="step-name">Review Skeleton</div>
+        <div class="step-sub">User edits / approves section strategies</div>
+      </div>
+      <div class="flow-step">
+        <div class="step-num">Phase 2 · Agent 3</div>
+        <div class="step-name">Writer</div>
+        <div class="step-sub">Writes all 8 PRD sections (maxDuration: 300s)</div>
+      </div>
+      <div class="flow-step done">
+        <div class="step-num">Phase 2 · Agent 4</div>
+        <div class="step-name">QA</div>
+        <div class="step-sub">Scores 0–100 + suggestions → saves to DB</div>
+      </div>
+    </div>
+
+    <div class="note note-crit" style="margin-top:14px;">
+      <span class="note-icon">⚠</span>
+      <div><strong>Why the database is mandatory for PRD (not optional):</strong> The pipeline spans <em>two separate HTTP requests</em> with a human action in between. Phase 1 (<code>/api/pipeline/prd/start</code>, maxDuration 120s) writes the skeleton to <code>pipeline_runs.skeleton_json</code> and sets <code>status = 'awaiting_approval'</code>. The user's browser polls <code>/api/pipeline/prd/[run_id]/status</code> to detect this state. The human gate approval hits <code>/api/pipeline/prd/[run_id]/approve</code>. Phase 2 (<code>/api/pipeline/prd/[run_id]/resume</code>, maxDuration 300s) reads the skeleton back from the database and continues. Without the database, the skeleton generated in Phase 1 is gone — Phase 2 has nothing to work with.</div>
+    </div>
+
+    <div class="grid-2" style="margin-top:16px;">
+      <div class="card">
+        <h3>DB tables touched per pipeline run</h3>
+        <p>
+          <code>pipeline_runs</code> — created at start; status updated at every phase transition; <code>skeleton_json</code> written by Agent 2, read by Agent 3.<br><br>
+          <code>prd_documents</code> — created after Agent 4 completes; stores product name, QA score (0–100), and QA suggestions.<br><br>
+          <code>prd_frames</code> — one row per section (8 rows); <code>section_order</code> ensures consistent export ordering.<br><br>
+          <code>documents</code> — read-only during PRD; the One-Pager source content is fetched here by Agent 1.
+        </p>
+      </div>
+      <div class="card">
+        <h3>Streaming + heartbeat</h3>
+        <p>Both <code>/start</code> and <code>/resume</code> return NDJSON streams (newline-delimited JSON events). The browser reads the stream and updates the <code>PipelineOverlay</code> UI in real time.<br><br>
+        The <code>withHeartbeat()</code> wrapper in the resume route sends a keep-alive ping every 5 seconds so Vercel's 300s timeout is not triggered prematurely by silence. Without this, long AI generation calls would cause the connection to drop mid-stream.<br><br>
+        Export (<code>/export?format=docx|html</code>) is a separate synchronous GET — it reads the saved frames from the DB and returns a file download.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── E: ALTERNATIVE STACKS ── -->
+  <div class="section" id="alternatives">
+    <div class="section-header">
+      <div class="section-num">E</div>
+      <div>
+        <div class="section-title">Alternative Stacks — What You Gain and Lose</div>
+        <div class="section-lead">Every proposed change to the stack has concrete consequences. This section covers the four realistic scenarios.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px; margin-bottom:12px;">Scenario 1 — Migrate app to GCP Cloud Run (keep Neon DB)</h3>
+    <table class="impact-table">
+      <thead><tr><th>Component</th><th>Change</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Hosting</td><td>Vercel → Cloud Run (<code>r-and-d-489319</code>)</td><td class="keep">✅ Zero code change. Dockerfile + <code>output:'standalone'</code> already in repo. One env var update.</td></tr>
+        <tr><td>Database</td><td>Neon stays (POSTGRES_URL unchanged)</td><td class="keep">✅ Zero code change. <code>db-client.ts</code> uses generic <code>pg</code> — works with any Postgres URL.</td></tr>
+        <tr><td>Auth</td><td>OAuth stub (<code>BYPASS_AUTH=true</code>) while IAP is not configured</td><td class="warn">⚠ Only works for internal dev use. Real user auth disabled until Google IAP or custom domain OAuth is wired.</td></tr>
+        <tr><td>Streaming</td><td>Cloud Run supports HTTP/2 streaming</td><td class="keep">✅ NDJSON streaming works on Cloud Run without changes.</td></tr>
+        <tr><td>Long-running functions</td><td><code>maxDuration</code> is a Vercel config key — not applicable on Cloud Run</td><td class="warn">⚠ Cloud Run uses <code>--timeout 3600</code> at service level. Set to at least 300s. No per-route timeout.</td></tr>
+        <tr><td>Data residency</td><td>App on GCP, data on Neon (external)</td><td class="warn">⚠ Product data stays outside GCP org. Not a blocker for migration, but not full consolidation.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14px; margin: 22px 0 12px;">Scenario 2 — Migrate to GCP Cloud Run + Cloud SQL (full GCP)</h3>
+    <table class="impact-table">
+      <thead><tr><th>Component</th><th>Change</th><th>Impact</th></tr></thead>
+      <tbody>
+        <tr><td>Database host</td><td>Neon → Cloud SQL Postgres 15</td><td class="keep">✅ One line: <code>POSTGRES_URL</code> switches from Neon TCP to Cloud SQL Unix socket path. All queries unchanged.</td></tr>
+        <tr><td>pgvector</td><td>Cloud SQL requires enabling the "pgvector" database flag in GCP console first</td><td class="warn">⚠ Must enable flag before running schema. Otherwise <code>CREATE EXTENSION vector</code> fails and embeddings are broken.</td></tr>
+        <tr><td>Data residency</td><td>All data inside <code>r-and-d-489319</code></td><td class="keep">✅ Full consolidation under GCP org. Audit logs, IAM-controlled access, automated backups.</td></tr>
+        <tr><td>Cost</td><td>Neon free tier → Cloud SQL $9.53/mo (db-f1-micro)</td><td class="warn">⚠ Small but non-zero. See database-brief.html for full cost breakdown.</td></tr>
+        <tr><td>IAM requirement</td><td>Needs <code>roles/cloudsql.admin</code> + <code>roles/cloudsql.client</code> on service account</td><td class="lose">🔴 Currently blocked — org admin has not granted SQL IAM roles.</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14px; margin: 22px 0 12px;">Scenario 3 — Drop SQL entirely (no database)</h3>
+    <table class="impact-table">
+      <thead><tr><th>Feature</th><th>Status without DB</th><th>Workaround possible?</th></tr></thead>
+      <tbody>
+        <tr><td>One-Pager: Save / Load</td><td class="lose">🔴 Broken — nowhere to persist documents between sessions</td><td class="cell-muted">Only if localStorage (single device, cleared on browser wipe)</td></tr>
+        <tr><td>One-Pager: Version history</td><td class="lose">🔴 Broken — version_history is a JSONB column in documents</td><td class="cell-muted">No</td></tr>
+        <tr><td>One-Pager: Admin rollback</td><td class="lose">🔴 Broken — reads version_history from DB</td><td class="cell-muted">No</td></tr>
+        <tr><td>One-Pager: Multi-device / multi-user</td><td class="lose">🔴 Broken — no shared store</td><td class="cell-muted">No</td></tr>
+        <tr><td>PRD Pipeline: state machine</td><td class="lose">🔴 Broken — skeleton cannot survive between Phase 1 and Phase 2 HTTP requests</td><td class="cell-muted">No (in-memory dies with the serverless function)</td></tr>
+        <tr><td>PRD Export</td><td class="lose">🔴 Broken — export reads prd_frames from DB</td><td class="cell-muted">No</td></tr>
+        <tr><td>Semantic search / embeddings</td><td class="lose">🔴 Broken — pgvector requires Postgres</td><td class="cell-muted">Only with a separate vector DB (Pinecone, etc.)</td></tr>
+        <tr><td>AI text expansion, competitor scraping</td><td class="keep">✅ Works — these are stateless API calls, no DB needed</td><td class="cell-muted">N/A — these already work without DB</td></tr>
+        <tr><td>Feature gate / allowlist</td><td class="keep">✅ Works — reads from flat file or env var, not DB</td><td class="cell-muted">N/A</td></tr>
+      </tbody>
+    </table>
+    <div class="note note-crit" style="margin-top:12px;">
+      <span class="note-icon">⛔</span>
+      <div><strong>Verdict:</strong> Dropping SQL entirely kills both tools' core value. The only things that survive are stateless AI calls (text expansion, competitor scraping). Everything involving persistence — saving, loading, versioning, the PRD pipeline — stops working. This is not a viable option without a full rewrite.</div>
+    </div>
+
+    <h3 style="font-size:14px; margin: 22px 0 12px;">Scenario 4 — Google Drive as the document store</h3>
+    <table class="impact-table">
+      <thead><tr><th>Use</th><th>Viability</th><th>Why</th></tr></thead>
+      <tbody>
+        <tr><td>Store exported DOCX/PDF/HTML files in Drive</td><td class="keep">✅ Good fit</td><td>Natural file store. Team can access finished documents without the app. Integration already connected.</td></tr>
+        <tr><td>Replace the documents table with Drive JSON files</td><td class="lose">🔴 Not viable</td><td>Drive has no queries. Can't filter by user, sort by date, or do the <code>SELECT … WHERE user_id = $1 AND deleted_at IS NULL</code> needed to show the dashboard. Race conditions on concurrent edits (no transactions).</td></tr>
+        <tr><td>Store PRD pipeline state in Drive</td><td class="lose">🔴 Not viable</td><td>The pipeline state machine requires atomic status transitions enforced by SQL CHECK constraints. A Drive file has no locking — two concurrent requests could corrupt the state.</td></tr>
+        <tr><td>Store version_history in Drive</td><td class="lose">🔴 Not viable</td><td>Version history is appended transactionally (read → append → write in one DB transaction). Drive file writes are not transactional.</td></tr>
+        <tr><td>Store embeddings / vectors in Drive</td><td class="lose">🔴 Not viable</td><td>Drive cannot do cosine similarity search on 768-dim float arrays. That requires a vector database (pgvector, Pinecone, Weaviate).</td></tr>
+      </tbody>
+    </table>
+    <div class="note note-good" style="margin-top:12px;">
+      <span class="note-icon">✅</span>
+      <div><strong>Recommended split:</strong> Keep Postgres for all live data (current and future). Use Google Drive only for <em>exported deliverables</em> — push finished DOCX/PDF files to a shared Drive folder after export. This gives the team access to finished documents without any rewrite or architecture risk.</div>
+    </div>
+  </div>
+
+  <!-- ── F: DB ALTERNATIVES ── -->
+  <div class="section" id="db-alternatives">
+    <div class="section-header">
+      <div class="section-num">F</div>
+      <div>
+        <div class="section-title">Database Alternatives in Detail</div>
+        <div class="section-lead">Every realistic database option rated against the actual requirements of the system — including free GCP-adjacent options.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Database</th>
+          <th>Type</th>
+          <th>Cost</th>
+          <th>pgvector</th>
+          <th>Transactions</th>
+          <th>Verdict for this app</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Neon</strong> <em>(current)</em></td>
+          <td>Postgres (serverless)</td>
+          <td class="cell-good">Free tier</td>
+          <td class="cell-good">✅ Built-in</td>
+          <td class="cell-good">✅ Full ACID</td>
+          <td class="cell-good">✅ Optimal for Vercel. Zero config. Works now.</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud SQL</strong></td>
+          <td>Postgres (managed GCP)</td>
+          <td class="cell-warn">$9.53/mo (f1-micro)</td>
+          <td class="cell-warn">⚠ Flag required</td>
+          <td class="cell-good">✅ Full ACID</td>
+          <td class="cell-good">✅ Best long-term GCP option. One env var change. Blocked on IAM.</td>
+        </tr>
+        <tr>
+          <td><strong>Supabase</strong></td>
+          <td>Postgres (managed)</td>
+          <td class="cell-good">Free tier (500 MB)</td>
+          <td class="cell-good">✅ Built-in</td>
+          <td class="cell-good">✅ Full ACID</td>
+          <td class="cell-good">✅ Drop-in Neon replacement. One env var. Not GCP-native.</td>
+        </tr>
+        <tr>
+          <td><strong>AlloyDB Omni</strong></td>
+          <td>Postgres-compatible (GCP)</td>
+          <td class="cell-warn">~$0.07/vCPU·hr</td>
+          <td class="cell-good">✅ Built-in (pgvector)</td>
+          <td class="cell-good">✅ Full ACID</td>
+          <td class="cell-warn">⚠ More expensive than Cloud SQL, higher-performance but overkill for R&amp;D scale.</td>
+        </tr>
+        <tr>
+          <td><strong>Firebase / Firestore</strong></td>
+          <td>NoSQL document</td>
+          <td class="cell-good">Free tier</td>
+          <td class="cell-bad">❌ No</td>
+          <td class="cell-bad">❌ No transactions across collections</td>
+          <td class="cell-bad">🔴 Cannot replace Postgres. No foreign keys, no CHECK constraints, no vector search. ~800-line rewrite with new failure modes.</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud Spanner</strong></td>
+          <td>Distributed SQL (GCP)</td>
+          <td class="cell-bad">~$0.90/node·hr (~$650/mo)</td>
+          <td class="cell-bad">❌ No pgvector</td>
+          <td class="cell-good">✅ Distributed ACID</td>
+          <td class="cell-bad">🔴 Extreme overkill. 70× more expensive. Not Postgres-compatible (driver rewrite needed).</td>
+        </tr>
+        <tr>
+          <td><strong>BigQuery</strong></td>
+          <td>Analytical SQL (GCP)</td>
+          <td class="cell-good">Free (1 TB/mo queries)</td>
+          <td class="cell-bad">❌ No</td>
+          <td class="cell-bad">❌ No DML transactions (INSERT/UPDATE latency is seconds)</td>
+          <td class="cell-bad">🔴 Analytics warehouse, not a transactional DB. Inserts take 1–3s each. PRD pipeline state machine would be unusable.</td>
+        </tr>
+        <tr>
+          <td><strong>Cloud Bigtable</strong></td>
+          <td>NoSQL wide-column (GCP)</td>
+          <td class="cell-warn">~$0.17/node·hr</td>
+          <td class="cell-bad">❌ No</td>
+          <td class="cell-bad">❌ Row-level only</td>
+          <td class="cell-bad">🔴 Designed for time-series / IoT scale. No SQL queries, no joins, no constraints. Complete rewrite needed.</td>
+        </tr>
+        <tr>
+          <td><strong>Google Drive (JSON files)</strong></td>
+          <td>File store</td>
+          <td class="cell-good">Free (15 GB)</td>
+          <td class="cell-bad">❌ No</td>
+          <td class="cell-bad">❌ No</td>
+          <td class="cell-bad">🔴 Not a database. No queries, no locking, no atomicity. Good for exported deliverables only.</td>
+        </tr>
+        <tr>
+          <td><strong>Redis / Upstash</strong></td>
+          <td>In-memory key-value</td>
+          <td class="cell-good">Free tier (10K req/day)</td>
+          <td class="cell-bad">❌ No relational</td>
+          <td class="cell-warn">⚠ Limited (Lua scripts)</td>
+          <td class="cell-warn">⚠ Good for caching or session storage. Not a Postgres replacement — no relational queries, no JSONB, no pgvector. Would need alongside Postgres, not instead of it.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="note note-info" style="margin-top:14px;">
+      <span class="note-icon">ℹ</span>
+      <div><strong>Why the free GCP options don't fit:</strong> Firebase, BigQuery, and Bigtable are all free or near-free, but none of them are relational databases. The pipeline state machine, version history, and foreign key relationships between tables are not features you can easily replicate in a document store or analytics warehouse — they would require a significant rewrite with new categories of bugs to manage.</div>
+    </div>
+  </div>
+
+  <!-- ── G: GLOSSARY ── -->
+  <div class="section" id="glossary">
+    <div class="section-header">
+      <div class="section-num">G</div>
+      <div>
+        <div class="section-title">Plain-English Glossary — What Every Tech Term Means</div>
+        <div class="section-lead">No assumed knowledge. Every piece of technology in this document explained in one paragraph, as if you've never heard of it.</div>
+      </div>
+    </div>
+
+    <div class="grid-2">
+
+      <div class="card">
+        <h3>Next.js</h3>
+        <p>A framework built on top of React (the UI library made by Meta) that adds the server side. Without Next.js you'd have a website that only runs in the browser — it can't keep secrets, can't talk to a database, and can't do anything that requires a real server. Next.js runs server code on Vercel so that things like "check if this user is logged in" or "read from the database" happen before the page is sent to the browser. It's the backbone the entire app is built on.</p>
+      </div>
+
+      <div class="card">
+        <h3>Vercel</h3>
+        <p>A cloud hosting platform specifically designed for Next.js apps. Think of it like a smart landlord for the app: it takes the code, compiles it, distributes it to servers around the world, and automatically updates everything when new code is pushed to GitHub. It also handles environment variables (secret keys the app needs), manages function timeouts, and provides a CDN so pages load fast everywhere. The app works on Vercel without any server configuration — it's zero-ops hosting.</p>
+      </div>
+
+      <div class="card">
+        <h3>Google Cloud Run</h3>
+        <p>Google's equivalent to Vercel — a service that runs containerized applications without managing servers. Instead of deploying code directly, Cloud Run runs a Docker container (a self-contained box with the app and everything it needs). The app already has a Dockerfile ready. Cloud Run is what the GCP migration targets: the app moves from Vercel's infrastructure to Google's, staying inside the <code>r-and-d-489319</code> GCP project your IT team controls.</p>
+      </div>
+
+      <div class="card">
+        <h3>Docker / Dockerfile</h3>
+        <p>A Docker container is a self-contained package that includes the app, its dependencies, and its runtime — so it runs identically on any machine or cloud. A Dockerfile is the recipe for building that container. The app already has one (<code>Dockerfile</code> in the root), which is why moving from Vercel to Cloud Run requires zero code changes — the same container works on both.</p>
+      </div>
+
+      <div class="card">
+        <h3>PostgreSQL (Postgres)</h3>
+        <p>A database — software that stores data persistently so it survives server restarts, can be queried efficiently, and handles multiple users at once safely. Postgres specifically is a <em>relational</em> database: data lives in tables (like spreadsheets), rows in one table can reference rows in another (foreign keys), and you can enforce rules like "status must be one of these five values" at the database level. It's the industry standard for web applications that need structured, reliable data storage.</p>
+      </div>
+
+      <div class="card">
+        <h3>Neon</h3>
+        <p>Neon is a company that hosts Postgres databases as a managed cloud service — so you get a real Postgres database without running or maintaining a server yourself. It has a generous free tier, integrates natively with Vercel, and enabled us to get a working database in minutes during development. The data lives on Neon's infrastructure (AWS us-east-1), which is outside Google's cloud — that's the IT concern. From the app's perspective, Neon is identical to any other Postgres database.</p>
+      </div>
+
+      <div class="card">
+        <h3>Google Cloud SQL</h3>
+        <p>Google's managed Postgres service — the same as Neon in concept, but running inside Google Cloud instead of AWS. It costs ~$9.53/month for the smallest instance. Since it lives in the same GCP project as Cloud Run, data never leaves Google's network. It's the IT-approved long-term database target. The only reason we haven't migrated yet: the GCP org admin needs to grant SQL-specific IAM roles before the instance can be created.</p>
+      </div>
+
+      <div class="card">
+        <h3>IAM (Identity and Access Management)</h3>
+        <p>Google Cloud's permission system. Every action in GCP — creating a database, deploying an app, reading a secret — requires an IAM role that grants that permission. IAM roles are assigned to users or service accounts. The current blocker: <code>ori@compulocks.com</code> has <code>run.admin</code> (can manage Cloud Run) but not <code>cloudsql.admin</code> (can create/manage Cloud SQL instances). An org-level admin at your company needs to grant those SQL roles before the database migration can proceed.</p>
+      </div>
+
+      <div class="card">
+        <h3>OAuth / Google OAuth</h3>
+        <p>OAuth is a standard protocol that lets users log in with an existing account (like Google) instead of creating a new username and password. When a user clicks "Sign in with Google," Google verifies their identity and sends the app a token confirming who they are. The app never sees the password — Google handles that. This is how the app knows <em>whose</em> documents to show and whether a user has access to PRD Producer (which is allowlist-gated).</p>
+      </div>
+
+      <div class="card">
+        <h3>NextAuth.js</h3>
+        <p>A library that handles the plumbing between OAuth (Google's login system) and the app. It receives Google's token, creates a signed session cookie in the user's browser, and exposes an <code>auth()</code> function that any API route can call to find out who is making the request. Without NextAuth, every API route would have to implement its own session management, which is both complex and a security risk.</p>
+      </div>
+
+      <div class="card">
+        <h3>API Route / Serverless Function</h3>
+        <p>An API route is a URL that the app exposes for the browser (or other services) to call — like <code>/api/documents/[id]</code> for saving a document. On Vercel and Cloud Run, each route runs as a <em>serverless function</em>: a small piece of code that spins up on demand, handles the request, and shuts down. There's no permanently running server — the platform handles scaling up and down automatically. This is why long-running operations (like the PRD pipeline's 5-minute AI write) need special timeout configuration.</p>
+      </div>
+
+      <div class="card">
+        <h3>NDJSON Streaming</h3>
+        <p>NDJSON stands for Newline-Delimited JSON. Instead of waiting for an entire AI response to finish before sending it to the browser, streaming sends it in small chunks — one JSON object per line, as each event happens. This is how the PRD pipeline shows "Agent 1 complete… Agent 2 running…" in real time rather than a blank loading screen for 3 minutes. The browser reads the stream line by line and updates the UI as each event arrives.</p>
+      </div>
+
+      <div class="card">
+        <h3>Gemini (Google AI)</h3>
+        <p>Google's large language model family — the AI that powers every text generation, analysis, and expansion feature in the app. The app uses <code>gemini-2.5-flash</code> and <code>gemini-2.5-pro</code> depending on task complexity. Gemini is also the source of the <code>text-embedding-004</code> model used to generate vector embeddings for semantic search. The API key is <code>GOOGLE_API_KEY</code>. Gemini is priority 1 in the provider chain — if it's unavailable, OpenAI takes over.</p>
+      </div>
+
+      <div class="card">
+        <h3>OpenAI</h3>
+        <p>The company behind GPT-4 and the ChatGPT API. In this app, OpenAI is the <em>fallback</em> AI provider — used automatically if Gemini is unavailable or returns an error. The <code>OPENAI_API_KEY</code> is optional but recommended. One critical caveat: OpenAI's embeddings produce 1536-dimensional vectors, while Gemini produces 768-dimensional vectors. Because the database index was built for 768 dimensions, embeddings always use Gemini — OpenAI cannot substitute for that specific function.</p>
+      </div>
+
+      <div class="card">
+        <h3>pgvector</h3>
+        <p>A Postgres extension (add-on) that teaches Postgres to store and search high-dimensional vectors — arrays of hundreds of floating-point numbers that represent the "meaning" of text. When a One-Pager is saved, its content is sent to Gemini which returns a 768-number vector. That vector is stored in Postgres. Later, you can search for "products similar to this one" by finding vectors that are mathematically close (cosine similarity). This is how semantic search works — it finds meaning, not just matching words.</p>
+      </div>
+
+      <div class="card">
+        <h3>JSONB</h3>
+        <p>A Postgres column type that stores JSON (structured data like <code>{"key": "value"}</code>) in a binary format that can be efficiently indexed and queried. The app uses JSONB for the One-Pager's <code>content_json</code> (the entire form state), <code>version_history</code> (an array of up to 20 past snapshots), and the PRD pipeline's <code>skeleton_json</code> (the AI-generated section strategies). It lets Postgres store flexible, nested data alongside structured relational data in the same database.</p>
+      </div>
+
+      <div class="card">
+        <h3>Foreign Keys</h3>
+        <p>A rule in a relational database that says "this column must reference a row that actually exists in another table." For example, <code>pipeline_runs.source_document_id</code> is a foreign key to <code>documents.id</code> — you can't create a pipeline run that points to a non-existent document. This prevents orphaned data (a PRD with no source One-Pager) and ensures the database stays consistent. NoSQL databases like Firebase do not have foreign keys — you'd have to enforce this logic manually in application code.</p>
+      </div>
+
+      <div class="card">
+        <h3>Secret Manager</h3>
+        <p>Google Cloud's service for storing sensitive values like API keys and database passwords. Instead of hardcoding <code>POSTGRES_URL=postgres://user:pass@host/db</code> in a config file (where it could leak), the secret is stored in Secret Manager and injected into Cloud Run at deploy time. The app never sees the raw value in logs or source code. On Vercel, the equivalent is the Vercel dashboard's Environment Variables. On GCP, Secret Manager is the right tool — it's audited, versioned, and access-controlled via IAM.</p>
+      </div>
+
+      <div class="card">
+        <h3>Feature Gate / Allowlist</h3>
+        <p>A system that controls which users can access which tools. The app reads <code>config/allowlist.txt</code> — a plain text file where each line is an email address followed by which features (1–7) they're allowed to use. Feature 5 = PRD Producer. Users not on the list see the tool hidden from their dashboard. This lets the team give access to PRD to specific people during alpha testing without deploying code changes — just update the file.</p>
+      </div>
+
+      <div class="card">
+        <h3>CSS Modules + Design Tokens</h3>
+        <p>CSS Modules are scoped stylesheets — each component's CSS only applies to that component, preventing styles from accidentally leaking into other parts of the page. Design tokens are named variables for colors and spacing (<code>--brand-primary: #1D1F4A</code>, <code>--accent: #009966</code>). Instead of hardcoding colors everywhere, every style references a token. This means changing the brand color requires editing one variable, not hundreds of files. All tokens live in <code>styles/tokens/compulocks.css</code>.</p>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── H: SQL BLOCKER ── -->
+  <div class="section" id="sql-blocker">
+    <div class="section-header">
+      <div class="section-num">H</div>
+      <div>
+        <div class="section-title">SQL: Where It's Used — and What Dropping It Costs</div>
+        <div class="section-lead">The current migration blocker in full detail. Every place SQL is called, what it stores, and an honest accounting of what each of the three options (Cloud SQL / Neon / Drop entirely) costs the product.</div>
+      </div>
+    </div>
+
+    <h3 style="font-size:14px; margin-bottom:14px;">Every SQL touchpoint in the codebase</h3>
+
+    <table>
+      <thead>
+        <tr><th>File / Route</th><th>What it reads or writes</th><th>Which tool</th><th>Removable?</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><code>lib/db-client.ts</code></td>
+          <td>The shared Postgres connection pool. Every other DB call goes through here. Single <code>POSTGRES_URL</code> env var.</td>
+          <td>Both</td>
+          <td class="cell-bad">No — central layer</td>
+        </tr>
+        <tr>
+          <td><code>PATCH /api/documents/[id]</code></td>
+          <td>Saves One-Pager content. Reads existing doc, snapshots old content into <code>version_history[]</code>, writes new <code>content_json</code> + increments <code>version</code>.</td>
+          <td>One-Pager</td>
+          <td class="cell-bad">No — core save</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/documents/[id]</code></td>
+          <td>Loads a saved One-Pager by UUID. Used when opening a saved document from the dashboard.</td>
+          <td>One-Pager</td>
+          <td class="cell-bad">No — core load</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/documents</code></td>
+          <td>Lists all documents for the logged-in user (<code>WHERE user_id = $1 AND deleted_at IS NULL ORDER BY updated_at DESC</code>). Powers the Documents dashboard.</td>
+          <td>Both</td>
+          <td class="cell-bad">No — dashboard</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/documents/[id]/versions</code></td>
+          <td>Returns the <code>version_history</code> JSONB array for admin rollback UI.</td>
+          <td>One-Pager</td>
+          <td class="cell-warn">⚠ If rollback removed</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/documents/[id]/rollback</code></td>
+          <td>Restores a snapshot from <code>version_history[]</code> back to <code>content_json</code>. Admin-only.</td>
+          <td>One-Pager</td>
+          <td class="cell-warn">⚠ If rollback removed</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/pipeline/prd/start</code></td>
+          <td>Creates a <code>pipeline_runs</code> row (status=<code>running</code>). Reads the source One-Pager from <code>documents</code>. Writes Agent 2 skeleton to <code>pipeline_runs.skeleton_json</code>. Sets status=<code>awaiting_approval</code>.</td>
+          <td>PRD</td>
+          <td class="cell-bad">No — pipeline Phase 1</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/pipeline/prd/[run_id]/status</code></td>
+          <td>Polls <code>pipeline_runs</code> for current status + skeleton. Browser calls this every 2s during Phase 1.</td>
+          <td>PRD</td>
+          <td class="cell-bad">No — pipeline polling</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/pipeline/prd/[run_id]/approve</code></td>
+          <td>Updates <code>pipeline_runs.status</code> to <code>approved</code>. Optionally writes a modified skeleton back. Human gate.</td>
+          <td>PRD</td>
+          <td class="cell-bad">No — human gate</td>
+        </tr>
+        <tr>
+          <td><code>POST /api/pipeline/prd/[run_id]/resume</code></td>
+          <td>Reads skeleton from <code>pipeline_runs.skeleton_json</code>. Writes Agent 3 output to <code>prd_frames</code> (one row per section). Creates <code>prd_documents</code> row with QA score. Sets status=<code>completed</code>.</td>
+          <td>PRD</td>
+          <td class="cell-bad">No — pipeline Phase 2</td>
+        </tr>
+        <tr>
+          <td><code>GET /api/pipeline/prd/[run_id]/export</code></td>
+          <td>Reads <code>prd_documents</code> + all <code>prd_frames</code> ordered by <code>section_order</code>. Assembles and returns DOCX or HTML.</td>
+          <td>PRD</td>
+          <td class="cell-bad">No — export</td>
+        </tr>
+        <tr>
+          <td><code>lib/embeddings.ts</code> (called on save)</td>
+          <td>Upserts into <code>document_embeddings</code> — the 768-dim pgvector column. Used for future semantic search ("find products similar to this").</td>
+          <td>One-Pager</td>
+          <td class="cell-good">✅ Safe to remove — semantic search not yet surfaced in UI</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <h3 style="font-size:14px; margin: 26px 0 14px;">The three options — full impact breakdown</h3>
+
+    <!-- Option 1 -->
+    <div style="border: 2px solid var(--green); border-radius: 10px; padding: 20px 22px; margin-bottom: 16px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:20px;">✅</span>
+        <div>
+          <div style="font-size:15px; font-weight:700; color: var(--green);">Option 1 — Google Cloud SQL</div>
+          <div style="font-size:12.5px; color: var(--muted);">IT-approved · Full GCP · One env var change · ~$9.53/mo · <strong>Blocked on IAM</strong></div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>What you keep</h3>
+          <p>Everything. Every feature in both tools works exactly as today. Full version history, rollback, PRD pipeline, embeddings, export — all intact. Data lives inside the GCP org. No code changes. One env var: <code>POSTGRES_URL</code> switches from Neon's TCP URL to Cloud SQL's Unix socket path.</p>
+        </div>
+        <div class="card">
+          <h3>What's blocking it</h3>
+          <p>The GCP org admin needs to grant two IAM roles on <code>r-and-d-489319</code>:<br><br>
+          <code>roles/cloudsql.admin</code> — to create the instance<br>
+          <code>roles/cloudsql.client</code> — for the Cloud Run service account to connect<br><br>
+          Once granted, this is a 30-minute operation. A guide for the admin is in <code>.superpowers/gcp-roles-guide.html</code>.</p>
+        </div>
+      </div>
+      <div class="note note-info" style="margin-top:12px;">
+        <span class="note-icon">ℹ</span>
+        <div><strong>One extra step:</strong> Cloud SQL requires enabling the <code>pgvector</code> database flag in the GCP console before running the schema. Otherwise <code>CREATE EXTENSION vector</code> fails silently and the embeddings column is not created. This is a 2-click change in the GCP console — it is not a code change.</div>
+      </div>
+    </div>
+
+    <!-- Option 2 -->
+    <div style="border: 2px solid var(--warn); border-radius: 10px; padding: 20px 22px; margin-bottom: 16px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:20px;">⚠</span>
+        <div>
+          <div style="font-size:15px; font-weight:700; color: var(--warn);">Option 2 — Keep Neon (defer Cloud SQL)</div>
+          <div style="font-size:12.5px; color: var(--muted);">Works today · No IAM needed · Data outside GCP · IT concern remains</div>
+        </div>
+      </div>
+      <div class="grid-2">
+        <div class="card">
+          <h3>What you keep</h3>
+          <p>Everything. All features work. App migrates to Cloud Run now, database stays on Neon. <code>POSTGRES_URL</code> is unchanged. Zero code changes. Unblocks the GCP migration immediately.</p>
+        </div>
+        <div class="card">
+          <h3>What IT still has a problem with</h3>
+          <p>Neon runs on AWS, outside the GCP org. Product data — saved One-Pagers, PRDs, version history — lives on a third-party service the company doesn't control. This is the IT objection. It doesn't affect functionality, but it means the "everything under GCP" goal is not met until Cloud SQL is in place.</p>
+        </div>
+      </div>
+      <div class="note note-warn" style="margin-top:12px;">
+        <span class="note-icon">⚠</span>
+        <div><strong>This is a valid interim step.</strong> Migrate the app to Cloud Run on Neon now. When IAM/SQL is granted, flip the one env var to Cloud SQL and the migration is complete. No features are lost at any point in this process.</div>
+      </div>
+    </div>
+
+    <!-- Option 3 -->
+    <div style="border: 2px solid var(--red); border-radius: 10px; padding: 20px 22px; margin-bottom: 16px;">
+      <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px;">
+        <span style="font-size:20px;">⛔</span>
+        <div>
+          <div style="font-size:15px; font-weight:700; color: var(--red);">Option 3 — Drop SQL entirely</div>
+          <div style="font-size:12.5px; color: var(--muted);">No database cost · Removes IT concern · Loses most of the product's value</div>
+        </div>
+      </div>
+      <table class="impact-table" style="margin-top:0;">
+        <thead><tr><th>Feature</th><th>One-Pager</th><th>PRD Producer</th><th>What specifically breaks</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><strong>Save &amp; Load documents</strong></td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td>No place to store documents between sessions. Every browser refresh loses all work. App becomes a one-use scratch pad.</td>
+          </tr>
+          <tr>
+            <td><strong>Documents dashboard</strong></td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td>Can't list "your saved documents" — there are none. The main landing page after login becomes empty.</td>
+          </tr>
+          <tr>
+            <td><strong>Multi-device access</strong></td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td>Work done on one device cannot be accessed from another. Sharing a One-Pager with a colleague becomes impossible.</td>
+          </tr>
+          <tr>
+            <td><strong>Version history &amp; rollback</strong></td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td class="cell-muted">N/A</td>
+            <td>All 20 version snapshots live in a Postgres JSONB column. No database, no history, no rollback.</td>
+          </tr>
+          <tr>
+            <td><strong>PRD pipeline (all 4 agents)</strong></td>
+            <td class="cell-muted">N/A</td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td>The pipeline spans 2 HTTP requests with a human gate between them. Agent 2's skeleton is saved to <code>pipeline_runs.skeleton_json</code>. Without the DB, the skeleton is lost before Agent 3 can use it. The entire PRD tool stops working.</td>
+          </tr>
+          <tr>
+            <td><strong>PRD export (DOCX/HTML)</strong></td>
+            <td class="cell-muted">N/A</td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td>Export reads the 8 <code>prd_frames</code> rows from the database. No database, no export.</td>
+          </tr>
+          <tr>
+            <td><strong>Semantic search / embeddings</strong></td>
+            <td class="cell-bad">🔴 Gone</td>
+            <td class="cell-muted">N/A</td>
+            <td>pgvector requires Postgres. This feature is not yet surfaced in the UI, so it's the lowest-impact loss.</td>
+          </tr>
+          <tr>
+            <td><strong>AI text expansion</strong></td>
+            <td class="cell-good">✅ Works</td>
+            <td class="cell-good">✅ Works</td>
+            <td>Stateless API call — no DB needed. This is the only major feature that survives.</td>
+          </tr>
+          <tr>
+            <td><strong>Competitor scraping</strong></td>
+            <td class="cell-good">✅ Works</td>
+            <td class="cell-muted">N/A</td>
+            <td>Stateless. No DB needed.</td>
+          </tr>
+          <tr>
+            <td><strong>Feature gate / allowlist</strong></td>
+            <td class="cell-good">✅ Works</td>
+            <td class="cell-good">✅ Works</td>
+            <td>Reads a flat file, not the DB.</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="note note-crit" style="margin-top:14px;">
+        <span class="note-icon">⛔</span>
+        <div><strong>Verdict on Option 3:</strong> Dropping SQL removes the ability to save, load, or share any document — reducing both tools to single-session scratch pads. The PRD pipeline stops working entirely because its state machine cannot survive across two HTTP requests without a persistent store. The features that <em>do</em> survive (AI expansion, competitor scraping) are the least differentiated parts of the product. This option is only viable if the entire save/load/pipeline architecture is rebuilt from scratch — an estimated 800+ lines of rewrite with new categories of data-consistency bugs to manage.</div>
+      </div>
+    </div>
+
+    <div class="note note-purple" style="margin-top: 6px;">
+      <span class="note-icon">💡</span>
+      <div><strong>The minimum ask to unblock everything:</strong> One GCP org admin action — grant <code>roles/cloudsql.admin</code> and <code>roles/cloudsql.client</code> on project <code>r-and-d-489319</code>. That single action enables Cloud SQL, satisfies IT's data-residency requirement, and completes the migration. The guide for the admin is in <code>.superpowers/gcp-roles-guide.html</code>.</div>
+    </div>
+  </div>
+
+  <!-- ── I: DECISION MATRIX ── -->
+  <div class="section" id="summary">
+    <div class="section-header">
+      <div class="section-num">I</div>
+      <div>
+        <div class="section-title">Decision Matrix & Recommendation</div>
+        <div class="section-lead">The full stack evaluated across four migration scenarios — and the recommended path.</div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Layer</th>
+          <th>Current (optimal)</th>
+          <th>GCP App + Neon DB</th>
+          <th>Full GCP (Cloud SQL)</th>
+          <th>No SQL</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Hosting</strong></td>
+          <td class="cell-good">Vercel ✅</td>
+          <td class="cell-good">Cloud Run ✅</td>
+          <td class="cell-good">Cloud Run ✅</td>
+          <td class="cell-good">Either ✅</td>
+        </tr>
+        <tr>
+          <td><strong>Auth</strong></td>
+          <td class="cell-good">Google OAuth ✅</td>
+          <td class="cell-warn">Stub (bypass) ⚠</td>
+          <td class="cell-warn">Stub → IAP later ⚠</td>
+          <td class="cell-good">Unchanged ✅</td>
+        </tr>
+        <tr>
+          <td><strong>Database</strong></td>
+          <td class="cell-good">Neon (free) ✅</td>
+          <td class="cell-good">Neon (unchanged) ✅</td>
+          <td class="cell-warn">Cloud SQL ($9.53/mo) ⚠</td>
+          <td class="cell-bad">None 🔴</td>
+        </tr>
+        <tr>
+          <td><strong>One-Pager: Save/Load</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-bad">🔴 Broken</td>
+        </tr>
+        <tr>
+          <td><strong>One-Pager: Version / Rollback</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-bad">🔴 Broken</td>
+        </tr>
+        <tr>
+          <td><strong>PRD Pipeline</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-bad">🔴 Broken</td>
+        </tr>
+        <tr>
+          <td><strong>Semantic Search (pgvector)</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-warn">⚠ Need GCP flag first</td>
+          <td class="cell-bad">🔴 Broken</td>
+        </tr>
+        <tr>
+          <td><strong>AI Generation</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+        </tr>
+        <tr>
+          <td><strong>Export (DOCX/HTML)</strong></td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-good">✅</td>
+          <td class="cell-bad">🔴 Broken (reads DB)</td>
+        </tr>
+        <tr>
+          <td><strong>Code changes required</strong></td>
+          <td class="cell-good">—</td>
+          <td class="cell-good">None</td>
+          <td class="cell-good">1 env var</td>
+          <td class="cell-bad">~800 lines rewrite</td>
+        </tr>
+        <tr>
+          <td><strong>Data inside GCP org</strong></td>
+          <td class="cell-muted">No (Vercel)</td>
+          <td class="cell-warn">Partial (app yes, DB no)</td>
+          <td class="cell-good">Yes ✅</td>
+          <td class="cell-muted">N/A</td>
+        </tr>
+        <tr>
+          <td><strong>Blocked on IAM?</strong></td>
+          <td class="cell-good">No</td>
+          <td class="cell-good">No (app only)</td>
+          <td class="cell-bad">Yes (SQL roles needed)</td>
+          <td class="cell-good">No</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top:22px;">
+      <div class="note note-good">
+        <span class="note-icon">✅</span>
+        <div>
+          <strong>Recommended path (2 phases):</strong><br><br>
+          <strong>Phase 1 — now (no SQL admin needed):</strong> Deploy app to Cloud Run pointing at existing Neon DB. Fix IAP, update secrets, rebuild image from current <code>main</code>. Both tools fully operational. No code changes. Optional: wire Drive export for finished documents.<br><br>
+          <strong>Phase 2 — when SQL IAM is granted:</strong> Create Cloud SQL Postgres 15 instance, enable pgvector flag, set <code>POSTGRES_URL</code> to Cloud SQL socket path, run <code>db-schema.sql</code>. That's the entire migration. Everything else is unchanged.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr style="border: none; border-top: 1px solid var(--border); margin: 8px 0 24px;">
+
+  <!-- Executive Summary -->
+  <div class="card" style="border-left: 4px solid var(--accent); border-radius: 0 var(--radius) var(--radius) 0; padding: 22px 26px;">
+    <h3 style="color: var(--accent); font-size:15px; margin-bottom:10px;">TL;DR — For the Admin</h3>
+    <ul style="list-style:none; display:flex; flex-direction:column; gap:9px; margin:0; padding:0;">
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>Both tools (One-Pager + PRD) share the same 6-layer stack: hosting, auth, database, AI, export, and UI.</span></li>
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>The database is not a migration-only concern — it is the live persistence layer used on every save, load, version, rollback, and PRD pipeline run.</span></li>
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>SQL can be deferred: migrate the app to Cloud Run on the existing Neon DB today — zero code changes. Cloud SQL becomes the target once SQL IAM roles are granted.</span></li>
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>Google Drive cannot replace the database (no queries, no transactions, no vector search). It belongs as a destination for exported DOCX/PDF files, not as the data store.</span></li>
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>No free GCP alternative fits: Firebase/Firestore, BigQuery, and Bigtable are all wrong types of database for this app's relational, transactional, and vector-search requirements.</span></li>
+      <li style="display:flex; gap:10px; align-items:flex-start;"><span style="color:var(--accent); font-weight:700; flex-shrink:0;">✓</span><span>When Cloud SQL is ready: it is a one-line env var change. Every query, schema file, and type definition in the codebase is already compatible.</span></li>
+    </ul>
+  </div>
+
+  <footer>
+    <span>MRD Producer — System Architecture Brief — 2026-06-16</span>
+    <span>Stack: Next.js 14 · React 18 · TypeScript 5.3 · Neon Postgres · Gemini · Vercel</span>
+  </footer>
+
+</div>
+</body>
+</html>

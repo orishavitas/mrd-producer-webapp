@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>One-Pager Top Bar — v2</title>
+<style>
+  :root {
+    --primary: #1D1F4A;
+    --secondary: #243469;
+    --accent: #009966;
+    --accent-light: #1DB274;
+    --accent-soft: rgba(0,153,102,0.12);
+    --outline: #D9DAE2;
+    --bg: #FBFAFD;
+    --on-muted: #5A5C70;
+    --radius-full: 9999px;
+    --font-h: 'Arial Narrow', Arial, sans-serif;
+    --font-b: 'Segoe UI', Arial, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0e0f1a; font-family: var(--font-b); color: #f0f0f4; }
+  .page { max-width: 1020px; margin: 0 auto; padding: 40px 28px 80px; }
+
+  h1 { font-size: 22px; font-weight: 700; color: #fff; margin-bottom: 4px; }
+  .page-sub { font-size: 12px; color: rgba(255,255,255,0.35); margin-bottom: 44px; }
+
+  .sec-title {
+    font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+    color: rgba(255,255,255,0.3); margin: 52px 0 14px;
+    padding-bottom: 7px; border-bottom: 1px solid rgba(255,255,255,0.07);
+  }
+
+  /* ── shared bar atoms ── */
+  .bar {
+    display: flex; align-items: center; gap: 7px;
+    height: 52px; padding: 0 14px;
+    background: var(--primary);
+    border-bottom: 3px solid var(--accent);
+  }
+  .bdiv { width: 1px; height: 18px; background: rgba(255,255,255,0.14); flex-shrink: 0; }
+  .sp { flex: 1; }
+  .logo {
+    height: 19px; padding: 0 7px;
+    background: rgba(255,255,255,0.88); border-radius: 2px;
+    font-size: 7px; font-weight: 800; letter-spacing: 0.15em;
+    color: var(--primary); white-space: nowrap; flex-shrink: 0;
+    display: flex; align-items: center;
+  }
+  .pname {
+    font-family: var(--font-h); font-size: 11px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em; color: #fff; white-space: nowrap;
+  }
+  .psub { font-weight: 400; color: rgba(255,255,255,0.45); }
+
+  /* buttons */
+  .btn-g {
+    height: 28px; padding: 0 11px; border-radius: var(--radius-full);
+    border: 1.5px solid rgba(255,255,255,0.22); background: transparent;
+    color: rgba(255,255,255,0.85); font-family: var(--font-h);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; cursor: pointer;
+    position: relative;
+  }
+  .btn-g:hover { border-color: rgba(255,255,255,0.5); }
+  .btn-f {
+    height: 28px; padding: 0 13px; border-radius: var(--radius-full);
+    border: none; background: var(--accent); color: #fff; font-family: var(--font-h);
+    font-size: 10px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; cursor: pointer;
+    position: relative;
+  }
+  .btn-f:hover { background: #007a52; }
+  .btn-icon {
+    width: 28px; height: 28px; border-radius: var(--radius-full);
+    border: 1.5px solid rgba(255,255,255,0.22); background: transparent;
+    color: rgba(255,255,255,0.65); font-size: 13px;
+    display: inline-flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer;
+  }
+  .dots-btn {
+    width: 34px; height: 28px; border-radius: var(--radius-full);
+    border: 1.5px solid rgba(255,255,255,0.22); background: transparent;
+    color: rgba(255,255,255,0.7); font-size: 17px; letter-spacing: 0.1em;
+    display: inline-flex; align-items: center; justify-content: center; cursor: pointer;
+    padding-bottom: 4px;
+  }
+  .ver {
+    font-size: 9px; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase;
+    background: rgba(255,255,255,0.11); color: rgba(255,255,255,0.6);
+    padding: 2px 8px; border-radius: var(--radius-full); white-space: nowrap;
+  }
+
+  /* ── progress ring (clickable) ── */
+  .ring-wrap {
+    position: relative; width: 34px; height: 34px; flex-shrink: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .ring-wrap svg { width: 34px; height: 34px; }
+  .ring-bg   { fill: none; stroke: rgba(255,255,255,0.14); stroke-width: 3.5; }
+  .ring-fill { fill: none; stroke: var(--accent); stroke-width: 3.5; stroke-linecap: round;
+               stroke-dasharray: 82; stroke-dashoffset: 24.6; /* 70% */
+               transform: rotate(-90deg); transform-origin: 50% 50%;
+               transition: stroke-dashoffset 0.4s ease; }
+  .ring-txt  { fill: #fff; font-size: 9px; font-weight: 700; }
+  .ring-pulse { animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+
+  /* ring tooltip panel */
+  .ring-panel {
+    display: none; position: absolute; top: 42px; left: 50%; transform: translateX(-50%);
+    background: #1c1e30; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+    padding: 10px 12px; min-width: 180px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .ring-panel::before {
+    content: ''; position: absolute; bottom: 100%; left: 50%; transform: translateX(-50%);
+    border: 6px solid transparent; border-bottom-color: rgba(255,255,255,0.12);
+  }
+  .ring-wrap.open .ring-panel { display: block; }
+  .na-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 4px 0; font-size: 11px; color: rgba(255,255,255,0.7); gap: 10px;
+  }
+  .na-toggle {
+    height: 18px; padding: 0 7px; border-radius: var(--radius-full);
+    font-size: 9px; font-weight: 700; letter-spacing: .07em; text-transform: uppercase;
+    border: 1.5px solid rgba(255,255,255,0.2); background: transparent; color: rgba(255,255,255,0.5);
+    cursor: pointer; font-family: var(--font-h); white-space: nowrap;
+  }
+  .na-toggle.active {
+    background: var(--accent-soft); border-color: var(--accent); color: var(--accent-light);
+  }
+  .na-label-done { color: var(--accent-light); font-size: 10px; }
+  .na-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 4px 0; }
+  .ring-panel-title { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 6px; }
+
+  /* ── export dropdown ── */
+  .export-wrap { position: relative; display: inline-flex; }
+  .export-menu {
+    display: none; position: absolute; top: 34px; right: 0;
+    background: #1c1e30; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+    padding: 5px; min-width: 148px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .export-menu::before {
+    content: ''; position: absolute; bottom: 100%; right: 14px;
+    border: 6px solid transparent; border-bottom-color: rgba(255,255,255,0.12);
+  }
+  .export-wrap.open .export-menu { display: block; }
+  .export-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: 7px; cursor: pointer;
+    font-size: 11px; color: rgba(255,255,255,0.75); transition: background .1s;
+  }
+  .export-item:hover { background: rgba(255,255,255,0.08); }
+  .export-item.publish { color: var(--accent-light); margin-top: 3px; padding-top: 8px; border-top: 1px solid rgba(255,255,255,0.07); }
+  .export-icon { font-size: 13px; width: 16px; text-align: center; opacity: .7; }
+  .export-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 3px 0; }
+
+  /* ── dots / ··· menu ── */
+  .dots-wrap { position: relative; display: inline-flex; }
+  .dots-menu {
+    display: none; position: absolute; top: 34px; right: 0;
+    background: #1c1e30; border: 1px solid rgba(255,255,255,0.12); border-radius: 10px;
+    padding: 5px; min-width: 152px; z-index: 100; box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+  }
+  .dots-wrap.open .dots-menu { display: block; }
+  .dots-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 7px 10px; border-radius: 7px; cursor: pointer;
+    font-size: 11px; color: rgba(255,255,255,0.75);
+  }
+  .dots-item:hover { background: rgba(255,255,255,0.08); }
+  .dots-item.danger { color: #ff8080; }
+
+  /* ── preview toggle states ── */
+  .preview-states {
+    display: flex; gap: 6px; align-items: center;
+    background: rgba(255,255,255,0.07); border-radius: var(--radius-full);
+    padding: 3px;
+  }
+  .prev-btn {
+    width: 28px; height: 22px; border-radius: 99px;
+    border: none; background: transparent; cursor: pointer;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; color: rgba(255,255,255,0.45); transition: background .15s, color .15s;
+    title: '';
+  }
+  .prev-btn.active { background: rgba(255,255,255,0.18); color: #fff; }
+  .prev-btn:hover:not(.active) { color: rgba(255,255,255,0.75); }
+
+  /* ── FAB ── */
+  .fab {
+    display: inline-flex; align-items: center; gap: 6px;
+    height: 40px; padding: 0 16px; border-radius: var(--radius-full);
+    background: var(--accent); color: #fff; font-family: var(--font-h);
+    font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+    box-shadow: 0 4px 14px rgba(0,153,102,0.45); cursor: pointer;
+    border: none;
+  }
+
+  /* ── layout sim ── */
+  .layout-sim {
+    display: flex; gap: 0; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0 0 8px 8px; overflow: hidden; height: 220px;
+  }
+  .sim-left {
+    flex: 1; background: var(--bg); padding: 14px 16px; position: relative;
+    overflow: hidden;
+  }
+  .sim-right {
+    width: 220px; background: #eaeaef; display: flex; align-items: center;
+    justify-content: center; font-size: 11px; color: var(--on-muted);
+    flex-shrink: 0; border-left: 2px solid var(--outline);
+    transition: width .3s ease;
+  }
+  .sim-right.hidden { width: 0; border-left: none; overflow: hidden; }
+  .sim-label { font-size: 10px; color: var(--on-muted); margin-bottom: 6px; font-weight: 600; font-family: var(--font-h); text-transform: uppercase; letter-spacing: .08em; }
+  .sim-field { height: 8px; background: var(--outline); border-radius: 4px; margin-bottom: 6px; }
+  .sim-field.w60 { width: 60%; }
+  .sim-field.w80 { width: 80%; }
+  .sim-field.w45 { width: 45%; }
+  .drag-handle {
+    width: 4px; background: var(--outline); cursor: col-resize; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    transition: background .15s;
+  }
+  .drag-handle:hover { background: var(--accent); }
+  .drag-dots { display: flex; flex-direction: column; gap: 3px; }
+  .drag-dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(0,0,0,0.2); }
+
+  /* portrait sim */
+  .layout-portrait {
+    display: flex; flex-direction: column; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 0 0 8px 8px; overflow: hidden; height: 260px;
+  }
+  .port-top { flex: 1; background: var(--bg); padding: 12px 14px; }
+  .drag-handle-h {
+    height: 5px; background: var(--outline); cursor: row-resize; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .drag-handle-h:hover { background: var(--accent); }
+  .port-bottom { height: 90px; background: #eaeaef; display: flex; align-items: center; justify-content: center; font-size: 11px; color: var(--on-muted); }
+
+  /* ── concept cards ── */
+  .concept-card {
+    background: #161828; border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 12px; overflow: hidden; margin-bottom: 24px;
+  }
+  .concept-card.recommended { border-color: rgba(0,153,102,0.4); }
+  .concept-meta { padding: 12px 16px 14px; }
+  .concept-tag { font-size: 10px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 4px; }
+  .concept-title { font-size: 14px; font-weight: 600; color: #fff; margin-bottom: 4px; }
+  .concept-desc  { font-size: 12px; color: rgba(255,255,255,0.5); line-height: 1.55; }
+  .tag-row { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px; }
+  .tag-p { font-size: 10px; background: rgba(0,153,102,0.15); color: var(--accent-light); padding: 2px 8px; border-radius: 99px; }
+  .tag-c { font-size: 10px; background: rgba(255,80,80,0.12); color: #ff8080; padding: 2px 8px; border-radius: 99px; }
+  .tag-r { font-size: 10px; background: rgba(0,153,102,0.25); color: var(--accent-light); padding: 2px 9px; border-radius: 99px; font-weight: 700; }
+  .sub-section { padding: 10px 16px 4px; background: rgba(0,0,0,0.2); border-top: 1px solid rgba(255,255,255,0.05); }
+  .sub-section-title { font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: rgba(255,255,255,0.25); margin-bottom: 8px; }
+
+  /* section nav preview */
+  .nav-wrap {
+    display: flex; align-items: center; gap: 6px;
+    background: var(--bg); padding: 7px 14px;
+    overflow-x: auto; white-space: nowrap;
+  }
+  .pill {
+    display: inline-flex; align-items: center; gap: 3px;
+    height: 26px; padding: 0 10px; border-radius: var(--radius-full);
+    border: 1.5px solid var(--outline); background: transparent;
+    color: var(--on-muted); font-family: var(--font-h);
+    font-size: 9.5px; font-weight: 700; letter-spacing: .05em; text-transform: uppercase;
+  }
+  .pill-active { background: var(--primary); color: #fff; border-color: var(--primary); }
+  .pill-done   { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); }
+  .circ {
+    position: relative; display: inline-flex; align-items: center; justify-content: center;
+    width: 26px; height: 26px; border-radius: 50%;
+    border: 1.5px solid var(--outline); color: var(--on-muted);
+    font-family: var(--font-h); font-size: 9.5px; font-weight: 700; flex-shrink: 0;
+  }
+  .circ-done { border-color: var(--accent); background: var(--accent-soft); color: var(--accent); }
+  .tt {
+    display: none; position: absolute; top: 32px; left: 50%; transform: translateX(-50%);
+    background: #1A1B2A; color: #fff; font-size: 9px; font-weight: 600;
+    padding: 3px 7px; border-radius: 4px; white-space: nowrap; z-index: 10;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+  .tt::before { content:''; position:absolute; bottom:100%; left:50%; transform:translateX(-50%); border:4px solid transparent; border-bottom-color:#1A1B2A; }
+  .circ:hover .tt { display: block; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>One-Pager Top Bar — v2</h1>
+  <p class="page-sub">Progress ring clickable · Export dropdown · ··· overflow menu · Responsive preview toggle. 3 concepts.</p>
+
+  <!-- ════════════ CONCEPT 1 ════════════ -->
+  <div class="sec-title">Concept 1 — Single Bar, All Modes Visible</div>
+  <div class="concept-card recommended">
+    <!-- Bar -->
+    <div class="bar">
+      <div class="logo">COMPULOCKS</div>
+      <div class="bdiv"></div>
+      <span class="pname">One-Pager</span>
+      <div class="sp"></div>
+
+      <!-- progress ring - click to open N/A panel -->
+      <div class="ring-wrap" id="ring1" onclick="toggleRing('ring1')">
+        <svg viewBox="0 0 34 34">
+          <circle class="ring-bg" cx="17" cy="17" r="13"/>
+          <circle class="ring-fill" cx="17" cy="17" r="13"/>
+          <text class="ring-txt" x="17" y="21" text-anchor="middle">70%</text>
+        </svg>
+        <div class="ring-panel">
+          <div class="ring-panel-title">Section Status</div>
+          <div class="na-row"><span>Product Info</span><span class="na-label-done">✓ Done</span></div>
+          <div class="na-row"><span>Goal</span><span class="na-label-done">✓ Done</span></div>
+          <div class="na-row"><span>Where</span><button class="na-toggle active">✓ N/A</button></div>
+          <div class="na-row"><span>Features</span><button class="na-toggle">N/A</button></div>
+          <div class="na-row"><span>Competitors</span><button class="na-toggle">N/A</button></div>
+          <div class="na-divider"></div>
+          <div class="na-row"><span>Photos</span><button class="na-toggle">N/A</button></div>
+        </div>
+      </div>
+
+      <span class="ver">v0.3 · Draft</span>
+      <div class="bdiv"></div>
+
+      <!-- preview toggle segmented control -->
+      <div class="preview-states" title="Layout mode">
+        <button class="prev-btn" title="Form only">⬜</button>
+        <button class="prev-btn active" title="Side by side">⬛⬜</button>
+        <button class="prev-btn" title="Preview only">▪</button>
+      </div>
+      <div class="bdiv"></div>
+
+      <!-- save (disappears after publish) -->
+      <span class="btn-g">Save</span>
+
+      <!-- export dropdown -->
+      <div class="export-wrap" id="exp1">
+        <button class="btn-f" onclick="toggleExport('exp1')">Export ▾</button>
+        <div class="export-menu">
+          <div class="export-item"><span class="export-icon">↓</span>Download DOCX</div>
+          <div class="export-item"><span class="export-icon">↓</span>Download HTML</div>
+          <div class="export-item"><span class="export-icon">🖨</span>Print / PDF</div>
+          <div class="export-item publish"><span class="export-icon">✦</span>Publish</div>
+        </div>
+      </div>
+
+      <!-- dots menu -->
+      <div class="dots-wrap" id="dots1">
+        <button class="dots-btn" onclick="toggleDots('dots1')">···</button>
+        <div class="dots-menu">
+          <div class="dots-item"><span class="export-icon">⌂</span>Home</div>
+          <div class="dots-item"><span class="export-icon">↺</span>Reset form</div>
+          <div class="dots-item"><span class="export-icon">🕐</span>Version history</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Section nav -->
+    <div class="nav-wrap">
+      <div class="circ circ-done"><div class="tt">01 · Product</div>01</div>
+      <div class="circ circ-done"><div class="tt">02 · Goal</div>02</div>
+      <span class="pill pill-done"><span style="font-size:8px;opacity:.6;margin-right:2px">03</span>Where</span>
+      <span class="pill pill-active"><span style="font-size:8px;opacity:.6;margin-right:2px">04</span>Who</span>
+      <span class="pill"><span style="font-size:8px;opacity:.6;margin-right:2px">05</span>Features</span>
+      <div class="circ"><div class="tt">06 · Commercials</div>06</div>
+      <div class="circ"><div class="tt">07 · Competitors</div>07</div>
+      <div class="circ"><div class="tt">08 · Photos</div>08</div>
+    </div>
+
+    <!-- Layout sim: desktop side-by-side -->
+    <div class="sub-section">
+      <div class="sub-section-title">Desktop — Side by side (active state)</div>
+    </div>
+    <div class="layout-sim">
+      <div class="sim-left">
+        <div class="sim-label">Form</div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w60"></div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w45"></div>
+        <div class="sim-field w60"></div>
+      </div>
+      <div class="drag-handle">
+        <div class="drag-dots"><div class="drag-dot"></div><div class="drag-dot"></div><div class="drag-dot"></div></div>
+      </div>
+      <div class="sim-right" id="preview1" style="width:220px">Document Preview</div>
+    </div>
+
+    <!-- Layout sim: portrait -->
+    <div class="sub-section" style="margin-top:8px">
+      <div class="sub-section-title">Tablet Portrait / Phone — Top-bottom split with draggable handle</div>
+    </div>
+    <div class="layout-portrait">
+      <div class="port-top">
+        <div class="sim-label">Form</div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w60"></div>
+      </div>
+      <div class="drag-handle-h">
+        <svg width="30" height="5" viewBox="0 0 30 5"><rect x="8" y="2" width="14" height="2" rx="1" fill="rgba(0,0,0,0.2)"/></svg>
+      </div>
+      <div class="port-bottom">Document Preview</div>
+    </div>
+
+    <div class="concept-meta">
+      <div class="concept-tag">Concept 1 <span class="tag-r">★ Recommended</span></div>
+      <div class="concept-title">Single bar · Segmented preview toggle · Draggable split</div>
+      <div class="concept-desc">All controls in one 52px bar. Preview toggle is a 3-state segmented control (form / split / preview). On portrait or narrow screens the split becomes top-bottom with the same draggable handle. Progress ring is clickable — opens inline N/A panel.</div>
+      <div class="tag-row">
+        <span class="tag-p">✓ Everything accessible</span>
+        <span class="tag-p">✓ Draggable split works on all sizes</span>
+        <span class="tag-p">✓ Export + Publish in one dropdown</span>
+        <span class="tag-p">✓ Save disappears after publish</span>
+        <span class="tag-c">✗ Preview toggle is small on mobile</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ CONCEPT 2 ════════════ -->
+  <div class="sec-title">Concept 2 — Floating Preview FAB</div>
+  <div class="concept-card">
+    <!-- Bar (no preview toggle — it's a FAB) -->
+    <div class="bar">
+      <div class="logo">COMPULOCKS</div>
+      <div class="bdiv"></div>
+      <span class="pname">One-Pager</span>
+      <div class="sp"></div>
+
+      <div class="ring-wrap" id="ring2" onclick="toggleRing('ring2')">
+        <svg viewBox="0 0 34 34">
+          <circle class="ring-bg" cx="17" cy="17" r="13"/>
+          <circle class="ring-fill" cx="17" cy="17" r="13"/>
+          <text class="ring-txt" x="17" y="21" text-anchor="middle">70%</text>
+        </svg>
+        <div class="ring-panel">
+          <div class="ring-panel-title">Section Status</div>
+          <div class="na-row"><span>Goal</span><button class="na-toggle">N/A</button></div>
+          <div class="na-row"><span>Where</span><button class="na-toggle active">✓ N/A</button></div>
+          <div class="na-row"><span>Features</span><button class="na-toggle">N/A</button></div>
+        </div>
+      </div>
+
+      <span class="ver">v0.3 · Draft</span>
+      <div class="bdiv"></div>
+      <span class="btn-g">Save</span>
+
+      <div class="export-wrap" id="exp2">
+        <button class="btn-f" onclick="toggleExport('exp2')">Export ▾</button>
+        <div class="export-menu">
+          <div class="export-item"><span class="export-icon">↓</span>Download DOCX</div>
+          <div class="export-item"><span class="export-icon">↓</span>Download HTML</div>
+          <div class="export-item"><span class="export-icon">🖨</span>Print / PDF</div>
+          <div class="export-item publish"><span class="export-icon">✦</span>Publish</div>
+        </div>
+      </div>
+
+      <div class="dots-wrap" id="dots2">
+        <button class="dots-btn" onclick="toggleDots('dots2')">···</button>
+        <div class="dots-menu">
+          <div class="dots-item"><span class="export-icon">⌂</span>Home</div>
+          <div class="dots-item"><span class="export-icon">↺</span>Reset form</div>
+          <div class="dots-item"><span class="export-icon">🕐</span>Version history</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-wrap">
+      <div class="circ circ-done"><div class="tt">01 · Product</div>01</div>
+      <div class="circ circ-done"><div class="tt">02 · Goal</div>02</div>
+      <span class="pill pill-done"><span style="font-size:8px;opacity:.6;margin-right:2px">03</span>Where</span>
+      <span class="pill pill-active"><span style="font-size:8px;opacity:.6;margin-right:2px">04</span>Who</span>
+      <span class="pill"><span style="font-size:8px;opacity:.6;margin-right:2px">05</span>Features</span>
+      <div class="circ"><div class="tt">06 · Commercials</div>06</div>
+      <div class="circ"><div class="tt">07 · Competitors</div>07</div>
+    </div>
+
+    <!-- Layout sim with FAB -->
+    <div class="layout-sim" style="position:relative">
+      <div class="sim-left" style="width:100%">
+        <div class="sim-label">Form (full width — preview hidden)</div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w60"></div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w45"></div>
+      </div>
+      <!-- FAB bottom right -->
+      <div style="position:absolute; bottom:16px; right:16px;">
+        <button class="fab">▶ Preview</button>
+      </div>
+    </div>
+
+    <div class="concept-meta">
+      <div class="concept-tag">Concept 2</div>
+      <div class="concept-title">No preview toggle in the bar — floating FAB button instead</div>
+      <div class="concept-desc">Preview is triggered by a floating action button (bottom-right of the form panel). Works identically on desktop, tablet, and phone — FAB is always reachable. Tapping opens the preview as an overlay/drawer. Bar is maximally clean.</div>
+      <div class="tag-row">
+        <span class="tag-p">✓ Cleanest bar possible</span>
+        <span class="tag-p">✓ FAB always reachable on any screen size</span>
+        <span class="tag-c">✗ Side-by-side split harder to access (2 taps vs 1)</span>
+        <span class="tag-c">✗ FAB can cover form content</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ════════════ CONCEPT 3 ════════════ -->
+  <div class="sec-title">Concept 3 — Adaptive Layout Icon (auto-detects orientation)</div>
+  <div class="concept-card">
+    <div class="bar">
+      <div class="logo">COMPULOCKS</div>
+      <div class="bdiv"></div>
+      <span class="pname">One-Pager</span>
+      <div class="sp"></div>
+
+      <div class="ring-wrap" id="ring3" onclick="toggleRing('ring3')">
+        <svg viewBox="0 0 34 34">
+          <circle class="ring-bg" cx="17" cy="17" r="13"/>
+          <circle class="ring-fill" cx="17" cy="17" r="13"/>
+          <text class="ring-txt" x="17" y="21" text-anchor="middle">70%</text>
+        </svg>
+        <div class="ring-panel">
+          <div class="ring-panel-title">Section Status</div>
+          <div class="na-row"><span>Goal</span><button class="na-toggle">N/A</button></div>
+          <div class="na-row"><span>Where</span><button class="na-toggle active">✓ N/A</button></div>
+        </div>
+      </div>
+
+      <span class="ver">v0.3</span>
+      <div class="bdiv"></div>
+      <span class="btn-g">Save</span>
+
+      <div class="export-wrap" id="exp3">
+        <button class="btn-f" onclick="toggleExport('exp3')">Export ▾</button>
+        <div class="export-menu">
+          <div class="export-item"><span class="export-icon">↓</span>Download DOCX</div>
+          <div class="export-item"><span class="export-icon">↓</span>Download HTML</div>
+          <div class="export-item"><span class="export-icon">🖨</span>Print / PDF</div>
+          <div class="export-item publish"><span class="export-icon">✦</span>Publish</div>
+        </div>
+      </div>
+
+      <!-- single adaptive preview icon -->
+      <div class="dots-wrap" id="dots3">
+        <button class="dots-btn" onclick="toggleDots('dots3')" title="More options">···</button>
+        <div class="dots-menu">
+          <div class="dots-item"><span class="export-icon">⬛⬜</span>Side by side</div>
+          <div class="dots-item"><span class="export-icon">⬛<br style="display:none">⬜</span>Top / Bottom</div>
+          <div class="dots-item"><span class="export-icon">⬜</span>Form only</div>
+          <div class="dots-item"><span class="export-icon">▪</span>Preview only</div>
+          <div style="height:1px;background:rgba(255,255,255,0.07);margin:3px 0"></div>
+          <div class="dots-item"><span class="export-icon">⌂</span>Home</div>
+          <div class="dots-item"><span class="export-icon">↺</span>Reset form</div>
+          <div class="dots-item"><span class="export-icon">🕐</span>Version history</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-wrap">
+      <div class="circ circ-done"><div class="tt">01 · Product</div>01</div>
+      <div class="circ circ-done"><div class="tt">02 · Goal</div>02</div>
+      <span class="pill pill-done"><span style="font-size:8px;opacity:.6;margin-right:2px">03</span>Where</span>
+      <span class="pill pill-active"><span style="font-size:8px;opacity:.6;margin-right:2px">04</span>Who</span>
+      <span class="pill"><span style="font-size:8px;opacity:.6;margin-right:2px">05</span>Features</span>
+      <div class="circ"><div class="tt">06 · Commercials</div>06</div>
+      <div class="circ"><div class="tt">07 · Competitors</div>07</div>
+    </div>
+
+    <div class="layout-sim">
+      <div class="sim-left">
+        <div class="sim-label">Form</div>
+        <div class="sim-field w80"></div>
+        <div class="sim-field w60"></div>
+        <div class="sim-field w45"></div>
+        <div class="sim-field w80"></div>
+      </div>
+      <div class="drag-handle">
+        <div class="drag-dots"><div class="drag-dot"></div><div class="drag-dot"></div><div class="drag-dot"></div></div>
+      </div>
+      <div class="sim-right">Document Preview</div>
+    </div>
+
+    <div class="concept-meta">
+      <div class="concept-tag">Concept 3</div>
+      <div class="concept-title">Layout options collapsed into the ··· menu</div>
+      <div class="concept-desc">Preview layout modes (side-by-side, top-bottom, form only, preview only) live inside the ··· menu alongside Home, Reset, and Version History. Single overflow menu handles everything. Bar is the leanest of the three — just ring, Save, Export, ···.</div>
+      <div class="tag-row">
+        <span class="tag-p">✓ Fewest visible controls</span>
+        <span class="tag-p">✓ Layout switching still possible</span>
+        <span class="tag-c">✗ Preview mode switching requires menu open</span>
+        <span class="tag-c">✗ Less glanceable</span>
+      </div>
+    </div>
+  </div>
+
+  <p style="font-size:11px;color:rgba(255,255,255,0.25);margin-top:8px">
+    Click the rings, Export buttons, and ··· menus above — they're interactive.
+  </p>
+</div>
+
+<script>
+  function closeAll() {
+    document.querySelectorAll('.ring-wrap.open, .export-wrap.open, .dots-wrap.open')
+      .forEach(el => el.classList.remove('open'));
+  }
+
+  function toggleRing(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    closeAll();
+    if (!wasOpen) el.classList.add('open');
+  }
+  function toggleExport(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    closeAll();
+    if (!wasOpen) el.classList.add('open');
+  }
+  function toggleDots(id) {
+    const el = document.getElementById(id);
+    const wasOpen = el.classList.contains('open');
+    closeAll();
+    if (!wasOpen) el.classList.add('open');
+  }
+
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('.ring-wrap') &&
+        !e.target.closest('.export-wrap') &&
+        !e.target.closest('.dots-wrap')) {
+      closeAll();
+    }
+  });
+
+  // segmented preview toggle
+  document.querySelectorAll('.prev-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+      const group = this.closest('.preview-states');
+      group.querySelectorAll('.prev-btn').forEach(b => b.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+</script>
+</body>
+</html>

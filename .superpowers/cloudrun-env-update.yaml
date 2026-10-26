@@ -1,0 +1,26 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: mrd-producer
+spec:
+  template:
+    spec:
+      containers:
+      - env:
+        - name: BYPASS_AUTH
+          value: "true"
+        - name: AUTH_TRUST_HOST
+          value: "true"
+        - name: NEXTAUTH_URL
+          value: "https://mrd-producer-269404192985.us-central1.run.app"
+        - name: AUTH_SECRET
+          value: "cCqnudh7c3sSSi0oz+M23TWI8tCQA4Tfeae8aoHxde0="
+        - name: GOOGLE_API_KEY
+          value: "AIzaSyCkBrKAPBnb2RG07Tj-69M9CiB_O9dBQvM"
+        - name: POSTGRES_URL
+          value: "postgresql://neondb_owner:npg_skXSQm2Mrwh7@ep-silent-meadow-ani9gna7-pooler.c-6.us-east-1.aws.neon.tech/neondb?sslmode=require"
+        - name: NODE_ENV
+          value: "development"
+        ports:
+        - containerPort: 3080
+          name: http1

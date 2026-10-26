@@ -1,0 +1,1198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GCP Migration Plan — mrd-producer-webapp</title>
+  <style>
+    :root {
+      --brand: #1D1F4A;
+      --accent: #009966;
+      --accent-light: #e6f7f2;
+      --warn: #b45309;
+      --warn-bg: #fffbeb;
+      --surface: #f5f5f7;
+      --border: #dde1ea;
+      --code-bg: #1e2030;
+      --code-text: #c0caf5;
+      --text: #1a1a2e;
+      --muted: #5a607a;
+      --phase1: #1D1F4A;
+      --phase2: #0369a1;
+      --phase3: #6b7280;
+      --blocked: #dc2626;
+      --done: #059669;
+      --in-progress: #d97706;
+      --radius: 10px;
+      --font: 'Inter', 'Segoe UI', system-ui, sans-serif;
+      --mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--surface);
+    }
+
+    /* ── Header ── */
+    header {
+      background: var(--brand);
+      color: white;
+      padding: 36px 48px 32px;
+    }
+    header .eyebrow {
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.55);
+      margin-bottom: 8px;
+    }
+    header h1 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 6px;
+    }
+    header .subtitle {
+      font-size: 14px;
+      color: rgba(255,255,255,0.65);
+    }
+    header .meta {
+      margin-top: 20px;
+      display: flex;
+      gap: 24px;
+      flex-wrap: wrap;
+    }
+    header .meta-item {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+    header .meta-label {
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.45);
+    }
+    header .meta-value {
+      font-size: 13px;
+      font-weight: 500;
+      color: rgba(255,255,255,0.9);
+    }
+    header .meta-value.done { color: #6ee7b7; }
+    header .meta-value.blocked { color: #fca5a5; }
+    header .meta-value.in-progress { color: #fde68a; }
+
+    /* ── Layout ── */
+    .container {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 0 32px 64px;
+    }
+
+    /* ── Progress tracker ── */
+    .progress-track {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .progress-track h2 {
+      font-size: 12px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 16px;
+    }
+    .progress-items { display: flex; flex-direction: column; gap: 8px; }
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 13px;
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .dot-done { background: var(--done); }
+    .dot-blocked { background: var(--blocked); }
+    .dot-pending { background: #d1d5db; }
+    .dot-in-progress {
+      background: var(--in-progress);
+      box-shadow: 0 0 0 3px rgba(217,119,6,0.2);
+    }
+    .status-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+    .label-done { background: #d1fae5; color: var(--done); }
+    .label-blocked { background: #fee2e2; color: var(--blocked); }
+    .label-pending { background: #f3f4f6; color: #6b7280; }
+    .label-in-progress { background: #fef3c7; color: var(--warn); }
+    .progress-item-text { color: var(--text); }
+    .progress-item-text span { color: var(--muted); font-size: 12px; }
+
+    /* ── Phase nav ── */
+    .phase-nav {
+      display: flex;
+      gap: 0;
+      margin: 24px 0 0;
+      border-radius: var(--radius);
+      overflow: hidden;
+      border: 1px solid var(--border);
+      background: white;
+    }
+    .phase-nav-item {
+      flex: 1;
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-right: 1px solid var(--border);
+    }
+    .phase-nav-item:last-child { border-right: none; }
+    .phase-badge {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: white;
+      flex-shrink: 0;
+    }
+    .badge-1 { background: var(--phase1); }
+    .badge-2 { background: var(--phase2); }
+    .badge-3 { background: var(--phase3); }
+    .phase-nav-label { font-size: 12px; font-weight: 600; color: var(--text); line-height: 1.3; }
+    .phase-nav-sub { font-size: 11px; color: var(--muted); }
+    .phase-nav-status {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+
+    /* ── Section headings ── */
+    .section { margin-top: 40px; }
+    .phase-heading {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 20px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      border: 1px solid var(--border);
+      border-bottom: none;
+      color: white;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .phase-heading.p1 { background: var(--phase1); }
+    .phase-heading.p2 { background: var(--phase2); }
+    .phase-heading.p3 { background: var(--phase3); }
+    .phase-heading .phase-num {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      opacity: 0.65;
+    }
+    .phase-heading .phase-tag {
+      margin-left: auto;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background: rgba(255,255,255,0.15);
+    }
+    .phase-body {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 0 0 var(--radius) var(--radius);
+      overflow: hidden;
+    }
+
+    /* ── Steps ── */
+    .step {
+      padding: 20px 24px;
+      border-bottom: 1px solid var(--border);
+    }
+    .step:last-child { border-bottom: none; }
+    .step.step-done { background: #f9fffe; }
+    .step.step-blocked { background: #fff9f9; }
+    .step-header {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .step-num {
+      width: 22px; height: 22px;
+      border-radius: 50%;
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .step-num.done { background: #d1fae5; border-color: #6ee7b7; color: var(--done); }
+    .step-num.blocked { background: #fee2e2; border-color: #fca5a5; color: var(--blocked); }
+    .step-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .step-badge {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 4px;
+    }
+    .badge-done { background: #d1fae5; color: var(--done); }
+    .badge-blocked { background: #fee2e2; color: var(--blocked); }
+    .badge-waiting { background: #fef3c7; color: var(--warn); }
+    .step-desc {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 2px;
+      line-height: 1.5;
+    }
+    .step-content { padding-left: 34px; }
+
+    /* ── Code blocks ── */
+    pre {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 14px 16px;
+      overflow-x: auto;
+      margin: 10px 0;
+    }
+    code {
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.65;
+      color: var(--code-text);
+    }
+    .comment { color: #637182; }
+    .cmd { color: #7dcfff; }
+    .flag { color: #9ece6a; }
+    .val { color: #e0af68; }
+
+    p code, li code, td code {
+      background: #eef0f6;
+      color: #3d4577;
+      padding: 1px 5px;
+      border-radius: 4px;
+      font-size: 12px;
+    }
+
+    /* ── Notes ── */
+    .note {
+      display: flex;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 7px;
+      margin: 10px 0;
+      font-size: 12.5px;
+      line-height: 1.5;
+    }
+    .note-warn { background: var(--warn-bg); border-left: 3px solid var(--warn); color: var(--warn); }
+    .note-info { background: #eff6ff; border-left: 3px solid #3b82f6; color: #1d4ed8; }
+    .note-success { background: var(--accent-light); border-left: 3px solid var(--accent); color: #065f46; }
+    .note-blocked { background: #fff1f2; border-left: 3px solid var(--blocked); color: var(--blocked); }
+    .note-icon { font-size: 14px; flex-shrink: 0; margin-top: 1px; }
+
+    /* ── Checklists ── */
+    .checklist {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin: 10px 0;
+    }
+    .checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--text);
+    }
+    .checklist li.done { color: var(--muted); text-decoration: line-through; }
+    .checklist li::before { content: '☐'; color: var(--muted); flex-shrink: 0; font-size: 14px; line-height: 1.4; }
+    .checklist li.done::before { content: '✓'; color: var(--done); }
+
+    /* ── Tables ── */
+    table { width: 100%; border-collapse: collapse; font-size: 12.5px; margin: 10px 0; }
+    th {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 8px 12px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+    td { border: 1px solid var(--border); padding: 8px 12px; vertical-align: top; }
+    tr:nth-child(even) td { background: #fafafa; }
+
+    /* ── Arch diagram ── */
+    .arch-diagram {
+      background: var(--code-bg);
+      border-radius: 8px;
+      padding: 20px 24px;
+      font-family: var(--mono);
+      font-size: 12px;
+      line-height: 1.9;
+      color: #a9b1d6;
+      margin: 12px 0;
+      overflow-x: auto;
+    }
+    .arch-label { color: #7dcfff; font-weight: 700; }
+    .arch-service { color: #9ece6a; }
+    .arch-dim { color: #3d4163; }
+
+    /* ── Decisions ── */
+    .decisions {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .decisions h2 { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .decision-item {
+      display: flex;
+      gap: 12px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+    }
+    .decision-item:last-child { border-bottom: none; }
+    .decision-num {
+      width: 20px; height: 20px;
+      border-radius: 50%;
+      background: #fef3c7;
+      border: 1.5px solid #fbbf24;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 700; color: var(--warn);
+      flex-shrink: 0; margin-top: 1px;
+    }
+    .decision-num.resolved { background: #d1fae5; border-color: #6ee7b7; color: var(--done); }
+    .decision-text { color: var(--text); line-height: 1.5; }
+
+    /* ── Prereq card ── */
+    .prereq-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px 24px;
+      margin-top: 32px;
+    }
+    .prereq-card h2 { font-size: 14px; font-weight: 700; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+    .prereq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    /* ── IAM roles box ── */
+    .iam-box {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-radius: var(--radius);
+      padding: 16px 20px;
+      margin-top: 10px;
+    }
+    .iam-box h3 { font-size: 12px; font-weight: 700; color: var(--warn); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.06em; }
+    .iam-roles { display: flex; flex-direction: column; gap: 6px; }
+    .iam-role {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 12px;
+      padding: 6px 0;
+      border-bottom: 1px solid #fed7aa;
+    }
+    .iam-role:last-child { border-bottom: none; }
+    .iam-role-name { font-family: var(--mono); font-size: 11px; color: #9a3412; flex-shrink: 0; min-width: 280px; }
+    .iam-role-desc { color: var(--muted); line-height: 1.4; }
+    .iam-role-link { margin-left: auto; flex-shrink: 0; font-size: 11px; color: #3b82f6; text-decoration: none; }
+    .iam-role-link:hover { text-decoration: underline; }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Infrastructure Migration</div>
+  <h1>GCP Migration Plan</h1>
+  <div class="subtitle">mrd-producer-webapp &mdash; Vercel + Neon &rarr; Google Cloud Run + Cloud SQL</div>
+  <div class="meta">
+    <div class="meta-item">
+      <div class="meta-label">Last Updated</div>
+      <div class="meta-value">2026-06-04 (Session 2)</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Status</div>
+      <div class="meta-value in-progress">⏳ App Running on Cloud Run — DB Pending</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">GCP Project</div>
+      <div class="meta-value">r-and-d-489319</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Region</div>
+      <div class="meta-value">us-central1</div>
+    </div>
+    <div class="meta-item">
+      <div class="meta-label">Code Changes Required</div>
+      <div class="meta-value done">✓ None — lib/db-client.ts already uses pg</div>
+    </div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- Live progress tracker -->
+  <div class="progress-track" style="margin-top:32px;">
+    <h2>Session 1 — 2026-06-04 (Infrastructure + code prep)</h2>
+    <div class="progress-items">
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">gcloud auth login — authenticated as <code>ori@compulocks.com</code></span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">GCP project selected — <code>r-and-d-489319</code> (R And D, org: 20476042727)</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">All 7 required APIs enabled <span>(run, artifactregistry, secretmanager, sqladmin, iam, iamcredentials, cloudresourcemanager)</span></span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">Dockerfile, .dockerignore, next.config.js standalone output — already in repo ✓</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">deploy.yml updated — GCP Cloud Run job active, Vercel PR preview kept <span>(committed to main)</span></span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">gcp-migration/ docs 01–05 written and committed <span>(arch overview, setup guide, CI/CD, DB options, Google services)</span></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="progress-track" style="margin-top:16px;">
+    <h2>Session 2 — 2026-06-04 (Auth bypass + app running)</h2>
+    <div class="progress-items">
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text"><strong>OAuth removed</strong> — <code>lib/auth.ts</code> bypasses NextAuth; stub session returns <code>ori@compulocks.com</code>. Gated behind <code>BYPASS_AUTH=true</code> env var.</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text"><strong>DB graceful degradation</strong> — <code>lib/db-client.ts</code> returns empty rows (not throws) when <code>POSTGRES_URL</code> unset. App loads without Neon connected.</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text"><strong>Allowlist fix</strong> — <code>Dockerfile</code> now copies <code>config/</code> into standalone image. Previously <code>allowlist.txt</code> was missing from the container — all users saw only one-pager.</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">4 commits pushed to main — Cloud Build triggered via existing trigger <code>04ad2523</code></span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text"><strong>App confirmed working on Cloud Run</strong> — dashboard loads, all 7 features visible for ori@compulocks.com</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-done"></span>
+        <span class="status-label label-done">Done</span>
+        <span class="progress-item-text">Cloud Run env vars set: <code>BYPASS_AUTH=true</code>, <code>GOOGLE_API_KEY</code>, <code>AUTH_SECRET</code>. IAP disabled. <code>allUsers</code> invoker binding added.</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-pending"></span>
+        <span class="status-label label-pending">Pending</span>
+        <span class="progress-item-text">Cloud SQL instance + database + user creation</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-pending"></span>
+        <span class="status-label label-pending">Pending</span>
+        <span class="progress-item-text">Neon → Cloud SQL data migration</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-pending"></span>
+        <span class="status-label label-pending">Pending</span>
+        <span class="progress-item-text">Set <code>POSTGRES_URL</code> on Cloud Run (Cloud SQL Unix socket)</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-pending"></span>
+        <span class="status-label label-pending">Pending</span>
+        <span class="progress-item-text">Workload Identity Federation setup (GitHub Actions → GCP keyless auth)</span>
+      </div>
+      <div class="progress-item">
+        <span class="status-dot dot-pending"></span>
+        <span class="status-label label-pending">Pending</span>
+        <span class="progress-item-text">IAM permissions for Artifact Registry + Secret Manager (unblocked? recheck)</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Current state callout -->
+  <div class="note note-success" style="margin-top:24px; padding:16px 18px;">
+    <span class="note-icon">✅</span>
+    <div>
+      <strong>App is live on Cloud Run</strong> — <code>https://mrd-producer-269404192985.us-central1.run.app</code><br>
+      Dashboard loads, all 7 features visible. AI (Gemini) works. Save/load documents unavailable until Cloud SQL is connected.<br><br>
+      <strong>Next step:</strong> Create Cloud SQL instance and set <code>POSTGRES_URL</code> to restore document persistence.
+    </div>
+  </div>
+
+  <!-- Architecture -->
+  <div class="section">
+    <div class="arch-diagram">
+<span class="arch-label">GitHub Repo</span> (source of truth)
+    │
+    ├── <span style="color:#3d4163">PR branch ────────────────────────────&gt; Vercel Preview (unchanged, PR reviews)</span>
+    │
+    └── <span class="arch-label">main branch</span>
+            │
+            ▼
+    <span class="arch-service">GitHub Actions</span> (WIF keyless auth)
+            │
+            ├── docker build + push ──&gt; <span class="arch-service">Artifact Registry</span> (us-central1)
+            └── gcloud run deploy ───&gt; <span class="arch-service">Cloud Run</span> (us-central1)
+                                              │
+                          ┌───────────────────┼───────────────────┐
+                          ▼                   ▼                   ▼
+                 <span class="arch-service">Secret Manager</span>      <span class="arch-service">Cloud SQL</span>          <span class="arch-service">Google APIs</span>
+                 (env vars + keys)    (PostgreSQL 15)     (OAuth, Gemini, Drive)
+    </div>
+  </div>
+
+  <!-- Phase nav -->
+  <div class="phase-nav">
+    <div class="phase-nav-item">
+      <div class="phase-badge badge-1">1</div>
+      <div>
+        <div class="phase-nav-label">Staging Environment</div>
+        <div class="phase-nav-sub">Cloud Run + Cloud SQL (isolated clone)</div>
+      </div>
+      <span class="phase-nav-status label-in-progress" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:#fef3c7;color:var(--warn)">In Progress</span>
+    </div>
+    <div class="phase-nav-item">
+      <div class="phase-badge badge-2">2</div>
+      <div>
+        <div class="phase-nav-label">Production Cutover</div>
+        <div class="phase-nav-sub">Live data migration + CI/CD switch</div>
+      </div>
+      <span class="phase-nav-status" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:#f3f4f6;color:#6b7280">Pending</span>
+    </div>
+    <div class="phase-nav-item">
+      <div class="phase-badge badge-3">3</div>
+      <div>
+        <div class="phase-nav-label">Decommission</div>
+        <div class="phase-nav-sub">Cancel Vercel, archive Neon</div>
+      </div>
+      <span class="phase-nav-status" style="font-size:10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:2px 7px;border-radius:4px;background:#f3f4f6;color:#6b7280">Pending</span>
+    </div>
+  </div>
+
+  <!-- Prerequisites -->
+  <div class="prereq-card">
+    <h2>⚙ Prerequisites</h2>
+    <div class="prereq-grid">
+      <ul class="checklist">
+        <li class="done"><code>gcloud</code> CLI authenticated as <code>ori@compulocks.com</code></li>
+        <li class="done">Project set to <code>r-and-d-489319</code></li>
+        <li class="done">All 7 APIs enabled</li>
+        <li><code>gcloud auth configure-docker us-central1-docker.pkg.dev</code></li>
+        <li>Docker Desktop running locally</li>
+      </ul>
+      <ul class="checklist">
+        <li class="done">Dockerfile + .dockerignore in repo root</li>
+        <li class="done">next.config.js has <code>output: 'standalone'</code></li>
+        <li class="done">lib/db-client.ts uses <code>pg</code> (not @vercel/postgres)</li>
+        <li><code>.env.local</code> with all secrets accessible</li>
+        <li>Neon <code>POSTGRES_URL</code> for data export</li>
+      </ul>
+    </div>
+    <pre style="margin-top:14px;"><code><span class="comment"># Set once — reused in all commands below</span>
+<span class="cmd">export</span> <span class="flag">PROJECT_ID</span>=<span class="val">"r-and-d-489319"</span>
+<span class="cmd">export</span> <span class="flag">PROJECT_NUMBER</span>=<span class="val">"269404192985"</span>
+<span class="cmd">export</span> <span class="flag">REGION</span>=<span class="val">"us-central1"</span>
+<span class="cmd">export</span> <span class="flag">SERVICE_NAME</span>=<span class="val">"mrd-producer"</span>
+<span class="cmd">export</span> <span class="flag">SQL_INSTANCE</span>=<span class="val">"mrd-producer-db"</span>
+<span class="cmd">export</span> <span class="flag">REGISTRY</span>=<span class="val">"us-central1-docker.pkg.dev"</span></code></pre>
+  </div>
+
+  <!-- ── PHASE 1 ── -->
+  <div class="section">
+    <div class="phase-heading p1">
+      <span class="phase-num">Phase 1</span>
+      &mdash; GCP Staging Environment
+      <span class="phase-tag">In Progress — DB remaining</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="step step-done">
+        <div class="step-header">
+          <div class="step-num done">✓</div>
+          <div>
+            <div class="step-title">Enable required GCP APIs <span class="step-badge badge-done">Done</span></div>
+            <div class="step-desc">All 7 APIs enabled on <code>r-and-d-489319</code> — completed 2026-06-04.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="step step-done">
+        <div class="step-header">
+          <div class="step-num done">✓</div>
+          <div>
+            <div class="step-title">Code changes — OAuth bypass + DB degradation + allowlist fix <span class="step-badge badge-done">Done — committed to main</span></div>
+            <div class="step-desc">Three commits pushed 2026-06-04. Cloud Build rebuilt and deployed image.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <ul class="checklist">
+            <li class="done"><code>lib/auth.ts</code> — stub session (<code>ori@compulocks.com</code>) gated on <code>BYPASS_AUTH=true</code>. No OAuth credentials needed.</li>
+            <li class="done"><code>lib/db-client.ts</code> — returns <code>{ rows: [] }</code> instead of throwing when <code>POSTGRES_URL</code> unset. App loads gracefully.</li>
+            <li class="done"><code>Dockerfile</code> — <code>COPY config/ ./config</code> added. <code>allowlist.txt</code> now present in container; all 7 features visible.</li>
+          </ul>
+          <div class="note note-warn" style="margin-top:8px;">
+            <span class="note-icon">⚠</span>
+            <span>Restore <code>export const auth = nextAuth.auth</code> in <code>lib/auth.ts</code> and remove <code>BYPASS_AUTH</code> when real OAuth / IAP is configured.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step step-done">
+        <div class="step-header">
+          <div class="step-num done">✓</div>
+          <div>
+            <div class="step-title">Cloud Run env vars + IAP disable <span class="step-badge badge-done">Done</span></div>
+            <div class="step-desc">Set via <code>gcloud run services update</code>. App accessible without auth wall.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="comment"># Already run — for reference</span>
+<span class="cmd">gcloud</span> run services update mrd-producer <span class="flag">--region</span> us-central1 <span class="flag">--project</span> r-and-d-489319 \
+  <span class="flag">--update-env-vars</span> <span class="val">BYPASS_AUTH=true,GOOGLE_API_KEY=...,AUTH_SECRET=...</span>
+
+<span class="cmd">gcloud</span> run services add-iam-policy-binding mrd-producer <span class="flag">--region</span> us-central1 \
+  <span class="flag">--member</span>=<span class="val">"allUsers"</span> <span class="flag">--role</span>=<span class="val">"roles/run.invoker"</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">2b</div>
+          <div>
+            <div class="step-title">Grant IAM permissions <span class="step-badge badge-waiting">Recheck — may now be unblocked</span></div>
+            <div class="step-desc">
+              <code>ori@compulocks.com</code> previously lacked Artifact Registry Admin + IAM Admin. Recheck current IAM state — some steps may have been unblocked since session 1.
+            </div>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="iam-box">
+            <h3>Required roles (Option A — recommended)</h3>
+            <div class="iam-roles">
+              <div class="iam-role">
+                <span class="iam-role-name">roles/editor</span>
+                <span class="iam-role-desc">Create all resources (Cloud Run, Cloud SQL, Artifact Registry, Secret Manager). Does not include IAM management.</span>
+                <a class="iam-role-link" href="https://cloud.google.com/iam/docs/understanding-roles#editor" target="_blank">Docs ↗</a>
+              </div>
+              <div class="iam-role">
+                <span class="iam-role-name">roles/iam.securityAdmin</span>
+                <span class="iam-role-desc">Required to create service accounts, bind WIF providers, and grant roles to the GitHub Actions service account.</span>
+                <a class="iam-role-link" href="https://cloud.google.com/iam/docs/understanding-roles#iam.securityAdmin" target="_blank">Docs ↗</a>
+              </div>
+            </div>
+          </div>
+          <div class="note note-info" style="margin-top:10px;">
+            <span class="note-icon">ℹ</span>
+            <span>Full role-by-role guide with console navigation steps: <strong>.superpowers/gcp-roles-guide.html</strong></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Create Artifact Registry repository</div>
+            <div class="step-desc">Docker image repository where built containers are stored before deploy.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="cmd">gcloud</span> artifacts repositories create mrd-producer \
+  <span class="flag">--repository-format</span>=docker \
+  <span class="flag">--location</span>=$REGION \
+  <span class="flag">--description</span>=<span class="val">"MRD Producer app images"</span>
+
+<span class="comment"># Authenticate Docker</span>
+<span class="cmd">gcloud</span> auth configure-docker $REGISTRY <span class="flag">--quiet</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Build &amp; push Docker image</div>
+            <div class="step-desc">Uses the existing <code>Dockerfile</code> (Node 20 Alpine, multi-stage, standalone output). Run from repo root.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="cmd">docker</span> build \
+  -t $REGISTRY/$PROJECT_ID/mrd-producer/app:latest .
+
+<span class="cmd">docker</span> push \
+  $REGISTRY/$PROJECT_ID/mrd-producer/app:latest</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">5</div>
+          <div>
+            <div class="step-title">Create Cloud SQL instance (PostgreSQL 15)</div>
+            <div class="step-desc"><code>db-f1-micro</code> ~$10/mo — sufficient for R&D use. Upgrade to <code>db-g1-small</code> (~$50/mo) if response times degrade.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="cmd">gcloud</span> sql instances create $SQL_INSTANCE \
+  <span class="flag">--database-version</span>=POSTGRES_15 \
+  <span class="flag">--tier</span>=db-f1-micro \
+  <span class="flag">--region</span>=$REGION \
+  <span class="flag">--storage-auto-increase</span> \
+  <span class="flag">--backup-start-time</span>=02:00
+
+<span class="cmd">gcloud</span> sql databases create mrd_producer <span class="flag">--instance</span>=$SQL_INSTANCE
+
+<span class="cmd">gcloud</span> sql users create app_user \
+  <span class="flag">--instance</span>=$SQL_INSTANCE \
+  <span class="flag">--password</span>=<span class="val">STRONG_RANDOM_PASSWORD</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">6</div>
+          <div>
+            <div class="step-title">Migrate Neon schema + data to Cloud SQL</div>
+            <div class="step-desc">Export from Neon via pg_dump, import via Cloud SQL Auth Proxy tunnel.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="comment"># Export from Neon</span>
+<span class="cmd">pg_dump</span> "$NEON_POSTGRES_URL" \
+  <span class="flag">--no-owner</span> <span class="flag">--no-privileges</span> \
+  -f neon_dump.sql
+
+<span class="comment"># Open local tunnel to Cloud SQL (runs in background)</span>
+<span class="cmd">cloud-sql-proxy</span> <span class="flag">--port</span> 5433 \
+  $PROJECT_ID:$REGION:$SQL_INSTANCE &
+
+<span class="comment"># Import into Cloud SQL</span>
+<span class="cmd">psql</span> <span class="val">"host=127.0.0.1 port=5433 dbname=mrd_producer user=app_user password=YOUR_PASSWORD"</span> \
+  -f neon_dump.sql</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">7</div>
+          <div>
+            <div class="step-title">Populate Secret Manager</div>
+            <div class="step-desc">All env vars stored as secrets. Values sourced from <code>.env.local</code> / Vercel dashboard.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="comment"># Helper function</span>
+create_secret() {
+  <span class="cmd">gcloud</span> secrets create <span class="val">"$1"</span> <span class="flag">--replication-policy</span>=automatic
+  echo -n <span class="val">"$2"</span> | <span class="cmd">gcloud</span> secrets versions add <span class="val">"$1"</span> <span class="flag">--data-file</span>=-
+}
+
+create_secret GOOGLE_API_KEY        <span class="val">"..."</span>
+create_secret GOOGLE_SEARCH_ENGINE_ID <span class="val">"..."</span>
+create_secret GOOGLE_CLIENT_ID      <span class="val">"..."</span>
+create_secret GOOGLE_CLIENT_SECRET  <span class="val">"..."</span>
+create_secret AUTH_SECRET           <span class="val">"..."</span>
+create_secret ANTHROPIC_API_KEY     <span class="val">"..."</span>
+create_secret OPENAI_API_KEY        <span class="val">"..."</span>
+create_secret ADMIN_EMAILS          <span class="val">"ori@compulocks.com"</span>
+create_secret ALLOWED_RD_EMAILS     <span class="val">"..."</span>
+
+<span class="comment"># POSTGRES_URL uses Cloud SQL Unix socket — NOT the Neon TCP URL</span>
+create_secret POSTGRES_URL \
+  <span class="val">"postgres://app_user:PASSWORD@/mrd_producer?host=/cloudsql/$PROJECT_ID:$REGION:$SQL_INSTANCE"</span>
+
+<span class="comment"># Grant Cloud Run service account access to all secrets</span>
+SA="${PROJECT_NUMBER}-compute@developer.gserviceaccount.com"
+for SECRET in GOOGLE_API_KEY GOOGLE_SEARCH_ENGINE_ID GOOGLE_CLIENT_ID \
+              GOOGLE_CLIENT_SECRET AUTH_SECRET POSTGRES_URL \
+              ANTHROPIC_API_KEY OPENAI_API_KEY ADMIN_EMAILS ALLOWED_RD_EMAILS; do
+  <span class="cmd">gcloud</span> secrets add-iam-policy-binding $SECRET \
+    <span class="flag">--member</span>=<span class="val">"serviceAccount:$SA"</span> \
+    <span class="flag">--role</span>=<span class="val">"roles/secretmanager.secretAccessor"</span>
+done
+
+<span class="comment"># Also grant Cloud SQL access to Cloud Run service account</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding $PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"serviceAccount:$SA"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/cloudsql.client"</span></code></pre>
+          <div class="note note-warn">
+            <span class="note-icon">⚠</span>
+            <span><strong>Critical:</strong> <code>POSTGRES_URL</code> must use the Unix socket path <code>?host=/cloudsql/PROJECT:REGION:INSTANCE</code> — not the Neon TCP URL. Cloud Run routes this through the Auth Proxy automatically via <code>--add-cloudsql-instances</code>.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">8</div>
+          <div>
+            <div class="step-title">Set up Workload Identity Federation (GitHub Actions → GCP)</div>
+            <div class="step-desc">Keyless auth — no long-lived service account key stored in GitHub secrets.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="comment"># Create service account for GitHub Actions</span>
+<span class="cmd">gcloud</span> iam service-accounts create github-actions-deploy \
+  <span class="flag">--project</span>=$PROJECT_ID \
+  <span class="flag">--display-name</span>=<span class="val">"GitHub Actions Deploy"</span>
+
+<span class="comment"># Grant roles</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding $PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"serviceAccount:github-actions-deploy@$PROJECT_ID.iam.gserviceaccount.com"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/run.admin"</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding $PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"serviceAccount:github-actions-deploy@$PROJECT_ID.iam.gserviceaccount.com"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/artifactregistry.writer"</span>
+<span class="cmd">gcloud</span> projects add-iam-policy-binding $PROJECT_ID \
+  <span class="flag">--member</span>=<span class="val">"serviceAccount:github-actions-deploy@$PROJECT_ID.iam.gserviceaccount.com"</span> \
+  <span class="flag">--role</span>=<span class="val">"roles/iam.serviceAccountUser"</span>
+
+<span class="comment"># Create WIF pool + provider</span>
+<span class="cmd">gcloud</span> iam workload-identity-pools create github-pool \
+  <span class="flag">--project</span>=$PROJECT_ID <span class="flag">--location</span>=global \
+  <span class="flag">--display-name</span>=<span class="val">"GitHub Actions Pool"</span>
+
+<span class="cmd">gcloud</span> iam workload-identity-pools providers create-oidc github-provider \
+  <span class="flag">--project</span>=$PROJECT_ID <span class="flag">--location</span>=global \
+  <span class="flag">--workload-identity-pool</span>=github-pool \
+  <span class="flag">--attribute-mapping</span>=<span class="val">"google.subject=assertion.sub,attribute.repository=assertion.repository"</span> \
+  <span class="flag">--issuer-uri</span>=<span class="val">"https://token.actions.githubusercontent.com"</span>
+
+<span class="comment"># Bind SA to GitHub repo (replace YOUR_GITHUB_ORG)</span>
+<span class="cmd">gcloud</span> iam service-accounts add-iam-policy-binding \
+  github-actions-deploy@$PROJECT_ID.iam.gserviceaccount.com \
+  <span class="flag">--project</span>=$PROJECT_ID \
+  <span class="flag">--role</span>=<span class="val">"roles/iam.workloadIdentityUser"</span> \
+  <span class="flag">--member</span>=<span class="val">"principalSet://iam.googleapis.com/projects/$PROJECT_NUMBER/locations/global/workloadIdentityPools/github-pool/attribute.repository/YOUR_GITHUB_ORG/mrd-producer-webapp"</span>
+
+<span class="comment"># Get WIF provider name → save as WIF_PROVIDER in GitHub secrets</span>
+<span class="cmd">gcloud</span> iam workload-identity-pools providers describe github-provider \
+  <span class="flag">--project</span>=$PROJECT_ID <span class="flag">--location</span>=global \
+  <span class="flag">--workload-identity-pool</span>=github-pool <span class="flag">--format</span>=<span class="val">"value(name)"</span></code></pre>
+          <div class="note note-info">
+            <span class="note-icon">ℹ</span>
+            <span>After this, add 5 GitHub secrets: <code>WIF_PROVIDER</code>, <code>WIF_SERVICE_ACCOUNT</code> (<code>github-actions-deploy@r-and-d-489319.iam.gserviceaccount.com</code>), <code>GCP_PROJECT_ID</code> (<code>r-and-d-489319</code>), <code>GCP_REGION</code> (<code>us-central1</code>), <code>GCP_ARTIFACT_REGISTRY</code> (<code>us-central1-docker.pkg.dev</code>). The deploy.yml is already written and waiting.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">9</div>
+          <div>
+            <div class="step-title">Deploy to Cloud Run</div>
+            <div class="step-desc">First manual deploy — CI/CD takes over after WIF is configured.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="cmd">gcloud</span> run deploy $SERVICE_NAME \
+  <span class="flag">--image</span>=$REGISTRY/$PROJECT_ID/mrd-producer/app:latest \
+  <span class="flag">--region</span>=$REGION \
+  <span class="flag">--platform</span>=managed \
+  <span class="flag">--allow-unauthenticated</span> \
+  <span class="flag">--port</span>=3080 \
+  <span class="flag">--memory</span>=512Mi \
+  <span class="flag">--cpu</span>=1 \
+  <span class="flag">--max-instances</span>=10 \
+  <span class="flag">--concurrency</span>=80 \
+  <span class="flag">--add-cloudsql-instances</span>=$PROJECT_ID:$REGION:$SQL_INSTANCE \
+  <span class="flag">--set-secrets</span>=GOOGLE_API_KEY=GOOGLE_API_KEY:latest,GOOGLE_SEARCH_ENGINE_ID=GOOGLE_SEARCH_ENGINE_ID:latest,GOOGLE_CLIENT_ID=GOOGLE_CLIENT_ID:latest,GOOGLE_CLIENT_SECRET=GOOGLE_CLIENT_SECRET:latest,AUTH_SECRET=AUTH_SECRET:latest,POSTGRES_URL=POSTGRES_URL:latest,ANTHROPIC_API_KEY=ANTHROPIC_API_KEY:latest,OPENAI_API_KEY=OPENAI_API_KEY:latest,ADMIN_EMAILS=ADMIN_EMAILS:latest,ALLOWED_RD_EMAILS=ALLOWED_RD_EMAILS:latest
+
+<span class="comment"># Get the deployed URL</span>
+<span class="cmd">gcloud</span> run services describe $SERVICE_NAME \
+  <span class="flag">--region</span>=$REGION <span class="flag">--format</span>=<span class="val">'value(status.url)'</span></code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">10</div>
+          <div>
+            <div class="step-title">Update Google OAuth client</div>
+            <div class="step-desc">Add Cloud Run URL as authorized redirect URI — required before testing login.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <ol style="padding-left:18px; font-size:13px; color:var(--text); line-height:2;">
+            <li>Go to <strong>Google Cloud Console → APIs &amp; Services → Credentials</strong></li>
+            <li>Click the OAuth 2.0 Client ID matching <code>GOOGLE_CLIENT_ID</code></li>
+            <li>Under <strong>Authorized redirect URIs</strong>, add:<br>
+              <code>https://YOUR_CLOUDRUN_URL/api/auth/callback/google</code></li>
+            <li>Keep the existing Vercel URI during transition — remove after cutover</li>
+            <li>Save</li>
+          </ol>
+          <div class="note note-warn">
+            <span class="note-icon">⚠</span>
+            <span>If the OAuth client is under a personal account (not org GCP project), it must be re-created under the org project before go-live — otherwise login will break on the new domain.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">11</div>
+          <div>
+            <div class="step-title">Smoke test</div>
+            <div class="step-desc">Phase 1 is complete when all four checks pass.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <ul class="checklist">
+            <li>Open Cloud Run URL → app loads (Next.js renders)</li>
+            <li>Sign in with Google → OAuth redirects, session created</li>
+            <li>Open <code>/one-pager</code> → create draft, save, reload → data persists (Cloud SQL round-trip)</li>
+            <li>Open <code>/mrd</code> → run a generation → AI response returns (Gemini key works)</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PHASE 2 ── -->
+  <div class="section">
+    <div class="phase-heading p2">
+      <span class="phase-num">Phase 2</span>
+      &mdash; Production Cutover
+      <span class="phase-tag">After Phase 1 validated</span>
+    </div>
+    <div class="phase-body">
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">1</div>
+          <div>
+            <div class="step-title">Final Neon → Cloud SQL data migration</div>
+            <div class="step-desc">Take a final pg_dump from Neon and import into Cloud SQL. Row counts must match.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <pre><code><span class="cmd">pg_dump</span> "$NEON_POSTGRES_URL" <span class="flag">--no-owner</span> <span class="flag">--no-privileges</span> -f prod_final_dump.sql
+<span class="cmd">psql</span> <span class="val">"host=127.0.0.1 port=5433 dbname=mrd_producer user=app_user password=..."</span> -f prod_final_dump.sql</code></pre>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">2</div>
+          <div>
+            <div class="step-title">Activate GitHub Actions CI/CD pipeline</div>
+            <div class="step-desc">The <code>deploy.yml</code> is already written. Just add the 5 GitHub secrets and every push to <code>main</code> deploys to Cloud Run automatically.</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <table>
+            <thead><tr><th>GitHub Secret</th><th>Value</th></tr></thead>
+            <tbody>
+              <tr><td><code>GCP_PROJECT_ID</code></td><td><code>r-and-d-489319</code></td></tr>
+              <tr><td><code>GCP_REGION</code></td><td><code>us-central1</code></td></tr>
+              <tr><td><code>GCP_ARTIFACT_REGISTRY</code></td><td><code>us-central1-docker.pkg.dev</code></td></tr>
+              <tr><td><code>WIF_PROVIDER</code></td><td>Output from Phase 1 Step 8</td></tr>
+              <tr><td><code>WIF_SERVICE_ACCOUNT</code></td><td><code>github-actions-deploy@r-and-d-489319.iam.gserviceaccount.com</code></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">3</div>
+          <div>
+            <div class="step-title">Update OAuth redirect URI to production Cloud Run URL</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <div class="note note-warn">
+            <span class="note-icon">⚠</span>
+            <span>Add the production Cloud Run URL to Authorized Redirect URIs in the OAuth client. Remove the Vercel URI once cutover is confirmed.</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-header">
+          <div class="step-num">4</div>
+          <div>
+            <div class="step-title">Production verification</div>
+          </div>
+        </div>
+        <div class="step-content">
+          <ul class="checklist">
+            <li>App accessible at Cloud Run URL</li>
+            <li>Google OAuth login works on production domain</li>
+            <li>Row counts match between Neon export and Cloud SQL</li>
+            <li>Push to <code>main</code> → GitHub Actions deploys to Cloud Run automatically</li>
+            <li>PR branches → Vercel preview still works</li>
+            <li>Vercel dashboard shows 0 production deploys</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── PHASE 3 ── -->
+  <div class="section">
+    <div class="phase-heading p3">
+      <span class="phase-num">Phase 3</span>
+      &mdash; Decommission
+      <span class="phase-tag">After Phase 2 stable</span>
+    </div>
+    <div class="phase-body">
+      <div class="step">
+        <div class="step-content" style="padding-left:24px; padding-top:20px; padding-bottom:20px;">
+          <ul class="checklist">
+            <li>Export final backup from Neon → archive locally for 30 days</li>
+            <li>Archive / delete Neon project</li>
+            <li>Cancel Vercel Hobby subscription (or keep free tier for PR previews only)</li>
+            <li>Remove <code>VERCEL_TOKEN</code>, <code>VERCEL_ORG_ID</code>, <code>VERCEL_PROJECT_ID</code> from GitHub secrets if Vercel fully decommissioned</li>
+            <li>Update <code>CLAUDE.md</code>: hosting = Cloud Run, DB = Cloud SQL (us-central1)</li>
+            <li>Update <code>MEMORY.md</code> project state</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Secrets inventory -->
+  <div class="section">
+    <div style="background:white;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;">
+      <h2 style="font-size:14px;font-weight:700;margin-bottom:14px;">Secret Manager — Env Vars Inventory</h2>
+      <table>
+        <thead>
+          <tr><th>Secret Name</th><th>Source</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td><code>GOOGLE_API_KEY</code></td><td>Vercel dashboard</td><td>Gemini + Custom Search</td></tr>
+          <tr><td><code>GOOGLE_SEARCH_ENGINE_ID</code></td><td>Vercel dashboard</td><td>Custom Search Engine ID</td></tr>
+          <tr><td><code>GOOGLE_CLIENT_ID</code></td><td>Vercel dashboard</td><td>OAuth 2.0 Client ID</td></tr>
+          <tr><td><code>GOOGLE_CLIENT_SECRET</code></td><td>Vercel dashboard</td><td>OAuth 2.0 Client Secret</td></tr>
+          <tr><td><code>AUTH_SECRET</code></td><td>Vercel dashboard</td><td>NextAuth JWT signing key</td></tr>
+          <tr><td><code>POSTGRES_URL</code></td><td><em>New value</em></td><td>Cloud SQL Unix socket — <strong>not</strong> the Neon TCP URL</td></tr>
+          <tr><td><code>ANTHROPIC_API_KEY</code></td><td>Vercel dashboard</td><td>Claude fallback provider</td></tr>
+          <tr><td><code>OPENAI_API_KEY</code></td><td>Vercel dashboard</td><td>OpenAI fallback provider</td></tr>
+          <tr><td><code>ADMIN_EMAILS</code></td><td>.env.local</td><td>Default: <code>ori@compulocks.com</code></td></tr>
+          <tr><td><code>ALLOWED_RD_EMAILS</code></td><td>Vercel dashboard</td><td>Feature gate allowlist</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Open decisions -->
+  <div class="decisions">
+    <h2>🟡 Open Decisions</h2>
+    <div class="decision-item">
+      <div class="decision-num resolved">✓</div>
+      <div class="decision-text"><strong>GCP Project:</strong> Using existing org project <code>r-and-d-489319</code> (R And D). Billing confirmed active.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num resolved">✓</div>
+      <div class="decision-text"><strong>Region:</strong> <code>us-central1</code> confirmed.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num resolved">✓</div>
+      <div class="decision-text"><strong>CI/CD auth method:</strong> Workload Identity Federation confirmed. deploy.yml already written.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num resolved">✓</div>
+      <div class="decision-text"><strong>Database:</strong> Cloud SQL (PostgreSQL 15) confirmed. lib/db-client.ts already uses pg — no code changes needed.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num">4</div>
+      <div class="decision-text"><strong>OAuth client ownership:</strong> Verify that <code>GOOGLE_CLIENT_ID</code> is registered under the org GCP project, not a personal account. Must be resolved before Phase 2 go-live.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num">5</div>
+      <div class="decision-text"><strong>Vercel after cutover:</strong> Keep free tier for PR previews, or fully decommission? Recommended: keep for PR previews.</div>
+    </div>
+    <div class="decision-item">
+      <div class="decision-num">6</div>
+      <div class="decision-text"><strong>Custom domain:</strong> Using Cloud Run auto-URL for now. Custom domain (e.g. <code>mrd.compulocks.com</code>) can be mapped later via <code>gcloud run domain-mappings create</code>.</div>
+    </div>
+  </div>
+
+  <footer>
+    <span>mrd-producer-webapp &mdash; GCP Migration Plan &mdash; Updated 2026-06-04 (Session 2)</span>
+    <span>Project: r-and-d-489319 &mdash; Region: us-central1 &mdash; Status: App running, DB pending</span>
+  </footer>
+
+</div>
+</body>
+</html>
