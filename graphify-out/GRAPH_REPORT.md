@@ -1,13 +1,18 @@
-# Graph Report - C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp  (2026-05-25)
+# Graph Report - confident-haibt-67420b  (2026-07-13)
 
 ## Corpus Check
-- 240 files · ~725,676 words
+- 333 files · ~424,889 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 814 nodes · 1050 edges · 155 communities detected
-- Extraction: 85% EXTRACTED · 15% INFERRED · 0% AMBIGUOUS · INFERRED: 159 edges (avg confidence: 0.8)
+- 2806 nodes · 4341 edges · 190 communities (146 shown, 44 thin omitted)
+- Extraction: 99% EXTRACTED · 1% INFERRED · 0% AMBIGUOUS · INFERRED: 31 edges (avg confidence: 0.8)
 - Token cost: 0 input · 0 output
+
+## Graph Freshness
+- Built from commit: `f4399f3f`
+- Run `git rev-parse HEAD` and compare to check if the graph is stale.
+- Run `graphify update .` after code changes (no API cost).
 
 ## Community Hubs (Navigation)
 - [[_COMMUNITY_Community 0|Community 0]]
@@ -165,869 +170,639 @@
 - [[_COMMUNITY_Community 152|Community 152]]
 - [[_COMMUNITY_Community 153|Community 153]]
 - [[_COMMUNITY_Community 154|Community 154]]
+- [[_COMMUNITY_Community 155|Community 155]]
+- [[_COMMUNITY_Community 156|Community 156]]
+- [[_COMMUNITY_Community 157|Community 157]]
+- [[_COMMUNITY_Community 158|Community 158]]
+- [[_COMMUNITY_Community 159|Community 159]]
+- [[_COMMUNITY_Community 160|Community 160]]
+- [[_COMMUNITY_Community 161|Community 161]]
+- [[_COMMUNITY_Community 162|Community 162]]
+- [[_COMMUNITY_Community 163|Community 163]]
+- [[_COMMUNITY_Community 164|Community 164]]
+- [[_COMMUNITY_Community 165|Community 165]]
+- [[_COMMUNITY_Community 166|Community 166]]
+- [[_COMMUNITY_Community 167|Community 167]]
+- [[_COMMUNITY_Community 168|Community 168]]
+- [[_COMMUNITY_Community 169|Community 169]]
+- [[_COMMUNITY_Community 170|Community 170]]
+- [[_COMMUNITY_Community 171|Community 171]]
+- [[_COMMUNITY_Community 172|Community 172]]
+- [[_COMMUNITY_Community 173|Community 173]]
+- [[_COMMUNITY_Community 174|Community 174]]
+- [[_COMMUNITY_Community 175|Community 175]]
+- [[_COMMUNITY_Community 176|Community 176]]
+- [[_COMMUNITY_Community 177|Community 177]]
+- [[_COMMUNITY_Community 179|Community 179]]
+- [[_COMMUNITY_Community 180|Community 180]]
+- [[_COMMUNITY_Community 181|Community 181]]
+- [[_COMMUNITY_Community 182|Community 182]]
+- [[_COMMUNITY_Community 187|Community 187]]
 
 ## God Nodes (most connected - your core abstractions)
-1. `POST()` - 62 edges
-2. `GET()` - 22 edges
-3. `QualityReviewer` - 16 edges
-4. `ProviderChain` - 15 edges
-5. `TechnicalSectionGenerator` - 14 edges
-6. `EnsembleMerger` - 13 edges
-7. `MRDOrchestrator` - 11 edges
-8. `MarketSectionGenerator` - 10 edges
-9. `StrategySectionGenerator` - 10 edges
-10. `parseTier1Html()` - 10 edges
+1. `ExecutionContext` - 75 edges
+2. `BriefField` - 58 edges
+3. `BaseAgent` - 46 edges
+4. `ValidationResult` - 43 edges
+5. `ProviderCapabilities` - 42 edges
+6. `SectionGeneratorInput` - 38 edges
+7. `createExecutionContext()` - 28 edges
+8. `ProviderChain` - 21 edges
+9. `AIProvider` - 21 edges
+10. `GroundedSource` - 19 edges
 
 ## Surprising Connections (you probably didn't know these)
-- `POST()` --calls--> `createDocument()`  [INFERRED]
-  C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\app\api\workflow\route.ts → C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\lib\db.ts
-- `POST()` --calls--> `createPipelineRun()`  [INFERRED]
-  C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\app\api\workflow\route.ts → C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\lib\prd-db.ts
-- `POST()` --calls--> `updatePipelineRunStatus()`  [INFERRED]
-  C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\app\api\workflow\route.ts → C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\lib\prd-db.ts
-- `executeWorkflow()` --calls--> `POST()`  [INFERRED]
-  C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\agent\workflow.ts → C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\app\api\workflow\route.ts
-- `executeParseRequest()` --calls--> `sanitizeMRDInput()`  [INFERRED]
-  C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\agent\workflow.ts → C:\Users\OriShavit\Documents\GitHub\mrd-producer-webapp\lib\sanitize.ts
+- `Props` --references--> `PRDFrame`  [EXTRACTED]
+  app/prd/components/PRDViewer.tsx → agent/agents/prd/types.ts
+- `POST()` --calls--> `createExecutionContext()`  [INFERRED]
+  app/api/brief/expand/route.ts → agent/core/execution-context.ts
+- `POST()` --calls--> `sanitizeInput()`  [INFERRED]
+  app/api/brief/expand/route.ts → lib/sanitize.ts
+- `GET()` --calls--> `getDocument()`  [INFERRED]
+  app/api/documents/[id]/export/route.ts → lib/db.ts
+- `GET()` --calls--> `hasFeature()`  [INFERRED]
+  app/api/documents/[id]/export/route.ts → lib/feature-gate.ts
 
-## Communities
+## Import Cycles
+- None detected.
+
+## Communities (190 total, 44 thin omitted)
 
 ### Community 0 - "Community 0"
-Cohesion: 0.04
-Nodes (39): isAdmin(), getEnvironments(), getIndustries(), getRolesForIndustries(), loadIndustryRolesConfig(), loadStandardFeatures(), banUser(), getPool() (+31 more)
+Cohesion: 0.09
+Nodes (23): ConsolidatedResearchData, ResearchOrchestratorAgent, ResearchOrchestratorOutput, GroundedSource, BaseResearcherAgent, ResearchInput, ResearchOutput, CompetitorInfo (+15 more)
 
 ### Community 1 - "Community 1"
-Cohesion: 0.05
-Nodes (28): assertNotBanned(), bannedResponse(), BannedUserError, isUserBanned(), createHorizontalRule(), escapeHtml(), formatInlineHtml(), generateDocx() (+20 more)
+Cohesion: 0.09
+Nodes (13): GeminiProvider, OpenAIProvider, createDefaultProviderChain(), DEFAULT_CONFIG, ProviderChain, resetProviderChain(), MockProvider, AIProvider (+5 more)
 
 ### Community 2 - "Community 2"
-Cohesion: 0.06
-Nodes (16): createFailureResult(), createFallbackContext(), createMetadata(), execute(), executeSequence(), executeWithTimeout(), tryFallback(), validateInput() (+8 more)
+Cohesion: 0.04
+Nodes (48): [0.1.0] - 2026-02-02, [0.2.0] - 2026-02-03, [0.3.0] - 2026-02-03, [1.0.0] - 2026-02-23, [1.0.1] - 2026-02-26, [1.1.0] - 2026-03-22, [1.2.0] - 2026-04-06, [1.3.0] - 2026-04-23 (+40 more)
 
 ### Community 3 - "Community 3"
-Cohesion: 0.08
-Nodes (32): conductResearch(), extractSearchQueries(), extractSources(), generateText(), generateWithSearch(), getClient(), isGeminiAvailable(), MRDGeneratorAgent (+24 more)
+Cohesion: 0.04
+Nodes (48): browserslist, dependencies, @anthropic-ai/sdk, @auth/core, cheerio, core-js, docx, google-auth-library (+40 more)
 
 ### Community 4 - "Community 4"
-Cohesion: 0.11
-Nodes (3): EnsembleMerger, EnsembleReviewer, GenerationOrchestrator
+Cohesion: 0.13
+Nodes (34): buildUserPrompt(), FeatureCategory, POST(), SuggestFeaturesRequest, POST(), buildUserPrompt(), FeatureCategory, POST() (+26 more)
 
 ### Community 5 - "Community 5"
-Cohesion: 0.12
-Nodes (4): getMockResearchResults(), MRDOrchestrator, ParallelExecutor, ResearchOrchestratorAgent
+Cohesion: 0.05
+Nodes (43): 10. Observability, 1. Overview, 2. Core Interfaces, 3. Agent Catalog, 4.1 Gap Analyzer Agent, 4.2 Research Agents, 4.3 MRD Generator Agent, 4.4 Research Agents (+35 more)
 
 ### Community 6 - "Community 6"
-Cohesion: 0.1
-Nodes (7): buildSystemPrompt(), calculateConfidence(), executeCore(), parseJsonFromText(), CompetitorResearcherAgent, PricingResearcherAgent, TrendResearcherAgent
+Cohesion: 0.05
+Nodes (42): 1. BatchExtractionAgent Tests, 1. CLAUDE.md, 1. Component Tests Before Components (TDD), 2. Component Tests (4 files), 2. Jest Multi-Project Configuration, 2. MEMORY.md, 3. AI Integration Tests Require Keys, 3. Completion Document (+34 more)
 
 ### Community 7 - "Community 7"
-Cohesion: 0.15
-Nodes (8): buildClarificationContext(), buildGenerationPrompt(), buildResearchContext(), buildSystemPrompt(), executeCore(), parseResponse(), validateSections(), TechnicalSectionGenerator
+Cohesion: 0.05
+Nodes (42): 10. Risks & Mitigations, 11. Implementation Timeline, 12. Dependencies, 13. Open Questions, 1. Executive Summary, 2. Problem Statement, 3. Users & Stakeholders, 4.1 Six-Field Structured Input (+34 more)
 
 ### Community 8 - "Community 8"
-Cohesion: 0.14
-Nodes (5): handleEvent(), startPipeline(), createDefaultProviderChain(), getProviderChain(), ProviderChain
+Cohesion: 0.05
+Nodes (41): Accessibility, API Integration, Automated Testing (Future), Brief Helper V2: Phases 7-9 Implementation Complete, Component Architecture, Conclusion, CSS Architecture, CSS Modules (+33 more)
 
 ### Community 9 - "Community 9"
-Cohesion: 0.16
-Nodes (14): GapAnalyzerAgent, analyzeGaps(), buildAssumptions(), buildClarifyReasoning(), buildGapsToFlag(), buildProceedReasoning(), generateQuestions(), makeDecision() (+6 more)
+Cohesion: 0.05
+Nodes (40): 1. User Flow, 2. Conversational AI, 3. Field-Specific Contexts, 4. Suggestion Parsing, 5. Bullet Point Merging, Acceptance Criteria Status, Accessibility, Actions (+32 more)
 
 ### Community 10 - "Community 10"
-Cohesion: 0.16
-Nodes (13): CompetitorOrchestratorAgent, isTier1ResultUsable(), scrape(), filterProductPhotos(), extractBodyText(), extractDescription(), extractImages(), extractOgImage() (+5 more)
+Cohesion: 0.12
+Nodes (30): isTier1ResultUsable(), scrape(), EXCLUDED_ALT_PATTERNS, EXCLUDED_PATH_PATTERNS, filterProductPhotos(), isExcludedByAlt(), isExcludedByUrl(), isProductPhoto() (+22 more)
 
 ### Community 11 - "Community 11"
-Cohesion: 0.18
-Nodes (1): QualityReviewer
+Cohesion: 0.05
+Nodes (39): 1. Always Check Availability, 2. Use Provider Chain for Reliability, 3. Prefer Search Grounding for Research, 4. Handle Token Limits, 5. Log Fallbacks for Monitoring, Adding a New Provider, AI Providers Guide, Basic Usage (+31 more)
 
 ### Community 12 - "Community 12"
-Cohesion: 0.21
-Nodes (12): extractProductName(), extractTargetPrice(), extractTechnicalRequirements(), extractUseCases(), generateRequestId(), inferProductCategory(), inferTargetMarkets(), ParserAgent (+4 more)
+Cohesion: 0.05
+Nodes (39): 1. User Flow, 2. Product Pattern Database, 3. Field-Specific Patterns, 4. Gap Detection Logic, 5. Priority System, Acceptance Criteria Status, Accessibility, Actions (+31 more)
 
 ### Community 13 - "Community 13"
-Cohesion: 0.15
-Nodes (7): makeContext(), makeContext(), createExecutionContext(), createTestExecutionContext(), ExecutionContextImpl, generateRequestId(), generateTraceId()
+Cohesion: 0.05
+Nodes (38): 1. Brief Field Container, 1. Token Files, 2. Component CSS Modules, 2. Smart Text Box, 3. Gap Suggestion Box, 3. React Component Pattern, 4. AI Expansion Panel, 5. Field Status Badge (+30 more)
 
 ### Community 14 - "Community 14"
-Cohesion: 0.27
-Nodes (11): addSortIndicators(), enableUI(), getNthColumn(), getTable(), getTableBody(), getTableHeader(), loadColumns(), loadData() (+3 more)
+Cohesion: 0.05
+Nodes (37): 1. **01_parse_request.md**, 1. **Reference Library Represents Production Methodology**, 2. **02_gap_analysis.md**, 2. **Gap Analysis is the Differentiator**, 3. **04_research.md**, 3. **Document Formatting Matters**, 4. **04_generate_mrd.md / 05_generate_mrd.md**, 4. **Competitor Intelligence is Structured** (+29 more)
 
 ### Community 15 - "Community 15"
-Cohesion: 0.23
-Nodes (9): buildUserPrompt(), CompetitorAnalysisAgent, parseCompetitorJson(), stripMarkdownJson(), isExcludedByAlt(), isExcludedByUrl(), isProductPhoto(), meetsMinimumSize() (+1 more)
+Cohesion: 0.13
+Nodes (18): loadPRDSections(), PRDSectionConfig, YAMLConfig, ArchitectInput, PRDArchitectAgent, mockSummary, PRDQAAgent, QAInput (+10 more)
 
 ### Community 16 - "Community 16"
-Cohesion: 0.31
-Nodes (1): MarketSectionGenerator
+Cohesion: 0.10
+Nodes (27): ALL_TOOLS, DashboardPage(), ToolCardProps, GET(), POST(), DELETE(), PATCH(), sql() (+19 more)
 
 ### Community 17 - "Community 17"
-Cohesion: 0.33
-Nodes (1): StrategySectionGenerator
+Cohesion: 0.06
+Nodes (33): Accessibility, Agents, API Endpoints, Architecture, Back to Start Page, Brief Helper V2 - Enhanced UX Design, Collapse/Expand, Component Specifications (+25 more)
 
 ### Community 18 - "Community 18"
-Cohesion: 0.35
-Nodes (8): a(), B(), D(), g(), i(), k(), Q(), y()
+Cohesion: 0.13
+Nodes (22): AllowlistAdminPage(), AllowlistRow, GET(), POST(), DELETE(), ADMIN_EMAILS, isAdmin(), pool() (+14 more)
 
 ### Community 19 - "Community 19"
-Cohesion: 0.2
-Nodes (4): useBrief(), usePauseDetection(), BriefHelperContent(), SmartTextBox()
+Cohesion: 0.06
+Nodes (32): 1. User Flow, 2. Field-Aware Extraction, 3. Confidence Scoring, 4. AI Provider Integration, Acceptance Criteria Status, API Response Time, Architecture, Brief Helper - Task 5 Completion Report (+24 more)
 
 ### Community 20 - "Community 20"
-Cohesion: 0.22
-Nodes (2): detectGaps(), handlePause()
+Cohesion: 0.06
+Nodes (32): Bold Text Usage, bullet_list, bullet_list_with_bold_labels, bullet_list_with_nested, Color Palette, Content Type Patterns, Data Input Schema, Document Configuration (+24 more)
 
 ### Community 21 - "Community 21"
-Cohesion: 0.31
-Nodes (1): GeminiProvider
+Cohesion: 0.09
+Nodes (24): createTestExecutionContext(), buildUserPrompt(), CompetitorAnalysisAgent, CompetitorAnalysisInput, CompetitorAnalysisOutput, parseCompetitorJson(), stripMarkdownJson(), makeContext() (+16 more)
 
 ### Community 22 - "Community 22"
-Cohesion: 0.39
-Nodes (1): GapDetectionAgent
+Cohesion: 0.06
+Nodes (31): 1. Base Researcher (`base-researcher.ts`), 2. Competitor Researcher (`competitor-researcher.ts`), 3. Trend Researcher (`trend-researcher.ts`), 4. Pricing Researcher (`pricing-researcher.ts`), Agent Configuration (`config/agents/default.yaml`), Architecture, Components, Confidence Scoring (+23 more)
 
 ### Community 23 - "Community 23"
-Cohesion: 0.36
-Nodes (1): TextExtractionAgent
+Cohesion: 0.12
+Nodes (27): buildFinalResponse(), executeClarify(), executeGapAnalysis(), executeGenerateMRD(), executeMultiAgentWorkflow(), executeParseRequest(), executeStage(), executeWorkflow() (+19 more)
 
 ### Community 24 - "Community 24"
-Cohesion: 0.36
-Nodes (4): createInitialState(), generateSessionId(), onePagerReducer(), toggleInArray()
+Cohesion: 0.06
+Nodes (30): Architecture, Basic Section Generation, Components, Conclusion, Configuration, Core Files, Data Flow, Ensemble Voting (Future Enhancement) (+22 more)
 
 ### Community 25 - "Community 25"
-Cohesion: 0.32
-Nodes (3): handleConfirm(), handleKeyDown(), handleScrape()
+Cohesion: 0.10
+Nodes (15): ExpansionInput, AIExpansionPanelProps, ConversationMessage, BriefFieldProps, FieldStatusBadgeProps, Gap, GapSuggestionProps, FieldProgress (+7 more)
 
 ### Community 26 - "Community 26"
-Cohesion: 0.48
-Nodes (6): briefReducer(), createEmptyFieldState(), createInitialState(), generateSessionId(), getCompletionProgress(), isAllFieldsComplete()
+Cohesion: 0.13
+Nodes (19): ExecutionContextImpl, ExecutionContextOptions, generateRequestId(), generateTraceId(), AgentConfig, AgentDefinition, AgentFactory, AgentMetadata (+11 more)
 
 ### Community 27 - "Community 27"
-Cohesion: 0.48
-Nodes (6): escapeHtml(), formatSectionTitle(), generatePRDDocx(), generatePRDHtml(), parseInlineFormatting(), renderSection()
+Cohesion: 0.17
+Nodes (10): BaseAgent, BaseOrchestratorAgent, Agent, AgentResult, ExecutionContext, OrchestratorAgent, ExecutionTask, ParallelExecutionOptions (+2 more)
 
 ### Community 28 - "Community 28"
-Cohesion: 0.38
-Nodes (1): OpenAIProvider
+Cohesion: 0.07
+Nodes (27): Authenticate Docker with Artifact Registry, Bind the service account to the GitHub repo, Build the application, Build the image, Check service status, Copy the content of sa-key.json, Create a Docker repository in Artifact Registry, Create a new project (recommended: use your org domain prefix) (+19 more)
 
 ### Community 29 - "Community 29"
-Cohesion: 0.53
-Nodes (4): getFieldDefinition(), getFieldHelpText(), getFieldLabel(), getFieldPlaceholder()
+Cohesion: 0.13
+Nodes (13): MRDGeneratorAgent, EXPECTED_ENTITY_TYPES, FIELD_PROMPTS, ExpansionOutput, FIELD_CONTEXTS, EXPECTED_ENTITY_TYPES, FIELD_PROMPTS, ValidationResult (+5 more)
 
 ### Community 30 - "Community 30"
-Cohesion: 0.33
-Nodes (0): 
+Cohesion: 0.07
+Nodes (26): Commit Strategy, File Tree Summary, Implementation Plan - Simplified Brief Helper, New Dependencies to Install, Phase 1: Foundation (Tasks 1-6), Phase 2: Intelligence (Tasks 7-10), Phase 3: Output & Storage (Tasks 11-14), Phase 4: Polish & Testing (Tasks 15-17) (+18 more)
 
 ### Community 31 - "Community 31"
-Cohesion: 0.33
-Nodes (1): handleCustomKeyDown()
+Cohesion: 0.08
+Nodes (25): 2.1 Document GET + PATCH handlers, 2.2 One-pager view/edit route, 2.3 Update dashboard, 3.1 State additions, 3.2 Publish API endpoint, 3.3 Toolbar update, 3.4 Publish gate modal, 3.5 Draft-expiry warning banner (+17 more)
 
 ### Community 32 - "Community 32"
-Cohesion: 0.5
-Nodes (1): OnePagerAnalystAgent
+Cohesion: 0.08
+Nodes (25): Brief Helper V2 - Quick Start Guide, Execution Options, File Structure (V2 Additions), Fixed:, Implementation Plan Overview, Key Documents, Known Issues, Next Steps (+17 more)
 
 ### Community 33 - "Community 33"
-Cohesion: 0.5
-Nodes (2): handleSubmit(), sendMessage()
+Cohesion: 0.08
+Nodes (25): 4-Agent Chain, Access Control, Agent TypeScript Contracts, API Endpoints, Architecture, Data Model, Entry Point, Environment Variables (+17 more)
 
 ### Community 34 - "Community 34"
-Cohesion: 0.7
-Nodes (4): goToNext(), goToPrevious(), makeCurrent(), toggleClass()
+Cohesion: 0.16
+Nodes (15): ApproveRequest, POST(), getDocument(), createPipelineRun(), createPRDDocument(), getPipelineRun(), PipelineRun, PRDSkeletonSection (+7 more)
 
 ### Community 35 - "Community 35"
-Cohesion: 0.67
-Nodes (2): handleContinue(), handleKeyDown()
+Cohesion: 0.20
+Nodes (3): SectionGeneratorInput, StrategySectionGenerator, TechnicalSectionGenerator
 
 ### Community 36 - "Community 36"
-Cohesion: 0.83
-Nodes (3): addLog(), handlePause(), handleReset()
+Cohesion: 0.14
+Nodes (13): EnsembleMergeOptions, EnsembleMergeResult, MergeStrategy, MRDCandidate, SectionVote, EnsembleReviewer, EnsembleReviewInput, EnsembleReviewOutput (+5 more)
 
 ### Community 37 - "Community 37"
-Cohesion: 0.83
-Nodes (2): handleAddCustom(), handleKeyDown()
+Cohesion: 0.08
+Nodes (24): One-Pager Generator Implementation Plan, Phase 1: Foundation (Config + State + Types), Phase 2: API Endpoints, Phase 3: UI Components, Phase 4: Wire Everything Together, Summary, Task 10: Create TextFieldWithExpand component, Task 11: Create CheckboxGroup component (for Where section) (+16 more)
 
 ### Community 38 - "Community 38"
-Cohesion: 0.67
-Nodes (2): handleExpand(), handleUpdate()
+Cohesion: 0.18
+Nodes (19): executeResearch(), getMockResearchResults(), MRDGeneratorInput, POST(), conductResearch(), extractSearchQueries(), extractSources(), GenerateOptions (+11 more)
 
 ### Community 39 - "Community 39"
-Cohesion: 0.67
-Nodes (2): getMockResults(), searchWeb()
+Cohesion: 0.15
+Nodes (18): GET(), DELETE(), getPRDDocument(), getPRDFrames(), PRDFrame, softDeletePRDDocument(), escapeHtml(), formatSectionTitle() (+10 more)
 
 ### Community 40 - "Community 40"
-Cohesion: 0.67
-Nodes (2): createMockExecutionContext(), createMockProvider()
+Cohesion: 0.09
+Nodes (22): Contents, Creation process, Final route map, Font Loading (layout.tsx), Goals, Known conflicts to resolve manually, Merge order, New repo: `mrd-one-pager` (+14 more)
 
 ### Community 41 - "Community 41"
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.09
+Nodes (22): PHASE 1 — Compulocks Design System, PHASE 2 — Apply Design System to All Features, PHASE 3 — Merge to main + cleanup, PHASE 4 — Standalone One-Pager Repo, Repo Optimization Implementation Plan, Success Criteria Checklist, Task 10: Merge product-brief-helper to main, Task 11: Clean up intermediate branches and worktrees (+14 more)
 
 ### Community 42 - "Community 42"
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.16
+Nodes (17): GapAnalyzerAgent, ClarificationAnswers, analyzeGaps(), buildAssumptions(), buildClarifyReasoning(), buildGapsToFlag(), buildProceedReasoning(), FIELD_PRIORITY (+9 more)
 
 ### Community 43 - "Community 43"
-Cohesion: 0.67
-Nodes (1): ChipInput()
+Cohesion: 0.15
+Nodes (15): DocumentPreview(), CollapsedFieldCard(), CollapsedFieldCardProps, RightPanel(), RightPanelToggle(), FIELD_SUGGESTIONS, SuggestionsView(), SuggestionsViewProps (+7 more)
 
 ### Community 44 - "Community 44"
-Cohesion: 0.67
-Nodes (1): generateMarkdown()
+Cohesion: 0.18
+Nodes (12): FIELD_GAP_PATTERNS, FieldGapPattern, GapDetectionAgent, GapPattern, PRODUCT_PATTERNS, BatchExtractionOutput, BriefGenerationInput, BriefGenerationOutput (+4 more)
 
 ### Community 45 - "Community 45"
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.16
+Nodes (15): metadata, createMockState(), TestWrapper(), TestWrapperProps, createMockState(), TestWrapper(), TestWrapperProps, createMockState() (+7 more)
 
 ### Community 46 - "Community 46"
-Cohesion: 0.67
-Nodes (1): handleFile()
+Cohesion: 0.09
+Nodes (21): compilerOptions, allowJs, downlevelIteration, esModuleInterop, forceConsistentCasingInFileNames, incremental, isolatedModules, jsx (+13 more)
 
 ### Community 47 - "Community 47"
-Cohesion: 0.67
-Nodes (1): LoadingFallback()
+Cohesion: 0.17
+Nodes (8): BatchExtractRequest, BatchExtractResponse, POST(), validateRequest(), BatchExtractionAgent, BatchExtractionInput, ExtractedEntity, Gap
 
 ### Community 48 - "Community 48"
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.16
+Nodes (13): embedText(), appendSheetRow(), getAuth(), getSheet(), setupSheet(), LogDocumentRequest, POST(), IngestDoc (+5 more)
 
 ### Community 49 - "Community 49"
-Cohesion: 0.67
-Nodes (0): 
+Cohesion: 0.10
+Nodes (20): ClarificationQuestion, CompetitorPrice, CompetitorProduct, ExtractedData, GapInfo, GapsAssessment, GapSeverity, MarketAnalysis (+12 more)
 
 ### Community 50 - "Community 50"
-Cohesion: 1.0
-Nodes (2): isRDEmail(), loadAllowlist()
+Cohesion: 0.13
+Nodes (13): Btn(), CheckTile(), Chip(), cls(), computeCompletion(), ConfigData, FEATURE_CATS, FormPanel() (+5 more)
 
 ### Community 51 - "Community 51"
-Cohesion: 0.67
-Nodes (1): ScraperError
+Cohesion: 0.11
+Nodes (7): fakeContent, fakeDoc, mockGetDocument, DocumentResponse, authConfig, nextAuth, STUB_SESSION
 
 ### Community 52 - "Community 52"
-Cohesion: 1.0
-Nodes (2): createMockState(), TestWrapper()
+Cohesion: 0.10
+Nodes (19): Brief Helper V2 - Phases 1-3 Implementation Complete, Code Quality, Commits (1), Commits (2), Commits (4), Files Modified, Lessons Learned, Next Steps (+11 more)
 
 ### Community 53 - "Community 53"
-Cohesion: 1.0
-Nodes (2): createMockState(), TestWrapper()
+Cohesion: 0.10
+Nodes (19): AI Assistance (3 Ways), How It Works, Key Technologies, Knowledge Base, Multi-Agent Architecture, Next Steps, Open Questions, Out of Scope (v1.0) (+11 more)
 
 ### Community 54 - "Community 54"
-Cohesion: 1.0
-Nodes (2): createMockState(), TestWrapper()
+Cohesion: 0.15
+Nodes (10): AgentStep, ORDER, PipelineOverlay(), Props, STEPS, Props, SkeletonReviewForm(), PipelineContent() (+2 more)
 
 ### Community 55 - "Community 55"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): API Surface, Data Model, Deployment Strategy, MRD Researcher Webapp — PLANNING.md, Open Questions, Phase 1: Core MRD Generator [DONE], Phase 2: One-Pager Tool [DONE], Phase 3: Beta Sandbox [DONE] (+10 more)
 
 ### Community 56 - "Community 56"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): Brief Helper V2 Implementation Plan, Prerequisites, Rollback Plan, Success Criteria, Task 10: Write State Reducer Tests, Task 11: Add Design Tokens for V2, Task 12: Create Start Page Route, Task 13: Create ProgressGrading Component (+10 more)
 
 ### Community 57 - "Community 57"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): 1. Description (free text + optional AI expand), 2. Goal (free text + optional AI expand), 3. Where (two static checkbox groups in one section), 4. Who (dynamic checkboxes + custom add), 5. Features (chip input, two groups), 6. Commercials (two text fields), 7. Competitors (URL extraction + optional AI research), AI Integration (+10 more)
 
 ### Community 58 - "Community 58"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): File Map, PRD Producer Implementation Plan, Self-Review Checklist, Task 10: Export API + PRD Document Generator, Task 11: Middleware R&D Gate, Task 12: Screen 1 — Document Picker UI, Task 13: Screens 2+3 — Pipeline Progress + Skeleton Review, Task 14: Screen 4 — PRD Viewer (+10 more)
 
 ### Community 59 - "Community 59"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): File Map, No placeholders — confirmed all steps have code., One-Pager Nav + Top Bar Redesign — Implementation Plan, Self-Review, Spec coverage check, Task 1: Update SectionNavMenu — Clipping + Done States, Task 2: Create ProgressRing Component, Task 3: Create ExportMenu Component (+10 more)
 
 ### Community 60 - "Community 60"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): Architecture Diagram (Text), Context, Current State, Doc 1: Architecture Overview, Doc 2: GCP Setup Guide, Doc 3: GitHub CI/CD Integration, Doc 4: Database Options, Doc 5: Google Services Integration (+10 more)
 
 ### Community 61 - "Community 61"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): 1. Section Nav, 2. Top Bar, 3. Component Architecture, 4. Responsive Breakpoints, 5. What Does NOT Change, 6. Out of Scope, Behavior, Export Dropdown (+10 more)
 
 ### Community 62 - "Community 62"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (18): Auth model, Background / Prior Decisions, Changelog format, Concurrency, Document envelope (shared shape), Failure handling, Filename / versioning semantics, GCS Document Storage + Google Drive Save/Export Routing — Design Spec (+10 more)
 
 ### Community 63 - "Community 63"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.22
+Nodes (12): BriefHelperContent(), BriefField(), LeftPanel(), ProgressIndicator(), useBrief(), briefReducer(), createEmptyFieldState(), createInitialState() (+4 more)
 
 ### Community 64 - "Community 64"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (17): Components, Data Fetching, Data Layer, Delete Behavior, Documents Library — Design Spec, Download Behavior, Error Handling, Modified: `DashboardShell.tsx` (+9 more)
 
 ### Community 65 - "Community 65"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.11
+Nodes (17): Access control — new `commentor` allowlist flag, API, API Summary, Comments System, Content Model, Future extension point (not built in this pass), Generation, HTML export as a live thin-client (+9 more)
 
 ### Community 66 - "Community 66"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (7): TextExtractionAgent, TextExtractionInput, ExtractRequest, ExtractResponse, POST(), VALID_FIELDS, validateRequest()
 
 ### Community 67 - "Community 67"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.12
+Nodes (15): Agent Categories, Agent Responsibilities, Agents Directory, Core Agents (Phase 2), Creating New Agents, Development Guidelines, Reviewers (Phase 5), Section Generators (Phase 5) (+7 more)
 
 ### Community 68 - "Community 68"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.12
+Nodes (15): 1. Create the instance, 2. Create the database and user, 3. Run the schema, 4. Migrate existing data from Vercel Postgres, Cloud SQL Setup, Code Change Required (Development Team), Connecting Cloud Run to Cloud SQL, Current Database (+7 more)
 
 ### Community 69 - "Community 69"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 70 - "Community 70"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.12
+Nodes (15): Compulocks Brand Token Migration Implementation Plan, File Map, Known Non-Goals (out of scope), Self-Review, Source of Truth — Brand Kit Tokens, Spec Coverage, Task 1: Extend `styles/tokens/compulocks.css` with Green Palette + Brand Utility Classes, Task 2: Fix `app/globals.css` — Replace Teal Accent + IBM Plex Default (+7 more)
 
 ### Community 71 - "Community 71"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (9): DashboardShellProps, BADGE_STYLES, DocumentsTableProps, STATUS_BADGE, TabType, onePager, prdDoc, TOOL_LABELS (+1 more)
 
 ### Community 72 - "Community 72"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.14
+Nodes (7): OnePagerTopBarProps, PublishGateModalProps, Props, Snapshot, getCompletionSections(), ConfigData, OnePagerContent()
 
 ### Community 73 - "Community 73"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.13
+Nodes (14): GCP Setup Guide, Health Check, Prerequisites, Rollback Procedure, Step 10: Verify Deployment, Step 1: Create the GCP Project, Step 2: Enable Required APIs, Step 3: Set Up Artifact Registry (Container Storage) (+6 more)
 
 ### Community 74 - "Community 74"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.26
+Nodes (10): extractProductName(), extractTargetPrice(), extractTechnicalRequirements(), extractUseCases(), generateRequestId(), inferProductCategory(), inferTargetMarkets(), ParserAgent (+2 more)
 
 ### Community 75 - "Community 75"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (10): GET(), POST(), BRAND, buildDocxChildren(), CompetitorEntry, generateOnePagerDocx(), generateOnePagerHtml(), loadLogoBuffer() (+2 more)
 
 ### Community 76 - "Community 76"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.19
+Nodes (6): POST(), ExpansionAgent, ExpansionRequest, ExpansionResponse, VALID_FIELDS, validateRequest()
 
 ### Community 77 - "Community 77"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.15
+Nodes (8): CharacterGrading(), CharacterGradingProps, getGrade(), Grade, GradeLevel, DescriptionTextareaProps, BriefHelperStartPage(), CHARACTER_THRESHOLDS
 
 ### Community 78 - "Community 78"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.30
+Nodes (11): GET(), EnvironmentOption, getEnvironments(), getIndustries(), getRolesForIndustries(), IndustryConfig, IndustryRolesConfig, loadIndustryRolesConfig() (+3 more)
 
 ### Community 79 - "Community 79"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.14
+Nodes (13): Task 10: Dashboard page, Task 11: Verify and test, Task 1: Create feature branch, Task 2: Install dependencies, Task 3: NextAuth.js configuration, Task 4: Auth middleware, Task 5: Login page, Task 6: Database schema (+5 more)
 
 ### Community 80 - "Community 80"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 81 - "Community 81"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (11): POST(), createHorizontalRule(), escapeHtml(), formatInlineHtml(), generateDocx(), generateHtml(), ParsedContent, ParsedSection (+3 more)
 
 ### Community 82 - "Community 82"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.15
+Nodes (12): 1. Ingest, 2. Retrieve, Architecture, Augmented Feature Auto-Fill Prompt, Error Handling, Ingest Trigger, pgvector Setup, RAG Agent (`agent/agents/one-pager-beta/rag-agent.ts`) (+4 more)
 
 ### Community 83 - "Community 83"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): 1. Architecture Overview, 2.1. Gap Analysis & Clarification, 2.2. Research Strategy, 2.3. MRD Generation, 2. Agent Behavior Rules, 3.1. Tone and Voice, 3.2. Visual Style, 3. UI/UX Guidelines (+3 more)
 
 ### Community 84 - "Community 84"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): App Structure (Key Directories), Architecture Overview, Branch Note, Changes, Current Hosting Topology, Environment Variables (Full Inventory), Google Services Already in Use, Stays the Same (+3 more)
 
 ### Community 85 - "Community 85"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 86 - "Community 86"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): 1. Google OAuth 2.0 (User Authentication), 2. Gemini API (AI Text Generation), 3. Google Drive Sync (Stub — Not Yet Active), 4. Gmail Integration (Planned — Not Yet Built), 5. Service Account vs. User OAuth — When to Use Each, Google Services Integration, Overview, Step 1: Verify OAuth client ownership (+3 more)
 
 ### Community 87 - "Community 87"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): Chunk 1: Database Setup, Chunk 2: RAG Agent, Chunk 3: Integration, RAG Agent Implementation Plan, Task 1: Enable pgvector and create embeddings table, Task 2: Create Gemini embedding helper, Task 3: Create RAG agent, Task 4: Call ingest from log-document API (+3 more)
 
 ### Community 88 - "Community 88"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): GCS Document Storage + Google Drive Save/Export Routing Implementation Plan, Global Constraints, Task 1: Add GCS dependency and bucket env var, Task 2: GCS document envelope read/write module, Task 3: Drive service account client and folder resolution, Task 4: Drive file writer — versioned exports, JSON clone, changelog, Task 5: Change-summary diff helper, Task 6: Rewire One-Pager export route to GCS + Drive (+3 more)
 
 ### Community 89 - "Community 89"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.17
+Nodes (11): Global Constraints, PRD Producer Rebuild Implementation Plan, Task 1: PRD content types and fixed section config, Task 2: PRDGeneratorAgent — one-shot section generation, Task 3: `commentor` allowlist flag, Task 4: PRD document API — generate, get, save, publish, Task 5: Comments API, Task 6: PRD export — DOCX (static) and HTML (live thin-client) (+3 more)
 
 ### Community 90 - "Community 90"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.18
+Nodes (9): Brand Token System, Commands, Deployment — dual target (Vercel prod + GCP Cloud Run), Document Export, Environment Variables, Feature Gate System, One-Pager Generator — Gotchas, One-Pager Generator — Section Structure (v1.4.0) (+1 more)
 
 ### Community 91 - "Community 91"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.18
+Nodes (4): ExportMenuProps, sections, OverflowMenuProps, PreviewFabProps
 
 ### Community 92 - "Community 92"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.24
+Nodes (5): MissingInfoWidgetProps, ProgressRingProps, NAV_SECTIONS, SectionNavMenuProps, CompletionSection
 
 ### Community 93 - "Community 93"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.18
+Nodes (4): completionSections, MockIntersectionObserver, ObserverRecord, observers
 
 ### Community 94 - "Community 94"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.18
+Nodes (10): Current Flow (Vercel), For GCP deployment:, GitHub CI/CD Integration, GitHub Secrets Required, Keep these existing secrets (for Vercel PR previews):, New Flow (GCP), Option A: Workload Identity Federation (Recommended), Option B: Service Account Key (Simpler, Less Secure) (+2 more)
 
 ### Community 95 - "Community 95"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.18
+Nodes (11): 1. Google OAuth 2.0 (User Authentication), 2. Gemini API (AI Text Generation), 3. Google Drive Sync (Stub — Not Yet Active), 4. Gmail Integration (Planned — Not Yet Built), 5. Service Account vs. User OAuth — When to Use Each, Google Services Integration, Overview, Step 1: Verify OAuth client ownership (+3 more)
 
 ### Community 96 - "Community 96"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.24
+Nodes (8): CompetitorEntry, createInitialState(), generateSessionId(), OnePagerAction, onePagerReducer(), OnePagerState, toggleInArray(), bumpMinorVersion()
 
 ### Community 97 - "Community 97"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.27
+Nodes (5): PRDViewer(), Props, Props, QAPanel(), mockFrames
 
 ### Community 98 - "Community 98"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (9): Decisions made this session, GCP Migration Session Log — 2026-07-08, Next session — what's already decided (don't re-litigate), Starting state, The production bug (and the actual root cause), Verified working (as of session end), What's explicitly NOT done, What was actually wrong (vs. what memory said) (+1 more)
 
 ### Community 99 - "Community 99"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 100 - "Community 100"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.42
+Nodes (4): SectionGeneratorOutput, GenerationMode, GenerationOrchestratorInput, GenerationOrchestratorOutput
 
 ### Community 101 - "Community 101"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (9): API Endpoints, Authentication, Dashboard Homepage, Data Model, Migration Notes, Overview, Route Structure, Tech Stack (+1 more)
 
 ### Community 102 - "Community 102"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (10): Code Change Required (Development Team), Connecting Cloud Run to Cloud SQL, Current Database, Database Options, Grant Cloud Run access to Cloud SQL, Option Comparison, Recommendation: Cloud SQL (PostgreSQL), Unix socket method (recommended for Cloud Run) (+2 more)
 
 ### Community 103 - "Community 103"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (9): Chunk 1: Google Sheets Setup, Chunk 2: Sheets Helper + API, Chunk 3: Client Integration, One-Pager Logging to Google Sheets — Implementation Plan, Task 1: Create Google Sheet and Service Account, Task 2: Create Google Sheets helper library, Task 3: Create log-document API endpoint, Task 4: Call log-document from export handler (+1 more)
 
 ### Community 104 - "Community 104"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (9): Documents Library Implementation Plan, File Structure, Task 1: Add `listPRDDocuments` to prd-db.ts, Task 2: Add `LibraryDocument` type and `listLibraryDocuments` helper, Task 3: GET `/api/documents/[id]/export` — One-Pager download by ID, Task 4: DELETE `/api/pipeline/prd/[prd_id]/delete` — soft-delete PRD document, Task 5: Upgrade `DocumentsTable` with tabs and download buttons, Task 6: Wire dashboard server component to fetch both sources (+1 more)
 
 ### Community 105 - "Community 105"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.20
+Nodes (9): Brand Token Migration (Sprint 2026-04-06), Documents Library ✅ COMPLETE, Future, GCP Migration (2026-07-08 session), One-Pager v1.4.0 — DEPLOYED ✅, One-Pager v1.5.0 — COMPLETE ✅, Phase 5 RAG Activation (deferred), PRD Producer (feature/prd-producer — COMPLETE ✅) (+1 more)
 
 ### Community 106 - "Community 106"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 107 - "Community 107"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.28
+Nodes (4): DocumentPickerCard(), Props, OnePagerDoc, PRDContent()
 
 ### Community 108 - "Community 108"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.22
+Nodes (8): Chunk 1: State + API, Chunk 2: UI, Feature Auto-Fill Implementation Plan, Task 1: Add SET_FEATURES reducer action, Task 2: Create suggest-features API endpoint, Task 3: Add Auto-fill button to FeatureSelector, Task 4: Wire auto-fill in page.tsx, Task 5: Deploy and verify
 
 ### Community 109 - "Community 109"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.22
+Nodes (8): AI Prompt Strategy, API, Error Handling, Feature Auto-Fill — Design Spec, Scope, State Update, Trigger, What it does
 
 ### Community 110 - "Community 110"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.22
+Nodes (8): API, Auth, Error Handling, Google Sheet Structure, One-Pager Full Logging to Google Sheets — Design Spec, Scope, Trigger, What it does
 
 ### Community 111 - "Community 111"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.32
+Nodes (7): CompetitorEntry, createInitialState(), generateSessionId(), OnePagerAction, onePagerReducer(), OnePagerState, toggleInArray()
 
 ### Community 112 - "Community 112"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (7): Gemini JSON Parsing Fix, Impact, Notes, Problem, Related Files, Solution, Testing
 
 ### Community 113 - "Community 113"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.50
+Nodes (6): ESCAPE_MAP, INJECTION_PATTERNS, sanitizeClarifications(), sanitizeInput(), sanitizeMRDInput(), sanitizeObject()
 
 ### Community 114 - "Community 114"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (7): Brief Helper V2 - Implementation Plan, Overview, Phase 2: State Management Updates, Summary, Task 2.1: Update State Interface, Task 2.2: Update Context Provider, Task 2.3: Create Unit Tests
 
 ### Community 115 - "Community 115"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (8): Phase 3: Start Page, Task 3.1: Create Start Page Route, Task 3.2: Create DescriptionInput Component, Task 3.3: Create ProgressGrading Component, Task 3.4: Create FutureOptions Component, Task 3.5: Add Design Tokens, Task 3.6: Create Start Page Styles, Task 3.7: Wire Up Navigation
 
 ### Community 116 - "Community 116"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (8): Phase 6: Left Panel Components, Task 6.1: Create LeftPanel Component, Task 6.2: Create ProgressIndicator Component, Task 6.3: Create CollapsedField Component, Task 6.4: Update BriefField Component, Task 6.5: Update GapSuggestion Component, Task 6.6: Add Collapse Animations, Task 6.7: Implement Auto-Focus Next Field
 
 ### Community 117 - "Community 117"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (8): Phase 7: Right Panel - Toggle & Views, Task 7.1: Create RightPanel Container, Task 7.2: Create RightPanelToggle Component, Task 7.3: Create SuggestionsView Component, Task 7.4: Create DocumentPreview Component, Task 7.5: Wire Up Active Field Sync, Task 7.6: Add Fade Transitions, Task 7.7: Implement Jump to Field
 
 ### Community 118 - "Community 118"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (7): 2026-02-19 — One-Pager Generator: Rapid Prototype, Commits, Files created (25 files, ~2,000 lines), Key decisions, MRD Producer — Project Log, Next steps, What was built
 
 ### Community 119 - "Community 119"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 120 - "Community 120"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.25
+Nodes (7): Dashboard + feature gate (this session), Documents Library designed, Files Changed This Session, Next Action, PRD Producer shipped (context carried from 2026-04-23 session), Session Log — 2026-04-27, What Happened
 
 ### Community 121 - "Community 121"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (3): TextFieldWithExpandProps, GuardrailWarningModalProps, GuardrailState
 
 ### Community 122 - "Community 122"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (3): OnePagerContext, OnePagerContextValue, OnePagerProviderProps
 
 ### Community 123 - "Community 123"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 124 - "Community 124"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (5): GapDetectionRequest, GapDetectionResponse, POST(), VALID_FIELDS, validateRequest()
 
 ### Community 125 - "Community 125"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (7): Phase 8: Integration & Polish, Task 8.1: Connect All Components, Task 8.2: Test Full Flow, Task 8.3: Add Error Boundaries, Task 8.4: Polish Animations, Task 8.5: Accessibility Audit, Task 8.6: Mobile Responsive Test
 
 ### Community 126 - "Community 126"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (6): Context Notes, Decisions Made, Files Modified This Session, Session Log — 2026-04-20, State at Handoff, What Was Accomplished
 
 ### Community 127 - "Community 127"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (6): Context Notes, Decisions Made, Files Modified This Session, Session Log — 2026-05-14, State at Handoff, What Was Accomplished
 
 ### Community 128 - "Community 128"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.29
+Nodes (6): Context Notes, Decisions Made, Files Modified This Session, Session Log — 2026-07-08, State at Handoff, What Was Accomplished
 
 ### Community 129 - "Community 129"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.48
+Nodes (5): getMockResults(), isSearchAvailable(), SearchOptions, SearchResult, searchWeb()
 
 ### Community 130 - "Community 130"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 131 - "Community 131"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (4): barlow, barlowCondensed, metadata, viewport
 
 ### Community 132 - "Community 132"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (5): AI Providers, Architecture Reference, Directory Structure, MRD Template — 12 Sections, Multi-Agent Concepts
 
 ### Community 133 - "Community 133"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (5): Create a New Agent, Quick Start — Multi-Agent System, Run Research Agents, Run the MRD Orchestrator, Use Provider Chain
 
 ### Community 134 - "Community 134"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 135 - "Community 135"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (5): 2026-07-08 — Self-granted roles/logging.viewer, 2026-07-08 — Self-granted roles/storage.admin, 2026-07-08 — Self-granted serviceusage.serviceUsageAdmin, IAM Change Log — r-and-d-489319, Root cause found via logging.viewer: quoted POSTGRES_URL secret
 
 ### Community 136 - "Community 136"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (6): Phase 1: Model & Provider Updates, Task 1.1: Update Gemini Provider Model, Task 1.2: Update Provider Configuration, Task 1.3: Delete Anthropic Provider, Task 1.4: Update Provider Chain, Task 1.5: Manual Test Provider Fallback
 
 ### Community 137 - "Community 137"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (6): Phase 4: Batch Extraction Agent, Task 4.1: Create Batch Extraction Agent, Task 4.2: Update Brief Agent Types, Task 4.3: Create API Route, Task 4.4: Create Agent Tests, Task 4.5: Create API Tests
 
 ### Community 138 - "Community 138"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (6): Phase 9: Testing & Documentation, Task 9.1: Write Component Tests, Task 9.2: Write Integration Tests, Task 9.3: Create Completion Document, Task 9.4: Update CLAUDE.md, Task 9.5: Run Full Test Suite
 
 ### Community 139 - "Community 139"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.33
+Nodes (5): Architecture, Documentation, Features, Getting Started, MRD Producer Web App
 
 ### Community 140 - "Community 140"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.40
+Nodes (3): FeatureCategory, FeatureSelectorProps, Layout
 
 ### Community 141 - "Community 141"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.40
+Nodes (3): FeatureCategory, FeatureSelectorProps, Layout
 
 ### Community 142 - "Community 142"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.40
+Nodes (5): Phase 5: Split Layout & Loading, Task 5.1: Create SplitLayout Component, Task 5.2: Create LoadingOverlay Component, Task 5.3: Update Main Page Layout, Task 5.4: Add Split Layout Tokens
 
 ### Community 143 - "Community 143"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.40
+Nodes (5): 1. Create the instance, 2. Create the database and user, 3. Run the schema, 4. Migrate existing data from Vercel Postgres, Cloud SQL Setup
 
 ### Community 144 - "Community 144"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 145 - "Community 145"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 146 - "Community 146"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 147 - "Community 147"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 148 - "Community 148"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 149 - "Community 149"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 150 - "Community 150"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 151 - "Community 151"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 152 - "Community 152"
-Cohesion: 1.0
-Nodes (0): 
-
-### Community 153 - "Community 153"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.40
+Nodes (4): Additional Resources, Pipeline Overview, Reference Library, Usage
 
 ### Community 154 - "Community 154"
-Cohesion: 1.0
-Nodes (0): 
+Cohesion: 0.50
+Nodes (4): Chunk 1: Document Scaffolding + Doc 1 (Architecture Overview), GCP Migration Implementation Plan, Task 1: Create output directory and Doc 1 skeleton, Task 2: Doc 2 — GCP Setup Guide
+
+### Community 155 - "Community 155"
+Cohesion: 0.50
+Nodes (3): **1\. Project Overview**, **2\. Tech Stack Requirements**, **Product Specification: AI One-Pager Generator**
+
+### Community 172 - "Community 172"
+Cohesion: 0.67
+Nodes (3): Chunk 2: Doc 3 (CI/CD) + Doc 4 (Database), Expected: HTTP/2 200, Task 3: Doc 3 — GitHub CI/CD Integration
 
 ## Knowledge Gaps
-- **Thin community `Community 55`** (2 nodes): `middleware.ts`, `isAllowed()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 56`** (2 nodes): `layout.tsx`, `RootLayout()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 57`** (2 nodes): `layout.tsx`, `BriefHelperLayout()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 58`** (2 nodes): `CollapsedFieldCard.tsx`, `CollapsedFieldCard()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 59`** (2 nodes): `FieldStatusBadge.tsx`, `FieldStatusBadge()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 60`** (2 nodes): `LeftPanel.tsx`, `handleBack()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 61`** (2 nodes): `LoadingOverlay.tsx`, `LoadingOverlay()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 62`** (2 nodes): `RightPanel.tsx`, `RightPanel()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 63`** (2 nodes): `RightPanelToggle.tsx`, `RightPanelToggle()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 64`** (2 nodes): `SplitLayout.tsx`, `SplitLayout()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 65`** (2 nodes): `SuggestionsView.tsx`, `handleFieldClick()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 66`** (2 nodes): `test-page.tsx`, `handlePause()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 67`** (2 nodes): `layout.tsx`, `BriefHelperStartLayout()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 68`** (2 nodes): `DescriptionTextarea.tsx`, `handleChange()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 69`** (2 nodes): `FutureOptions.tsx`, `FutureOptions()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 70`** (2 nodes): `DashboardShell.tsx`, `handleDelete()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 71`** (2 nodes): `page.tsx`, `async()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 72`** (2 nodes): `DraftWarningBanner.tsx`, `DraftWarningBanner()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 73`** (2 nodes): `GuardrailWarningModal.tsx`, `GuardrailWarningModal()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 74`** (2 nodes): `OnePagerTopBar.tsx`, `OnePagerTopBar()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 75`** (2 nodes): `PublishGateModal.tsx`, `PublishGateModal()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 76`** (2 nodes): `ReferencePhotosSection.tsx`, `handleSelect()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 77`** (2 nodes): `SectionNavMenu.tsx`, `SectionNavMenu()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 78`** (2 nodes): `VersionHistoryPanel.tsx`, `handleRollback()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 79`** (2 nodes): `page.tsx`, `OnePagerViewPage()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 80`** (2 nodes): `prd-content.tsx`, `handleGenerate()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 81`** (2 nodes): `DocumentPickerCard.tsx`, `DocumentPickerCard()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 82`** (2 nodes): `SkeletonReviewForm.tsx`, `SkeletonReviewForm()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 83`** (2 nodes): `createMockRequest()`, `batch-extract.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 84`** (2 nodes): `sleep()`, `brief-state.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 85`** (2 nodes): `photo-filter.test.ts`, `makeImage()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 86`** (2 nodes): `gap_analyzer.test.ts`, `createRequestData()`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 87`** (1 nodes): `jest.config.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 88`** (1 nodes): `jest.setup.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 89`** (1 nodes): `next-env.d.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 90`** (1 nodes): `next.config.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 91`** (1 nodes): `postcss.config.js`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 92`** (1 nodes): `types.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 93`** (1 nodes): `index.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 94`** (1 nodes): `types.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 95`** (1 nodes): `index.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 96`** (1 nodes): `index.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 97`** (1 nodes): `types.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 98`** (1 nodes): `page.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 99`** (1 nodes): `page.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 100`** (1 nodes): `route.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 101`** (1 nodes): `DocumentPreview.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 102`** (1 nodes): `GapSuggestion.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 103`** (1 nodes): `ProgressIndicator.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 104`** (1 nodes): `CharacterGrading.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 105`** (1 nodes): `ToolCard.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 106`** (1 nodes): `TopBar.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 107`** (1 nodes): `OnePagerClient.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 108`** (1 nodes): `CheckboxGroup.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 109`** (1 nodes): `ProductInfoCustomization.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 110`** (1 nodes): `SplitLayout.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 111`** (1 nodes): `page.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 112`** (1 nodes): `CheckboxGroup.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 113`** (1 nodes): `SplitLayout.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 114`** (1 nodes): `QAPanel.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 115`** (1 nodes): `page.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 116`** (1 nodes): `auth.config.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 117`** (1 nodes): `auth.edge.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 118`** (1 nodes): `auth.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 119`** (1 nodes): `guardrails-wordlist.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 120`** (1 nodes): `polyfills.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 121`** (1 nodes): `types.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 122`** (1 nodes): `next-auth.d.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 123`** (1 nodes): `parser-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 124`** (1 nodes): `batch-extraction-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 125`** (1 nodes): `expansion-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 126`** (1 nodes): `gap-detection-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 127`** (1 nodes): `text-extraction-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 128`** (1 nodes): `market-section-generator.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 129`** (1 nodes): `ensemble-merger.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 130`** (1 nodes): `one-pager-analyst-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 131`** (1 nodes): `prd-architect-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 132`** (1 nodes): `prd-qa-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 133`** (1 nodes): `prd-writer-agent.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 134`** (1 nodes): `export.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 135`** (1 nodes): `approve.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 136`** (1 nodes): `delete.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 137`** (1 nodes): `start.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 138`** (1 nodes): `LoadingOverlay.test.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 139`** (1 nodes): `one-pager-state.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 140`** (1 nodes): `DocumentsTable.test.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 141`** (1 nodes): `PRDViewer.test.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 142`** (1 nodes): `QAPanel.test.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 143`** (1 nodes): `SkeletonReviewForm.test.tsx`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 144`** (1 nodes): `library-documents.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 145`** (1 nodes): `prd-db.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 146`** (1 nodes): `prd-sections-loader.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 147`** (1 nodes): `sanitize.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 148`** (1 nodes): `config-loader.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 149`** (1 nodes): `one-pager-state.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 150`** (1 nodes): `gemini-provider.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 151`** (1 nodes): `scraper-service.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 152`** (1 nodes): `prd-gate.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 153`** (1 nodes): `mrd_generator.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
-- **Thin community `Community 154`** (1 nodes): `web_search.test.ts`
-  Too small to be a meaningful cluster - may be noise or needs more connections extracted.
+- **1399 isolated node(s):** `version`, `configurations`, `PreToolUse`, `mockGenerateText`, `mockProvider` (+1394 more)
+  These have ≤1 connection - possible missing edges or undocumented components.
+- **44 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
 ## Suggested Questions
 _Questions this graph is uniquely positioned to answer:_
 
-- **Why does `POST()` connect `Community 1` to `Community 0`, `Community 2`, `Community 3`, `Community 5`, `Community 8`, `Community 12`, `Community 13`?**
-  _High betweenness centrality (0.212) - this node is a cross-community bridge._
-- **Why does `executeCore()` connect `Community 6` to `Community 8`, `Community 2`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **Why does `GET()` connect `Community 0` to `Community 27`?**
-  _High betweenness centrality (0.032) - this node is a cross-community bridge._
-- **Are the 35 inferred relationships involving `POST()` (e.g. with `sanitizeInput()` and `createExecutionContext()`) actually correct?**
-  _`POST()` has 35 INFERRED edges - model-reasoned connections that need verification._
-- **Are the 14 inferred relationships involving `GET()` (e.g. with `listDocuments()` and `getDocument()`) actually correct?**
-  _`GET()` has 14 INFERRED edges - model-reasoned connections that need verification._
+- **Why does `ExecutionContext` connect `Community 27` to `Community 0`, `Community 66`, `Community 99`, `Community 36`, `Community 70`, `Community 42`, `Community 74`, `Community 76`, `Community 44`, `Community 107`, `Community 47`, `Community 15`, `Community 21`, `Community 86`, `Community 23`, `Community 26`, `Community 124`, `Community 29`?**
+  _High betweenness centrality (0.029) - this node is a cross-community bridge._
+- **Why does `BriefField` connect `Community 25` to `Community 66`, `Community 43`, `Community 76`, `Community 44`, `Community 45`, `Community 47`, `Community 123`, `Community 29`, `Community 63`?**
+  _High betweenness centrality (0.017) - this node is a cross-community bridge._
+- **Why does `BaseAgent` connect `Community 27` to `Community 0`, `Community 66`, `Community 99`, `Community 36`, `Community 70`, `Community 42`, `Community 74`, `Community 76`, `Community 44`, `Community 107`, `Community 47`, `Community 15`, `Community 21`, `Community 29`?**
+  _High betweenness centrality (0.014) - this node is a cross-community bridge._
+- **What connects `version`, `configurations`, `PreToolUse` to the rest of the system?**
+  _1399 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `Community 0` be split into smaller, more focused modules?**
-  _Cohesion score 0.04 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.08735150244584207 - nodes in this community are weakly interconnected._
 - **Should `Community 1` be split into smaller, more focused modules?**
-  _Cohesion score 0.05 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.0946938775510204 - nodes in this community are weakly interconnected._
+- **Should `Community 2` be split into smaller, more focused modules?**
+  _Cohesion score 0.04081632653061224 - nodes in this community are weakly interconnected._
